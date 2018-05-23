@@ -1,0 +1,162 @@
+/*
+Theme plugin: cgbm search
+Description: Maintaining CGBM model.
+Author: Mila
+Version: 0.1
+Template: javo-spot
+*/
+
+@charset "utf-8";
+.cgbm-search-form{
+    width:100%;
+    overflow:hidden;
+    /*overflow-y:scroll;*/
+    border-color: #cccccc ;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    margin: 10px 0px 10px 0px;
+    padding: 10px ;
+}
+.cgbm-input-error {
+	color: #a94442 !important;
+	background-color: #f2dede !important;
+	background-image: none;
+}
+.cgbm-has-error {
+    color: #a94442;
+}
+ul.cgbm-approve-menu {
+    list-style-type: none;
+    padding:0;
+    margin: 0;
+    overflow: inherit;
+    /*border: 1px solid #ebebeb;*/
+}
+ul.cgbm-approve-menu li{
+    float: left;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+ul.cgbm-approve-menu li.right{
+    float: right;
+}
+ul.cgbm-approve-menu li a {
+    display: block;
+    color: #999;
+    text-align: center;
+    font-weight: bold;
+    padding: 10px 10px;
+    border: 1px solid #e1e1e1;
+    background-color: #eeeeee;
+    text-decoration: none;
+    width: 120px;
+}
+
+ul.cgbm-approve-menu li a:hover {background-color: #ddd;}
+
+ul.sidebar-textwidget-ovm-edit-menu li {
+    background-color: #eeeeee;
+    text-align: inherit;
+}
+ul.sidebar-textwidget-ovm-edit-menu li a:hover{
+    background-color: #aaaaaa;
+    color: #ffffff;
+}
+.vertical-col-align-row{
+    display:flex;
+    flex-wrap:wrap
+}
+.vertical-col-align-column {
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+}
+
+.cgbm-move-btn-box{
+    text-align: center;
+}
+
+ul.cgbm_list_wrapper{
+    width:100%;
+    overflow:hidden;
+    overflow-y:scroll;
+    border-color: #cccccc ;
+    border: 2px solid #ddd;
+    border-radius: 3px;
+    padding: 2px ;
+}
+
+li.cgbm-list-item{
+    list-style-type: none;;
+    background: #ffffff;
+    /*margin-left:15px;*/
+    padding: 0px 5px 0px 5px;
+    margin: 1px 0px 1px 0px;
+    font-size: small;
+}
+
+li.cgbm-list-item:hover{
+    background: #dddddd;
+}
+
+a.cgbm-delete-option:hover{
+    background: url(select2.png) no-repeat right center;
+    top: 4px;
+    background-color: transparent;;
+}
+
+a.cgbm-delete-option{
+    display: inline-block;
+    background: url(select2.png) no-repeat right top;
+    position: relative;
+    right: 3px;
+    top: 2px;
+    width: 12px;
+    height:14px;
+    font-size: 1px;
+    outline: none;
+    padding: 0px ;
+    margin: 0px 0px 0px 3px;
+}
+div.cgbm-section-break{
+    border-top: 1px solid #eee;
+}
+
+ul.search-button-list{
+    list-style-type: none;
+    padding:0;
+    margin: 0;
+    overflow: inherit;
+}
+
+ul.search-button-list li{
+    float: right;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.cgbm-button-container{
+    display: inline-block;
+    vertical-align: top;
+    margin-bottom: 15px;
+}
+.cgbm-button{
+    color: #fff;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    vertical-align: middle;
+    line-height: normal;
+    font-size: 16px;
+    padding: 6px 5px 6px 11px;
+    background-image: linear-gradient(to bottom,rgba(255,255,255,.2) 0,rgba(255,255,255,.01) 100%);
+    /*height: 40px;*/
+    /*width: 35px;*/
+    text-align: center;
+}
+.cgbm-btn-color-peacoc{
+    border-color: #4CADC9;
+    background-color: #4CADC9;
+}
+.cgbm-btn-color-peacoc:hover{
+    text-decoration: none;
+    background-color:#4397B0;
+}
