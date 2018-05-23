@@ -68,7 +68,7 @@ function pb_vote_on_init()
 
 function pb_vote_on_admnin_init( )
 {
-    add_action( 'save_post', 'pbvoting_metabox_save', 20, 3 );
+    // add_action( 'save_post', 'pbvoting_metabox_save', 20, 3 );
 }
 
 function pb_vote_plugin_loaded()

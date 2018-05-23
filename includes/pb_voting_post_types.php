@@ -41,60 +41,6 @@ function pbvote_register_post_type()
 
 }
 
-function pbvoting_metabox() {
-    $params = array('post' => '000');
-    add_meta_box(
-        'pbvoting_metabox',
-        __( 'PB Hlasování', 'pbvote_domain' ),
-        'pbvoting_metabox_content',
-        PB_VOTING_POST_TYPE,
-        'advanced',
-        'high',
-        $params
-    );
-}
-
-function pbvoting_metabox_content( $post, $params )
-{
-    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-        return ;
-
-    wp_nonce_field( plugin_basename( __FILE__ ), 'pb_voting_box_content_nonce' );
-    // $cgbm_edit_instance = new Cgbm_Service_Edit();
-    // echo  $cgbm_edit_instance->get_metabox_content();
-    echo '<div><h2>Tady bude obsah boxu</h2></div>';
-}
-
-function pbvoting_metabox_save( $post_id, $post, $is_update )
-{
-
-    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-        return $post_id;
-
-    if ( ! $post->post_type == PB_VOTING_POST_TYPE) {
-        return;
-    }
-
-    if ( empty( $_POST['pb_voting_box_content_nonce'])) {
-        return;
-    }
-
-    if ( !wp_verify_nonce( $_POST['pb_voting_box_content_nonce'], plugin_basename( __FILE__ ) ) )
-        return;
-
-    if ( 'page' == $_POST['post_type'] ) {
-        if ( !current_user_can( 'edit_page', $post_id ) )
-            return;
-    } else {
-        if ( !current_user_can( 'edit_post', $post_id ) )
-            return;
-    }
-
-    // $web_url = esc_url_raw( $_POST['cgbm_services_subject_web']);
-
-    // update_post_meta( $post_id, 'cgbm_srv_url', $web_url );
-}
-
 class VotingInfoMetabox {
     private $meta_fields;
 
