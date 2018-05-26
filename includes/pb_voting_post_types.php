@@ -34,11 +34,34 @@ function pbvote_register_post_type()
         'show_in_rest'  => false,
         'menu_icon'     => 'dashicons-admin-post',
         // 'register_meta_box_cb' => 'pbvoting_metabox',
+        'taxonomies'    => array('voting_status',),
     );
 
     $type = PB_VOTING_POST_TYPE ;
     register_post_type( $type, $args );
 
+    $taxo_args = array(
+        'labels'        => array(
+            'name'  => 'Stav hlasování',),
+        'description'   => 'Správa hlasování o participativních projektech',
+        'public'        => false,
+        'hierarchical'  => false,
+        'menu_position' => 5,
+        // 'supports'      => array( 'title', 'thumbnail', 'excerpt',  ),
+        'supports'      => array( 'title', 'editor', 'thumbnail', 'excerpt', 'comments' ),
+        'has_archive'   => true,
+        'exclude_from_search' => false,
+        'publicly_queryable'  => true,
+        'show_ui'       => true,
+        'show_in_menu'  => true,
+        'show_in_nav_menus' => true,
+        'show_in_admin_bar' => true,
+        'show_admin_column' => true,
+        'show_in_rest'  => false,
+        'menu_icon'     => 'dashicons-admin-post',
+
+    );
+    register_taxonomy( 'voting_status', PB_VOTING_POST_TYPE, $taxo_args );
 }
 
 class VotingInfoMetabox {
