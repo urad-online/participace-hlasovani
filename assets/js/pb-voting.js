@@ -6,8 +6,33 @@ function ou_test(input,label)
     console.log(input + " - "+ label);
     alert(input + " - "+ label);
 }
+function voting_callAjaxGetCode()
+{
+    var code = jQuery('#votingRegistrationCode').val();
+    var postRequest = {
+        'action': 'pbvote_getcode',
+        'voter_id': code,
+        'voting_id': 1212,
+    };
+    console.log( code);
 
-function ou_callAjaxCGBM_Tab(input, label, requestType, element)
+    // jQuery('#voting_loader_image').show();
+
+    jQuery("body").css("cursor", "progress");
+
+    jQuery.post(ajax_object.ajax_url, postRequest, function(response) {
+
+        var resp = JSON.parse(response);
+
+        console.log( resp );
+
+        // jQuery('#cgbm_loader_image').hide();
+        jQuery("body").css("cursor", "default");
+
+        jQuery(document.body).trigger('post-load'); // musi byt po vlozeni obsahu do stranky
+    });
+}
+function getVotingCode()
 {
     var postRequest = {
         'action': 'ou_getCgbmModel',
@@ -15,29 +40,7 @@ function ou_callAjaxCGBM_Tab(input, label, requestType, element)
         'requestType' : requestType,
     };
 
-    jQuery('#cgbm_loader_image').show();
-    var cgbmTabs = new ou_cgbm_Tabs (element.id, label);
-    cgbmTabs.ou_cgbm_setTabIds();
-    if (requestType === 'show_detail_info') {
-        cgbmTabs.deleteContent();
-        cgbmTabs.renameTab();
-    } else {
-        cgbmTabs.Cgbm_Item_AddNewTab();
-    }
-    jQuery("body").css("cursor", "progress");
 
-    jQuery.post(ajax_object.ajax_url, postRequest, function(response) {
-
-        var resp = JSON.parse(response);
-
-        cgbmTabs.writeContent(resp);
-
-        jQuery('#cgbm_loader_image').hide();
-        jQuery("body").css("cursor", "default");
-
-        window.scrollTo(0, 0);
-        jQuery(document.body).trigger('post-load'); // musi byt po vlozeni obsahu do stranky
-    });
 
 }
 
