@@ -47,24 +47,29 @@ class ApiXml30{
 	public function send_message($recipient,$text, $send_at = null, $dr_request = null ){
 		if ($dr_request == null)
 			$dr_request = DEFAULT_DR_REQUEST;
-		if ($send_at == null)
-			$send_at =  date('YmdHis');
-		$xml = "<outgoing_message><dr_request>".$dr_request."</dr_request><send_at>".$send_at."</send_at><text>".$text."</text><recipient>".$recipient."</recipient></outgoing_message>";
-		return $this->send_xml_request($xml);
+		if ($send_at == null) {
+            $send_at_tag =  '';
+        } else {
+            $send_at_tag =  '<send_at>'.date('YmdHis').'/<send_at>';
+        }
+
+		$xml = '<outgoing_message><dr_request>'.$dr_request.'</dr_request>'.$send_at_tag.'<text>'.$text.'</text><recipient>'.$recipient.'</recipient></outgoing_message>';
+		return $this->send_xml_request( $xml );
 	}
 
 
 	private function get_params_for_xml_request($data) {
 	    $params = array('https' => array(
 	      'method' => 'POST',
-	      'content' => $data,
-		'header' => 'Content-type: text/xml'
+	      'content' =>  htmlspecialchars_decode( $data),
+    		'header' => 'Content-type: text/xml',
 	    ));
-	    return stream_context_create($params);
+	    return $params;
 	}
 
 	private function send_xml_request($data){
-		$handle = fopen($this->get_url(API_RECEIVER),'rb',false,$this->get_params_for_xml_request($data));
+        $params =  $this->get_params_for_xml_request($data);
+		$handle = fopen($this->get_url(API_RECEIVER),'rb',false, stream_context_create( $params) );
 		return $this->send_request($handle);
 	}
 
@@ -79,16 +84,17 @@ class ApiXml30{
 		return $contents;
 	}
 
-	private function get_url($type) { return API_URL.$type."?login=".$this->login."&password=".$this->password; }
+	private function get_url($type) { return API_URL.$type.'?login='.$this->login.'&password='.$this->password; }
 
-	public function get_account_info()
+	public function smsgate_get_account_info()
     {
         $params = array('https' => array(
 	      'method' => 'GET',
     	  'header' => 'Content-type: text/xml'
 	    ));
-        $handle = fopen($this->get_url(API_INFO),'rb',false, stream_context_create($params) );
-		$result = $this->send_request($handle);
+        $handle = fopen($this->get_url(API_INFO),'r',false, stream_context_create($params) );
+        $result = new SimpleXMLElement( htmlspecialchars_decode( $this->send_request($handle) ));
+		return $result;
     }
 
 }

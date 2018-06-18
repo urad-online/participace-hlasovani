@@ -1,6 +1,10 @@
 <?php
 
 require_once PB_VOTE_PATH_INC .'/pb_voting_post_types.php';
+require_once PB_VOTE_PATH_INC .'/smssluzbacz/apixml30.php';
+define('SMSGATE_LOGIN', 'rousar');
+define('SMSGATE_PASSWD', 'MJMMJVvdppps1*');
+
 global $votes_mtbx;
 
 spl_autoload_register('pbvote_class_autoloader', true);
@@ -60,7 +64,7 @@ function pbvote_class_autoloader( $class_name ) {
 function pbvote_get_code()
 {
     $request = $_POST;
-    $get_code = new PbVote_GetCode();
+    $get_code = new PbVote_GetCode( 'Sms');
     if ( (!empty( $request['voter_id'])) && (! empty($request['voting_id']))) {
         $output = $get_code->get_code( $request);
     } else {

@@ -42,7 +42,7 @@ get_header(); ?>
 
                                         <div class="imc-row-no-margin imc-CenterContents">
                                             <span class="imc-Text-SM imc-TextColorSecondary imc-TextBold imc-FontRoboto">#</span>
-                                            <span class="imc-Text-SM imc-TextColorSecondary imc-TextMedium imc-FontRoboto"><?php echo esc_html(the_ID()); ?></span>
+                                            <span class="imc-Text-SM imc-TextColorSecondary imc-TextMedium imc-FontRoboto" id="singleHlasovnaiVotingId"><?php echo esc_html(the_ID()); ?></span>
                                         </div>
                                     </div>
 

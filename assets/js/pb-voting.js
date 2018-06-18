@@ -9,11 +9,13 @@ function ou_test(input,label)
 function voting_callAjaxGetCode()
 {
     var code = jQuery('#votingRegistrationCode').val();
+    var votingId = jQuery('#singleHlasovnaiVotingId').text();
     var postRequest = {
         'action': 'pbvote_getcode',
         'voter_id': code,
-        'voting_id': 1212,
+        'voting_id': votingId,
     };
+    console.log( votingId);
     console.log( code);
 
     // jQuery('#voting_loader_image').show();

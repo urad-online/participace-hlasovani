@@ -3,25 +3,31 @@ class PbVote_GetCode
 {
     private $code = "" ;
     private $code_length = 10;
-    private $expiration_hrs = 1;
+    private $expiration_hrs = 24;
     private $table_name = 'pb_register' ;
     private $initial_status = 'new';
-    private $voting_id, $voter_it;
+    private $voting_id, $voter_id;
     private $issued_time, $expiration_time;
     private $output;
+    private $code_delivery = null;
 
-    public function __construct()
+    public function __construct( $msg_type = '' )
     {
         $this->code = "";
         global $wpdb;
         $this->db = $wpdb;
+
+        $class_name = 'PbVote_Code'.$msg_type;
+        if ( class_exists($class_name) ) {
+            $this->code_delivery = new $class_name();
+        }
     }
 
     public function get_code( $input = null )
     {
 
-        $this->voting_id = $input['voting_id'];
-        $this->voter_id = $input['voter_id'];
+        $this->voting_id = trim( $input['voting_id'] );
+        $this->voter_id  = trim( $input['voter_id'] );
 
         $issue      =  current_time( 'timestamp', 0 );
         $expiration = $issue + 60*60*intval($this->expiration_hrs);
@@ -33,7 +39,9 @@ class PbVote_GetCode
 
             $this->code = $this->generate_code( $this->code_length ) ;
 
-            $this->save_code();
+            if ( $sms_result = $this->send_new_code() ) {
+                $this->save_code();
+            }
         }
 
         return  $this->output ;
@@ -101,15 +109,11 @@ class PbVote_GetCode
 
     private function check_voter_id( )
     {
-        $phone_regexp = '/^(\+420)? ?[1-9][0-9]{2} ?[0-9]{3} ?[0-9]{3}$/';
+        if ( (empty( $this->voter_id ) ) || ( ! $this->code_delivery)) {
+            return false;
+        }
 
-        $id = trim( $this->voter_id );
-
-        if ( preg_match($phone_regexp, $id) ) {
-            $id = str_replace( ' ', '', $id);
-            if (strlen( $id ) === 9 ) {
-                $id = '+420'.$id;
-            }
+        if ( $id =  $this->code_delivery->check_voter_id( $this->voter_id ) ) {
             $this->voter_id = $id;
             return true;
         } else {
@@ -166,4 +170,26 @@ class PbVote_GetCode
             return false;
         }
     }
+
+    private function send_new_code()
+    {
+        if ( (empty( $this->code ) ) || ( ! $this->code_delivery)) {
+            return false;
+        }
+        $msg_data = array(
+            'code'            => $this->code,
+            'voter_id'        => $this->voter_id,
+            'expiration_time' => $this->expiration_time,
+        );
+
+        $result =  $this->code_delivery->send_new_code( $msg_data );
+        $this->output = $this->code_delivery->get_error_description();
+
+        if ( $result ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
