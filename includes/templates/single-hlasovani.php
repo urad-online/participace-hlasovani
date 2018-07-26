@@ -41,7 +41,7 @@ get_header(); ?>
                                     <div class="imc-grid-2 imc-columns">
 
                                         <div class="imc-row-no-margin imc-CenterContents">
-                                            <span class="imc-Text-SM imc-TextColorSecondary imc-TextBold imc-FontRoboto">#</span>
+                                            <span class="imc-Text-SM imc-TextColorSecondary imc-TextBold imc-FontRoboto">#b</span>
                                             <span class="imc-Text-SM imc-TextColorSecondary imc-TextMedium imc-FontRoboto" id="singleHlasovnaiVotingId"><?php echo esc_html(the_ID()); ?></span>
                                         </div>
                                     </div>
@@ -95,6 +95,10 @@ get_header(); ?>
 								<div class="imc-row">
 									<div><a id="votingGenerateCodeLink" href='javascript:void(0)' onclick="voting_callAjaxGetCode()">Generovat kód</a></div>
 								</div>
+								<div class="imc-row">
+									<span class="u-pull-left" id="votingRegistrationCodeError" </span>
+								</div>
+
                             </div>
 						</div>
 

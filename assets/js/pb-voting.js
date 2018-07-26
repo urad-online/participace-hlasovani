@@ -20,6 +20,7 @@ function voting_callAjaxGetCode()
 
     // jQuery('#voting_loader_image').show();
 
+    jQuery("#votingRegistrationCodeError").html("");
     jQuery("body").css("cursor", "progress");
 
     jQuery.post(ajax_object.ajax_url, postRequest, function(response) {
@@ -30,6 +31,11 @@ function voting_callAjaxGetCode()
 
         // jQuery('#cgbm_loader_image').hide();
         jQuery("body").css("cursor", "default");
+        if (resp.result == 'error') {
+            jQuery("#votingRegistrationCodeError").html(resp.message);
+        } else {
+            jQuery("#votingRegistrationCodeError").html("OK");
+        }
 
         jQuery(document.body).trigger('post-load'); // musi byt po vlozeni obsahu do stranky
     });

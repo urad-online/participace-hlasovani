@@ -48,7 +48,7 @@ class PbVote_CodeSms
 
         $sms_text = "Aktivacni kod: ".$input['code']." platny do ". $input['expiration_time'];
 
-        $sms_send = $this->sms_api->send_message( $input['voter_id'], $sms_text);
+        // $sms_send = $this->sms_api->send_message( $input['voter_id'], $sms_text);
 
         $sms_send = new SimpleXMLElement( htmlspecialchars_decode( $sms_send) );
 

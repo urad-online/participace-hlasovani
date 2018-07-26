@@ -64,7 +64,9 @@ function pbvote_class_autoloader( $class_name ) {
 function pbvote_get_code()
 {
     $request = $_POST;
-    $get_code = new PbVote_GetCode( 'Sms');
+    // $get_code = new PbVote_GetCode( 'Sms');
+    // $get_code = new PbVote_GetCode( 'Email');
+    $get_code = new PbVote_LimeSurveyTokens( 'Email');
     if ( (!empty( $request['voter_id'])) && (! empty($request['voting_id']))) {
         $output = $get_code->get_code( $request);
     } else {

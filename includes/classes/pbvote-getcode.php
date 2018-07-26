@@ -1,21 +1,19 @@
 <?php
 class PbVote_GetCode
 {
-    private $code = "" ;
-    private $code_length = 10;
-    private $expiration_hrs = 24;
-    private $table_name = 'pb_register' ;
-    private $initial_status = 'new';
-    private $voting_id, $voter_id;
-    private $issued_time, $expiration_time;
-    private $output;
+    public $code = "" ;
+    public $code_length, $expiration_hrs;
+    public $voting_id, $voter_id, $survey_id, $pbvoting_meta;
+    public $issued_time, $expiration_time;
+    public $output;
     private $code_delivery = null;
 
     public function __construct( $msg_type = '' )
     {
-        $this->code = "";
-        global $wpdb;
-        $this->db = $wpdb;
+        $this->code           = "";
+        $this->expiration_hrs = 24;
+        $this->code_length    = 10;
+        $this->msg_type       = $msg_type;
 
         $class_name = 'PbVote_Code'.$msg_type;
         if ( class_exists($class_name) ) {
@@ -23,46 +21,80 @@ class PbVote_GetCode
         }
     }
 
-    public function get_code( $input = null )
+    public function init_token_storage()
     {
+        $this->table_name = 'pb_register' ;
+        $this->initial_status = 'new';
 
+        global $wpdb;
+        $this->db = $wpdb;
+
+        return true;
+    }
+
+    private function get_pbvoting_meta( $input )
+    {
         $this->voting_id = trim( $input['voting_id'] );
         $this->voter_id  = trim( $input['voter_id'] );
 
-        $issue      =  current_time( 'timestamp', 0 );
-        $expiration = $issue + 60*60*intval($this->expiration_hrs);
+        $this->pbvoting_meta = get_post_meta( $this->voting_id , '', false);
+
+        $this->set_pbvoting_tokem_exp();
+        $this->set_pbvoting_meta();
+    }
+
+    private function set_pbvoting_tokem_exp()
+    {
+        $this->expiration_hrs = (!empty( $this->pbvoting_meta['reg_code_expiration'][0])) ? intval( $this->pbvoting_meta['reg_code_expiration'][0]) : $this->expiration_hrs;
+        $issue                =  current_time( 'timestamp', 0 );
+        $expiration           = $issue + 60*60*intval($this->expiration_hrs);
 
         $this->issued_time      = date( 'Y-m-d H:i:s', $issue);
         $this->expiration_time  = date( 'Y-m-d H:i:s', $expiration);;
+    }
+    public function set_pbvoting_meta()
+    {
+        $this->survey_id = $this->voting_id;
 
-        if ($this->check_new_voter() ) {
+    }
 
-            $this->code = $this->generate_code( $this->code_length ) ;
+    public function get_code( $input = null )
+    {
+        $this->get_pbvoting_meta( $input );
 
-            if ( $sms_result = $this->send_new_code() ) {
-                $this->save_code();
+        if ($this->init_token_storage()) {
+
+            if ($this->check_new_voter() ) {
+
+                $this->code = $this->get_new_code( ) ;
+
+                if ( $sms_result = $this->send_new_code() ) {
+                    $this->save_code();
+                }
             }
         }
+
 
         return  $this->output ;
     }
 
-    private function generate_code( $code_length )
+    public function get_new_code()
     {
-        return bin2hex(random_bytes( $code_length));
+        return bin2hex(random_bytes( $this->code_length));
     }
 
-    private function save_code()
+    public function save_code()
     {
 
         $sql_comm = $this->db->prepare( 'INSERT INTO '.$this->db->prefix . $this->table_name
-            . ' (voting_id, voter_id, registration_code, issued_time, expiration_time, status)
-            VALUES ( %d, %s, %s, %s, %s, %s)',
+            . ' (voting_id, voter_id, registration_code, issued_time, expiration_time, message_id, status)
+            VALUES ( %d, %s, %s, %s, %s, %s, %s)',
                 intval( $this->voting_id ),
                 $this->voter_id ,
                 $this->code,
                 $this->issued_time,
                 $this->expiration_time,
+                $this->output,
                 $this->initial_status
                 );
 
@@ -88,7 +120,7 @@ class PbVote_GetCode
         }
     }
 
-    private function get_voter_by_id( $voting_id, $voter_id)
+    public function get_voter_by_id( $voting_id, $voter_id)
     {
         $select = $this->db->prepare( 'SELECT id, voter_id, expiration_time, status
              FROM '.$this->db->prefix . $this->table_name .
@@ -142,7 +174,7 @@ class PbVote_GetCode
             return true;
         }
     }
-    private function set_voter_status ( $id, $status)
+    public function set_voter_status ( $id, $status)
     {
         $sql_comm = $this->db->prepare( 'UPDATE '.$this->db->prefix . $this->table_name .
             ' SET status = %s WHERE id = %d',
