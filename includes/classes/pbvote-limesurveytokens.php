@@ -12,6 +12,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
         $this->base_url  = (!empty( $this->pbvoting_meta['voting_url'][0]))      ? $this->pbvoting_meta['voting_url'][0]      : 'https://pruzkumy.urad.online';
         $this->login     = (!empty( $this->pbvoting_meta['voting_login'][0]))    ? $this->pbvoting_meta['voting_login'][0]    : 'admin';
         $this->password  = (!empty( $this->pbvoting_meta['voting_password'][0])) ? $this->pbvoting_meta['voting_password'][0] : 'admin123456789*';
+        $this->max_number_of_tokens = (!empty( $this->pbvoting_meta['max_number_of_tokens'][0])) ? intval($this->pbvoting_meta['max_number_of_tokens'][0]) : 2;
 
         $this->survey_url  = $this->base_url . '/index.php/admin/survey/sa/view/surveyid/' . $this->survey_id;
         $this->limeapi_url = $this->base_url . '/admin/remotecontrol';
@@ -53,6 +54,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
     public function get_token_by_attrib( $attrib_name, $mobile = null )
     {
         $this->reminder = false;
+        $this->index = -1;
 
         if (! empty($mobile) ) {
             $aConditions = array( $attrib_name => $mobile );
@@ -75,6 +77,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
 
         if ( $last_rec['index'] > -1 ) {
             $this->reminder = true;
+            $this->index = $last_rec['index'];
             return $this->convert_token_record( $list[ $last_rec['index'] ]);
         } else {
             return false;
@@ -108,6 +111,10 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
             return false;
         }
 
+        if ( $this->index >= ( $this->max_number_of_tokens - 1) ) {
+            $this->output = array( "result" => "error", "message" => 'Vyčerpán počet zaslaných kódů - max '.$this->max_number_of_tokens,);
+            return false;
+        }
         $new_particip = array(array(
             $this->used_attr  => $this->voter_id,
             'validfrom'  => $this->issued_time,

@@ -49,8 +49,8 @@ class PbVote_GetCode
         $issue                =  current_time( 'timestamp', 0 );
         $expiration           = $issue + 60*60*intval($this->expiration_hrs);
 
-        $this->issued_time      = date( 'Y-m-d H:i:s', $issue);
-        $this->expiration_time  = date( 'Y-m-d H:i:s', $expiration);;
+        $this->issued_time      = date( 'Y-m-d H:i', $issue);
+        $this->expiration_time  = date( 'Y-m-d H:i', $expiration);;
     }
     public function set_pbvoting_meta()
     {
@@ -66,14 +66,13 @@ class PbVote_GetCode
 
             if ($this->check_new_voter() ) {
 
-                $this->code = $this->get_new_code( ) ;
-
-                if ( $sms_result = $this->send_new_code() ) {
-                    $this->save_code();
+                if ( $this->code = $this->get_new_code() ) {
+                    if ( $sms_result = $this->send_new_code() ) {
+                        $this->save_code();
+                    }
                 }
             }
         }
-
 
         return  $this->output ;
     }
