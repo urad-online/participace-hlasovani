@@ -90,3 +90,12 @@ function pb_vote_deactivate()
     file_put_contents(PB_VOTE_PATH.'/pb_vote_plugin_deactivate.log', $message);
 
 }
+
+function pb_vote_get_registration_widget( $atts, $content, $tag)
+{
+	ob_start();
+
+	include( PB_VOTE_PATH_TEMPL . '/reg_widget_content.php');
+
+	return ob_get_clean() ;
+}

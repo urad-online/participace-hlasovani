@@ -9,7 +9,7 @@ function ou_test(input,label)
 function voting_callAjaxGetCode()
 {
     var code = jQuery('#votingRegistrationCode').val();
-    var votingId = jQuery('#singleHlasovnaiVotingId').text();
+    var votingId = jQuery('#singleHlasovaniVotingId').text();
     var postRequest = {
         'action': 'pbvote_getcode',
         'voter_id': code,

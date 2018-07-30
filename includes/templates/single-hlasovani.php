@@ -41,8 +41,8 @@ get_header(); ?>
                                     <div class="imc-grid-2 imc-columns">
 
                                         <div class="imc-row-no-margin imc-CenterContents">
-                                            <span class="imc-Text-SM imc-TextColorSecondary imc-TextBold imc-FontRoboto">#b</span>
-                                            <span class="imc-Text-SM imc-TextColorSecondary imc-TextMedium imc-FontRoboto" id="singleHlasovnaiVotingId"><?php echo esc_html(the_ID()); ?></span>
+                                            <span class="imc-Text-SM imc-TextColorSecondary imc-TextBold imc-FontRoboto">#</span>
+                                            <span class="imc-Text-SM imc-TextColorSecondary imc-TextMedium imc-FontRoboto"><?php echo esc_html(the_ID()); ?></span>
                                         </div>
                                     </div>
 
@@ -84,22 +84,7 @@ get_header(); ?>
 
                         </div>
 						<div class="imc-grid-4 imc-columns">
-                            <div class="imc-CardLayoutStyle">
-								<div class="imc-row">
-                                    <h3 class="imc-SectionTitleTextStyle">
-                                        <?php echo __('Aktivační kód','participace-projekty'); ?></h3>
-										<input type="text" autocomplete="off"
-								            placeholder="Zadejte kód" name="votingRegistrationCode" id="votingRegistrationCode" class="imc-InputStyle" value="" ></input>
-								            <label id="votingRegistrationCodeLabel" class="imc-ReportFormErrorLabelStyle imc-TextColorPrimary"></label>
-								</div>
-								<div class="imc-row">
-									<div><a id="votingGenerateCodeLink" href='javascript:void(0)' onclick="voting_callAjaxGetCode()">Generovat kód</a></div>
-								</div>
-								<div class="imc-row">
-									<span class="u-pull-left" id="votingRegistrationCodeError" </span>
-								</div>
-
-                            </div>
+                            <?PHP  echo do_shortcode('[pb_vote_reg_widget survey_id="mila_pokus"]'); ?>
 						</div>
 
                     </div>
