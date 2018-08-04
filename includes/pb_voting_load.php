@@ -2,6 +2,7 @@
 
 require_once PB_VOTE_PATH_INC .'/pb_voting_post_types.php';
 require_once PB_VOTE_PATH_INC .'/smssluzbacz/apixml30.php';
+require_once PB_VOTE_PATH_INC. '/pb_voting_functions.php';
 define('SMSGATE_LOGIN', 'rousar');
 define('SMSGATE_PASSWD', 'MJMMJVvdppps1*');
 
@@ -62,32 +63,6 @@ function pbvote_class_autoloader( $class_name ) {
         // Then load it up!
         require( $file );
     }
-}
-function pbvote_get_code()
-{
-    $request = $_POST;
-    // $get_code = new PbVote_GetCode( 'Sms');
-    // $get_code = new PbVote_GetCode( 'Email');
-    $get_code = new PbVote_LimeSurveyTokens( 'Email');
-    if ( (!empty( $request['voter_id'])) && (! empty($request['voting_id']))) {
-        $output = $get_code->get_code( $request);
-    } else {
-        $output = array( 'result' => 'error', 'message' => 'Neni zadán identifikátor hlasujícího',);
-    }
-    $output =  json_encode( $output );
-    echo $output ;
-
-    wp_die(); // this is required to terminate immediately and return a proper response
-}
-function pb_votimg_set_single_template($single_template) {
-    global $post;
-
-    if ($post->post_type == 'pb-voting') {
-        $single_template = dirname( __FILE__ ) . '/templates/single-pb_voting.php';
-    } elseif ($post->post_type == 'hlasovani') {
-        $single_template = dirname( __FILE__ ) . '/templates/single-hlasovani.php';
-    }
-    return $single_template;
 }
 
 add_filter( 'single_template', 'pb_votimg_set_single_template' );

@@ -15,8 +15,6 @@ function voting_callAjaxGetCode()
         'voter_id': code,
         'voting_id': votingId,
     };
-    console.log( votingId);
-    console.log( code);
 
     // jQuery('#voting_loader_image').show();
 

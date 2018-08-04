@@ -81,11 +81,11 @@ get_header(); ?>
                                 </div>
                             </div> <!--End Card-->
 
+                            <div class="imc-row">
+                                <?PHP  echo do_shortcode('[pb_vote_reg_widget voting_id="'.$issue_id.'"]'); ?>
+                            </div>
 
                         </div>
-						<div class="imc-grid-4 imc-columns">
-                            <?PHP  echo do_shortcode('[pb_vote_reg_widget survey_id="mila_pokus"]'); ?>
-						</div>
 
                     </div>
                 </div>
