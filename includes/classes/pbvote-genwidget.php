@@ -3,7 +3,7 @@ class PbVote_GenWidget
 {
     private $result, $atts;
     private $template_file = PB_VOTE_PATH_TEMPL . '/reg_widget_content.php';
-    private $status_taxo = 'voting_status';
+    private $status_taxo = PB_VOTING_STATUS_TAXO ;
     private $show_for_statuses = array( 'aktivni',);
 
     public function __construct( $atts)
@@ -33,6 +33,9 @@ class PbVote_GenWidget
     private function show_widget()
     {
         $vote_status = wp_get_object_terms($this->voting_id, $this->status_taxo);
+        if (is_wp_error($vote_status)) {
+            return false;
+        }
 
         if ( (count( $vote_status) > 0) && ( ! in_array( $vote_status[0]->slug, $this->show_for_statuses) ) && ( ! $this->atts['force_display'])) {
             return false;

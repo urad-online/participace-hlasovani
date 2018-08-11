@@ -14,7 +14,12 @@ define( 'PB_VOTE_PATH',       dirname(__FILE__));
 define( 'PB_VOTE_PATH_INC',   PB_VOTE_PATH.'/includes');
 define( 'PB_VOTE_URL',        plugins_url('pb_voting'));
 define( 'PB_VOTE_PATH_TEMPL', PB_VOTE_PATH_INC.'/templates');
-define( 'PB_VOTING_POST_TYPE', 'pb-voting');
+define( 'PB_VOTING_POST_TYPE',      'hlasovani');
+define( 'PB_VOTING_STATUS_TAXO',    'voting_status');
+define( 'GOOGLE_CAPTCHA_SITE_KEY',  '6LfddyAUAAAAAN0Lj87G97Z0KNcSuveGrgfgtpei');
+define( 'GOOGLE_CAPTCHA_SECRET_KEY','6LfddyAUAAAAAGXRbok6k_eeHN5z-zQETeqf-Sjf');
+define( 'DELIVERY_MSG_TYPE',        'Email');
+// define( 'DELIVERY_MSG_TYPE', 'Sms');
 
 define( 'PB_VOTE_TABLE_NAMES', array(
     'register' => 'pb_register',
@@ -53,6 +58,8 @@ function pb_vote_on_init()
     pb_voting_register_actions_filters_after_init();
 
     global $pb_vote;
+    $pb_vote = null;
+
     if (class_exists('VotingInfoMetabox')) {
         $pb_vote = new VotingInfoMetabox();
     };

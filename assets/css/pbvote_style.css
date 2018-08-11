@@ -70,3 +70,33 @@ input[type="checkbox"].pbvote-collapse-section:not(checked) ~ label div i.materi
     padding: 0px 15px 0px 15px;
     margin-top: 10px;
 }
+
+.pbvote-RegWidgetInputErrorStyle {
+    color: red;
+    font-weight: bold;
+    display: none;
+    margin: 10px;
+}
+
+.pbvote-RegWidgetInputStyleLabel {
+    background-color: #e7e7e7;
+}
+.pbvote-RegWidgetInputStyle {
+    width: 100%;
+}
+.pbvote-RegWidgetSubmitLinkStyle a {
+    display: block;
+    color: #999;
+    text-align: center;
+    font-weight: bold;
+    padding: 10px 10px;
+    border: 1px solid #e1e1e1;
+    background-color: green;
+    text-decoration: none;
+    width: 50%;
+    margin-top: 10px;
+}
+.pbvote-RegWidgetBtn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
