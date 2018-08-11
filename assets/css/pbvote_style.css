@@ -96,7 +96,15 @@ input[type="checkbox"].pbvote-collapse-section:not(checked) ~ label div i.materi
     width: 50%;
     margin-top: 10px;
 }
+.pbvote-RegWidgetBtn {
+    background-color: red;
+}
+
 .pbvote-RegWidgetBtn:disabled {
   opacity: 0.65;
   cursor: not-allowed;
+}
+
+.pbvote-row{
+    margin: 10px;
 }

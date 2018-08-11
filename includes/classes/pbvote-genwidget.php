@@ -52,5 +52,12 @@ class PbVote_GenWidget
                                 'force_display' => false,
                                 ], $atts);
     }
+    public static function get_url( $base, $survey_id = '' )
+    {
+        if ( (! empty( $survey_id )) && ( ! strpos( $base, $survey_id) )) {
+            $base .= "/index.php/" . $survey_id;
+        }
 
+        return $base;
+    }
 }

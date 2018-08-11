@@ -20,7 +20,7 @@ function voting_callAjaxGetCode()
     var code = jQuery('#votingRegistrationCode').val();
     var votingId = jQuery('#singleHlasovaniVotingId').val();
     var recaptchaResponse = jQuery('#g-recaptcha-response').val();
-console.log(recaptchaResponse);
+
     var postRequest = {
         'action':       'pbvote_getcode',
         'voter_id':     code,
@@ -63,10 +63,8 @@ function getVotingCode()
 function pbvotingEnableBtn()
 {
     jQuery('#votingGenerateCodeBtn').prop('disabled', false);
-    // jQuery('#votingGenerateCodeBtn').removeAttr('readonly');
 }
 function pbvotingDisableBtn()
 {
     jQuery('#votingGenerateCodeBtn').prop('disabled', true);
-    // jQuery('#votingGenerateCodeBtn').prop('readonly', true);
 }

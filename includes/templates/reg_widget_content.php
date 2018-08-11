@@ -5,10 +5,10 @@ $survey_id  = get_post_meta( $post_id, "survey_id", true);
 /*
 Add survay_id if not included in URL
 */
-if ( ! strpos( $voting_url, $survey_id)  ) {
-    $voting_url .= "/index.php/" . $survey_id;
-}
+$voting_url = PbVote_GenWidget::get_url( $voting_url, $survey_id );
+
 ?>
+
 <div class="imc-CardLayoutStyle">
     <input type="hidden" id="singleHlasovaniVotingId" value="<?php echo esc_html( $post_id); ?>">
 
@@ -21,28 +21,28 @@ if ( ! strpos( $voting_url, $survey_id)  ) {
             </div>
         </label>
         <article class="pbvote-collapsible-section">
-            <div class="row">
+            <div class="pbvote-row">
                 <h4 class="pbvote-RegWidgetInputStyleLabel"><?php echo __('Aktivační kód','participace-projekty'); ?></h4>
                 <input type="text" autocomplete="off"
                     placeholder="Zadejte kód" name="votingRegistrationCode" id="votingRegistrationCode" class="pbvote-RegWidgetInputStyle" value="" ></input>
             </div>
-            <div class="row">
+            <div class="pbvote-row">
                 <div class="g-recaptcha" data-sitekey="<?php echo GOOGLE_CAPTCHA_SITE_KEY ?>" data-callback="pbvotingEnableBtn"
                     data-expired-callback="pbvotingDisableBtn">
                 </div>
             </div>
-            <div class="row">
+            <div class="pbvote-row">
                 <span class="u-pull-left pbvote-RegWidgetInputErrorStyle" id="votingRegistrationCodeError">Tady text chyby</span>
             </div>
-            <div class="row">
+            <div class="pbvote-row">
                 <!-- <div class="pbvote-RegWidgetSubmitLinkStyle"><a id="votingGenerateCodeLink" href='javascript:void(0)' onclick="voting_callAjaxGetCode()">Poslat kód</a></div> -->
-                <div class="pbvote-RegWidgetBtnStyle"><button class="pbvote-RegWidgetBtn btn btn-success btn-md"
+                <div class="pbvote-RegWidgetBtnStyle"><button class="pbvote-RegWidgetBtn btn btn-success btn-sm"
                     type="button" id="votingGenerateCodeBtn" onclick="voting_callAjaxGetCode()" disabled readonly="readonly">Poslat kód</button></div>
             </div>
 
-            <div class="row">
+            <div class="pbvote-row">
                 <span class="pbvote-RegWidgetText">Pokud Vám již byl doručen platný registrační kód přejděte na tuto stránku s </span>
-                <a href='<?php echo $voting_url; ?>' target="_blank" title="Odkaz na strínku s hlasováním">hlasováním</a>
+                <a href='<?php echo $voting_url; ?>' target="_blank" title="Odkaz na stránku s hlasováním">hlasováním</a>
             </div>
         </article>
     </div>
