@@ -1,4 +1,4 @@
-<?php
+``<?php
 function pb_vote_get_registration_widget( $atts, $content, $tag)
 {
 	$new_widget = new PbVote_GenWidget( $atts);
@@ -33,8 +33,9 @@ function pbvote_get_code()
 function pb_votimg_set_single_template($single_template) {
     global $post;
 
-    $single_template = dirname( __FILE__ ) . '/templates/single-'.$post->post_type.'.php';
-
+    if ($post->post_type == PB_VOTING_POST_TYPE ) {
+		$single_template = PB_VOTE_PATH_TEMPL . '/single-'.$post->post_type.'.php';
+	}
     return $single_template;
 }
 function get_the_user_ip()

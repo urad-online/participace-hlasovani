@@ -35,3 +35,10 @@ The widget is call by shortcode
 example: do_shortcode('[pb_vote_reg_widget voting_id="123456" force_display=true]')
 Can be called without parameters. Then voting_id is read from current active post
 and displayed according to voting_status
+
+
+New version task by 2018/08/13
+= do prehledu projektu dat odkaz na staranku s hlasovabi misto tlacitka !"Pridat novy projekt!"
+= rozsirit taxo se stavy o info jestli se maji zobrtazik projektym, zobrazit tlacitko pridat novy projekt, zobrazit lint na stranku s hlasovanim
+= opravit chybu po kliknuti na projekt v prehledu projektu - hleda tenmplate pod pb_voting_db
+= presunout login a heslo na limesurvey do onstant v kodu

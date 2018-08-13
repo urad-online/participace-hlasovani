@@ -22,7 +22,7 @@ get_header(); ?>
 
                 <div class="imc-SingleHeaderStyle imc-BGColorRed">
                     <h2 class="imc-PageTitleTextStyle imc-TextColorPrimary imc-CenterContents" style="line-height: 60px;">
-						<?php echo __('Under Moderation','participace-projekty');  ?></h2>
+						<?php echo __('Under Moderation','pb_voting');  ?></h2>
                 </div>
 
 			<?php } ?>
@@ -59,7 +59,7 @@ get_header(); ?>
 								<?php
 								if (get_the_content()) { ?>
                                     <div class="imc-row">
-                                        <h3 class="imc-SectionTitleTextStyle"><?php echo __('Description','participace-projekty'); ?></h3>
+                                        <h3 class="imc-SectionTitleTextStyle"><?php echo __('Description','pb_voting'); ?></h3>
                                         <div class="imc-SingleDescriptionStyle imc-TextColorSecondary imc-JustifyText"><?php the_content(); ?></div>
                                     </div>
 								<?php } ?>
@@ -67,14 +67,14 @@ get_header(); ?>
 
                                 <div class="imc-row-no-margin">
 									<?php $img_url = wp_get_attachment_url( get_post_thumbnail_id($post->ID) ); ?>
-                                    <h3 class="imc-SectionTitleTextStyle"><?php echo __('Photos','participace-projekty'); ?></h3>
+                                    <h3 class="imc-SectionTitleTextStyle"><?php echo __('Photos','pb_voting'); ?></h3>
 
 									<?php if ($img_url) { ?>
                                         <a href="<?php echo esc_url($img_url); ?>" target="_blank"> <?php the_post_thumbnail('thumbnail'); ?> </a> <!--thumbnail medium large full-->
 									<?php } else { ?>
                                         <div class="imc-row imc-CenterContents">
                                             <i class="material-icons md-huge imc-TextColorHint">landscape</i>
-                                            <span class="imc-NotAvailableTextStyle imc-TextColorHint imc-DisplayBlock"><?php echo __('No photos submitted', 'participace-projekty'); ?></span>
+                                            <span class="imc-NotAvailableTextStyle imc-TextColorHint imc-DisplayBlock"><?php echo __('No photos submitted', 'pb_voting'); ?></span>
                                         </div>
 									<?php }?>
 

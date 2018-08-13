@@ -22,7 +22,7 @@ $voting_url = PbVote_GenWidget::get_url( $voting_url, $survey_id );
         </label>
         <article class="pbvote-collapsible-section">
             <div class="pbvote-row">
-                <h4 class="pbvote-RegWidgetInputStyleLabel"><?php echo __('Aktivační kód','participace-projekty'); ?></h4>
+                <h4 class="pbvote-RegWidgetInputStyleLabel"><?php echo __('Aktivační kód','pb_voting'); ?></h4>
                 <input type="text" autocomplete="off"
                     placeholder="Zadejte kód" name="votingRegistrationCode" id="votingRegistrationCode" class="pbvote-RegWidgetInputStyle" value="" ></input>
             </div>
