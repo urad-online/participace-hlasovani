@@ -11,7 +11,9 @@ Domain Path: /languages/
 */
 define( 'GOOGLE_CAPTCHA_SITE_KEY',  '6LfddyAUAAAAAN0Lj87G97Z0KNcSuveGrgfgtpei');
 define( 'GOOGLE_CAPTCHA_SECRET_KEY','6LfddyAUAAAAAGXRbok6k_eeHN5z-zQETeqf-Sjf');
-define( 'DELIVERY_MSG_TYPE',        'Email');
+define( 'DELIVERY_MSG_TYPE',        'Email'); // values Email, Sms
+define( 'LIMESURVEY_LOGIN',         'admin');
+define( 'LIMESURVEY_PASSWORD',      'admin123456789*');
 
 define( 'PB_VOTE_PATH',       dirname(__FILE__));
 define( 'PB_VOTE_PATH_INC',   PB_VOTE_PATH.'/includes');

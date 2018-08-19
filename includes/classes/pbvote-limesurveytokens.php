@@ -10,8 +10,8 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
     {
         $this->survey_id = (!empty( $this->pbvoting_meta['survey_id'][0]))       ? $this->pbvoting_meta['survey_id'][0]       : '1862845';
         $this->base_url  = (!empty( $this->pbvoting_meta['voting_url'][0]))      ? $this->pbvoting_meta['voting_url'][0]      : 'https://pruzkumy.urad.online';
-        $this->login     = (!empty( $this->pbvoting_meta['voting_login'][0]))    ? $this->pbvoting_meta['voting_login'][0]    : 'admin';
-        $this->password  = (!empty( $this->pbvoting_meta['voting_password'][0])) ? $this->pbvoting_meta['voting_password'][0] : 'admin123456789*';
+        $this->login     = (!empty( $this->pbvoting_meta['voting_login'][0]))    ? $this->pbvoting_meta['voting_login'][0]    : LIMESURVEY_LOGIN ;
+        $this->password  = (!empty( $this->pbvoting_meta['voting_password'][0])) ? $this->pbvoting_meta['voting_password'][0] : LIMESURVEY_PASSWORD;
         $this->max_number_of_tokens = (!empty( $this->pbvoting_meta['max_number_of_tokens'][0])) ? intval($this->pbvoting_meta['max_number_of_tokens'][0]) : 2;
 
         $this->survey_url  = $this->base_url . '/index.php/admin/survey/sa/view/surveyid/' . $this->survey_id;
@@ -112,7 +112,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
         }
 
         if ( $this->index >= ( $this->max_number_of_tokens - 1) ) {
-            $this->output = array( "result" => "error", "message" => 'Vyčerpán počet zaslaných kódů - max '.$this->max_number_of_tokens,);
+            $this->output = array( 'result' => 'error', 'message' => 'Vyčerpán počet zaslaných kódů - max '.$this->max_number_of_tokens, );
             return false;
         }
         $new_particip = array(array(

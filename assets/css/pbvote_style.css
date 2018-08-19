@@ -77,6 +77,12 @@ input[type="checkbox"].pbvote-collapse-section:not(checked) ~ label div i.materi
     display: none;
     margin: 10px;
 }
+.pbvote-RegWidgetInputSuccessStyle {
+    color: green;
+    font-weight: bold;
+    display: none;
+    margin: 10px;
+}
 
 .pbvote-RegWidgetInputStyleLabel {
     background-color: #e7e7e7;
@@ -98,6 +104,7 @@ input[type="checkbox"].pbvote-collapse-section:not(checked) ~ label div i.materi
 }
 .pbvote-RegWidgetBtn {
     background-color: red;
+    display: block;
 }
 
 .pbvote-RegWidgetBtn:disabled {
@@ -107,4 +114,5 @@ input[type="checkbox"].pbvote-collapse-section:not(checked) ~ label div i.materi
 
 .pbvote-row{
     margin: 10px;
+    display: block;
 }

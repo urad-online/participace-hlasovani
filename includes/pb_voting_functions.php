@@ -19,13 +19,13 @@ function pbvote_get_code()
 		if ( (!empty( $request['voter_id'])) && (! empty($request['voting_id']))) {
 			$output = $get_code->get_code( $request);
 		} else {
-			$output = array( 'result' => 'error', 'message' => 'Neni zadán identifikátor hlasujícího',);
+			$output = array( 'result' => 'error', 'message' => 'Neni zadán identifikátor hlasujícího', );
 		}
 	} else {
 		$output = $google_cap->get_error();
 	}
 
-    echo json_encode( $output ) ;
+	echo json_encode( $output, JSON_UNESCAPED_UNICODE ) ;
 
     wp_die(); // this is required to terminate immediately and return a proper response
 }

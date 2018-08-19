@@ -46,7 +46,7 @@ class PbVote_CodeSms
             return false;
         }
 
-        $sms_text = "Aktivacni kod: ".$input['code']." platny do ". $input['expiration_time'];
+        $sms_text = "Aktivační kód: ".$input['code']." platný do ". $input['expiration_time'];
 
         // $sms_send = $this->sms_api->send_message( $input['voter_id'], $sms_text);
 
@@ -59,7 +59,7 @@ class PbVote_CodeSms
             $this->result = $sms_send->message->id;
             return $sms_send->message->id;
         } else {
-            $this->result =  array( "result" => "error", "message" => "Chyba parsovani XML zpravy",);
+            $this->result =  array( "result" => "error", "message" => "Chyba pársovaní XML zprávy",);
             return false;
         }
     }

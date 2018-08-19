@@ -36,17 +36,22 @@ function voting_callAjaxGetCode()
 
     jQuery.post(ajax_object.ajax_url, postRequest, function(response) {
 
+        if ( response.indexOf("``") == 0 ) {
+            response = response.replace("``", "");
+        }
         var resp = JSON.parse(response);
 
-        // console.log( resp );
         // jQuery('#cgbm_loader_image').hide();
         jQuery("body").css("cursor", "default");
         if (resp.result == 'error') {
             jQuery("#votingRegistrationCodeError").html(resp.message);
             jQuery("#votingRegistrationCodeError").css("display", "block");
+            jQuery("#votingRegistrationCodeSuccess").css("display", "none");
         } else {
             jQuery("#votingRegistrationCodeError").html("OK");
             jQuery("#votingRegistrationCodeError").css("display", "none");
+            jQuery("#votingRegistrationCodeSuccess").html("Registační kód byl odeslán.");
+            jQuery("#votingRegistrationCodeSuccess").css("display", "block");
         }
 
         jQuery(document.body).trigger('post-load'); // musi byt po vlozeni obsahu do stranky

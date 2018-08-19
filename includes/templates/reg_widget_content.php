@@ -32,10 +32,12 @@ $voting_url = PbVote_GenWidget::get_url( $voting_url, $survey_id );
                 </div>
             </div>
             <div class="pbvote-row">
-                <span class="u-pull-left pbvote-RegWidgetInputErrorStyle" id="votingRegistrationCodeError">Tady text chyby</span>
+                <span class="pbvote-RegWidgetInputSuccessStyle" id="votingRegistrationCodeSuccess"></span>
             </div>
             <div class="pbvote-row">
-                <!-- <div class="pbvote-RegWidgetSubmitLinkStyle"><a id="votingGenerateCodeLink" href='javascript:void(0)' onclick="voting_callAjaxGetCode()">Poslat kód</a></div> -->
+                <span class="pbvote-RegWidgetInputErrorStyle" id="votingRegistrationCodeError"></span>
+            </div>
+            <div class="pbvote-row">
                 <div class="pbvote-RegWidgetBtnStyle"><button class="pbvote-RegWidgetBtn btn btn-success btn-sm"
                     type="button" id="votingGenerateCodeBtn" onclick="voting_callAjaxGetCode()" disabled readonly="readonly">Poslat kód</button></div>
             </div>
