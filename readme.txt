@@ -22,10 +22,16 @@ Can be used as well with local wordpress database
 3. Activate both plugins through the 'Plugins' screen in WordPress.
 4. Actvivate component "Migrate packages" in the PODS component settings
 5. Import new pods type definition "hlasovani" saved in file "./data/pods_pbvoting_def.txt".
-6. Set plugin constant in the file pv_voting.php
+6. Set plugin constant in the file vp_voting.php
+    c. DELIVERY_MSG_TYPE - Email | Sms
+
+7. Set plugin constants in the file wp_config.php
     a. GOOGLE_CAPTCHA_SITE_KEY - from Google captcha setting
     b. GOOGLE_CAPTCHA_SECRET_KEY - from Google captcha setting
-    c. DELIVERY_MSG_TYPE - Email | Sms
+    c. LIMESURVEY_LOGIN - from Limesurvey
+    d. LIMESURVEY_PASSWORD- from Limesurvey
+    e. SMSGATE_LOGIN
+    f. SMSGATE_PASSWD
 7. Add new voting statuses with slugs novy, aktivni, pozastaveny, ukonceny,...
 8. Create new post of the type hlasovani
 
@@ -38,7 +44,4 @@ and displayed according to voting_status
 
 
 New version task by 2018/08/13
-= do prehledu projektu dat odkaz na staranku s hlasovabi misto tlacitka !"Pridat novy projekt!"
 = rozsirit taxo se stavy o info jestli se maji zobrtazik projektym, zobrazit tlacitko pridat novy projekt, zobrazit lint na stranku s hlasovanim
-= opravit chybu po kliknuti na projekt v prehledu projektu - hleda tenmplate pod pb_voting_db
-= presunout login a heslo na limesurvey do onstant v kodu

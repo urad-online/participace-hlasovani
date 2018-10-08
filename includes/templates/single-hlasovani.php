@@ -48,6 +48,7 @@ get_header(); ?>
 
                                     <div class="imc-grid-10 imc-columns">
 										<?php the_title( '<h2 class="imc-PageTitleTextStyle imc-TextColorPrimary">', '</h2>' );?>
+										<h2 class="imc-PageTitleTextStyle imc-TextColorPrimary">"Template Single-hlasovani"</h2>
                                         <p class="imc-SingleCategoryTextStyle imc-Text-LG imc-TextColorSecondary"><?php echo esc_html("current_category_name"); ?> </p>
                                     </div>
                                 </div>

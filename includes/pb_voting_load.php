@@ -3,8 +3,6 @@
 // require_once PB_VOTE_PATH_INC .'/pb_voting_post_types.php';
 require_once PB_VOTE_PATH_INC .'/smssluzbacz/apixml30.php';
 require_once PB_VOTE_PATH_INC. '/pb_voting_functions.php';
-define('SMSGATE_LOGIN', 'rousar');
-define('SMSGATE_PASSWD', 'MJMMJVvdppps1*');
 
 global $votes_mtbx;
 
