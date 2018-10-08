@@ -24,6 +24,7 @@ function pb_voting_create_tables( )
             `registration_code` VARCHAR(50) NOT NULL,
             `issued_time` DATETIME NOT NULL,
             `expiration_time` DATETIME NOT NULL,
+            `message_id` VARCHAR(50),
             `status` VARCHAR(15) NOT NULL,
             PRIMARY KEY (`id`),
             UNIQUE INDEX `id_UNIQUE` (`id` ASC),

@@ -42,7 +42,7 @@ function pbvote_register_post_type()
 
     $taxo_args = array(
         'labels'        => array(
-            'name'  => 'Stav hlasování',),
+        'name'          => 'Stav hlasování',),
         'description'   => 'Správa hlasování o participativních projektech',
         'public'        => false,
         'hierarchical'  => false,

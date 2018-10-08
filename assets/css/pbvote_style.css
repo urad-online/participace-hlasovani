@@ -7,156 +7,112 @@ Template: javo-spot
 */
 
 @charset "utf-8";
-.cgbm-search-form{
-    width:100%;
-    overflow:hidden;
-    /*overflow-y:scroll;*/
-    border-color: #cccccc ;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    margin: 10px 0px 10px 0px;
-    padding: 10px ;
+.pbvote-collapse-section {
+    display: none;
 }
-.cgbm-input-error {
-	color: #a94442 !important;
-	background-color: #f2dede !important;
-	background-image: none;
+
+.pbvote-collapse-section-container {
+  z-index: 20;
+  width: 100%;
+  display: inline-block;
+  height: auto;
+  cursor: pointer;
+  background: #ffffff;
+  /* border-bottom: 2px solid rgba(0,0,0,0.12); */
 }
-.cgbm-has-error {
-    color: #a94442;
+.pbvote-collapse-section-style {
+    width: 100%;
+    padding: 15px 15px 15px 15px;
+    /* margin: 10px; */
+    font-size: 24px;
+    height: inherit;
 }
-ul.cgbm-approve-menu {
-    list-style-type: none;
-    padding:0;
-    margin: 0;
-    overflow: inherit;
-    /*border: 1px solid #ebebeb;*/
+
+.pbvote-collapse-section-style:hover {
+  background-color: #efefef;
 }
-ul.cgbm-approve-menu li{
-    float: left;
-    margin-left: 5px;
-    margin-right: 5px;
+
+.pbvote-collapse-section-container article {
+  background: #E6E6E6;
+  /* margin-top: -10px; */
+  overflow: hidden;
+  max-height: 0;
+  position: inherit;
+  z-index: 10;
+  transition: max-height 0.3s ease-in-out, box-shadow 0.1s linear;
+  width: 100%;
 }
-ul.cgbm-approve-menu li.right{
-    float: right;
+
+input[type="checkbox"].pbvote-collapse-section:checked ~ article.pbvote-collapsible-section {
+    max-height: 1500px;
+    transition: max-height 0.3s ease-in-out, box-shadow 0.1s linear;
 }
-ul.cgbm-approve-menu li a {
+
+/* <i class="material-icons md1" style="margin-top: 12px;"></i></div>  */
+.material-icons.md-24::before{
+    font-family: 'Material Icons';
+    font-weight: bold;
+    font-style: normal;
+    font-size: 40px;
+    /* padding-top: -5px ; */
+    margin-top: -10px ;
+    display: inline-block;
+}
+
+input[type="checkbox"].pbvote-collapse-section:checked ~ label div i.material-icons.md-24::before{
+    content:"expand_less";
+}
+
+input[type="checkbox"].pbvote-collapse-section:not(checked) ~ label div i.material-icons.md-24::before{
+    content:"expand_more";
+}
+.pbvote-collapsible-section {
+    padding: 0px 15px 0px 15px;
+    margin-top: 10px;
+}
+
+.pbvote-RegWidgetInputErrorStyle {
+    color: red;
+    font-weight: bold;
+    display: none;
+    margin: 10px;
+}
+.pbvote-RegWidgetInputSuccessStyle {
+    color: green;
+    font-weight: bold;
+    display: none;
+    margin: 10px;
+}
+
+.pbvote-RegWidgetInputStyleLabel {
+    background-color: #e7e7e7;
+}
+.pbvote-RegWidgetInputStyle {
+    width: 100%;
+}
+.pbvote-RegWidgetSubmitLinkStyle a {
     display: block;
     color: #999;
     text-align: center;
     font-weight: bold;
     padding: 10px 10px;
     border: 1px solid #e1e1e1;
-    background-color: #eeeeee;
+    background-color: green;
     text-decoration: none;
-    width: 120px;
+    width: 50%;
+    margin-top: 10px;
+}
+.pbvote-RegWidgetBtn {
+    background-color: red;
+    display: block;
 }
 
-ul.cgbm-approve-menu li a:hover {background-color: #ddd;}
-
-ul.sidebar-textwidget-ovm-edit-menu li {
-    background-color: #eeeeee;
-    text-align: inherit;
-}
-ul.sidebar-textwidget-ovm-edit-menu li a:hover{
-    background-color: #aaaaaa;
-    color: #ffffff;
-}
-.vertical-col-align-row{
-    display:flex;
-    flex-wrap:wrap
-}
-.vertical-col-align-column {
-    display: flex;
-    flex-direction:column;
-    justify-content: center;
+.pbvote-RegWidgetBtn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
-.cgbm-move-btn-box{
-    text-align: center;
-}
-
-ul.cgbm_list_wrapper{
-    width:100%;
-    overflow:hidden;
-    overflow-y:scroll;
-    border-color: #cccccc ;
-    border: 2px solid #ddd;
-    border-radius: 3px;
-    padding: 2px ;
-}
-
-li.cgbm-list-item{
-    list-style-type: none;;
-    background: #ffffff;
-    /*margin-left:15px;*/
-    padding: 0px 5px 0px 5px;
-    margin: 1px 0px 1px 0px;
-    font-size: small;
-}
-
-li.cgbm-list-item:hover{
-    background: #dddddd;
-}
-
-a.cgbm-delete-option:hover{
-    background: url(select2.png) no-repeat right center;
-    top: 4px;
-    background-color: transparent;;
-}
-
-a.cgbm-delete-option{
-    display: inline-block;
-    background: url(select2.png) no-repeat right top;
-    position: relative;
-    right: 3px;
-    top: 2px;
-    width: 12px;
-    height:14px;
-    font-size: 1px;
-    outline: none;
-    padding: 0px ;
-    margin: 0px 0px 0px 3px;
-}
-div.cgbm-section-break{
-    border-top: 1px solid #eee;
-}
-
-ul.search-button-list{
-    list-style-type: none;
-    padding:0;
-    margin: 0;
-    overflow: inherit;
-}
-
-ul.search-button-list li{
-    float: right;
-    margin-left: 5px;
-    margin-right: 5px;
-}
-.cgbm-button-container{
-    display: inline-block;
-    vertical-align: top;
-    margin-bottom: 15px;
-}
-.cgbm-button{
-    color: #fff;
-    border: 1px solid transparent;
-    border-radius: 5px;
-    vertical-align: middle;
-    line-height: normal;
-    font-size: 16px;
-    padding: 6px 5px 6px 11px;
-    background-image: linear-gradient(to bottom,rgba(255,255,255,.2) 0,rgba(255,255,255,.01) 100%);
-    /*height: 40px;*/
-    /*width: 35px;*/
-    text-align: center;
-}
-.cgbm-btn-color-peacoc{
-    border-color: #4CADC9;
-    background-color: #4CADC9;
-}
-.cgbm-btn-color-peacoc:hover{
-    text-decoration: none;
-    background-color:#4397B0;
+.pbvote-row{
+    margin: 10px;
+    display: block;
 }

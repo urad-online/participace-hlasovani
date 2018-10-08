@@ -1,144 +1,75 @@
 var cgbmSelectForm;
 var cgbmEditForm;
 
+jQuery(document).ready(function(){
+    pbvotingDisableBtn();
+});
+
 function ou_test(input,label)
 {
     console.log(input + " - "+ label);
     alert(input + " - "+ label);
 }
+function voting_callAjaxGetCode_A()
+{
+    console.log("tak jsem tady");
+}
 
-function ou_callAjaxCGBM_Tab(input, label, requestType, element)
+function voting_callAjaxGetCode()
+{
+    var code = jQuery('#votingRegistrationCode').val();
+    var votingId = jQuery('#singleHlasovaniVotingId').val();
+    var recaptchaResponse = jQuery('#g-recaptcha-response').val();
+
+    var postRequest = {
+        'action':       'pbvote_getcode',
+        'voter_id':     code,
+        'voting_id':    votingId,
+        'captcha_response': recaptchaResponse,
+    };
+
+    // jQuery('#voting_loader_image').show();
+
+    jQuery("#votingRegistrationCodeError").html("");
+    jQuery("#votingRegistrationCodeError").css("display", "none");
+    jQuery("body").css("cursor", "progress");
+
+    jQuery.post(ajax_object.ajax_url, postRequest, function(response) {
+
+        if ( response.indexOf("``") == 0 ) {
+            response = response.replace("``", "");
+        }
+        var resp = JSON.parse(response);
+
+        // jQuery('#cgbm_loader_image').hide();
+        jQuery("body").css("cursor", "default");
+        if (resp.result == 'error') {
+            jQuery("#votingRegistrationCodeError").html(resp.message);
+            jQuery("#votingRegistrationCodeError").css("display", "block");
+            jQuery("#votingRegistrationCodeSuccess").css("display", "none");
+        } else {
+            jQuery("#votingRegistrationCodeError").html("OK");
+            jQuery("#votingRegistrationCodeError").css("display", "none");
+            jQuery("#votingRegistrationCodeSuccess").html("Registační kód byl odeslán.");
+            jQuery("#votingRegistrationCodeSuccess").css("display", "block");
+        }
+
+        jQuery(document.body).trigger('post-load'); // musi byt po vlozeni obsahu do stranky
+    });
+}
+function getVotingCode()
 {
     var postRequest = {
         'action': 'ou_getCgbmModel',
         'id': input,
         'requestType' : requestType,
     };
-
-    jQuery('#cgbm_loader_image').show();
-    var cgbmTabs = new ou_cgbm_Tabs (element.id, label);
-    cgbmTabs.ou_cgbm_setTabIds();
-    if (requestType === 'show_detail_info') {
-        cgbmTabs.deleteContent();
-        cgbmTabs.renameTab();
-    } else {
-        cgbmTabs.Cgbm_Item_AddNewTab();
-    }
-    jQuery("body").css("cursor", "progress");
-
-    jQuery.post(ajax_object.ajax_url, postRequest, function(response) {
-
-        var resp = JSON.parse(response);
-
-        cgbmTabs.writeContent(resp);
-
-        jQuery('#cgbm_loader_image').hide();
-        jQuery("body").css("cursor", "default");
-
-        window.scrollTo(0, 0);
-        jQuery(document.body).trigger('post-load'); // musi byt po vlozeni obsahu do stranky
-    });
-
 }
-
-function ou_cgbm_Tabs( clickedId, newTabLabel)
+function pbvotingEnableBtn()
 {
-    this.clickedLinkId = clickedId;
-    this.tabIdPrefix = "cgbm-tab-level-";
-    this.tabPanelClass = 'cgbm-tab-item';
-    this.mainContainerClass = 'cgbm-tabs-container';
-    this.tabListContainerClass = 'vc_tta-tabs-list';
-    this.ttaPanelsContainerClass = 'vc_tta-panels';
-    this.tabActiveClass = 'vc_active';
-    this.clickedInTab;
-    this.newTabId = "";
-    this.newTabLabel = newTabLabel;
-    this.numberOfTabs = -1;
-    this.clickedInTabOrder = -1;
+    jQuery('#votingGenerateCodeBtn').prop('disabled', false);
 }
-
-ou_cgbm_Tabs.prototype.ou_cgbm_setTabIds = function()
+function pbvotingDisableBtn()
 {
-    var tabPanelId = jQuery('#'+this.clickedLinkId).closest('.'+this.tabPanelClass).attr('id');
-    this.clickedInTab = document.getElementById(tabPanelId);
-    var substrIndex = tabPanelId.lastIndexOf("-");
-    if (substrIndex >-1) {
-        this.newTabId = this.tabIdPrefix + (parseInt(tabPanelId.substr(substrIndex+1)) +1) ;
-    } else {
-        this.newTabId = this.tabIdPrefix + "n";
-    }
-    this.numberOfTabs = this.clickedInTab.parentNode.childElementCount;
-    var tabIndex = 0;
-    var element = this.clickedInTab;
-    do {
-        tabIndex++;
-        element = element.previousSibling;
-    } while (element);
-
-    this.clickedInTabOrder = tabIndex - 1 ;
-    this.mainContainer = document.getElementsByClassName(this.mainContainerClass)[0];
-    this.tabListContainer = this.mainContainer.getElementsByClassName(this.tabListContainerClass)[0];
-    this.ttaPanelsContainer = this.mainContainer.getElementsByClassName(this.ttaPanelsContainerClass)[0];
-}
-
-ou_cgbm_Tabs.prototype.Cgbm_Item_AddNewTab = function( content )
-{
-    this.tabContent = content;
-    this.deleteLastTabs();
-    this.Cgbm_Item_AddNewTabPanel();
-    this.Cgbm_Item_AddNewTabLink();
-    this.numberOfTabs = this.tabListContainer.childElementCount;
-}
-
-ou_cgbm_Tabs.prototype.Cgbm_Item_AddNewTabLink = function()
-{
-    var lastTab = this.tabListContainer.lastChild;
-    var newTab = lastTab.cloneNode(true);
-    newTab.getElementsByTagName("a")[0].href = "#"+this.newTabId;
-    newTab.getElementsByTagName("span")[0].innerHTML = this.newTabLabel;
-    // newTab.classList.add(this.tabActiveClass);
-    lastTab.classList.remove(this.tabActiveClass);
-    this.tabListContainer.appendChild(newTab);
-}
-
-ou_cgbm_Tabs.prototype.Cgbm_Item_AddNewTabPanel = function()
-{
-    var lastTab = this.ttaPanelsContainer.lastChild;
-    var newTab = lastTab.cloneNode(true);
-    newTab.id = this.newTabId;
-    newTab.getElementsByTagName("a")[0].href = "#"+this.newTabId;
-    newTab.getElementsByTagName("a")[0].getElementsByTagName("span")[0].innerHTML = this.newTabLabel;
-    // newTab.classList.add(this.tabActiveClass);
-    lastTab.classList.remove(this.tabActiveClass);
-    this.ttaPanelsContainer.appendChild(newTab);
-    this.deleteContent();
-}
-
-ou_cgbm_Tabs.prototype.renameTab = function()
-{
-    var lastTab = this.tabListContainer.lastChild;
-    lastTab.getElementsByTagName("span")[0].innerHTML = this.newTabLabel;
-    lastTab = this.ttaPanelsContainer.lastChild;
-    lastTab.getElementsByTagName("a")[0].getElementsByTagName("span")[0].innerHTML = this.newTabLabel;
-}
-
-ou_cgbm_Tabs.prototype.deleteContent = function()
-{
-    this.ttaPanelsContainer.lastElementChild.getElementsByClassName('vc_tta-panel-body')[0].firstElementChild.innerHTML = "";
-}
-ou_cgbm_Tabs.prototype.writeContent = function( content)
-{
-    this.ttaPanelsContainer.lastElementChild.getElementsByClassName('vc_tta-panel-body')[0].firstElementChild.innerHTML = content;
-}
-
-ou_cgbm_Tabs.prototype.deleteLastTabs = function()
-{
-    var count = this.numberOfTabs - this.clickedInTabOrder - 1;
-    if ( 0 <  count ) {
-        for (var i = this.numberOfTabs; i > (this.numberOfTabs - count); i--) {
-            this.tabListContainer.removeChild(this.tabListContainer.lastChild);
-            this.ttaPanelsContainer.removeChild(this.ttaPanelsContainer.lastChild);
-        }
-        this.numberOfTabs = this.tabListContainer.childElementCount;
-    }
+    jQuery('#votingGenerateCodeBtn').prop('disabled', true);
 }
