@@ -32,8 +32,8 @@ Can be used as well with local wordpress database
     d. LIMESURVEY_PASSWORD- from Limesurvey
     e. SMSGATE_LOGIN
     f. SMSGATE_PASSWD
-7. Add new voting statuses with slugs novy, aktivni, pozastaveny, ukonceny,...
-8. Create new post of the type hlasovani
+8. Add new voting statuses with slugs novy, aktivni, pozastaveny, ukonceny,...
+9. Create new post of the type hlasovani
 
 ===== How to use it ======
 Precondition - exists post type hlasoani, taxonomy voting%status.
