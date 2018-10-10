@@ -1,5 +1,5 @@
 <?php
-$post_id    = get_the_ID();
+$post_id    = $this->voting_id;
 $voting_url = get_post_meta( $post_id, "voting_url", true);
 $survey_id  = get_post_meta( $post_id, "survey_id", true);
 /*

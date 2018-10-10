@@ -15,9 +15,11 @@ class PbVote_GenWidget
     {
         if ($this->atts['voting_id']) {
             $post = get_post( $this->atts['voting_id'] );
+            $this->voting_id = $post->ID;
+        } else {
+            $this->voting_id = get_the_ID();
         }
 
-        $this->voting_id = get_the_ID();
 
         if ($this->show_widget())  {
             ob_start();

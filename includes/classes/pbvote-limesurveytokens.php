@@ -134,6 +134,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
         if (! empty( $new_row[0]['token'])) {
             return $new_row[0]['token'];
         } else {
+            $this->output = array( 'result' => 'error', 'message' => $new_row['status'], );
             return false;
         }
     }

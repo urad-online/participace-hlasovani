@@ -12,7 +12,7 @@ Direct citizen-government communication & collaboration.
 == Description ==
 
 PB Voting is a plugin for distributing registration tokens used on voting on LimeSurvey platform.
-Gets token form LImesurvey and sends them either by email or SMS to particopant.
+Gets token form LImesurvey and sends them either by email or SMS to participant.
 Can be used as well with local wordpress database
 
 == Installation ==

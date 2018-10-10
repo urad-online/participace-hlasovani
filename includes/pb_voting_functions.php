@@ -1,4 +1,4 @@
-``<?php
+<?php
 function pb_vote_get_registration_widget( $atts, $content, $tag)
 {
 	$new_widget = new PbVote_GenWidget( $atts);

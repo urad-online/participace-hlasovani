@@ -6,7 +6,16 @@ class PbVote_GetCode
     public $voting_id, $voter_id, $survey_id, $pbvoting_meta;
     public $issued_time, $expiration_time;
     public $output;
-    private $code_delivery = null;
+    public $survey_url = "";
+    public $code_delivery = null;
+    private $message_placeholders = array(
+            array ( 'placeholder' => '{#token}',
+                    'value' => 'code'),
+            array ( 'placeholder' => '{#expiration_time}',
+                    'value' => 'expiration_time'),
+            array ( 'placeholder' => '{#survey_url}',
+                    'value' => 'survey_url'),
+                );
 
     public function __construct( $msg_type = '' )
     {
@@ -41,6 +50,13 @@ class PbVote_GetCode
 
         $this->set_pbvoting_tokem_exp();
         $this->set_pbvoting_meta();
+
+        if (!empty( $this->pbvoting_meta['message_text'][0])) {
+            $this->message_text = $this->pbvoting_meta['message_text'][0];
+        } else {
+            $this->message_text = "Aktivační kód: {#token} platný do {#expiration_time}";
+        }
+
     }
 
     private function set_pbvoting_tokem_exp()
@@ -50,12 +66,17 @@ class PbVote_GetCode
         $expiration           = $issue + 60*60*intval($this->expiration_hrs);
 
         $this->issued_time      = date( 'Y-m-d H:i', $issue);
-        $this->expiration_time  = date( 'Y-m-d H:i', $expiration);;
+        $this->expiration_time  = date( 'Y-m-d H:i', $expiration);
     }
+
     public function set_pbvoting_meta()
     {
         $this->survey_id = $this->voting_id;
-
+        if (!empty( $this->pbvoting_meta['voting_url'][0])) {
+            $this->survey_url = $this->pbvoting_meta['voting_url'][0]. '/' .  $this->$this->survey_id;
+        } else {
+            $this->survey_url = "";
+        }
     }
 
     public function get_code( $input = null )
@@ -211,6 +232,7 @@ class PbVote_GetCode
             'code'            => $this->code,
             'voter_id'        => $this->voter_id,
             'expiration_time' => $this->expiration_time,
+            'message'         => $this->message_replace_placeholders(),
         );
 
         $result =  $this->code_delivery->send_new_code( $msg_data );
@@ -223,4 +245,12 @@ class PbVote_GetCode
         }
     }
 
+    private function message_replace_placeholders()
+    {
+        $text = $this->message_text;
+        foreach ($this->message_placeholders as $placeholder) {
+            $text = str_replace( $placeholder['placeholder'], $this->{$placeholder['value']}, $text );
+        }
+        return $text;
+    }
 }
