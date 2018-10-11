@@ -13,9 +13,8 @@ class PbVote_GenWidget
 
     public function render_widget( )
     {
-        if ($this->atts['voting_id']) {
-            $post = get_post( $this->atts['voting_id'] );
-            $this->voting_id = $post->ID;
+        if ( $post_id = $this->get_post_id() ) {
+            $this->voting_id = $post_id;
         } else {
             $this->voting_id = get_the_ID();
         }
@@ -39,11 +38,17 @@ class PbVote_GenWidget
             return false;
         }
 
-        if ( (count( $vote_status) > 0) && ( ! in_array( $vote_status[0]->slug, $this->show_for_statuses) ) && ( ! $this->atts['force_display'])) {
-            return false;
+        if (! empty( $vote_status[0]->term_id)) {
+            $temp_term = get_term_meta( $vote_status[0]->term_id);
+            if ((!empty( $temp_term['allow_voting'][0]) ) && ($temp_term['allow_voting'][0] ) ) {
+                return true;
+            }
         }
+        // if ( (count( $vote_status) > 0) && ( ! in_array( $vote_status[0]->slug, $this->show_for_statuses) ) && ( ! $this->atts['force_display'])) {
+        //     return false;
+        // }
 
-        return true;
+        return false;
     }
 
     private function read_atts( $input )
@@ -51,6 +56,7 @@ class PbVote_GenWidget
         $atts = array_change_key_case((array)$input, CASE_LOWER);
 
         $this->atts = shortcode_atts([ 'voting_id' => 0,
+                                'voting_slug' => "",
                                 'force_display' => false,
                                 ], $atts);
     }
@@ -61,5 +67,23 @@ class PbVote_GenWidget
         }
 
         return $base;
+    }
+    public function get_post_id()
+    {
+        if ( !empty( $this->atts['voting_slug'] )) {
+            $args = array(
+                'name'        => $this->atts['voting_slug'],
+                'post_type'   => PB_VOTING_POST_TYPE,
+                'numberposts' => 1,
+            );
+            $temp_posts = get_posts($args);
+            if( $temp_posts ) {
+                return $temp_posts[0]->ID;
+            }
+        } elseif (!empty( $this->atts['voting_id'] )){
+            $post = get_post( $this->atts['voting_id'] );
+            return $post->ID;
+        }
+        return false;
     }
 }

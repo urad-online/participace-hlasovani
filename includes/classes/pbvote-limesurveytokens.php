@@ -14,7 +14,8 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
         $this->password  = (!empty( $this->pbvoting_meta['voting_password'][0])) ? $this->pbvoting_meta['voting_password'][0] : LIMESURVEY_PASSWORD;
         $this->max_number_of_tokens = (!empty( $this->pbvoting_meta['max_number_of_tokens'][0])) ? intval($this->pbvoting_meta['max_number_of_tokens'][0]) : 2;
 
-        $this->survey_url  = $this->base_url . '/index.php/admin/survey/sa/view/surveyid/' . $this->survey_id;
+        // $this->survey_url  = $this->base_url . '/index.php/admin/survey/sa/view/surveyid/' . $this->survey_id;
+        $this->survey_url  = $this->base_url . '/' . $this->survey_id;
         $this->limeapi_url = $this->base_url . '/admin/remotecontrol';
 
     }

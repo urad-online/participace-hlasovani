@@ -33,12 +33,15 @@ Can be used as well with local wordpress database
     e. SMSGATE_LOGIN
     f. SMSGATE_PASSWD
 8. Add new voting statuses with slugs novy, aktivni, pozastaveny, ukonceny,...
+    set term_meta "allow_voting" and "allow_adding_project" true/false for each term
 9. Create new post of the type hlasovani
 
 ===== How to use it ======
 Precondition - exists post type hlasoani, taxonomy voting%status.
 The widget is call by shortcode
-example: do_shortcode('[pb_vote_reg_widget voting_id="123456" force_display=true]')
+examples:
+do_shortcode('[pb_vote_reg_widget voting_id="123456" force_display=true]')
+do_shortcode('[pb_vote_reg_widget voting_slug="voting-post-name"]')
 Can be called without parameters. Then voting_id is read from current active post
 and displayed according to voting_status
 

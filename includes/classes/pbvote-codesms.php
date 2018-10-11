@@ -45,8 +45,13 @@ class PbVote_CodeSms
         if (empty( $input['code'] ) ) {
             return false;
         }
+        if (! empty($input['message'])) {
+            $sms_text = $input['message'];
+        } else {
+            $sms_text = "Aktivační kód: ".$input['code']." platný do ". $input['expiration_time'];
+        }
 
-        $sms_text = "Aktivační kód: ".$input['code']." platný do ". $input['expiration_time'];
+
 
         // $sms_send = $this->sms_api->send_message( $input['voter_id'], $sms_text);
 
