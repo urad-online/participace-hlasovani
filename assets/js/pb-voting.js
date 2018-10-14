@@ -32,6 +32,8 @@ function voting_callAjaxGetCode()
 
     jQuery("#votingRegistrationCodeError").html("");
     jQuery("#votingRegistrationCodeError").css("display", "none");
+    jQuery("#votingRegistrationCodeSuccess").html("Registrační kód je odesílán....");
+    jQuery("#votingRegistrationCodeSuccess").css("display", "block");
     jQuery("body").css("cursor", "progress");
 
     jQuery.post(ajax_object.ajax_url, postRequest, function(response) {
@@ -50,7 +52,7 @@ function voting_callAjaxGetCode()
         } else {
             jQuery("#votingRegistrationCodeError").html("OK");
             jQuery("#votingRegistrationCodeError").css("display", "none");
-            jQuery("#votingRegistrationCodeSuccess").html("Registační kód byl odeslán.");
+            jQuery("#votingRegistrationCodeSuccess").html("Registrační kód byl odeslán.");
             jQuery("#votingRegistrationCodeSuccess").css("display", "block");
         }
 
