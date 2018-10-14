@@ -2,6 +2,7 @@
 $post_id    = $this->voting_id;
 $voting_url = get_post_meta( $post_id, "voting_url", true);
 $survey_id  = get_post_meta( $post_id, "survey_id", true);
+$regist_code_help = ( DELIVERY_MSG_TYPE == "Email") ? "emailovou adresu" : "číslo mobilního telefonu" ;
 /*
 Add survay_id if not included in URL
 */
@@ -16,15 +17,15 @@ $voting_url = PbVote_GenWidget::get_url( $voting_url, $survey_id );
         <input class="pbvote-collapse-section " id="section_collapsed_status" name="section_collapsed_status" type="checkbox"></input>
         <label for="section_collapsed_status" >
             <div class="pbvote-collapse-section-style">
-                <span><?PHP echo __('Voting &amp; Registration', 'pb-voting'); ?></span>
+                <span><?PHP echo __('Registrace k hlasování', 'pb-voting'); ?></span>
                 <i class="material-icons md-24 u-pull-right" id="sectionExpandIndicator"></i>
             </div>
         </label>
         <article class="pbvote-collapsible-section">
             <div class="pbvote-row">
-                <h4 class="pbvote-RegWidgetInputStyleLabel"><?php echo __('Aktivační kód','pb_voting'); ?></h4>
+                <h4 class="pbvote-RegWidgetInputStyleLabel"><?php echo __('Registrační údaj','pb_voting'); ?></h4>
                 <input type="text" autocomplete="off"
-                    placeholder="Zadejte kód" name="votingRegistrationCode" id="votingRegistrationCode" class="pbvote-RegWidgetInputStyle" value="" ></input>
+                    placeholder="Zadejte <?php echo __($regist_code_help,'pb_voting'); ?>" name="votingRegistrationCode" id="votingRegistrationCode" class="pbvote-RegWidgetInputStyle" value="" ></input>
             </div>
             <div class="pbvote-row">
                 <div class="g-recaptcha" data-sitekey="<?php echo GOOGLE_CAPTCHA_SITE_KEY ?>" data-callback="pbvotingEnableBtn"

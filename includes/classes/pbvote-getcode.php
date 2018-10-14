@@ -22,9 +22,9 @@ class PbVote_GetCode
         $this->code           = "";
         $this->expiration_hrs = 24;
         $this->code_length    = 10;
-        $this->msg_type       = $msg_type;
+        $this->msg_type       = strtolower($msg_type);
 
-        $class_name = 'PbVote_Code'.$msg_type;
+        $class_name = 'PbVote_Code'.ucfirst($this->msg_type );
         if ( class_exists($class_name) ) {
             $this->code_delivery = new $class_name();
         }

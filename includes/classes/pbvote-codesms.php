@@ -35,7 +35,7 @@ class PbVote_CodeSms
             return false;
         }
 
-        $sms_get = new SimpleXMLElement( htmlspecialchars_decode( $this->sms_api->smsgate_get_account_info() )) ;
+        $sms_get = $this->sms_api->smsgate_get_account_info() ;
 
         return (array) $sms_get ;
     }
@@ -48,13 +48,10 @@ class PbVote_CodeSms
         if (! empty($input['message'])) {
             $sms_text = $input['message'];
         } else {
-            $sms_text = "Aktivační kód: ".$input['code']." platný do ". $input['expiration_time'];
+            $sms_text = "Aktivacni kod: ".$input['code']." platny do ". $input['expiration_time'];
         }
 
-
-
-        // $sms_send = $this->sms_api->send_message( $input['voter_id'], $sms_text);
-
+        $sms_send = $this->sms_api->send_message( $input['voter_id'], $sms_text, null, 0);
         $sms_send = new SimpleXMLElement( htmlspecialchars_decode( $sms_send) );
 
         if (! empty( $sms_send->id) ) {
@@ -64,7 +61,7 @@ class PbVote_CodeSms
             $this->result = $sms_send->message->id;
             return $sms_send->message->id;
         } else {
-            $this->result =  array( "result" => "error", "message" => "Chyba pársovaní XML zprávy",);
+            $this->result =  array( "result" => "error", "message" => "Chyba parsovaní XML zprávy",);
             return false;
         }
     }

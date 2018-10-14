@@ -25,7 +25,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
         $this->rpc_client_file = PB_VOTE_PATH_INC.'/jsonrpcphp/JsonRPCClient.php';
         require_once $this->rpc_client_file ;
 
-        if ($this->msg_type === "Email" ) {
+        if ($this->msg_type === "email" ) {
             $this->used_attr = 'email';
         } else {
             $this->used_attr = 'attribute_1';

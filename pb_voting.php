@@ -9,7 +9,7 @@ Author URI: https://urad.online
 Text Domain: pb-voting
 Domain Path: /languages/
 */
-define( 'DELIVERY_MSG_TYPE',        'Email'); // values Email, Sms
+define( 'DELIVERY_MSG_TYPE',  'Email'); // values Email, Sms
 
 define( 'PB_VOTE_PATH',       dirname(__FILE__));
 define( 'PB_VOTE_PATH_INC',   PB_VOTE_PATH.'/includes');
@@ -17,7 +17,6 @@ define( 'PB_VOTE_URL',        plugins_url('pb_voting'));
 define( 'PB_VOTE_PATH_TEMPL', PB_VOTE_PATH_INC.'/templates');
 define( 'PB_VOTING_POST_TYPE',      'hlasovani');
 define( 'PB_VOTING_STATUS_TAXO',    'voting_status');
-// define( 'DELIVERY_MSG_TYPE', 'Sms');
 
 define( 'PB_VOTE_TABLE_NAMES', array(
     'register' => 'pb_register',
