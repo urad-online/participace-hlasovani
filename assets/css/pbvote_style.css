@@ -29,14 +29,14 @@ Template: javo-spot
 }
 
 .pbvote-collapse-section-style:hover {
-  background-color: #efefef;
+  /* background-color: #efefef; */
 }
 
 .pbvote-collapse-section-container article {
   background: #E6E6E6;
   /* margin-top: -10px; */
   overflow: hidden;
-  max-height: 0;
+  max-height: 1500;
   position: inherit;
   z-index: 10;
   transition: max-height 0.3s ease-in-out, box-shadow 0.1s linear;
@@ -60,11 +60,11 @@ input[type="checkbox"].pbvote-collapse-section:checked ~ article.pbvote-collapsi
 }
 
 input[type="checkbox"].pbvote-collapse-section:checked ~ label div i.material-icons.md-24::before{
-    content:"expand_less";
+    /* content:"expand_less"; */
 }
 
 input[type="checkbox"].pbvote-collapse-section:not(checked) ~ label div i.material-icons.md-24::before{
-    content:"expand_more";
+    /* content:"expand_more"; */
 }
 .pbvote-collapsible-section {
     padding: 0px 15px 0px 15px;

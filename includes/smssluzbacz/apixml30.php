@@ -53,7 +53,7 @@ class ApiXml30{
 
 
 	private function get_params_for_xml_request($data) {
-	    $params = array('http' => array(
+	    $params = array('https' => array(
 	        'method' => 'POST',
 	        'content' =>  $data,
     	    'header'  => 'Content-type: text/xml',

@@ -28,14 +28,13 @@ function voting_callAjaxGetCode()
         'captcha_response': recaptchaResponse,
     };
 
-    // jQuery('#voting_loader_image').show();
 
     jQuery("#votingRegistrationCodeError").html("");
     jQuery("#votingRegistrationCodeError").css("display", "none");
     jQuery("#votingRegistrationCodeSuccess").html("Registrační kód je odesílán....");
     jQuery("#votingRegistrationCodeSuccess").css("display", "block");
     jQuery("body").css("cursor", "progress");
-
+    grecaptcha.reset();
     jQuery.post(ajax_object.ajax_url, postRequest, function(response) {
 
         if ( response.indexOf("``") == 0 ) {
@@ -43,7 +42,6 @@ function voting_callAjaxGetCode()
         }
         var resp = JSON.parse(response);
 
-        // jQuery('#cgbm_loader_image').hide();
         jQuery("body").css("cursor", "default");
         if (resp.result == 'error') {
             jQuery("#votingRegistrationCodeError").html(resp.message);
