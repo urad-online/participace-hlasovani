@@ -34,10 +34,9 @@ function voting_callAjaxGetCode()
     jQuery("#votingRegistrationCodeSuccess").html("Registrační kód je odesílán....");
     jQuery("#votingRegistrationCodeSuccess").css("display", "block");
     jQuery("body").css("cursor", "progress");
-    grecaptcha.reset();
     jQuery.post(ajax_object.ajax_url, postRequest, function(response) {
+        grecaptcha.reset();
 
-        console.log(response);
         if ( response.indexOf("``") == 0 ) {
             response = response.replace("``", "");
         }

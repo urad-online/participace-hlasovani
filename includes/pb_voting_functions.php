@@ -15,8 +15,8 @@ function pbvote_get_code()
 
 	if ($captcha_res) {
 		// $get_code = new PbVote_GetCode( DELIVERY_MSG_TYPE);
-		$get_code = new PbVote_LimeSurveyTokens( DELIVERY_MSG_TYPE);
 		if ( (!empty( $request['voter_id'])) && (! empty($request['voting_id']))) {
+			$get_code = new PbVote_LimeSurveyTokens( $request);
 			$output = $get_code->get_code( $request);
 		} else {
 			$output = array( 'result' => 'error', 'message' => 'Neni zadán identifikátor hlasujícího', );

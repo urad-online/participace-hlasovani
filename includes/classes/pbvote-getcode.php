@@ -17,12 +17,26 @@ class PbVote_GetCode
                     'value' => 'survey_url'),
                 );
 
-    public function __construct( $msg_type = '' )
+    public function __constructold( $msg_type = '' )
     {
         $this->code           = "";
         $this->expiration_hrs = 24;
         $this->code_length    = 10;
         $this->msg_type       = strtolower($msg_type);
+
+        $class_name = 'PbVote_Code'.ucfirst($this->msg_type );
+        if ( class_exists($class_name) ) {
+            $this->code_delivery = new $class_name();
+        }
+    }
+
+    public function __construct( $input )
+    {
+        $this->code           = "";
+        $this->expiration_hrs = 24;
+        $this->code_length    = 10;
+
+        $this->get_pbvoting_meta( $input );
 
         $class_name = 'PbVote_Code'.ucfirst($this->msg_type );
         if ( class_exists($class_name) ) {
@@ -47,6 +61,12 @@ class PbVote_GetCode
         $this->voter_id  = trim( $input['voter_id'] );
 
         $this->pbvoting_meta = get_post_meta( $this->voting_id , '', false);
+
+        if ((! empty($this->pbvoting_meta['token-message-type'][0])) && ($this->pbvoting_meta['token-message-type'][0])) {
+            $this->msg_type = 'sms';
+        } else {
+            $this->msg_type = 'email';
+        }
 
         $this->set_pbvoting_tokem_exp();
         $this->set_pbvoting_meta();
@@ -81,7 +101,7 @@ class PbVote_GetCode
 
     public function get_code( $input = null )
     {
-        $this->get_pbvoting_meta( $input );
+        // $this->get_pbvoting_meta( $input );
 
         if ($this->init_token_storage()) {
 
