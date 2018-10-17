@@ -43,6 +43,7 @@ class PbVote_CodeSms
     public function send_new_code( $input )
     {
         if (empty( $input['code'] ) ) {
+            $this->result =  array( "result" => "error", "message" => "Prazdny token",);
             return false;
         }
         if (! empty($input['message'])) {

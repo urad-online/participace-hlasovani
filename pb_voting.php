@@ -2,14 +2,14 @@
 /*
 Plugin Name: Participativní projekty - hlasování
 Plugin URI: https://urad.online
-Description: AJAX search in hierarchical pb_voting structure.
+Description: Registrayion for a voting. Integration Limesurvey and https://sms.sluzba.cz
 Author: Miloslav Stastny
 Version: 0.1
 Author URI: https://urad.online
 Text Domain: pb-voting
 Domain Path: /languages/
 */
-define( 'DELIVERY_MSG_TYPE',  'Email'); // values Email, Sms
+define( 'DELIVERY_MSG_TYPE',  'Sms'); // values Email, Sms
 
 define( 'PB_VOTE_PATH',       dirname(__FILE__));
 define( 'PB_VOTE_PATH_INC',   PB_VOTE_PATH.'/includes');

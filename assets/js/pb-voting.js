@@ -37,6 +37,7 @@ function voting_callAjaxGetCode()
     grecaptcha.reset();
     jQuery.post(ajax_object.ajax_url, postRequest, function(response) {
 
+        console.log(response);
         if ( response.indexOf("``") == 0 ) {
             response = response.replace("``", "");
         }
