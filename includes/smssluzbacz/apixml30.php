@@ -1,7 +1,7 @@
 <?php
 
 define("BLOCK_SIZE",8192);
-define("API_URL","http://smsgateapi.sluzba.cz/apixml30/");
+define("API_URL","https://smsgateapi.sluzba.cz/apixml30/");
 define("API_SENDER","sender");
 define("API_RECEIVER","receiver");
 define("API_CONFIRMER","confirm");
@@ -53,7 +53,7 @@ class ApiXml30{
 
 
 	private function get_params_for_xml_request($data) {
-	    $params = array('https' => array(
+	    $params = array('http' => array(
 	        'method' => 'POST',
 	        'content' =>  $data,
     	    'header'  => 'Content-type: text/xml',

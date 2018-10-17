@@ -87,9 +87,15 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
 
     public function convert_token_record( $input)
     {
+        if ($this->used_attr === "email" ) {
+            $voter_id = $input['participant_info']['email'];
+        } else {
+            $voter_id = $input[ $this->used_attr ] ;
+        }
+
         $output = array(
             "id" => $input['tid'],
-            "voter_id" => $input['attribute_1'],
+            "voter_id" => $voter_id,
             "expiration_time" => $input['validuntil'],
             "status" => ( $input['completed'] == 'N') ? "new" : "closed",
         );
@@ -134,6 +140,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
 
         if (! empty( $new_row[0]['token'])) {
             $this->survey_url .= '?token='.$new_row[0]['token'];
+            $this->code_id = $new_row[0]['tid'];
             return $new_row[0]['token'];
         } else {
             $this->output = array( 'result' => 'error', 'message' => $new_row['status'], );
@@ -146,6 +153,18 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
         if (! empty( $this->sessionKey ) ) {
             $this->rcp_client->release_session_key( $this->sessionKey );
         }
+    }
+
+    public function clear_new_code()
+    {
+        $result = true;
+        if ( ! empty( $this->code_id )) {
+            $deleted_ids = $this->rcp_client->delete_participants( $this->sessionKey, $this->survey_id, array( $this->code_id));
+            if ( count( $deleted_ids) == 0 ) {
+                $result = false;
+            }
+        }
+        return $result;
     }
 
     public function __destruct()

@@ -2,7 +2,7 @@
 class PbVote_GetCode
 {
     public $code = "" ;
-    public $code_length, $expiration_hrs;
+    public $code_id, $code_length, $expiration_hrs;
     public $voting_id, $voter_id, $survey_id, $pbvoting_meta;
     public $issued_time, $expiration_time;
     public $output;
@@ -90,6 +90,8 @@ class PbVote_GetCode
                 if ( $this->code = $this->get_new_code() ) {
                     if ( $sms_result = $this->send_new_code() ) {
                         $this->save_code();
+                    } else {
+                        $this->clear_new_code();
                     }
                 }
             }
@@ -125,6 +127,11 @@ class PbVote_GetCode
             $this->output = array( "result" => "error", "message" => 'Chyba při ukládání kódu',);
         }
         // return $output;
+    }
+
+    public function clear_new_code()
+    {
+        //void
     }
     private function check_new_voter()
     {
