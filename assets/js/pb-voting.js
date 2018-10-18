@@ -10,13 +10,10 @@ function ou_test(input,label)
     console.log(input + " - "+ label);
     alert(input + " - "+ label);
 }
-function voting_callAjaxGetCode_A()
-{
-    console.log("tak jsem tady");
-}
 
 function voting_callAjaxGetCode()
 {
+    pbvotingDisableBtn();
     var code = jQuery('#votingRegistrationCode').val();
     var votingId = jQuery('#singleHlasovaniVotingId').val();
     var recaptchaResponse = jQuery('#g-recaptcha-response').val();

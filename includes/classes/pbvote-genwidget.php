@@ -21,6 +21,7 @@ class PbVote_GenWidget
 
 
         if ($this->show_widget())  {
+            $this->get_voting_meta();
             ob_start();
 
             include( $this->template_file );
@@ -85,5 +86,24 @@ class PbVote_GenWidget
             return $post->ID;
         }
         return false;
+    }
+
+    private function get_voting_meta()
+    {
+        $this->pbvoting_meta = get_post_meta( $this->voting_id , '', false);
+
+        if ((! empty($this->pbvoting_meta['token-message-type'][0])) && ($this->pbvoting_meta['token-message-type'][0])) {
+            $this->msg_type = 'sms';
+        } else {
+            $this->msg_type = 'email';
+        }
+    }
+    private function get_meta_value( $meta_key = "", $input = "")
+    {
+        if ( !empty( $this->pbvoting_meta[ $meta_key][0])) {
+            return $this->pbvoting_meta[ $meta_key][0];
+        } else {
+            return $input;
+        }
     }
 }

@@ -17,19 +17,6 @@ class PbVote_GetCode
                     'value' => 'survey_url'),
                 );
 
-    public function __constructold( $msg_type = '' )
-    {
-        $this->code           = "";
-        $this->expiration_hrs = 24;
-        $this->code_length    = 10;
-        $this->msg_type       = strtolower($msg_type);
-
-        $class_name = 'PbVote_Code'.ucfirst($this->msg_type );
-        if ( class_exists($class_name) ) {
-            $this->code_delivery = new $class_name();
-        }
-    }
-
     public function __construct( $input )
     {
         $this->code           = "";
