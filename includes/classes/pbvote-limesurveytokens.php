@@ -32,15 +32,14 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
         }
 
         $this->rcp_client = new \org\jsonrpcphp\JsonRPCClient( $this->limeapi_url.'/admin/remotecontrol' );
-        $this->sessionKey = $this->rcp_client->get_session_key( $this->login, $this->password );
-
-        if ( $this->sessionKey ) {
-            return true;
-        } else {
+        try {
+            $this->sessionKey = $this->rcp_client->get_session_key( $this->login, $this->password );
+        } catch (Exception $e) {
             $this->output = array( "result" => "error", "message" => 'Chyba připojení na server s průzkumy.',);
             return false;
         }
 
+        return true;
     }
 
     public function get_voter_by_id( $voting_id, $voter_id)
@@ -63,9 +62,15 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
             $aConditions = null;
         }
 
-        $list = $this->rcp_client->list_participants( $this->sessionKey, $this->survey_id, 0, 5, false, $this->attributes, $aConditions );
+        try {
+            $list = $this->rcp_client->list_participants( $this->sessionKey, $this->survey_id, 0, 5, false, $this->attributes, $aConditions );
+            $last_rec = array( "index" => -1, "expiration_time" => 0);
+        } catch (Exception $e) {
+            $list = array();
+            $this->output = array( "result" => "error", "message" => 'Chyba připojení na server s průzkumy.',);
+            return false;
+        }
 
-        $last_rec = array( "index" => -1, "expiration_time" => 0);
 
         if (( count($list) > 0 ) && ( empty( $list['status']))) {
             foreach ($list as $key => $value) {
@@ -135,7 +140,12 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
             $new_particip[0][ 'remindercount' ] = 1;
         }
 
-        $new_row = $this->rcp_client->add_participants( $this->sessionKey, $this->survey_id, $new_particip, true );
+        try {
+            $new_row = $this->rcp_client->add_participants( $this->sessionKey, $this->survey_id, $new_particip, true );
+        } catch (Exception $e) {
+            $new_row = array( 'status' => 'Chyba připojení na server s průzkumy při vytváření nové registrace.');
+        }
+
         // print_r($new_row, null );
 
         if (! empty( $new_row[0]['token'])) {
@@ -159,8 +169,14 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
     {
         $result = true;
         if ( ! empty( $this->code_id )) {
-            $deleted_ids = $this->rcp_client->delete_participants( $this->sessionKey, $this->survey_id, array( $this->code_id));
+            try {
+                $deleted_ids = $this->rcp_client->delete_participants( $this->sessionKey, $this->survey_id, array( $this->code_id));
+            } catch (Exception $e) {
+                $deleted_ids = array();
+            }
+
             if ( count( $deleted_ids) == 0 ) {
+                $this->output = array( 'result' => 'error', 'message' => 'Chyba při mazání registrace' );
                 $result = false;
             }
         }
