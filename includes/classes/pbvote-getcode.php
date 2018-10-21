@@ -8,6 +8,7 @@ class PbVote_GetCode
     public $output;
     public $survey_url = "";
     public $code_delivery = null;
+    private $status_taxo = PB_VOTING_STATUS_TAXO;
     private $message_placeholders = array(
             array ( 'placeholder' => '{#token}',
                     'value' => 'code'),
@@ -90,15 +91,17 @@ class PbVote_GetCode
     {
         // $this->get_pbvoting_meta( $input );
 
-        if ($this->init_token_storage()) {
+        if ($this->check_voting_status()) {
+            if ($this->init_token_storage()) {
 
-            if ($this->check_new_voter() ) {
+                if ($this->check_new_voter() ) {
 
-                if ( $this->code = $this->get_new_code() ) {
-                    if ( $sms_result = $this->send_new_code() ) {
-                        $this->save_code();
-                    } else {
-                        $this->clear_new_code();
+                    if ( $this->code = $this->get_new_code() ) {
+                        if ( $sms_result = $this->send_new_code() ) {
+                            $this->save_code();
+                        } else {
+                            $this->clear_new_code();
+                        }
                     }
                 }
             }
@@ -266,5 +269,24 @@ class PbVote_GetCode
             $text = str_replace( $placeholder['placeholder'], $this->{$placeholder['value']}, $text );
         }
         return $text;
+    }
+
+    private function check_voting_status()
+    {
+        $vote_status = wp_get_object_terms($this->voting_id, $this->status_taxo);
+        if (is_wp_error($vote_status)) {
+            $this->output = array( "result" => "error", "message" => 'Chyba při hledání stavu průzkumu');
+            return false;
+        }
+
+        if (! empty( $vote_status[0]->term_id)) {
+            $temp_term = get_term_meta( $vote_status[0]->term_id);
+            if ((!empty( $temp_term['allow_voting'][0]) ) && ($temp_term['allow_voting'][0] ) ) {
+                return true;
+            }
+        }
+        $this->output = array( "result" => "error", "message" => 'Průzkum je ve stavu který nepovoluje hlasování');
+
+        return false;
     }
 }

@@ -16,7 +16,7 @@ Template: javo-spot
   width: 100%;
   display: inline-block;
   height: auto;
-  cursor: pointer;
+  /* cursor: pointer; */
   background: #ffffff;
   /* border-bottom: 2px solid rgba(0,0,0,0.12); */
 }
@@ -28,9 +28,9 @@ Template: javo-spot
     height: inherit;
 }
 
-.pbvote-collapse-section-style:hover {
+/* .pbvote-collapse-section-style:hover { */
   /* background-color: #efefef; */
-}
+/* } */
 
 .pbvote-collapse-section-container article {
   background: #E6E6E6;
@@ -90,6 +90,10 @@ input[type="checkbox"].pbvote-collapse-section:not(checked) ~ label div i.materi
 .pbvote-RegWidgetInputStyle {
     width: 100%;
 }
+.pbvote-RegWidgetInputStyle.edit-sm{
+    width: 20%;
+}
+
 .pbvote-RegWidgetSubmitLinkStyle a {
     display: block;
     color: #999;
@@ -103,16 +107,29 @@ input[type="checkbox"].pbvote-collapse-section:not(checked) ~ label div i.materi
     margin-top: 10px;
 }
 .pbvote-RegWidgetBtn {
-    background-color: red;
-    display: block;
+    background-color: #007bff;
+    font-weight: bold;
+    font-size: 14px;
+    border-radius: 4px;
 }
 
 .pbvote-RegWidgetBtn:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.pbvote-RegWidgetBtn:hover {
+    background-color: #0274be;
 }
 
 .pbvote-row{
     margin: 10px;
     display: block;
+}
+.pbvote-row-centred{
+    text-align: center;
+    align: middle;
+}
+.pbvote-RegWidgetBtnStyle{
+    display: inline-block;
+    text-align: center;
 }

@@ -3,6 +3,7 @@ var cgbmEditForm;
 
 jQuery(document).ready(function(){
     pbvotingDisableBtn();
+    jQuery("#votingRegistrationCode").focus();
 });
 
 function ou_test(input,label)
@@ -28,11 +29,10 @@ function voting_callAjaxGetCode()
 
     jQuery("#votingRegistrationCodeError").html("");
     jQuery("#votingRegistrationCodeError").css("display", "none");
-    jQuery("#votingRegistrationCodeSuccess").html("Registrační kód je odesílán....");
+    jQuery("#votingRegistrationCodeSuccess").html("Registrační údaj je odesílán....");
     jQuery("#votingRegistrationCodeSuccess").css("display", "block");
     jQuery("body").css("cursor", "progress");
     jQuery.post(ajax_object.ajax_url, postRequest, function(response) {
-        grecaptcha.reset();
 
         if ( response.indexOf("``") == 0 ) {
             response = response.replace("``", "");
@@ -51,6 +51,7 @@ function voting_callAjaxGetCode()
             jQuery("#votingRegistrationCodeSuccess").css("display", "block");
         }
 
+        grecaptcha.reset();
         jQuery(document.body).trigger('post-load'); // musi byt po vlozeni obsahu do stranky
     });
 }
@@ -69,4 +70,29 @@ function pbvotingEnableBtn()
 function pbvotingDisableBtn()
 {
     jQuery('#votingGenerateCodeBtn').prop('disabled', true);
+}
+function votingSwitchToTokenEntry()
+{
+    document.getElementById("votingGenerateCodeBtn").hidden = "hidden";
+    document.getElementById("votingSendTokenBtn").hidden = "";
+    document.getElementById("linkSwitchToSendCode").hidden = "hidden";
+    document.getElementById("linkSwitchToGenerateCode").hidden = "";
+    jQuery("#pbvote_block_reg_id").hide();
+    jQuery("#pbvote_block_token").show();
+    jQuery("#votingToken").focus();
+}
+function votingSwitchToGenerateCode()
+{
+    document.getElementById("votingGenerateCodeBtn").hidden = "";
+    document.getElementById("votingSendTokenBtn").hidden = "hidden";
+    document.getElementById("linkSwitchToSendCode").hidden = "";
+    document.getElementById("linkSwitchToGenerateCode").hidden = "hidden";
+    jQuery("#pbvote_block_reg_id").show();
+    jQuery("#pbvote_block_token").hide();
+    jQuery("#votingRegistrationCode").focus();
+}
+function voting_GoToSurvey()
+{
+    var survey_url = jQuery('#hidden_url_to_survey').val() + "?token=" + jQuery('#votingToken').val();
+    window.open( survey_url,"_self")
 }
