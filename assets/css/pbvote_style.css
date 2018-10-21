@@ -133,3 +133,7 @@ input[type="checkbox"].pbvote-collapse-section:not(checked) ~ label div i.materi
     display: inline-block;
     text-align: center;
 }
+.pbvote-RegWidgetLinkStyle{
+    /* font-weight: bold; */
+    font-size: 18px;
+}
