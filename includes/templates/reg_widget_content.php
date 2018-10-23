@@ -39,16 +39,16 @@ $voting_url = PbVote_GenWidget::get_url( $voting_url, $survey_id );
                     placeholder="<?php echo $reg_widget_labels['input_help']; ?>" name="votingRegistrationCode" id="votingRegistrationCode" class="pbvote-RegWidgetInputStyle" value="" ></input>
                 </div>
                 <div class="pbvote-row pbvote-row-centred">
-                    <span class="pbvote-RegWidgetInputSuccessStyle" id="votingRegistrationCodeSuccess"></span>
-                </div>
-                <div class="pbvote-row pbvote-row-centred">
-                    <span class="pbvote-RegWidgetInputErrorStyle" id="votingRegistrationCodeError"></span>
-                </div>
-                <div class="pbvote-row pbvote-row-centred">
                     <div class="g-recaptcha" data-sitekey="<?php echo GOOGLE_CAPTCHA_SITE_KEY ?>" data-callback="pbvotingEnableBtn"
                         data-expired-callback="pbvotingDisableBtn" style="display: inline-block;">
                     </div>
                 </div>
+            </div>
+            <div class="pbvote-row pbvote-row-centred">
+                <span class="pbvote-RegWidgetInputSuccessStyle" id="votingRegistrationCodeSuccess"></span>
+            </div>
+            <div class="pbvote-row pbvote-row-centred">
+                <span class="pbvote-RegWidgetInputErrorStyle" id="votingRegistrationCodeError"></span>
             </div>
             <div id="pbvote_block_token" hidden="hidden">
                 <div class="pbvote-row pbvote-row-centred">
@@ -63,15 +63,15 @@ $voting_url = PbVote_GenWidget::get_url( $voting_url, $survey_id );
                 <div class="pbvote-RegWidgetBtnStyle"><button class="pbvote-RegWidgetBtn "
                     type="button" id="votingGenerateCodeBtn" onclick="voting_callAjaxGetCode()" disabled ><?php echo $reg_widget_labels['submit_btn']; ?></button></div>
                 <div class="pbvote-RegWidgetBtnStyle"><button class="pbvote-RegWidgetBtn"
-                    type="button" id="votingSendTokenBtn" onclick="voting_GoToSurvey()" hidden="hidden">Odeslat</button></div>
+                    type="button" id="votingSendTokenBtn" onclick="voting_GoToSurvey()" hidden="hidden">Pokračovat</button></div>
             </div>
 
-            <div class="pbvote-row pbvote-row-centred">
+            <!-- <div class="pbvote-row pbvote-row-centred">
                 <a id="linkSwitchToSendCode" href='#' onclick="votingSwitchToTokenEntry()" title="Přepnout na zadání kódu pro hlasování"
                     class="pbvote-RegWidgetLinkStyle">Kód již mám</a>
                 <a id="linkSwitchToGenerateCode" href='#' onclick="votingSwitchToGenerateCode()" title="Přepnout na zaslání nového kódu pro hlasování"
                     class="pbvote-RegWidgetLinkStyle" hidden="hidden"> << Zpět</a>
-            </div>
+            </div> -->
         </article>
     </div>
 

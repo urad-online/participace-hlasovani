@@ -49,6 +49,7 @@ function voting_callAjaxGetCode()
             jQuery("#votingRegistrationCodeError").css("display", "none");
             jQuery("#votingRegistrationCodeSuccess").html("Registrační kód byl odeslán.");
             jQuery("#votingRegistrationCodeSuccess").css("display", "block");
+            votingSwitchToTokenEntry();
         }
 
         grecaptcha.reset();
@@ -75,8 +76,8 @@ function votingSwitchToTokenEntry()
 {
     document.getElementById("votingGenerateCodeBtn").hidden = "hidden";
     document.getElementById("votingSendTokenBtn").hidden = "";
-    document.getElementById("linkSwitchToSendCode").hidden = "hidden";
-    document.getElementById("linkSwitchToGenerateCode").hidden = "";
+    // document.getElementById("linkSwitchToSendCode").hidden = "hidden";
+    // document.getElementById("linkSwitchToGenerateCode").hidden = "";
     jQuery("#pbvote_block_reg_id").hide();
     jQuery("#pbvote_block_token").show();
     jQuery("#votingToken").focus();
@@ -85,8 +86,8 @@ function votingSwitchToGenerateCode()
 {
     document.getElementById("votingGenerateCodeBtn").hidden = "";
     document.getElementById("votingSendTokenBtn").hidden = "hidden";
-    document.getElementById("linkSwitchToSendCode").hidden = "";
-    document.getElementById("linkSwitchToGenerateCode").hidden = "hidden";
+    // document.getElementById("linkSwitchToSendCode").hidden = "";
+    // document.getElementById("linkSwitchToGenerateCode").hidden = "hidden";
     jQuery("#pbvote_block_reg_id").show();
     jQuery("#pbvote_block_token").hide();
     jQuery("#votingRegistrationCode").focus();

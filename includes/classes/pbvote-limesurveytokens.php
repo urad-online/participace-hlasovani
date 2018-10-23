@@ -31,7 +31,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
             $this->used_attr = 'attribute_1';
         }
 
-        $this->rcp_client = new \org\jsonrpcphp\JsonRPCClient( $this->limeapi_url.'/admin/remotecontrol' );
+        $this->rcp_client = new \org\jsonrpcphp\JsonRPCClient( $this->limeapi_url );
         try {
             $this->sessionKey = $this->rcp_client->get_session_key( $this->login, $this->password );
         } catch (Exception $e) {
