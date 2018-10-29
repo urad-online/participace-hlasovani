@@ -1,7 +1,7 @@
 <?php
 class PbVote_GetCode
 {
-    public $code = "" ;
+    public $code = "", $code_spelling ;
     public $code_id, $code_length, $expiration_hrs;
     public $voting_id, $voter_id, $survey_id, $pbvoting_meta;
     public $issued_time, $expiration_time;
@@ -16,6 +16,8 @@ class PbVote_GetCode
                     'value' => 'expiration_time'),
             array ( 'placeholder' => '{#survey_url}',
                     'value' => 'survey_url'),
+            array ( 'placeholder' => '{#code_spell}',
+                    'value' => 'code_spelling'),
                 );
 
     public function __construct( $input )
@@ -97,6 +99,7 @@ class PbVote_GetCode
                 if ($this->check_new_voter() ) {
 
                     if ( $this->code = $this->get_new_code() ) {
+                        $this->string_spelling();
                         if ( $sms_result = $this->send_new_code() ) {
                             $this->save_code();
                         } else {
@@ -289,4 +292,34 @@ class PbVote_GetCode
 
         return false;
     }
+    public function string_spelling( $dictionary = array())
+    {
+        if ( empty($dictionary)) {
+            $dictionary = json_decode(
+                '{"A":"Adam", "B":"Boris", "C":"Cyril", "D":"Dana", "E":"Eva", "F":"Filip",
+                "G":"Gita", "H":"Hana", "I":"Ivan", "J":"Jana", "K":"Karel", "L":"Lea",
+                "M":"Marie", "N":"Nora", "O":"Ota", "P":"Pavel", "Q":"Quido", "R":"Rudolf",
+                "S":"Sofie", "T":"Tom", "U":"Ulrika", "V":"Viktor", "W":"Waldemar",
+                "X":"Xenie", "Y":"Yveta", "Z":"Zita", "a":"auto", "b":"bok", "c":"cukr",
+                "d":"deka", "e":"erb", "f":"fous", "g":"guma", "h":"hora", "i":"inkoust",
+                "j":"jesle", "k":"koule", "l":"les", "m":"mol", "n":"nos", "o":"okap",
+                "p":"plot", "q":"quickstep", "r":"rak", "s":"strom", "t":"trh", "u":"ulice",
+                "v":"vrak", "w":"waltz", "x":"xerox", "y":"yperit", "z":"zrak",
+                "1":"jedna", "2":"dve", "3":"tri", "4":"ctyri", "5":"pet", "6":"sest", "7":"sedm", "8":"osm", "9":"devet", "0":"nula"}',
+                true);
+        }
+        $string_array = str_split($this->code);
+        $string_spell = "(";
+
+        foreach ($string_array as $char) {
+            if ( ! empty( $dictionary[ $char ]) ) {
+                $char_help = $dictionary[ $char ];
+            } else {
+                $char_help = $char;
+            }
+            $string_spell .= $char_help . "-";
+        }
+        $this->code_spelling = substr( $string_spell, 0, -1) .")";
+    }
+
 }

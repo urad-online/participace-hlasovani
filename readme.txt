@@ -37,7 +37,7 @@ Can be used as well with local wordpress database
 9. Create new post of the type hlasovani
 
 ===== How to use it ======
-Precondition - exists post type hlasoani, taxonomy voting%status.
+Precondition - exists post type hlasovani, taxonomy voting_status.
 The widget is call by shortcode
 examples:
 do_shortcode('[pb_vote_reg_widget voting_id="123456" force_display=true]')
@@ -45,6 +45,6 @@ do_shortcode('[pb_vote_reg_widget voting_slug="voting-post-name"]')
 Can be called without parameters. Then voting_id is read from current active post
 and displayed according to voting_status
 
-
-New version task by 2018/08/13
-= rozsirit taxo se stavy o info jestli se maji zobrtazik projektym, zobrazit tlacitko pridat novy projekt, zobrazit lint na stranku s hlasovanim
+The generated tokens are sent by email or text messages. The text message is defined in post's meta field.
+The message can have these placeholders tha are replace by values:
+{#token}, {#expiration_time}, {#survey_url}, {#code_spell}

@@ -5,96 +5,69 @@
  */
 
 // $pb_project_single = new pbProjectSingle;
+$post_id = get_the_ID();
+$hlasovani_meta = get_post_meta( $post_id, '', false);
+$params = hlasovani_query_arg( $hlasovani_meta['items'] ) ;
+$insertpage = getIMCInsertPage();
+$editpage = getIMCEditPage();
+$listpage = getIMCArchivePage();
+$voting_page = get_first_pbvoting_post();
 
-get_header(); ?>
+if ( get_option('permalink_structure') ) { $perma_structure = true; } else {$perma_structure = false;}
+if( $perma_structure){$parameter_pass = '/?myparam=';} else{$parameter_pass = '&myparam=';}
 
-    <div class="imc-BGColorGray">
+$user_id = get_current_user_id();
+$plugin_path_url = imc_calculate_plugin_base_url();
+$issues_pp_counter = 0;
 
-        <!--Start the loop.-->
-		<?php
-		while ( have_posts() ) : the_post();
-			$issue_id = get_the_ID();
-			$user_id = get_current_user_id();
-			$user = wp_get_current_user(); ?>
+$params = hlasovani_query_arg( $hlasovani_meta['items']);
+$hlasovani_list = new WP_Query( $params );
 
+get_header();
 
-			<?php if (get_post_status( $issue_id ) !== 'publish') { ?>
+?>
 
-                <div class="imc-SingleHeaderStyle imc-BGColorRed">
-                    <h2 class="imc-PageTitleTextStyle imc-TextColorPrimary imc-CenterContents" style="line-height: 60px;">
-						<?php echo __('Under Moderation','pb_voting');  ?></h2>
-                </div>
+<div class="imc-BGColorGray imc-OverviewWrapperStyle">
+    <div><?php echo "textik </br>";
+    echo $post_id . "</br>";
+    echo apply_filters( 'the_content', $post->post_content ) . "</br>";
+    list_projects( $hlasovani_meta['items']);
 
-			<?php } ?>
+    $imported_view = '1' ;
 
-            <div class="imc-Separator"></div>
+    if ($hlasovani_list->have_posts()) {
+        while ($hlasovani_list->have_posts()) :
 
-            <div class="imc-container">
+            $hlasovani_list->the_post();
+            $issue_id = get_the_ID();
+            $myIssue = (get_current_user_id() == get_the_author_meta('ID') ? true : false);
 
-                <div id="issue-<?php echo esc_attr($issue_id); ?>" class="issue-<?php echo esc_attr($issue_id); ?> imc_issues type-imc_issues status-publish" >
+            $pendingColorClass = 'imc-ColorRed';
+            $issues_pp_counter = $issues_pp_counter + 1;
 
-                    <div class="imc-row">
-                        <div class="imc-grid-8 imc-columns">
-                            <div class="imc-CardLayoutStyle">
-                                <div class="imc-row">
+            if ($imported_view == '1') {
+                //LIST VIEW
+                imc_archive_show_list($post, $editpage, $parameter_pass, $user_id, $pendingColorClass, $plugin_path_url);
+            } else {
+                //GRID VIEW
+                imc_archive_show_grid($post, $editpage, $parameter_pass, $user_id, $pendingColorClass, $plugin_path_url);
+            }
 
-                                    <div class="imc-grid-2 imc-columns">
+            $imccategory_currentterm = get_the_terms($post->ID, 'imccategory');
+            if ($imccategory_currentterm) {
+                $current_category_id = $imccategory_currentterm[0]->term_id;
+                $term_thumb = get_term_by('id', $current_category_id, 'imccategory');
+                $cat_thumb_arr = wp_get_attachment_image_src( $term_thumb->term_image);
+            }
 
-                                        <div class="imc-row-no-margin imc-CenterContents">
-                                            <span class="imc-Text-SM imc-TextColorSecondary imc-TextBold imc-FontRoboto">#</span>
-                                            <span class="imc-Text-SM imc-TextColorSecondary imc-TextMedium imc-FontRoboto"><?php echo esc_html(the_ID()); ?></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="imc-grid-10 imc-columns">
-										<?php the_title( '<h2 class="imc-PageTitleTextStyle imc-TextColorPrimary">', '</h2>' );?>
-										<h2 class="imc-PageTitleTextStyle imc-TextColorPrimary">"Template Single-hlasovani"</h2>
-                                        <p class="imc-SingleCategoryTextStyle imc-Text-LG imc-TextColorSecondary"><?php echo esc_html("current_category_name"); ?> </p>
-                                    </div>
-                                </div>
-
-								<?php if (get_post_status( $issue_id ) == 'publish') { ?>
-
-								<?php } ?>
-
-								<?php
-								if (get_the_content()) { ?>
-                                    <div class="imc-row">
-                                        <h3 class="imc-SectionTitleTextStyle"><?php echo __('Description','pb_voting'); ?></h3>
-                                        <div class="imc-SingleDescriptionStyle imc-TextColorSecondary imc-JustifyText"><?php the_content(); ?></div>
-                                    </div>
-								<?php } ?>
+        endwhile;
+    } else {
+        $href_url = '#';
+    }
+    wp_reset_postdata();
 
 
-                                <div class="imc-row-no-margin">
-									<?php $img_url = wp_get_attachment_url( get_post_thumbnail_id($post->ID) ); ?>
-                                    <h3 class="imc-SectionTitleTextStyle"><?php echo __('Photos','pb_voting'); ?></h3>
-
-									<?php if ($img_url) { ?>
-                                        <a href="<?php echo esc_url($img_url); ?>" target="_blank"> <?php the_post_thumbnail('thumbnail'); ?> </a> <!--thumbnail medium large full-->
-									<?php } else { ?>
-                                        <div class="imc-row imc-CenterContents">
-                                            <i class="material-icons md-huge imc-TextColorHint">landscape</i>
-                                            <span class="imc-NotAvailableTextStyle imc-TextColorHint imc-DisplayBlock"><?php echo __('No photos submitted', 'pb_voting'); ?></span>
-                                        </div>
-									<?php }?>
-
-                                </div>
-                            </div> <!--End Card-->
-
-                            <div class="imc-row">
-                                <?PHP  echo do_shortcode('[pb_vote_reg_widget voting_id="'.$issue_id.'"]'); ?>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-		<?php endwhile; ?>
-        <!--End the loop.-->
-    </div><!-- .site-main -->
-
-    <!-- Scripts -->
+    ?>
+    </div>
+</div>
 <?php get_footer(); ?>

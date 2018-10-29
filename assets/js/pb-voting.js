@@ -44,6 +44,7 @@ function voting_callAjaxGetCode()
             jQuery("#votingRegistrationCodeError").html(resp.message);
             jQuery("#votingRegistrationCodeError").css("display", "block");
             jQuery("#votingRegistrationCodeSuccess").css("display", "none");
+            grecaptcha.reset();
         } else {
             jQuery("#votingRegistrationCodeError").html("OK");
             jQuery("#votingRegistrationCodeError").css("display", "none");
@@ -52,8 +53,7 @@ function voting_callAjaxGetCode()
             votingSwitchToTokenEntry();
         }
 
-        grecaptcha.reset();
-        jQuery(document.body).trigger('post-load'); // musi byt po vlozeni obsahu do stranky
+        // jQuery(document.body).trigger('post-load'); // musi byt po vlozeni obsahu do stranky
     });
 }
 function getVotingCode()

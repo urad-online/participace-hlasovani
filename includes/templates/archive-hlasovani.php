@@ -5,14 +5,10 @@
  *
  */
 
-wp_enqueue_script( 'imc-gmap' );
-wp_enqueue_script( 'mapsV3_infobubble' ); // Insert addon lib for Google Maps V3 -> to style infowindows
-wp_enqueue_script( 'mapsV3_richmarker' ); // Insert addon lib for Google Maps V3 -> to style marker
-
-$insertpage = getIMCInsertPage();
-$editpage = getIMCEditPage();
-$listpage = getIMCArchivePage();
-$voting_page = get_first_pbvoting_post();
+// $insertpage = getIMCInsertPage();
+// $editpage = getIMCEditPage();
+// $listpage = getIMCArchivePage();
+// $voting_page = get_first_pbvoting_post();
 
 if ( get_option('permalink_structure') ) { $perma_structure = true; } else {$perma_structure = false;}
 if( $perma_structure){$parameter_pass = '/?myparam=';} else{$parameter_pass = '&myparam=';}
@@ -20,31 +16,31 @@ if( $perma_structure){$parameter_pass = '/?myparam=';} else{$parameter_pass = '&
 
 /********************************************* ISSUES PER PAGE ********************************************************/
 ////Validating: User Input Data
-$safe_ppage_values = array( -1, 6, 12, 24 ); //all possible options
-$safe_ppage = isset($_GET['ppage']) ? intval( $_GET['ppage'] ) : '';
+$pbvote_safe_ppage_values = array( -1, 6, 12, 24 ); //all possible options
+$pbvote_safe_ppage = isset($_GET['pbv_ppage']) ? intval( $_GET['pbv_ppage'] ) : '';
 
-if ( ! in_array( $safe_ppage, $safe_ppage_values, true ) ) {$safe_ppage = '';}
-//$safe_ppage = sanitize_text_field( $safe_ppage );//Sanitizing: Cleaning User Input
+if ( ! in_array( $pbvote_safe_ppage, $pbvote_safe_ppage_values, true ) ) {$pbvote_safe_ppage = '';}
+//$pbvote_safe_ppage = sanitize_text_field( $pbvote_safe_ppage );//Sanitizing: Cleaning User Input
 //Pass the safe ppage input to session variable
-if($safe_ppage!=''){$_SESSION['ppage_session']= $safe_ppage;}
-if(isset($_SESSION['ppage_session'])) { $imported_ppage = $_SESSION['ppage_session'];} else { $imported_ppage = '6'; }
-$imported_ppage_label = $imported_ppage;
-if($imported_ppage=='-1') {$imported_ppage_label = 'All'; }
+if($pbvote_safe_ppage!=''){$_SESSION['pbv_ppage_session']= $pbvote_safe_ppage;}
+if(isset($_SESSION['pbv_ppage_session'])) { $pbvote_imported_ppage = $_SESSION['pbv_ppage_session'];} else { $pbvote_imported_ppage = '6'; }
+$pbvote_imported_ppage_label = $pbvote_imported_ppage;
+if($pbvote_imported_ppage=='-1') {$pbvote_imported_ppage_label = 'All'; }
 
 /**********************************************************************************************************************/
 
 /********************************************* ORDER OF OVERVIEW ISSUES ***********************************************/
 //Validating: User Input Data
-$safe_sorder_values = array( 1,2 ); //all possible options, 1=order by date, 2=order by votes
-$safe_sorder = isset($_GET['sorder']) ? intval( $_GET['sorder'] ) : '';
+$pbvote_safe_sorder_values = array( 1,2 ); //all possible options, 1=order by date, 2=order by votes
+$pbvote_safe_sorder = isset($_GET['pbv_sorder']) ? intval( $_GET['pbv_sorder'] ) : '';
 
-if ( ! in_array( $safe_sorder, $safe_sorder_values, true ) ) {$safe_sorder = '';}
-//$safe_sorder = sanitize_text_field( $safe_sorder );//Sanitizing: Cleaning User Input
+if ( ! in_array( $pbvote_safe_sorder, $pbvote_safe_sorder_values, true ) ) {$pbvote_safe_sorder = '';}
+//$pbvote_safe_sorder = sanitize_text_field( $pbvote_safe_sorder );//Sanitizing: Cleaning User Input
 //Pass the safe order input to session variable
-if($safe_sorder!=''){$_SESSION['sorder_session']= $safe_sorder;}
-if(isset($_SESSION['sorder_session'])) { $imported_order = $_SESSION['sorder_session'];} else { $imported_order = '1'; }
-$imported_order_label = __('Date', 'participace-projekty');
-if ($imported_order == '2') {$imported_order_label = __('Votes', 'participace-projekty'); }
+if($pbvote_safe_sorder!=''){$_SESSION['pbv_sorder_session']= $pbvote_safe_sorder;}
+if(isset($_SESSION['pbv_sorder_session'])) { $pbvote_imported_order = $_SESSION['pbv_sorder_session'];} else { $pbvote_imported_order = '1'; }
+$pbvote_imported_order_label = __('Date', 'participace-projekty');
+if ($pbvote_imported_order == '2') {$pbvote_imported_order_label = __('Votes', 'participace-projekty'); }
 
 
 /**********************************************************************************************************************/
@@ -52,44 +48,43 @@ if ($imported_order == '2') {$imported_order_label = __('Votes', 'participace-pr
 /********************************************* VIEW OF OVERVIEW ISSUES ************************************************/
 
 //We need default view from Settings
-$generaloptions = get_option( 'general_settings' );
-$defaultViewOption = $generaloptions["default_view"];
-if($defaultViewOption=='1'){$defaultView='1';}else{$defaultView='2';}
+$pbvote_defaultViewOption = '1';
 
 //Validating: User Input Data
-$safe_view_values = array( 1,2 ); //all possible options, 1=order by date, 2=order by votes
-$safe_view = isset($_GET['view']) ? intval( $_GET['view'] ) : '';
+$pbvote_safe_view_values = array( 1,2 ); //all possible options, 1=order by date, 2=order by votes
+$pbvote_safe_view = isset($_GET['pbv_view']) ? intval( $_GET['pbv_view'] ) : '';
 
-if ( ! in_array( $safe_view, $safe_view_values, true ) ) {$safe_view = '';}
-//$safe_view = sanitize_text_field( $safe_view );//Sanitizing: Cleaning User Input
+if ( ! in_array( $pbvote_safe_view, $pbvote_safe_view_values, true ) ) {$pbvote_safe_view = '';}
+//$pbvote_safe_view = sanitize_text_field( $pbvote_safe_view );//Sanitizing: Cleaning User Input
 //Pass the safe order input to session variable
-if($safe_view!=''){$_SESSION['view_session']= $safe_view;}
-if(isset($_SESSION['view_session'])) { $imported_view = $_SESSION['view_session'];} else { $imported_view = $defaultView; }
+if($pbvote_safe_view!=''){$_SESSION['pbv_view_session']= $pbvote_safe_view;}
+if(isset($_SESSION['pbv_view_session'])) { $imported_view = $_SESSION['pbv_view_session'];} else { $imported_view = $defaultView; }
 
 /**********************************************************************************************************************/
 
 /********************************************* FILTERED IDS OF STATUS *************************************************/
 // Sanitizing: Cleaning User Input
-$safe_status = isset($_GET['sstatus']) ? sanitize_text_field( $_GET['sstatus'] ) : '';
+$pbvote_safe_status = isset($_GET['pbv_sstatus']) ? sanitize_text_field( $_GET['pbv_sstatus'] ) : '';
 
 // Validating: User Input Data
-$safe_status = array_map( 'intval', array_filter( explode(',', $safe_status), 'is_numeric' ) );
-if ( ! $safe_status ) {$safe_status = '';}
+$pbvote_safe_status = array_map( 'intval', array_filter( explode(',', $pbvote_safe_status), 'is_numeric' ) );
+if ( ! $pbvote_safe_status ) {$pbvote_safe_status = '';}
 //Pass the safe status_ids input to session variable
-if(isset($safe_status) && $safe_status!='') {
-	$_SESSION['sstatus_session'] = $safe_status;
+if(isset($pbvote_safe_status) && $pbvote_safe_status!='') {
+	$_SESSION['pbv_sstatus_session'] = $pbvote_safe_status;
 }else{
-	$_SESSION['sstatus_session'] = false;
+	$_SESSION['pbv_sstatus_session'] = false;
 }
 
-if($_SESSION['sstatus_session']) {
-	$imported_sstatus = implode(",", $_SESSION['sstatus_session']);
-	$imported_sstatus4checkbox = $_SESSION['sstatus_session'];
+if($_SESSION['pbv_sstatus_session']) {
+	$pbvote_imported_sstatus = implode(",", $_SESSION['pbv_sstatus_session']);
+	$pbvote_imported_sstatus4checkbox = $_SESSION['pbv_sstatus_session'];
 }else{
-	$imported_sstatus = false;
-	$imported_sstatus4checkbox = '';
+	$pbvote_imported_sstatus = false;
+	$pbvote_imported_sstatus4checkbox = '';
 }
 
+// tady jsem skoncil 
 /**********************************************************************************************************************/
 
 /********************************************* FILTERED IDS OF CATEGORY ***********************************************/
@@ -138,25 +133,8 @@ if($_SESSION['keyword_session']) {
 /**********************************************************************************************************************/
 
 
-//DEBUGGING
-//echo("<script>console.log('ppage: ".$safe_ppage."');</script>");
-//echo("<script>console.log('ppage_session: ".$_SESSION['ppage_session']."');</script>");
-//echo("<script>console.log('sorder: ".$safe_sorder."');</script>");
-//echo("<script>console.log('sorder_session: ".$_SESSION['sorder_session']."');</script>");
-//echo("<script>console.log('view: ".$safe_view."');</script>");
-//echo("<script>console.log('view_session: ".$_SESSION['view_session']."');</script>");
-//echo("<script>console.log('sstatus: ".$safe_status."');</script>");
-//echo("<script>console.log('sstatus_session: ".$_SESSION['sstatus_session']."');</script>");
-//echo("<script>console.log('imported_sstatus: ".$imported_sstatus."');</script>");
-//echo("<script>console.log('scategory: ".$safe_category."');</script>");
-//echo("<script>console.log('scategory_session: ".$_SESSION['scategory_session']."');</script>");
-//echo("<script>console.log('imported_scategory: ".$imported_scategory."');</script>");
-//echo("<script>console.log('keyword: ".$safe_keyword."');</script>");
-//echo("<script>console.log('keyword_session: ".$_SESSION['keyword_session']."');</script>");
-
-
 $filtering_active = false;
-if (!empty($imported_scategory) || !empty($imported_sstatus) || !empty($imported_keyword)) {$filtering_active = true;}
+if (!empty($imported_scategory) || !empty($pbvote_imported_sstatus) || !empty($imported_keyword)) {$filtering_active = true;}
 
 $user_id = get_current_user_id();
 $plugin_path_url = imc_calculate_plugin_base_url();
@@ -171,6 +149,9 @@ if ( is_front_page() || is_home() ) {
 }else{
 	$my_permalink = get_the_permalink();
 } ?>
+	<div class="imc-BGColorGray imc-OverviewWrapperStyle">
+		<p><? the_Content(); ?></p>
+	</div>
     <div class="imc-SingleHeaderStyle imc-BGColorWhite">
 
         <nav class="imc-OverviewHeaderNavStyle">
@@ -178,12 +159,12 @@ if ( is_front_page() || is_home() ) {
                 <li>
                     <label class="imc-NaviSelectStyle">
                         <select id="imcSelectDisplayComponent" title="Issues to display" onchange="imcFireNavigation('imcSelectDisplayComponent')">
-                            <option class="imc-CustomOptionDisabledStyle" value="<?php echo esc_attr($imported_ppage); ?>" selected disabled><?php echo __('Display: ', 'participace-projekty'); ?> <?php echo esc_html($imported_ppage_label); ?></option>
+                            <option class="imc-CustomOptionDisabledStyle" value="<?php echo esc_attr($pbvote_imported_ppage); ?>" selected disabled><?php echo __('Display: ', 'participace-projekty'); ?> <?php echo esc_html($pbvote_imported_ppage_label); ?></option>
 
-                            <option value="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $issues_per_page = '6', $imported_order, $imported_view, $imported_sstatus, $imported_scategory, $imported_keyword) ); ?>">6</option>
-                            <option value="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $issues_per_page = '12', $imported_order, $imported_view, $imported_sstatus, $imported_scategory, $imported_keyword) ); ?>">12</option>
-                            <option value="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $issues_per_page = '24',$imported_order, $imported_view, $imported_sstatus, $imported_scategory, $imported_keyword) ); ?>">24</option>
-                            <option value="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $issues_per_page = '-1', $imported_order, $imported_view, $imported_sstatus, $imported_scategory, $imported_keyword) ); ?>"><?php echo __('All', 'participace-projekty'); ?></option>
+                            <option value="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $issues_per_page = '6', $pbvote_imported_order, $imported_view, $pbvote_imported_sstatus, $imported_scategory, $imported_keyword) ); ?>">6</option>
+                            <option value="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $issues_per_page = '12', $pbvote_imported_order, $imported_view, $pbvote_imported_sstatus, $imported_scategory, $imported_keyword) ); ?>">12</option>
+                            <option value="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $issues_per_page = '24',$pbvote_imported_order, $imported_view, $pbvote_imported_sstatus, $imported_scategory, $imported_keyword) ); ?>">24</option>
+                            <option value="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $issues_per_page = '-1', $pbvote_imported_order, $imported_view, $pbvote_imported_sstatus, $imported_scategory, $imported_keyword) ); ?>"><?php echo __('All', 'participace-projekty'); ?></option>
                         </select>
                     </label>
                 </li>
@@ -191,25 +172,25 @@ if ( is_front_page() || is_home() ) {
                 <li>
                     <label class="imc-NaviSelectStyle">
                         <select id="imcSelectOrderingComponent" title="Order by" onchange="imcFireNavigation('imcSelectOrderingComponent')">
-                            <option class="imc-CustomOptionDisabledStyle" value="<?php echo esc_attr($imported_order); ?>" selected disabled><?php echo __('Order: ', 'participace-projekty'); ?>  <?php echo esc_html($imported_order_label); ?></option>
+                            <option class="imc-CustomOptionDisabledStyle" value="<?php echo esc_attr($pbvote_imported_order); ?>" selected disabled><?php echo __('Order: ', 'participace-projekty'); ?>  <?php echo esc_html($pbvote_imported_order_label); ?></option>
 
-                            <option value="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $imported_ppage, $theorder = '1', $imported_view, $imported_sstatus, $imported_scategory, $imported_keyword) ); ?>"><?php echo __('Date', 'participace-projekty'); ?></option>
-                            <option value="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $imported_ppage, $theorder = '2', $imported_view, $imported_sstatus, $imported_scategory, $imported_keyword) ); ?>"><?php echo __('Votes', 'participace-projekty'); ?></option>
+                            <option value="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $pbvote_imported_ppage, $theorder = '1', $imported_view, $pbvote_imported_sstatus, $imported_scategory, $imported_keyword) ); ?>"><?php echo __('Date', 'participace-projekty'); ?></option>
+                            <option value="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $pbvote_imported_ppage, $theorder = '2', $imported_view, $pbvote_imported_sstatus, $imported_scategory, $imported_keyword) ); ?>"><?php echo __('Votes', 'participace-projekty'); ?></option>
                         </select>
                     </label>
                 </li>
 
 				<?php if ($imported_view == '1') { ?>
 
-                    <li><a href="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $imported_ppage, $imported_order, $theview = '1', $imported_sstatus, $imported_scategory, $imported_keyword) ); ?>" class="imc-SingleHeaderLinkStyle imc-NavSelectedStyle"><i class="material-icons md-36 imc-VerticalAlignMiddle">view_stream</i></a></li>
+                    <li><a href="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $pbvote_imported_ppage, $pbvote_imported_order, $theview = '1', $pbvote_imported_sstatus, $imported_scategory, $imported_keyword) ); ?>" class="imc-SingleHeaderLinkStyle imc-NavSelectedStyle"><i class="material-icons md-36 imc-VerticalAlignMiddle">view_stream</i></a></li>
 
-                    <li><a href="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $imported_ppage, $imported_order, $theview = '2', $imported_sstatus, $imported_scategory, $imported_keyword) ); ?>" class="imc-SingleHeaderLinkStyle"><i class="material-icons md-36 imc-VerticalAlignMiddle">apps</i></a></li>
+                    <li><a href="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $pbvote_imported_ppage, $pbvote_imported_order, $theview = '2', $pbvote_imported_sstatus, $imported_scategory, $imported_keyword) ); ?>" class="imc-SingleHeaderLinkStyle"><i class="material-icons md-36 imc-VerticalAlignMiddle">apps</i></a></li>
 
 				<?php } else { ?>
 
-                    <li><a href="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $imported_ppage, $imported_order, $theview = '1', $imported_sstatus, $imported_scategory, $imported_keyword) ); ?>" class="imc-SingleHeaderLinkStyle"><i class="material-icons md-36 imc-VerticalAlignMiddle">view_stream</i></a></li>
+                    <li><a href="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $pbvote_imported_ppage, $pbvote_imported_order, $theview = '1', $pbvote_imported_sstatus, $imported_scategory, $imported_keyword) ); ?>" class="imc-SingleHeaderLinkStyle"><i class="material-icons md-36 imc-VerticalAlignMiddle">view_stream</i></a></li>
 
-                    <li><a href="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $imported_ppage, $imported_order, $theview = '2', $imported_sstatus, $imported_scategory, $imported_keyword) ); ?>" class="imc-SingleHeaderLinkStyle imc-NavSelectedStyle"><i class="material-icons md-36 imc-VerticalAlignMiddle">apps</i></a></li>
+                    <li><a href="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $pbvote_imported_ppage, $pbvote_imported_order, $theview = '2', $pbvote_imported_sstatus, $imported_scategory, $imported_keyword) ); ?>" class="imc-SingleHeaderLinkStyle imc-NavSelectedStyle"><i class="material-icons md-36 imc-VerticalAlignMiddle">apps</i></a></li>
 
 				<?php } ?>
 				<?php if ($voting_page !== '#') { ?>
@@ -372,12 +353,12 @@ if ( is_front_page() || is_home() ) {
 
 				//Basic query calls depending the user
 				if ( !is_user_logged_in() ){ //not user
-					$custom_query_args = imcLoadIssuesForGuests($paged,$imported_ppage,$imported_sstatus,$imported_scategory);
+					$custom_query_args = imcLoadIssuesForGuests($paged,$pbvote_imported_ppage,$pbvote_imported_sstatus,$imported_scategory);
 				}else{ //admin!
 					if(current_user_can( 'administrator' )){
-						$custom_query_args = imcLoadIssuesForAdmins($paged,$imported_ppage,$imported_sstatus,$imported_scategory);
+						$custom_query_args = imcLoadIssuesForAdmins($paged,$pbvote_imported_ppage,$pbvote_imported_sstatus,$imported_scategory);
 					}else{
-						$custom_query_args = imcLoadIssuesForUsers($paged,$imported_ppage,$user_id,$imported_sstatus,$imported_scategory);
+						$custom_query_args = imcLoadIssuesForUsers($paged,$pbvote_imported_ppage,$user_id,$pbvote_imported_sstatus,$imported_scategory);
 					}
 				}
 
@@ -388,7 +369,7 @@ if ( is_front_page() || is_home() ) {
 				}
 
 				//sorting by date or likes
-				if ($imported_order == '1') {
+				if ($pbvote_imported_order == '1') {
 					$custom_query_args['orderby'] = 'date';
 				}else{
 					$custom_query_args['meta_key'] = 'imc_likes';
@@ -418,10 +399,10 @@ if ( is_front_page() || is_home() ) {
 
 						if ($imported_view == '1') {
 							//LIST VIEW
-							imc_archive_show_list($post, $editpage, $parameter_pass, $user_id, $pendingColorClass, $plugin_path_url);
+							pbvote_archive_show_list($post, $editpage, $parameter_pass, $user_id, $pendingColorClass, $plugin_path_url);
 						} else {
 							//GRID VIEW
-							imc_archive_show_grid($post, $editpage, $parameter_pass, $user_id, $pendingColorClass, $plugin_path_url);
+							pbvote_archive_show_grid($post, $editpage, $parameter_pass, $user_id, $pendingColorClass, $plugin_path_url);
 						}
 
 						$imccategory_currentterm = get_the_terms($post->ID, 'imccategory');
@@ -490,20 +471,20 @@ if ( is_front_page() || is_home() ) {
             <div class="imc-OverviewPaginationContainerStyle">
 
 				<?php $total_issues = $custom_query->found_posts;
-				$start_indicator = (($paged - 1) * $imported_ppage) + 1;
+				$start_indicator = (($paged - 1) * $pbvote_imported_ppage) + 1;
 				if ($total_issues === 0) {$start_indicator = 0;}
-				$end_indicator = (($paged - 1) * $imported_ppage) + $issues_pp_counter; ?>
+				$end_indicator = (($paged - 1) * $pbvote_imported_ppage) + $issues_pp_counter; ?>
 
                 <p class="img-PaginationLabelStyle imc-TextColorSecondary"><?php echo __('Showing','participace-projekty'); ?> <b><?php echo esc_html($start_indicator); ?></b> - <b><?php echo esc_html($end_indicator) ?></b> <?php echo __('of','participace-projekty'); ?> <b><?php echo esc_html($total_issues) ?></b> <?php echo __('issues','participace-projekty'); ?></p>
 
-				<?php imc_paginate($custom_query, $paged, $imported_ppage, $imported_order, $imported_view, $imported_sstatus, $imported_scategory, $imported_keyword); ?>
+				<?php imc_paginate($custom_query, $paged, $pbvote_imported_ppage, $pbvote_imported_order, $imported_view, $pbvote_imported_sstatus, $imported_scategory, $imported_keyword); ?>
             </div>
 
         </div>
 
-        <div class="imc-OverviewMapContainerStyle">
+        <!-- <div class="imc-OverviewMapContainerStyle">
             <div id="imcOverviewMap" class="imc-OverviewMapStyle"></div>
-        </div>
+        </div> -->
 
     </div>
 
@@ -519,7 +500,7 @@ if ( is_front_page() || is_home() ) {
 
             console.log(imported_cat);
 
-            var imported_status = <?php echo json_encode($imported_sstatus4checkbox); ?>;
+            var imported_status = <?php echo json_encode($pbvote_imported_sstatus4checkbox); ?>;
             var imported_keyword = <?php echo json_encode($imported_keyword); ?>;
             var i;
 
@@ -599,7 +580,7 @@ if ( is_front_page() || is_home() ) {
 
 
             var base = <?php echo json_encode( $my_permalink ) ; ?>;
-            var tempfilter1 = <?php echo json_encode( imcCreateFilterVariablesShort($perma_structure, $imported_ppage, $imported_order, $imported_view ) ); ?>;
+            var tempfilter1 = <?php echo json_encode( imcCreateFilterVariablesShort($perma_structure, $pbvote_imported_ppage, $pbvote_imported_order, $imported_view ) ); ?>;
             var filter1 = decodeURIComponent(tempfilter1);
             var filter2 = '&sstatus=' + selectedStatus;
             var filter3 = '&scategory=' + selectedCats;

@@ -32,11 +32,12 @@ function pbvote_get_code()
 
 function pb_votimg_set_single_template($single_template) {
     global $post;
-	return $single_template;
+	// return $single_template;
 
     if ($post->post_type == PB_VOTING_POST_TYPE ) {
 		$single_template = PB_VOTE_PATH_TEMPL . '/single-'.$post->post_type.'.php';
 	}
+	return $single_template;
 }
 function get_the_user_ip()
 {
@@ -52,4 +53,23 @@ function get_the_user_ip()
         $ip = $_SERVER['REMOTE_ADDR'];
     }
     return apply_filters('wpb_get_ip', $ip);
+}
+function hlasovani_query_arg( $list = array(), $status_list = array())
+{
+	if ( is_string( $list)) {
+		$list = explode( ";" , $list);
+	}
+	$args = array(
+		'post_type'   => 'imc_issues',
+		'post_status' => array( 'draft', 'publish', 'pending'),
+		'posts_per_page' => -1,
+        'post__in' => $list,
+	);
+
+	return $args;
+}
+
+function list_projects($list)
+{
+
 }
