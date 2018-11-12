@@ -35,7 +35,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
         try {
             $this->sessionKey = $this->rcp_client->get_session_key( $this->login, $this->password );
         } catch (Exception $e) {
-            $this->output = array( "result" => "error", "message" => 'Chyba připojení na server s průzkumy.',);
+            $this->->set_error( 'Chyba připojení na server s průzkumy.',);
             return false;
         }
 
@@ -67,7 +67,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
             $last_rec = array( "index" => -1, "expiration_time" => 0);
         } catch (Exception $e) {
             $list = array();
-            $this->output = array( "result" => "error", "message" => 'Chyba připojení na server s průzkumy.',);
+            $this->set_error( 'Chyba připojení na server s průzkumy.');
             return false;
         }
 
@@ -124,7 +124,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
         }
 
         if ( $this->index >= ( $this->max_number_of_tokens - 1) ) {
-            $this->output = array( 'result' => 'error', 'message' => 'Vyčerpán počet zaslaných kódů - max '.$this->max_number_of_tokens, );
+            $this->set_error( 'Vyčerpán počet zaslaných kódů - max '.$this->max_number_of_tokens );
             return false;
         }
         $new_particip = array(array(
@@ -151,9 +151,10 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
         if (! empty( $new_row[0]['token'])) {
             $this->survey_url .= '?token='.$new_row[0]['token'];
             $this->code_id = $new_row[0]['tid'];
+            $this->log_error( "novy token: " . $new_row[0]['token'] );
             return $new_row[0]['token'];
         } else {
-            $this->output = array( 'result' => 'error', 'message' => $new_row['status'], );
+            $this->set_error( $new_row['status'] );
             return false;
         }
     }
@@ -168,6 +169,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
     public function clear_new_code()
     {
         $result = true;
+        $this->log_error( "Mazání nového záznamu");
         if ( ! empty( $this->code_id )) {
             try {
                 $deleted_ids = $this->rcp_client->delete_participants( $this->sessionKey, $this->survey_id, array( $this->code_id));
@@ -176,7 +178,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
             }
 
             if ( count( $deleted_ids) == 0 ) {
-                $this->output = array( 'result' => 'error', 'message' => 'Chyba při mazání registrace' );
+                $this->set_error( 'Chyba při mazání registrace' );
                 $result = false;
             }
         }

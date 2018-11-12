@@ -137,7 +137,7 @@ class PbVote_GetCode
         if ($result) {
             $this->output = array( "result" => "ok", "code" => $this->code, 'expiration_time' => $this->expiration_time, );
         } else {
-            $this->output = array( "result" => "error", "message" => 'Chyba při ukládání kódu',);
+            $this->set_error( 'Chyba při ukládání kódu');
         }
         // return $output;
     }
@@ -201,11 +201,11 @@ class PbVote_GetCode
         *   closed
         */
         if ($db_row->status === 'closed') {
-            $this->output = array( "result" => "error", "message" => 'ID '.$this->voter_id.' již hlasovalo',);
+            $this->set_error( 'ID '.$this->voter_id.' již hlasovalo' );
             return false;
         }
         if ( strtotime( $db_row->expiration_time) > strtotime( $this->issued_time) ) {
-            $this->output = array( "result" => "error", "message" => 'ID '.$this->voter_id.' je již registrováno s platností do '.$db_row->expiration_time,);
+            $this->set_error( 'ID '.$this->voter_id.' je již registrováno s platností do '.$db_row->expiration_time );
             return false;
         } else {
             if ($db_row->status === 'new') {
@@ -278,7 +278,7 @@ class PbVote_GetCode
     {
         $vote_status = wp_get_object_terms($this->voting_id, $this->status_taxo);
         if (is_wp_error($vote_status)) {
-            $this->output = array( "result" => "error", "message" => 'Chyba při hledání stavu průzkumu');
+            $this->set_error( 'Chyba při hledání stavu průzkumu' );
             return false;
         }
 
@@ -288,7 +288,7 @@ class PbVote_GetCode
                 return true;
             }
         }
-        $this->output = array( "result" => "error", "message" => 'Průzkum je ve stavu který nepovoluje hlasování');
+        $this->set_error( 'Průzkum je ve stavu který nepovoluje hlasování' );
 
         return false;
     }
@@ -322,4 +322,22 @@ class PbVote_GetCode
         $this->code_spelling = substr( $string_spell, 0, -1) .")";
     }
 
+    public function set_error( $message )
+    {
+        $this->output = array(
+            'result' => 'error',
+            'message' => $message,
+        );
+        $this->log_error( $message);
+    }
+
+    public function log_error( $message )
+    {
+        if ( WP_DEBUG === true && PBVOTE_DEBUG === true ) {
+            if ( is_array($message) || is_object($message) ) {
+                $message =  print_r($message, true) ;
+            }
+            error_log( "User ID: " . $this->voter_id . " - " . $message );
+        }
+    }
 }

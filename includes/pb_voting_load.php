@@ -3,7 +3,7 @@
 // require_once PB_VOTE_PATH_INC .'/pb_voting_post_types.php';
 require_once PB_VOTE_PATH_INC .'/smssluzbacz/apixml30.php';
 require_once PB_VOTE_PATH_INC. '/pb_voting_functions.php';
-// include_once( PB_VOTE_PATH_TEMPL . '/pbvote-part-archive-list.php' );
+include_once( PB_VOTE_PATH_TEMPL . '/pbvote-part-archive-list.php' );
 
 global $votes_mtbx;
 
@@ -65,5 +65,59 @@ function pbvote_class_autoloader( $class_name ) {
         require( $file );
     }
 }
+function add_pbvote_template( $templates )
+{
+    $templates = array_merge( $templates, array(
+        '/archive-hlasovani.php'   => 'Přehled hlasování', ));
+    return $templates;
+}
+function register_pbvote_templates( $atts )
+{
+    // Create the key used for the themes cache
+    $cache_key = 'page_templates-' . md5( get_theme_root() . '/' . get_stylesheet() );
 
-add_filter( 'single_template', 'pb_votimg_set_single_template' );
+    // Retrieve the cache list.
+    // If it doesn't exist, or it's empty prepare an array
+    $templates = wp_get_theme()->get_page_templates();
+    if ( empty( $templates ) ) {
+        $templates = array();
+    }
+
+    // New cache, therefore remove the old one
+    wp_cache_delete( $cache_key , 'themes');
+
+    // Now add our template to the list of templates by merging our templates
+    // with the existing templates array from the cache.
+    $templates = array_merge( $templates, $this->templates );
+
+    // Add the modified cache to allow WordPress to pick it up for listing
+    // available templates
+    wp_cache_add( $cache_key, $templates, 'themes', 1800 );
+
+    return $atts;
+
+}
+function pb_voting_view_template( $template)
+{
+    // Get global post
+    global $post;
+
+    // Return template if post is empty
+    if ( ! $post ) {
+        return $template;
+    }
+
+    // Return default template if we don't have a custom one defined
+    $file = get_post_meta( $post->ID, '_wp_page_template', true );
+    if ( $file ) {
+        $file = PB_VOTE_PATH_TEMPL . $file;
+        if ( file_exists( $file ) ) {
+            return $file;
+        }
+    }
+    return $template;
+}
+add_filter( 'single_template',      'pb_voting_set_single_template' );
+add_filter( 'archive_template',     'pb_voting_set_archive_template' );
+add_filter( 'theme_page_templates', 'add_pbvote_template' );
+add_filter( 'template_include',     'pb_voting_view_template');

@@ -6,18 +6,19 @@
  *
  */
 
-function imc_archive_show_list($post, $editpage, $parameter_pass, $user_id, $pendingColorClass, $plugin_path_url) {
+function pbvote_archive_show_list($post, $editpage, $parameter_pass, $user_id, $pendingColorClass, $plugin_path_url) {
 global $voting_enabled, $comments_enabled;
 
 	$issue_id = intval($post->ID, 10);
 
-	$imccategory_currentterm = get_the_terms($post->ID , 'imccategory' );
+	$imccategory_currentterm = get_the_terms($post->ID , 'voting_category' );
 	$current_category_name = ""; // Reset
+	$cat_thumb_arr = "";
 
 	if ($imccategory_currentterm) {
 		$current_category_name = $imccategory_currentterm[0]->name;
 		$current_category_id = $imccategory_currentterm[0]->term_id;
-		$term_thumb = get_term_by('id', $current_category_id, 'imccategory');
+		$term_thumb = get_term_by('id', $current_category_id, 'voting_category');
 		$cat_thumb_arr = wp_get_attachment_image_src( $term_thumb->term_image);
 	} ?>
 
@@ -69,10 +70,10 @@ global $voting_enabled, $comments_enabled;
                         <span class="imc-OverviewListDescriptionStyle imc-OverviewListTextNoWrapStyle"><?php printf(get_the_excerpt());  ?></span>
                     </div>
 
-                    <div class="imc-row-no-margin imc-OverviewListTextNoWrapStyle">
+                    <!-- <div class="imc-row-no-margin imc-OverviewListTextNoWrapStyle">
                         <i class="material-icons md-18 imc-TextColorSecondary imc-AlignIconToLabel">place</i>
-                        <span class="imc-OverviewListStepLabelStyle  imc-TextColorSecondary"><?php echo esc_html(get_post_meta($post->ID, 'imc_address', true)); ?></span>
-                    </div>
+                        <span class="imc-OverviewListStepLabelStyle  imc-TextColorSecondary"><?php //echo esc_html(get_post_meta($post->ID, 'imc_address', true)); ?></span>
+                    </div> -->
 
                 </div>
 
@@ -95,8 +96,8 @@ global $voting_enabled, $comments_enabled;
                     </div>
 
                     <div class="imc-DisplayInlineBlock">
-                        <span class="imc-OverviewListStepCircleStyle imc-circle imc-AlignIconToLabel" style="background-color: #<?php echo esc_attr(getCurrentImcStatusColor($post->ID));?>"></span>
-                        <span class="imc-OverviewListStepLabelStyle imc-TextColorSecondary"><?php echo esc_html(getCurrentImcStatusName($post->ID));?></span>
+                        <span class="imc-OverviewListStepCircleStyle imc-circle imc-AlignIconToLabel" style="background-color: #<?php echo esc_attr(pbvote_get_current_status_color($post->ID));?>"></span>
+                        <span class="imc-OverviewListStepLabelStyle imc-TextColorSecondary"><?php echo esc_html(get_current_pbvote_status_name($post->ID));?></span>
                     </div>
 					<?php if ($comments_enabled) { ?>
 						<div class="imc-DisplayInlineBlock">
@@ -150,15 +151,5 @@ global $voting_enabled, $comments_enabled;
         </div>
     </div>
 
-    <script>
-        (function(){
-            "use strict";
-            var elementId = "issue-<?php echo esc_html($issue_id);?>";
-            var postId = <?php echo esc_js($issue_id);?>;
-            jQuery( document ).ready(function() {
-                loadOverviewMouseEventScripts(elementId, postId);
-            });
-        })();
-    </script>
 
 <?php } ?>
