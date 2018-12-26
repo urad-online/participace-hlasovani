@@ -18,140 +18,13 @@ $voting_status_taxo   = 'voting_status';
 $filter_params_view   = array();
 
 if ( get_option('permalink_structure') ) { $perma_structure = true; } else {$perma_structure = false;}
-if( $perma_structure){$parameter_pass = '/?myparam=';} else{$parameter_pass = '&myparam=';}
 
 /********************************************* ISSUES PER PAGE ********************************************************/
-////Validating: User Input Data
-$pbvote_safe_ppage_values = array( -1, 6, 12, 24 ); //all possible options
-$pbvote_safe_ppage = isset($_GET['pbv_ppage']) ? intval( $_GET['pbv_ppage'] ) : '';
-$filter_params_view = array_merge( $filter_params_view, array( 'pbv_ppage' => $pbvote_safe_ppage));
-
-
-if ( ! in_array( $pbvote_safe_ppage, $pbvote_safe_ppage_values, true ) ) {$pbvote_safe_ppage = '';}
-$pbvote_safe_ppage = sanitize_text_field( $pbvote_safe_ppage );//Sanitizing: Cleaning User Input
-$filter_params_view = array_merge( $filter_params_view, array( 'pbv_ppage' => $pbvote_safe_ppage));
-
-//Pass the safe ppage input to session variable
-if($pbvote_safe_ppage!=''){$_SESSION['pbv_ppage_session']= $pbvote_safe_ppage;}
-if(isset($_SESSION['pbv_ppage_session'])) { $pbvote_imported_ppage = $_SESSION['pbv_ppage_session'];} else { $pbvote_imported_ppage = '6'; }
-$pbvote_imported_ppage_label = $pbvote_imported_ppage;
-if($pbvote_imported_ppage=='-1') {$pbvote_imported_ppage_label = 'All'; }
-
-/**********************************************************************************************************************/
-
-/********************************************* ORDER OF OVERVIEW ISSUES ***********************************************/
-//Validating: User Input Data
-$pbvote_safe_sorder_values = array( 1,2 ); //all possible options, 1=order by date, 2=order by votes
-$pbvote_safe_sorder = isset($_GET['pbv_sorder']) ? intval( $_GET['pbv_sorder'] ) : '';
-
-if ( ! in_array( $pbvote_safe_sorder, $pbvote_safe_sorder_values, true ) ) {$pbvote_safe_sorder = '';}
-$pbvote_safe_sorder = sanitize_text_field( $pbvote_safe_sorder );//Sanitizing: Cleaning User Input
-$filter_params_view = array_merge( $filter_params_view, array( 'pbv_sorder' => $pbvote_safe_sorder));
-
-//Pass the safe order input to session variable
-if($pbvote_safe_sorder!=''){$_SESSION['pbv_sorder_session']= $pbvote_safe_sorder;}
-if(isset($_SESSION['pbv_sorder_session'])) { $pbvote_imported_order = $_SESSION['pbv_sorder_session'];} else { $pbvote_imported_order = '1'; }
-$pbvote_imported_order_label = __('Date', 'pb-voting');
-if ($pbvote_imported_order == '2') {$pbvote_imported_order_label = __('Votes', 'pb-voting'); }
-
-
-/**********************************************************************************************************************/
-
-/********************************************* VIEW OF OVERVIEW ISSUES ************************************************/
-
-//We need default view from Settings
-$pbvote_defaultViewOption = '1';
-
-//Validating: User Input Data
-$pbvote_safe_view_values = array( 1,2 ); //all possible options, 1=order by date, 2=order by votes
-$pbvote_safe_view = isset($_GET['pbv_view']) ? intval( $_GET['pbv_view'] ) : '';
-
-if ( ! in_array( $pbvote_safe_view, $pbvote_safe_view_values, true ) ) {$pbvote_safe_view = '';}
-$pbvote_safe_view = sanitize_text_field( $pbvote_safe_view );//Sanitizing: Cleaning User Input
-$filter_params_view = array_merge( $filter_params_view, array( 'pbv_view' => $pbvote_safe_view));
-//Pass the safe order input to session variable
-if($pbvote_safe_view!=''){$_SESSION['pbv_view_session']= $pbvote_safe_view;}
-if(isset($_SESSION['pbv_view_session'])) { $pbvote_imported_view = $_SESSION['pbv_view_session'];} else { $pbvote_imported_view = $pbvote_defaultViewOption; }
-
-/**********************************************************************************************************************/
-
-/********************************************* FILTERED IDS OF STATUS *************************************************/
-// Sanitizing: Cleaning User Input
-$pbvote_safe_status = isset($_GET['pbv_sstatus']) ? sanitize_text_field( $_GET['pbv_sstatus'] ) : '';
-
-// Validating: User Input Data
-$pbvote_safe_status = array_map( 'intval', array_filter( explode(',', $pbvote_safe_status), 'is_numeric' ) );
-if ( ! $pbvote_safe_status ) {$pbvote_safe_status = '';}
-//Pass the safe status_ids input to session variable
-if(isset($pbvote_safe_status) && $pbvote_safe_status!='') {
-	$_SESSION['pbv_sstatus_session'] = $pbvote_safe_status;
-}else{
-	$_SESSION['pbv_sstatus_session'] = false;
-}
-
-if($_SESSION['pbv_sstatus_session']) {
-	$pbvote_imported_sstatus = implode(",", $_SESSION['pbv_sstatus_session']);
-	$pbvote_imported_sstatus4checkbox = $_SESSION['pbv_sstatus_session'];
-}else{
-	$pbvote_imported_sstatus = false;
-	$pbvote_imported_sstatus4checkbox = '';
-}
-
-/**********************************************************************************************************************/
-
-/********************************************* FILTERED IDS OF CATEGORY ***********************************************/
-//Sanitizing: Cleaning User Input
-$pbvote_safe_category = isset($_GET['pbv_scategory']) ? sanitize_text_field( $_GET['pbv_scategory'] ) : '';
-
-//Validating: User Input Data
-$pbvote_safe_category = array_map( 'intval', array_filter( explode(',', $pbvote_safe_category), 'is_numeric' ) );
-if ( ! $pbvote_safe_category ) {$pbvote_safe_category = '';}
-//Pass the safe category_ids input to session variable
-if(isset($pbvote_safe_category) && $pbvote_safe_category!='') {
-	$_SESSION['pbv_scategory_session'] = $pbvote_safe_category;
-}else{
-	$_SESSION['pbv_scategory_session'] = false;
-}
-
-if($_SESSION['pbv_scategory_session']) {
-	$pbvote_imported_scategory = implode(",", $_SESSION['pbv_scategory_session']);
-	$pbvote_imported_scategory4checkbox = $_SESSION['pbv_scategory_session'];
-}else{
-	$pbvote_imported_scategory = false;
-	$pbvote_imported_scategory4checkbox = '';
-}
-
-/**********************************************************************************************************************/
-
-/********************************************* FILTERED KEYWORD *******************************************************/
-//Sanitizing: Cleaning User Input
-$pbvote_safe_keyword = isset($_GET['pbv_keyword']) ? sanitize_text_field( $_GET['pbv_keyword'] ) : '';
-
-
-//Validating: User Input Data (if lenght is more than 40 chars)
-if ( strlen( $pbvote_safe_keyword ) > 40 ) {$pbvote_safe_keyword = substr( $pbvote_safe_keyword, 0, 40 );}
-//Pass the safe keyword input to session variable
-if(isset($pbvote_safe_keyword) && $pbvote_safe_keyword!='') {
-	$_SESSION['pbv_keyword_session'] = $pbvote_safe_keyword;
-}else{
-	$_SESSION['pbv_keyword_session'] = false;
-}
-if($_SESSION['pbv_keyword_session']) {
-	$pbvote_imported_keyword = $_SESSION['pbv_keyword_session'];
-}else{
-	$pbvote_imported_keyword = false;
-}
-
-/**********************************************************************************************************************/
-
-
-$filtering_active = false;
-if (!empty($pbvote_imported_scategory) || !empty($pbvote_imported_sstatus) || !empty($pbvote_imported_keyword)) {$filtering_active = true;}
 
 $user_id = get_current_user_id();
-$plugin_path_url = imc_calculate_plugin_base_url();
 $issues_pp_counter = 0;
 
+$voting_view_filters = new  PbVote_ArchiveDisplayOptions();
 get_header();
 
 
@@ -160,48 +33,34 @@ if ( is_front_page() || is_home() ) {
 	$my_permalink = _get_page_link($front_page_id);
 }else{
 	$my_permalink = get_the_permalink();
-} ?>
+}
+
+?>
     <div class="imc-SingleHeaderStyle imc-BGColorWhite">
 
         <nav class="imc-OverviewHeaderNavStyle">
             <ul class="imc-OverviewNavUlStyle">
                 <li>
                     <label class="imc-NaviSelectStyle">
-                        <select id="imcSelectDisplayComponent" title="Issues to display" onchange="imcFireNavigation('imcSelectDisplayComponent')">
-                            <option class="imc-CustomOptionDisabledStyle" value="<?php echo esc_attr($pbvote_imported_ppage); ?>" selected disabled><?php echo __('Display: ', 'pb-voting'); ?> <?php echo esc_html($pbvote_imported_ppage_label); ?></option>
+                        <select id="pbvSelectDisplayComponent" title="Issues to display" onchange="pbvFireNavigation('pbvSelectDisplayComponent')">
+                            <option class="imc-CustomOptionDisabledStyle" value="<?php echo esc_attr($voting_view_filters->get_value('ppage')); ?>" selected disabled><?php echo __('Display: ', 'pb-voting'); ?> <?php echo esc_html($voting_view_filters->ppage_get_label($voting_view_filters->get_value('ppage'))); ?></option>
 
-                            <option value="<?php echo esc_url( $my_permalink . pbvote_create_filter_variables_long($perma_structure, $issues_per_page = '6', $pbvote_imported_order, $pbvote_imported_view, $pbvote_imported_sstatus, $pbvote_imported_scategory, $pbvote_imported_keyword) ); ?>">6</option>
-                            <option value="<?php echo esc_url( $my_permalink . pbvote_create_filter_variables_long($perma_structure, $issues_per_page = '12', $pbvote_imported_order, $pbvote_imported_view, $pbvote_imported_sstatus, $pbvote_imported_scategory, $pbvote_imported_keyword) ); ?>">12</option>
-                            <option value="<?php echo esc_url( $my_permalink . pbvote_create_filter_variables_long($perma_structure, $issues_per_page = '24',$pbvote_imported_order, $pbvote_imported_view, $pbvote_imported_sstatus, $pbvote_imported_scategory, $pbvote_imported_keyword) ); ?>">24</option>
-                            <option value="<?php echo esc_url( $my_permalink . pbvote_create_filter_variables_long($perma_structure, $issues_per_page = '-1', $pbvote_imported_order, $pbvote_imported_view, $pbvote_imported_sstatus, $pbvote_imported_scategory, $pbvote_imported_keyword) ); ?>"><?php echo __('All', 'pb-voting'); ?></option>
+							<?php echo $voting_view_filters->generate_options_long_ppage($my_permalink)?>
                         </select>
                     </label>
                 </li>
 
                 <li>
                     <label class="imc-NaviSelectStyle">
-                        <select id="imcSelectOrderingComponent" title="Order by" onchange="imcFireNavigation('imcSelectOrderingComponent')">
-                            <option class="imc-CustomOptionDisabledStyle" value="<?php echo esc_attr($pbvote_imported_order); ?>" selected disabled><?php echo __('Order: ', 'pb-voting'); ?>  <?php echo esc_html($pbvote_imported_order_label); ?></option>
+                        <select id="pbvSelectOrderingComponent" title="Order by" onchange="pbvFireNavigation('pbvSelectOrderingComponent')">
+                            <option class="imc-CustomOptionDisabledStyle" value="<?php echo esc_attr($voting_view_filters->get_value('sorder')); ?>" selected disabled><?php echo __('Order: ', 'pb-voting'); ?>  <?php echo esc_html($voting_view_filters->sorder_get_label($voting_view_filters->get_value('sorder'))); ?></option>
 
-                            <option value="<?php echo esc_url( $my_permalink . pbvote_create_filter_variables_long($perma_structure, $pbvote_imported_ppage, $theorder = '1', $pbvote_imported_view, $pbvote_imported_sstatus, $pbvote_imported_scategory, $pbvote_imported_keyword) ); ?>"><?php echo __('Date', 'pb-voting'); ?></option>
-                            <option value="<?php echo esc_url( $my_permalink . pbvote_create_filter_variables_long($perma_structure, $pbvote_imported_ppage, $theorder = '2', $pbvote_imported_view, $pbvote_imported_sstatus, $pbvote_imported_scategory, $pbvote_imported_keyword) ); ?>"><?php echo __('Votes', 'pb-voting'); ?></option>
+							<?php echo $voting_view_filters->generate_options_long_sorder($my_permalink)?>
                         </select>
                     </label>
                 </li>
 
-				<?php if ($pbvote_imported_view == '1') { ?>
-
-                    <li><a href="<?php echo esc_url( $my_permalink . pbvote_create_filter_variables_long($perma_structure, $pbvote_imported_ppage, $pbvote_imported_order, $theview = '1', $pbvote_imported_sstatus, $pbvote_imported_scategory, $pbvote_imported_keyword) ); ?>" class="imc-SingleHeaderLinkStyle imc-NavSelectedStyle"><i class="material-icons md-36 imc-VerticalAlignMiddle">view_stream</i></a></li>
-
-                    <li><a href="<?php echo esc_url( $my_permalink . pbvote_create_filter_variables_long($perma_structure, $pbvote_imported_ppage, $pbvote_imported_order, $theview = '2', $pbvote_imported_sstatus, $pbvote_imported_scategory, $pbvote_imported_keyword) ); ?>" class="imc-SingleHeaderLinkStyle"><i class="material-icons md-36 imc-VerticalAlignMiddle">apps</i></a></li>
-
-				<?php } else { ?>
-
-                    <li><a href="<?php echo esc_url( $my_permalink . pbvote_create_filter_variables_long($perma_structure, $pbvote_imported_ppage, $pbvote_imported_order, $theview = '1', $pbvote_imported_sstatus, $pbvote_imported_scategory, $pbvote_imported_keyword) ); ?>" class="imc-SingleHeaderLinkStyle"><i class="material-icons md-36 imc-VerticalAlignMiddle">view_stream</i></a></li>
-
-                    <li><a href="<?php echo esc_url( $my_permalink . pbvote_create_filter_variables_long($perma_structure, $pbvote_imported_ppage, $pbvote_imported_order, $theview = '2', $pbvote_imported_sstatus, $pbvote_imported_scategory, $pbvote_imported_keyword) ); ?>" class="imc-SingleHeaderLinkStyle imc-NavSelectedStyle"><i class="material-icons md-36 imc-VerticalAlignMiddle">apps</i></a></li>
-
-				<?php } ?>
+				<?php echo $voting_view_filters->generate_lists_long_view($my_permalink)?>
             </ul>
         </nav>
     </div>
@@ -254,7 +113,7 @@ if ( is_front_page() || is_home() ) {
                     <div class="imc-DrawerSecondCol">
 
                         <input checked="checked" class="imc-CheckboxToggleStyle" id="pbvToggleCatsCheckbox" type="checkbox"
-							name="pbvToggleCatsCheckbox" value="">
+							name="pbvToggleCatsCheckbox" value="all">
                         <label class="imc-SectionTitleTextStyle" for="pbvToggleCatsCheckbox"><?php echo __('Kategorie', 'pb-voting'); ?></label>
                         <br>
 
@@ -274,7 +133,7 @@ if ( is_front_page() || is_home() ) {
 
                                 <div class="imc-row">
 
-                                    <input checked="checked" class="imc-CheckboxStyle" id="pbv-cat-checkbox-<?php echo esc_html($pbvcategory->term_id); ?>" type="checkbox" name="<?php echo esc_attr($pbvcategory->name); ?>" value="<?php echo esc_attr($pbvcategory->term_id); ?>">
+                                    <input checked class="imc-CheckboxStyle" id="pbv-cat-checkbox-<?php echo esc_html($pbvcategory->term_id); ?>" type="checkbox" name="<?php echo esc_attr($pbvcategory->name); ?>" value="<?php echo esc_attr($pbvcategory->term_id); ?>">
                                     <label for="pbv-cat-checkbox-<?php echo esc_html($pbvcategory->term_id); ?>"><?php echo esc_html($pbvcategory->name); ?></label>
 
 									<?php $args = array(
@@ -339,37 +198,9 @@ if ( is_front_page() || is_home() ) {
 
 				<?php
 				// Get current page and append to custom query parameters array
-				$paged = 1;
-				if ( get_query_var( 'paged' ) ) {$paged = get_query_var('paged'); // On a paged page.
-				} else if ( get_query_var( 'page' ) ) {$paged = get_query_var('page'); // On a "static" page.
-				}
-
-				//Basic query calls depending the user
-				if ( is_user_logged_in() && current_user_can( 'administrator' ) ){ //not user
-					// $custom_query_args = imcLoadIssuesForAdmins($paged,$pbvote_imported_ppage,$pbvote_imported_sstatus,$pbvote_imported_scategory);
-					$custom_query_args = pbvLoadIssuesForGuests($paged,$pbvote_imported_ppage,$pbvote_imported_sstatus,$pbvote_imported_scategory);
-				} else {
-					$custom_query_args = pbvLoadIssuesForGuests($paged,$pbvote_imported_ppage,$pbvote_imported_sstatus,$pbvote_imported_scategory);
-				}
-
-				//search string
-				if(!$pbvote_imported_keyword == false){
-					$custom_query_args['s'] = $pbvote_imported_keyword;
-					$custom_query_args['exact'] = false;
-				}
-
-				//sorting by date or likes
-				if ($pbvote_imported_order == '1') {
-					$custom_query_args['orderby'] = 'date';
-				}else{
-					$custom_query_args['meta_key'] = 'imc_likes';
-					$custom_query_args['orderby'] = 'meta_value_num';
-					$custom_query_args['order']= 'DESC';
-				}
-
-				// Instantiate custom query
-				// $custom_query = new WP_Query($custom_query_args);
-				$custom_query = pom_fun($custom_query_args);
+				$voting_items = new PbVote_ArchiveDisplayFilterData( $voting_view_filters->get_filter_params());
+				$paged = $voting_items->get_paged();
+				$custom_query = $voting_items->get_query_data();
 
 				// Pagination fix
 				$temp_query = $wp_query;
@@ -390,10 +221,10 @@ if ( is_front_page() || is_home() ) {
 
 						if ($pbvote_imported_view == '1') {
 							//LIST VIEW
-							pbvote_archive_show_list($post, $editpage, $parameter_pass, $user_id, $pendingColorClass, $plugin_path_url);
+							pbvote_archive_show_list($post, $editpage, $voting_view_filters->parameter_pass, $user_id, $pendingColorClass, $voting_view_filters->get_plugin_base_url());
 						} else {
 							//GRID VIEW
-							pbvote_archive_show_grid($post, $editpage, $parameter_pass, $user_id, $pendingColorClass, $plugin_path_url);
+							pbvote_archive_show_grid($post, $editpage, $voting_view_filters->$parameter_pass, $user_id, $pendingColorClass, $voting_view_filters->get_plugin_base_url());
 						}
 
 						$pbvcategory_currentterm = get_the_terms($post->ID, $voting_category_taxo);
@@ -421,7 +252,7 @@ if ( is_front_page() || is_home() ) {
                         <div class="imc-Separator"></div>
 
                         <span class="imc-CenterContents imc-TextMedium imc-Text-LG imc-FontRoboto">
-							<?php if($filtering_active) { ?>
+							<?php if($voting_view_filters->is_filtering_active()	) { ?>
                                 <span class="imc-TextColorSecondary ">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
                                 <a href="javascript:void(0);" onclick="pbvOverviewResetFilters();" class="imc-LinkStyle"><?php echo __('Zrušit filtr','pb-voting'); ?></a>
 							<?php } ?>
@@ -441,13 +272,13 @@ if ( is_front_page() || is_home() ) {
             <div class="imc-OverviewPaginationContainerStyle">
 
 				<?php $total_issues = $custom_query->found_posts;
-				$start_indicator = (($paged - 1) * $pbvote_imported_ppage) + 1;
+				$start_indicator = (($paged - 1) * $voting_view_filters->get_value('ppage')) + 1;
 				if ($total_issues === 0) {$start_indicator = 0;}
-				$end_indicator = (($paged - 1) * $pbvote_imported_ppage) + $issues_pp_counter; ?>
+				$end_indicator = (($paged - 1) * $voting_view_filters->get_value('ppage')) + $issues_pp_counter; ?>
 
                 <p class="img-PaginationLabelStyle imc-TextColorSecondary"><?php echo __('Showing','pb-voting'); ?> <b><?php echo esc_html($start_indicator); ?></b> - <b><?php echo esc_html($end_indicator) ?></b> <?php echo __('of','pb-voting'); ?> <b><?php echo esc_html($total_issues) ?></b> <?php echo __('issues','pb-voting'); ?></p>
 
-				<?php imc_paginate($custom_query, $paged, $pbvote_imported_ppage, $pbvote_imported_order, $pbvote_imported_view, $pbvote_imported_sstatus, $pbvote_imported_scategory, $pbvote_imported_keyword); ?>
+				<?php imc_paginate($custom_query, $paged, $voting_view_filters->get_value('ppage'), $voting_view_filters->get_value('sorder'), $voting_view_filters->get_value('view'), $voting_view_filters->get_value('sstatus'), $voting_view_filters->get_value('scategory'), $voting_view_filters->get_value('keyword')); ?>
             </div>
 
         </div>
@@ -464,17 +295,17 @@ if ( is_front_page() || is_home() ) {
 
         jQuery( document ).ready(function() {
 
-            var imported_cat = <?php echo json_encode($pbvote_imported_scategory4checkbox); ?>;
+            var imported_cat = <?php echo json_encode( $voting_view_filters->get_value_array('scategory')); ?>;
 
-            var imported_status = <?php echo json_encode($pbvote_imported_sstatus4checkbox); ?>;
-            var imported_keyword = <?php echo json_encode($pbvote_imported_keyword); ?>;
+            var imported_status = <?php echo json_encode($voting_view_filters->get_value_array('sstatus')); ?>;
+            var imported_keyword = <?php echo json_encode($voting_view_filters->get_value_array('keyword')); ?>;
             var i;
 
 
             if (imported_status || imported_cat || imported_keyword) {
-				console.log("import status: " + imported_status);
                 jQuery('#pbvFilteringIndicator').css('color', '#1ABC9C');
 				jQuery('#pbvStatusCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
+				jQuery('#pbvCatCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
 
                 if (imported_status) {
                     jQuery('#imcStatFilteringLabel').show();
@@ -482,7 +313,6 @@ if ( is_front_page() || is_home() ) {
                     jQuery('#pbvToggleStatusCheckbox').prop('checked', false);
 
                     for (i=0;i<imported_status.length;i++) {
-						console.log("status: " + i + " - " +imported_status[i]);
                         jQuery('#pbv-stat-checkbox-'+imported_status[i]).prop('checked', true);
                     }
                 }
@@ -505,8 +335,7 @@ if ( is_front_page() || is_home() ) {
             }
         });
 
-
-        function imcFireNavigation(id) {
+        function pbvFireNavigation(id) {
             location.href = jQuery('#'+id)[0].value;
             jQuery( id +" option:disabled" ).prop('selected', true);
         }
@@ -514,11 +343,11 @@ if ( is_front_page() || is_home() ) {
         // Checkbox select propagation
         jQuery(function () {
             jQuery("input[type='checkbox']").change(function () {
-                jQuery(this).siblings('#pbvCatCheckboxes')
-                    .find("input[type='checkbox']")
-                    .prop('checked', this.checked);
+				jQuery(this).siblings('#pbvStatusCheckboxes')
+				.find("input[type='checkbox']")
+				.prop('checked', this.checked);
 
-                jQuery(this).siblings('#pbvStatusCheckboxes')
+                jQuery(this).siblings('#pbvCatCheckboxes')
                     .find("input[type='checkbox']")
                     .prop('checked', this.checked);
 
@@ -565,11 +394,11 @@ if ( is_front_page() || is_home() ) {
             }
 
             var base = <?php echo json_encode( $my_permalink ) ; ?>;
-            var tempfilter1 = <?php echo json_encode( pbvote_create_filter_variables_short($perma_structure, $pbvote_imported_ppage, $pbvote_imported_order, $pbvote_imported_view ) ); ?>;
+            var tempfilter1 = <?php echo json_encode(  $voting_view_filters->create_url_variables_short()); ?>;
             var filter1 = decodeURIComponent(tempfilter1);
-            var filter2 = '&pbv_sstatus=' + selectedStatus;
-            var filter3 = '&pbv_scategory=' + selectedCats;
-            var filter4 = '&pbv_keyword=' + keywordString;
+            var filter2 = '&sstatus=' + selectedStatus;
+            var filter3 = '&scategory=' + selectedCats;
+            var filter4 = '&keyword=' + keywordString;
             var link = base + filter1 + filter2 + filter3 + filter4;
 
             window.location = link;
@@ -578,7 +407,6 @@ if ( is_front_page() || is_home() ) {
         function pbvOverviewResetFilters() {
             var i;
             var	checkboxes = document.getElementsByTagName('input');
-			console.log("reset filter");
 
             for (i = 0; i < checkboxes.length; i++)
             {

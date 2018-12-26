@@ -113,48 +113,6 @@ function get_all_pbvote_taxo( $term_name = "", $hierarchical = false )
     return $terms;
 }
 
-function pbvLoadIssuesForGuests($paged, $page, $status, $category){
-
-    $imported_sstatus = ( $status ) ? explode(",", $status): $status;
-    $imported_scategory = ( $category ) ? explode(",", $category) : $category;
-
-    $custom_query_args = array(
-        'post_type' => PB_VOTING_POST_TYPE,
-        'post_status' => array('publish', 'pending', 'draft'),
-        'paged' => $paged,
-        'posts_per_page' => $page,
-    );
-
-	$tax_query = array();
-
-	if ( $status && ( $status !== 'all')) {
-		$tax_query =  array(
-			'relation' => 'AND',
-			array(
-				'taxonomy' => 'voting_status',
-				'field' => 'id',
-				'terms' => explode( ',',  $status ),
-			),
-		);
-	}
-
-	if ( $category && ( $category !== 'all')) {
-		$tax_query =  array_merge( $tax_query,
-			array(array(
-				'taxonomy' => 'voting_category',
-				'field' => 'id',
-				'terms' => explode( ',',  $category ),
-			),)
-		);
-	}
-
-	if ( count($tax_query)>0 ) {
-		$custom_query_args['tax_query'] = $tax_query ;
-	}
-    //the filtering is for no users so -no pending issues-
-
-    return $custom_query_args;
-}
 function get_current_pbvote_status_name($mypostID){
 
     $status_currentterm = get_the_terms($mypostID , PB_VOTING_STATUS_TAXO );
@@ -189,51 +147,6 @@ function pbvote_get_current_status_color($mypostID)
 	return $color;
 
 }
-
-function pbvote_create_filter_variables_short($perma_structure, $issues_per_page, $theorder, $theview){
-    if( $perma_structure){
-        $ppage = '/?pbv_ppage=';
-    }else{
-        $ppage = '&pbv_ppage=';
-    }
-
-    $order = '&pbv_sorder=';
-    $view = '&pbv_view=';
-
-    $extra_args =  $ppage . $issues_per_page . $order . $theorder . $view . $theview;
-    return $extra_args;
-}
-
-function pbvote_create_url_variables( $perma_structure, $params )
-{
-
-	if( $perma_structure){
-        $url_vars = '/?';
-    }else{
-        $url_vars = '&';
-    }
-
-	return $url_vars . http_build_query( $params );
-}
-
-function pbvote_create_filter_variables_long($perma_structure, $issues_per_page, $theorder, $theview, $thesstatus, $thescategory, $thekeyword ) {
-    if( $perma_structure){
-        $ppage = '/?ppage=';
-    }else{
-        $ppage = '&ppage=';
-    }
-
-    $order = '&sorder=';
-    $view = '&view=';
-    $sstatus = '&sstatus=';
-    $scategory = '&scategory=';
-    $keyword = '&keyword=';
-
-    $extra_args = $ppage . $issues_per_page . $order . $theorder . $view . $theview . $sstatus . $thesstatus . $scategory . $thescategory . $keyword . $thekeyword ;
-    return $extra_args;
-}
-
-
 
 function pom_fun( $input)
 {

@@ -35,7 +35,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
         try {
             $this->sessionKey = $this->rcp_client->get_session_key( $this->login, $this->password );
         } catch (Exception $e) {
-            $this->->set_error( 'Chyba připojení na server s průzkumy.',);
+            $this->set_error( 'Chyba připojení na server s průzkumy.');
             return false;
         }
 
