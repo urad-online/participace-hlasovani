@@ -63,7 +63,7 @@ function get_the_user_ip()
     }
     return apply_filters('wpb_get_ip', $ip);
 }
-function hlasovani_query_arg( $list = array(), $status_list = array())
+function hlasovani_query_arg( $list = array(), $status_list = array()) //todelete
 {
 	if ( is_string( $list)) {
 		$list = explode( ";" , $list);
@@ -80,7 +80,8 @@ function hlasovani_query_arg( $list = array(), $status_list = array())
 
 function list_projects($list)
 {
-
+    echo implode( ',', 	$list);
+	include_once( PB_VOTE_PATH_TEMPL . '/archive-hlasovani.php');
 }
 function get_all_pbvote_taxo( $term_name = "", $hierarchical = false )
 {
@@ -113,7 +114,7 @@ function get_all_pbvote_taxo( $term_name = "", $hierarchical = false )
     return $terms;
 }
 
-function get_current_pbvote_status_name($mypostID){
+function pbvote_get_current_status_name($mypostID){
 
     $status_currentterm = get_the_terms($mypostID , PB_VOTING_STATUS_TAXO );
 

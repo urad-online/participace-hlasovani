@@ -97,7 +97,7 @@ global $voting_enabled, $comments_enabled;
 
                     <div class="imc-DisplayInlineBlock">
                         <span class="imc-OverviewListStepCircleStyle imc-circle imc-AlignIconToLabel" style="background-color: #<?php echo esc_attr(pbvote_get_current_status_color($post->ID));?>"></span>
-                        <span class="imc-OverviewListStepLabelStyle imc-TextColorSecondary"><?php echo esc_html(get_current_pbvote_status_name($post->ID));?></span>
+                        <span class="imc-OverviewListStepLabelStyle imc-TextColorSecondary"><?php echo esc_html(pbvote_get_current_status_name($post->ID));?></span>
                     </div>
 					<?php if ($comments_enabled) { ?>
 						<div class="imc-DisplayInlineBlock">

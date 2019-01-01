@@ -4,7 +4,7 @@ class PbVote_ArchiveDisplayOptions
     private $display_param, $filter_params_view = array();
     private $filtering_active =  false;
     public $result, $perma_structure, $parameter_pass;
-    private $ppage_values   = array( 2 => "2", 6 => "6", 12 => "12", 24 => "24", -1 => "All" ); //all possible options and labels
+    private $ppage_values   = array( 6 => "6", 12 => "12", 24 => "24", -1 => "All" ); //all possible options and labels
     private $sorder_values  = array( 1 => "Date",2 => "Name"); // order options and labels
     private $view_values    = array( 1 => "view_stream", 2 => "apps"); // view options and icon names
     private $default_values = array(
@@ -152,7 +152,7 @@ class PbVote_ArchiveDisplayOptions
         }
         return $label;
     }
-    public function ppage_get_label( $value = "-1" )
+    public function delppage_get_label( $value = "-1" ) //todelete
     {
         if ($value == "-1" ) {
             return "All";
@@ -160,7 +160,7 @@ class PbVote_ArchiveDisplayOptions
             return $value;
         }
     }
-    public function sorder_get_label( $value = "1" )
+    public function delsorder_get_label( $value = "1" ) //todelete
     {
         switch ($value) {
             case '1':
@@ -176,7 +176,7 @@ class PbVote_ArchiveDisplayOptions
         }
         return $label;
     }
-    private function view_get_label( $value)
+    private function delview_get_label( $value) // todelete
     {
         switch ($value) {
             case '1':
@@ -236,7 +236,7 @@ class PbVote_ArchiveDisplayOptions
     public function generate_options_long_ppage( $perm_link )
     {
         $output = "";
-        foreach ( $this->ppage_values as $key ) {
+        foreach ( $this->ppage_values as $key => $value  ) {
             $output .= $this->get_option_with_url_params(
                 $perm_link . $this->create_url_variables_long( array( "ppage" => $key)),
                 // $this->ppage_get_label( $key ));
@@ -248,7 +248,7 @@ class PbVote_ArchiveDisplayOptions
     public function generate_options_long_sorder( $perm_link )
     {
         $output = "";
-        foreach ( $this->sorder_values as $key ) {
+        foreach ( $this->sorder_values as $key => $value ) {
             $output .= $this->get_option_with_url_params(
                 $perm_link . $this->create_url_variables_long( array( "sorder" => $key)),
                 // $this->sorder_get_label( $key ));
@@ -264,14 +264,14 @@ class PbVote_ArchiveDisplayOptions
     public function generate_lists_long_view( $perm_link )
     {
         $output = "";
-        foreach ( $this->view_values as $key ) {
+        foreach ( $this->view_values as $key => $value ) {
             $output .= $this->get_list_item_with_url_params(
                 $perm_link . $this->create_url_variables_long( array( "view" => $key)),
                 // $this->view_get_label( $key ),
                 $this->get_label( "view_values", $key, false ),
                 $selected = (($key == $this->get_value('view') ) ? true : false));
-            }
-            return $output;
+        }
+        return $output;
     }
     private function get_list_item_with_url_params( $url,  $label, $selected = false)
     {

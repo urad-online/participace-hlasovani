@@ -9,6 +9,7 @@
 // $editpage = getIMCEditPage();
 // $listpage = getIMCArchivePage();
 // $voting_page = get_first_pbvoting_post();
+global $wp_query, $post;
 $insertpage = "";
 $editpage = "";
 $listpage = "";
@@ -27,7 +28,6 @@ $issues_pp_counter = 0;
 $voting_view_filters = new  PbVote_ArchiveDisplayOptions();
 get_header();
 
-
 if ( is_front_page() || is_home() ) {
 	$front_page_id = get_option('page_on_front');
 	$my_permalink = _get_page_link($front_page_id);
@@ -43,7 +43,7 @@ if ( is_front_page() || is_home() ) {
                 <li>
                     <label class="imc-NaviSelectStyle">
                         <select id="pbvSelectDisplayComponent" title="Issues to display" onchange="pbvFireNavigation('pbvSelectDisplayComponent')">
-                            <option class="imc-CustomOptionDisabledStyle" value="<?php echo esc_attr($voting_view_filters->get_value('ppage')); ?>" selected disabled><?php echo __('Display: ', 'pb-voting'); ?> <?php echo esc_html($voting_view_filters->ppage_get_label($voting_view_filters->get_value('ppage'))); ?></option>
+                            <option class="imc-CustomOptionDisabledStyle" value="<?php echo esc_attr($voting_view_filters->get_value('ppage')); ?>" selected disabled><?php echo __('Display: ', 'pb-voting'); ?> <?php echo esc_html($voting_view_filters->get_label('ppage', $voting_view_filters->get_value('ppage'))); ?></option>
 
 							<?php echo $voting_view_filters->generate_options_long_ppage($my_permalink)?>
                         </select>
@@ -53,7 +53,7 @@ if ( is_front_page() || is_home() ) {
                 <li>
                     <label class="imc-NaviSelectStyle">
                         <select id="pbvSelectOrderingComponent" title="Order by" onchange="pbvFireNavigation('pbvSelectOrderingComponent')">
-                            <option class="imc-CustomOptionDisabledStyle" value="<?php echo esc_attr($voting_view_filters->get_value('sorder')); ?>" selected disabled><?php echo __('Order: ', 'pb-voting'); ?>  <?php echo esc_html($voting_view_filters->sorder_get_label($voting_view_filters->get_value('sorder'))); ?></option>
+                            <option class="imc-CustomOptionDisabledStyle" value="<?php echo esc_attr($voting_view_filters->get_value('sorder')); ?>" selected disabled><?php echo __('Order: ', 'pb-voting'); ?>  <?php echo esc_html($voting_view_filters->get_label('sorder', $voting_view_filters->get_value('sorder'))); ?></option>
 
 							<?php echo $voting_view_filters->generate_options_long_sorder($my_permalink)?>
                         </select>
@@ -207,9 +207,9 @@ if ( is_front_page() || is_home() ) {
 				$wp_query = NULL;
 				$wp_query = $custom_query;
 
-				$pbvote_imported_view = "1";
 				// Output custom query loop
 				if ($custom_query->have_posts()) :
+					$pbvote_current_view = $voting_view_filters->get_value('view');
 					while ($custom_query->have_posts()) :
 
 						$custom_query->the_post();
@@ -219,12 +219,12 @@ if ( is_front_page() || is_home() ) {
 						$pendingColorClass = 'imc-ColorRed';
 						$issues_pp_counter = $issues_pp_counter + 1;
 
-						if ($pbvote_imported_view == '1') {
+						if ($pbvote_current_view == '1') {
 							//LIST VIEW
 							pbvote_archive_show_list($post, $editpage, $voting_view_filters->parameter_pass, $user_id, $pendingColorClass, $voting_view_filters->get_plugin_base_url());
 						} else {
 							//GRID VIEW
-							pbvote_archive_show_grid($post, $editpage, $voting_view_filters->$parameter_pass, $user_id, $pendingColorClass, $voting_view_filters->get_plugin_base_url());
+							pbvote_archive_show_grid($post, $editpage, $voting_view_filters->parameter_pass, $user_id, $pendingColorClass, $voting_view_filters->get_plugin_base_url());
 						}
 
 						$pbvcategory_currentterm = get_the_terms($post->ID, $voting_category_taxo);
