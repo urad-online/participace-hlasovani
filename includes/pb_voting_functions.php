@@ -151,6 +151,8 @@ function pbvote_get_current_status_color($mypostID)
 
 function pom_fun( $input)
 {
-	$pom = new WP_Query( $input);
-	return $pom;
+	$pom = new PbVote_ArchiveDisplayFilterDataImcIssues( $input->get_filter_params()); 
+	$pom1 = $pom->get_query_data();
+	return $input;
+
 }

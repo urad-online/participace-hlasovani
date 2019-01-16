@@ -5,6 +5,8 @@ require_once PB_VOTE_PATH_INC .'/smssluzbacz/apixml30.php';
 require_once PB_VOTE_PATH_INC. '/pb_voting_functions.php';
 include_once( PB_VOTE_PATH_TEMPL . '/pbvote-part-archive-list.php' );
 include_once( PB_VOTE_PATH_TEMPL . '/pbvote-part-archive-grid.php' );
+include_once( PB_VOTE_PATH_TEMPL . '/pb-item-part-archive-list.php' );
+include_once( PB_VOTE_PATH_TEMPL . '/pb-item-part-archive-grid.php' );
 
 global $votes_mtbx;
 

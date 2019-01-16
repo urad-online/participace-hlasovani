@@ -18,9 +18,12 @@ class PbVote_ArchiveDisplayOptions
             'ppage'  => 'conv_int',
             'sorder' => 'conv_int',
             'view'   => 'conv_int',);
+    private $translate_domain = 'pb-voting';
+    private $session_param_name = "pbv_display_params";
 
-    public function __construct()
+    public function __construct( $name_suffix = "voting")
     {
+        $this->session_param_name .= $name_suffix;
         $this->set_urlstructure();
         $this->set_plugin_base_url();
         foreach ($this->param_list_long as $key) {
@@ -43,9 +46,17 @@ class PbVote_ArchiveDisplayOptions
     public function get_value_array( $param = '')
     {
         if (isset( $this->filter_params_view[ $param] )) {
-            return explode( ',', $this->filter_params_view[ $param]);
+            return array_map( array($this,"convert_int"), explode( ',', $this->filter_params_view[ $param]));
         } else {
             return array();
+        }
+    }
+    public function convert_int($value)
+    {
+        if( intval($value) ) {
+            return intval($value);
+        } else {
+            return $value;
         }
     }
     public function set_urlstructure()
@@ -98,7 +109,7 @@ class PbVote_ArchiveDisplayOptions
         if ( count($this->filter_params_view) > 0) {
             $output = json_encode( $this->filter_params_view );
             $output = sanitize_text_field( $output );
-            $_SESSION['pbv_display_params'] = $output;
+            $_SESSION[ $this->session_param_name ] = $output;
         } else {
             if ( ! empty( $this->session_param) ) {
                 $this->filter_params_view = $this->session_param;
@@ -108,8 +119,8 @@ class PbVote_ArchiveDisplayOptions
 
     public function get_from_session()
     {
-        if (isset($_SESSION['pbv_display_params'])) {
-            $this->session_param = json_decode( $_SESSION['pbv_display_params'], true);
+        if (isset($_SESSION[ $this->session_param_name ])) {
+            $this->session_param = json_decode( $_SESSION[ $this->session_param_name ], true);
         } else {
             $this->session_param = null;
         }
@@ -143,55 +154,15 @@ class PbVote_ArchiveDisplayOptions
     public function get_label( $option, $value, $translate = true)
     {
         $label = $value;
-        if ((!empty($option)) && (!empty($this->$option)) && (!empty( $this->$option[$value]))) {
+        $label_array_name = $option . "_values";
+        if ((!empty($option)) && (!empty($this->$label_array_name)) && (!empty( $this->$label_array_name[$value]))) {
             if ($translate) {
-                $label = __( $this->$option[$value], "pb-voting");
+                $label = __( $this->$label_array_name[$value], $this->translate_domain);
             } else {
-                $label = $this->$option[$value];
+                $label = $this->$label_array_name[$value];
             }
         }
         return $label;
-    }
-    public function delppage_get_label( $value = "-1" ) //todelete
-    {
-        if ($value == "-1" ) {
-            return "All";
-        } else {
-            return $value;
-        }
-    }
-    public function delsorder_get_label( $value = "1" ) //todelete
-    {
-        switch ($value) {
-            case '1':
-                $label = __("Date", "pb-voting");
-                break;
-            case '2':
-                $label = __("Votes", "pb-voting");
-                break;
-
-            default:
-                $label = __("Date", "pb-voting");
-                break;
-        }
-        return $label;
-    }
-    private function delview_get_label( $value) // todelete
-    {
-        switch ($value) {
-            case '1':
-            $label = "view_stream";
-            break;
-            case '2':
-            $label = "apps";
-            break;
-
-            default:
-            $label = "view_stream";
-            break;
-        }
-        return $label;
-
     }
 
     public function create_url_variables_long( $list_value = array() )
@@ -240,7 +211,7 @@ class PbVote_ArchiveDisplayOptions
             $output .= $this->get_option_with_url_params(
                 $perm_link . $this->create_url_variables_long( array( "ppage" => $key)),
                 // $this->ppage_get_label( $key ));
-                $this->get_label( "ppage_values", $key, true ));
+                $this->get_label( "ppage", $key, true ));
         }
         return $output;
     }
@@ -252,7 +223,7 @@ class PbVote_ArchiveDisplayOptions
             $output .= $this->get_option_with_url_params(
                 $perm_link . $this->create_url_variables_long( array( "sorder" => $key)),
                 // $this->sorder_get_label( $key ));
-                $this->get_label( "sorder_values", $key, true ));
+                $this->get_label( "sorder", $key, true ));
         }
         return $output;
     }
@@ -268,7 +239,7 @@ class PbVote_ArchiveDisplayOptions
             $output .= $this->get_list_item_with_url_params(
                 $perm_link . $this->create_url_variables_long( array( "view" => $key)),
                 // $this->view_get_label( $key ),
-                $this->get_label( "view_values", $key, false ),
+                $this->get_label( "view", $key, false ),
                 $selected = (($key == $this->get_value('view') ) ? true : false));
         }
         return $output;
