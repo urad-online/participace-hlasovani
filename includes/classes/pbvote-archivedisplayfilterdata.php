@@ -37,6 +37,7 @@ class PbVote_ArchiveDisplayFilterData
         $this->set_query_args_category();
         $this->set_query_args_status();
         $this->set_query_args_order();
+        $this->set_query_args_voting();
         $this->set_query_args_custom();
     }
 
@@ -100,6 +101,24 @@ class PbVote_ArchiveDisplayFilterData
             }
         }
 
+    }
+
+    public function set_query_args_voting()
+    {
+        $imc_items = array();
+        if(! empty( $this->user_params['svoting'] )) {
+            $voting_ids = explode(",",  $this->user_params['svoting']);
+            foreach ($voting_ids as $post_id) {
+                $items =  get_post_meta( $post_id, "_pods_items", true);
+                if (!empty($items)) {
+                    $imc_items = array_merge( $imc_items, (array) $items );
+                }
+            }
+        }
+        $posts_in = array_unique($imc_items);
+        if (count($posts_in) > 0) {
+            $this->query_args['post__in'] = $posts_in;
+        }
     }
 
     public function set_query_args_custom()
@@ -175,7 +194,6 @@ class PbVote_ArchiveDisplayFilterData
     public function  get_query_data()
     {
         $pom = new WP_Query( $this->query_args );
-        // $pom = get_posts( $this->query_args );
         return $pom;
     }
 }

@@ -6,23 +6,26 @@
  */
 function pb_items_archive_imc_issues_body($pb_issues_view_filters)
 {
-global $wp_query, $post ;
-$insertpage = getIMCInsertPage();
-$editpage = getIMCEditPage();
-$listpage = getIMCArchivePage();
-$voting_page = get_pbvoting_page_link('hlasovani-p8-2018');
-// $voting_page = get_first_pbvoting_post();
+global $wp_query, $post, $voting_ids ;
+
 $filter_category_taxo = 'imccategory';
 $filter_status_taxo   = 'imcstatus';
 $filter_params_view   = array();
+$control_pages = new PbVote_ControlPages( $voting_ids);
+
+$insertpage = $control_pages->gen_url_page_add();
+$editpage   = $control_pages->gen_url_page_edit( 0 );
+$parameter_pass = "&issueid=";
 
 if ( get_option('permalink_structure') ) { $perma_structure = true; } else {$perma_structure = false;}
+if (!empty($voting_ids)) {
+	$pb_issues_view_filters->set_value_param('svoting', $voting_ids);
+}
 
 wp_enqueue_script( 'imc-gmap' );
 wp_enqueue_script( 'mapsV3_infobubble' ); // Insert addon lib for Google Maps V3 -> to style infowindows
 wp_enqueue_script( 'mapsV3_richmarker' ); // Insert addon lib for Google Maps V3 -> to style marker
 
-// $voting_page = get_first_pbvoting_post();
 /********************************************* ISSUES PER PAGE ********************************************************/
 
 $user_id = get_current_user_id();
@@ -63,6 +66,14 @@ if ( is_front_page() || is_home() ) {
                 </li>
 
 				<?php echo $pb_issues_view_filters->generate_lists_long_view($my_permalink)?>
+				<?php
+					if ($control_pages->can_vote()) {
+						echo $control_pages->gen_button_vote(true, "36");
+					}
+					if ($control_pages->can_add_project()) {
+						echo $control_pages->gen_button_add(true, "36");
+					}
+				?>
             </ul>
         </nav>
     </div>
@@ -223,10 +234,10 @@ if ( is_front_page() || is_home() ) {
 
 						if ($pbvote_current_view == '1') {
 							//LIST VIEW
-							pb_item_archive_show_list($post, $editpage, $pb_issues_view_filters->parameter_pass, $user_id, $pendingColorClass, $pb_issues_view_filters->get_plugin_base_url());
+							pb_item_archive_show_list($post, $editpage, $parameter_pass, $user_id, $pendingColorClass, $pb_issues_view_filters->get_plugin_base_url());
 						} else {
 							//GRID VIEW
-							pb_item_archive_show_grid($post, $editpage, $pb_issues_view_filters->parameter_pass, $user_id, $pendingColorClass, $pb_issues_view_filters->get_plugin_base_url());
+							pb_item_archive_show_grid($post, $editpage, $parameter_pass, $user_id, $pendingColorClass, $pb_issues_view_filters->get_plugin_base_url());
 						}
 
 						$pb_item_category_currentterm = get_the_terms($post->ID, $filter_category_taxo);
@@ -277,7 +288,7 @@ if ( is_front_page() || is_home() ) {
                         <div class="imc-Separator"></div>
 
                         <span class="imc-CenterContents imc-TextMedium imc-Text-LG imc-FontRoboto">
-							<a href="<?php echo esc_url( get_permalink($insertpage[0]->ID) ); ?>" class="imc-LinkStyle"><?php echo __('Přidat položku','pb-voting'); ?></a>
+							<a href="<?php echo $insertpage ; ?>" class="imc-LinkStyle"><?php echo __('Report an issue','pb-voting'); ?></a>
 							<?php if($pb_issues_view_filters->is_filtering_active()	) { ?>
                                 <span class="imc-TextColorSecondary ">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
                                 <a href="javascript:void(0);" onclick="pbItemOverviewResetFilters();" class="imc-LinkStyle"><?php echo __('Zrušit filtr','pb-voting'); ?></a>
@@ -324,28 +335,28 @@ if ( is_front_page() || is_home() ) {
 
             var imported_cat = <?php echo json_encode( $pb_issues_view_filters->get_value_array('scategory')); ?>;
 
-            var imported_status = <?php echo json_encode($pb_issues_view_filters->get_value_array('sstatus')); ?>;
+            var imported_status = <?php echo json_encode ($pb_issues_view_filters->get_value_array('sstatus')); ?>;
             var imported_keyword = <?php echo json_encode($pb_issues_view_filters->get_value_array('keyword')); ?>;
             var i;
-			console.log(imported_status);
-			console.log(imported_cat);
+						var countOfFilterParams = imported_status.length + imported_cat.length + imported_keyword.length;
 
-            if (imported_status || imported_cat || imported_keyword) {
+            if (countOfFilterParams > 0) {
                 jQuery('#pbItemFilteringIndicator').css('color', '#1ABC9C');
-				jQuery('#pbItemStatusCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
-				jQuery('#pbItemCatCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
+								jQuery('#pbItemStatusCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
+								jQuery('#pbItemCatCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
 
-                if (imported_status) {
+                if ( imported_status.length > 0) {
                     jQuery('#pbItemStatFilteringLabel').show();
 
                     jQuery('#pbItemToggleStatusCheckbox').prop('checked', false);
+                    jQuery('#pbItemToggleStatusCheckbox').prop('checked', true);
 
                     for (i=0;i<imported_status.length;i++) {
                         jQuery('#pbItem-stat-checkbox-'+imported_status[i]).prop('checked', true);
                     }
                 }
 
-                if (imported_cat) {
+                if (imported_cat.length > 0) {
                     jQuery('#pbItemCatFilteringLabel').show();
 
                     jQuery('#pbItemToggleCatsCheckbox').prop('checked', false);
@@ -355,7 +366,7 @@ if ( is_front_page() || is_home() ) {
                     }
                 }
 
-                if (imported_keyword) {
+                if (imported_keyword.length > 0) {
                     jQuery('#pbItemKeywordFilteringLabel').show();
 
                     jQuery('#pbItemSearchKeywordInput').val(imported_keyword);

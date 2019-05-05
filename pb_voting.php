@@ -4,7 +4,7 @@ Plugin Name: Participativní projekty - hlasování
 Plugin URI: https://urad.online
 Description: Registrayion for a voting. Integration Limesurvey and https://sms.sluzba.cz
 Author: Miloslav Stastny
-Version: 0.1
+Version: 0.2
 Author URI: https://urad.online
 Text Domain: pb-voting
 Domain Path: /languages/
@@ -15,8 +15,11 @@ define( 'PB_VOTE_PATH',       dirname(__FILE__));
 define( 'PB_VOTE_PATH_INC',   PB_VOTE_PATH.'/includes');
 define( 'PB_VOTE_URL',        plugins_url('pb_voting'));
 define( 'PB_VOTE_PATH_TEMPL', PB_VOTE_PATH_INC.'/templates');
-define( 'PB_VOTING_POST_TYPE',      'hlasovani');
-define( 'PB_VOTING_STATUS_TAXO',    'voting_status');
+define( 'PB_VOTING_POST_TYPE',        'hlasovani');
+define( 'PB_VOTING_STATUS_TAXO',      'voting_status');
+define( 'PB_VOTING_NEW_ISSUE_TEMPL',  'insert-pbvote_issues.php');
+define( 'PB_VOTING_EDIT_ISSUE_TEMPL', 'edit-pbvote_issues.php');
+
 if (! defined('PBVOTE_DEBUG')) {
     define( 'PBVOTE_DEBUG',   false );
 }

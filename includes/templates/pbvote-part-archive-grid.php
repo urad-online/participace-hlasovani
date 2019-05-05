@@ -2,7 +2,7 @@
 
 /**
  * 14.01
- * IMC-Archive part for grid-option
+ * PbVoting - hlasovani-Archive part for grid-option
  *
  */
 
@@ -36,7 +36,7 @@ global $voting_enabled, $comments_enabled;
                 <a href="<?php echo esc_url(get_permalink());?>" class="imc-BlockLevelLinkStyle">
                     <div class="imc-OverviewGridNoPhotoWrapperStyle">
                         <i class="imc-EmptyStateIconStyle material-icons md-huge">landscape</i>
-                        <span class="imc-DisplayBlock imc-ReportGenericLabelStyle imc-TextColorHint"><?php echo __('No photo submitted','participace-projekty'); ?></span>
+                        <span class="imc-DisplayBlock imc-ReportGenericLabelStyle imc-TextColorHint"><?php echo __('No photo submitted','pb-voting'); ?></span>
                     </div>
                 </a>
 
@@ -71,13 +71,6 @@ global $voting_enabled, $comments_enabled;
 
                 <span class="u-pull-left imc-OverviewCatNameStyle imc-OverviewGridCatNameStyle"><?php echo esc_html($current_category_name); ?></span>
 
-                <?php $adminMsgs = imc_show_issue_message(get_the_ID(), get_current_user_id());
-                if ($adminMsgs) { ?>
-                    <div class="imc-AdminMsgsStyle">
-                        <i class="material-icons md-24 u-pull-right <?php echo esc_html($pendingColorClass); ?>">error</i>
-                        <span class="imc-AdminMsgsTooltipStyle imc-AdminMsgsGridTooltipStyle"><?php echo esc_html($adminMsgs); ?></span>
-                    </div>
-                <?php } ?>
             </div>
 
             <hr class="imc-HorizontalWhitespaceSeparator">
@@ -89,7 +82,7 @@ global $voting_enabled, $comments_enabled;
                     <?php $time_create = get_post_time('U', false);
 
                     if ($time_create < 0 || !$time_create ) {
-                        $timeString = __('Under moderation','participace-projekty');
+                        $timeString = __('Under moderation','pb-voting');
                     }
                     else {
                         $timeString = imc_calculate_relative_date($time_create);
@@ -110,7 +103,7 @@ global $voting_enabled, $comments_enabled;
                         <span class="imc-DisplayBlock imc-OverviewGridStepLabelStyle imc-TextColorSecondary">
                             <?php
                             comments_number( 'No comments', '1 comment', '% comments' );
-                            printf( _nx( '1 Comment', '%1$s Comments', get_comments_number(), 'comments number', 'participace-projekty' ), number_format_i18n( get_comments_number() ) );
+                            printf( _nx( '1 Comment', '%1$s Comments', get_comments_number(), 'comments number', 'pb-voting' ), number_format_i18n( get_comments_number() ) );
                             ?>
 
                         </span>

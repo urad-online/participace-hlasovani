@@ -74,7 +74,7 @@ class VotingInfoMetabox {
    }
    private function set_meta_fields()
    {
-       // $pom = new pbRenderForm();
+       // $pom = new PbVote_RenderForm();
        $this->meta_fields = array(
            'voting_date_from' => array(
                'label'     => 'Datum začátku hlasování',

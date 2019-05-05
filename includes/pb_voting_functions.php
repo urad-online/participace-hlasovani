@@ -151,8 +151,59 @@ function pbvote_get_current_status_color($mypostID)
 
 function pom_fun( $input)
 {
-	$pom = new PbVote_ArchiveDisplayFilterDataImcIssues( $input->get_filter_params()); 
+	$pom = new PbVote_ArchiveDisplayFilterDataImcIssues( $input->get_filter_params());
 	$pom1 = $pom->get_query_data();
 	return $input;
 
+}
+function pbvote_upload_img($file = array(), $parent_post_id, $issue_title, $orientation = null) {
+
+		require_once( ABSPATH . 'wp-admin/includes/admin.php' );
+
+		add_filter( 'sanitize_file_name', 'pbvote_filename_rename_to_hash', 10 );
+		$file_return = wp_handle_upload( $file, array(
+			'test_form' => false,
+			'unique_filename_callback' => 'imc_rename_attachment' // Use this to rename photo
+		) );
+		remove_filter( 'sanitize_file_name', 'pbvote_filename_rename_to_hash', 10 );
+
+		if( isset( $file_return['error'] ) || isset( $file_return['upload_error_handler'] ) ) {
+			return false;
+		} else {
+
+		$filename = $file_return['file'];
+
+		if ($orientation) {
+			imc_fix_img_orientation( $filename, $file_return['type'], $orientation );
+		}
+
+		$attachment = array(
+			'post_mime_type' => $file_return['type'],
+			'post_title' => mb_convert_encoding(preg_replace( '/\.[^.]+$/', '', basename( $filename ) ), "UTF-8"),
+			'post_content' => '',
+			'post_status' => 'inherit',
+			'guid' => $file_return['url']
+		);
+
+		$attachment_id = wp_insert_attachment( $attachment, $file_return['url'], $parent_post_id );
+		require_once(ABSPATH . 'wp-admin/includes/image.php');
+
+		$attachment_data = wp_generate_attachment_metadata( $attachment_id, $filename );
+
+		wp_update_attachment_metadata( $attachment_id, $attachment_data );
+
+		if( 0 < intval( $attachment_id, 10 ) ) {
+			return $attachment_id;
+		}
+
+	}
+	return false;
+}
+
+function pbvote_filename_rename_to_hash( $filename )
+{
+		$info = pathinfo( $filename );
+		$ext  = empty( $info['extension'] ) ? '' : '.' . $info['extension'];
+		$name = basename( $filename, $ext );
+		return md5( $name ) . $ext;
 }

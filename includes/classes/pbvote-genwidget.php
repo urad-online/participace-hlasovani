@@ -5,6 +5,7 @@ class PbVote_GenWidget
     private $template_file = PB_VOTE_PATH_TEMPL . '/reg_widget_content.php';
     private $status_taxo = PB_VOTING_STATUS_TAXO ;
     private $show_for_statuses = array( 'aktivni',);
+    private $url_param_name_votingid = "votingid";
 
     public function __construct( $atts)
     {
@@ -70,6 +71,15 @@ class PbVote_GenWidget
         return $base;
     }
     public function get_post_id()
+    {
+        if (isset( $_GET[ $this->url_param_name_votingid ] )) {
+            $value = sanitize_text_field( $_GET[ $this->url_param_name_votingid ] );
+            return intval($value);
+        } else {
+            return $this->get_id_from_shortcode_params();
+        }
+    }
+    public function get_id_from_shortcode_params()
     {
         if ( !empty( $this->atts['voting_slug'] )) {
             $args = array(

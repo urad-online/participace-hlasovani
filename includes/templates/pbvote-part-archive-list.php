@@ -2,7 +2,7 @@
 
 /**
  * 14.01
- * IMC-Archive part for grid-option
+ * PbVoting - hlasovani-Archive part for grid-option
  *
  */
 
@@ -44,7 +44,8 @@ global $voting_enabled, $comments_enabled;
 					<?php } ?>
                 </div>
 
-				<?php $adminMsgs = imc_show_issue_message(get_the_ID(), get_current_user_id());
+				<?php // $adminMsgs = imc_show_issue_message(get_the_ID(), get_current_user_id());
+				 $adminMsgs = "";
 				if ($adminMsgs) { ?>
                     <div class="imc-AdminMsgsStyle imc-row">
                         <i class="material-icons md-24 <?php echo esc_html($pendingColorClass); ?>">error</i>
@@ -86,7 +87,7 @@ global $voting_enabled, $comments_enabled;
 
 						<?php $time_create = get_post_time('U', false);
 						if ($time_create < 0 || !$time_create ) {
-							$timeString = __('Under moderation','participace-projekty');
+							$timeString = __('Under moderation','pb-voting');
 						}
 						else {
 							$timeString = imc_calculate_relative_date($time_create);
@@ -104,7 +105,7 @@ global $voting_enabled, $comments_enabled;
 							<i class="material-icons md-18 imc-TextColorSecondary imc-AlignIconToLabel">comment</i>
 							<span class="imc-OverviewListStepLabelStyle imc-TextColorSecondary"><?php
 							comments_number( 'No comments', '1 comment', '% comments' );
-							printf( _nx( '1 Comment', '%1$s Comments', get_comments_number(), 'comments number', 'participace-projekty' ), number_format_i18n( get_comments_number() ) );
+							printf( _nx( '1 Comment', '%1$s Comments', get_comments_number(), 'comments number', 'pb-voting' ), number_format_i18n( get_comments_number() ) );
 							?></span>
 						</div>
 					<?PHP } ?>
@@ -131,22 +132,12 @@ global $voting_enabled, $comments_enabled;
                     <a href="<?php echo esc_url(get_permalink());?>" class="imc-BlockLevelLinkStyle">
                         <div class="imc-OverviewListNoPhotoWrapperStyle">
                             <i class="imc-EmptyStateIconStyle material-icons md-48">landscape</i>
-                            <span class="imc-DisplayBlock imc-ReportFormErrorLabelStyle imc-TextColorHint"><?php echo __('No photo submitted','participace-projekty'); ?></span>
+                            <span class="imc-DisplayBlock imc-ReportFormErrorLabelStyle imc-TextColorHint"><?php echo __('No photo submitted','pb-voting'); ?></span>
                         </div>
                     </a>
 
 				<?php } ?>
 
-				<?php $author_id = intval(get_the_author_meta('ID'));
-				if ( intval($author_id, 10) === intval($user_id, 10) && !pb_user_can_edit(get_the_ID(), $user_id)  )  { ?>
-
-                    <img class="imc-OverviewListMyIssueIconStyle" alt="My Issue icon" title="<?php echo __('My Issue','participace-projekty'); ?>" src="<?php echo esc_url($plugin_path_url);?>/img/ic_my_issue_list.png">
-
-				<?php } else if(pb_user_can_edit(get_the_ID(), $user_id)) { ?>
-
-                    <a class="imc-button-primary imc-button-small imc-OverviewListEditButtonStyle" href="<?php echo esc_url( get_permalink($editpage[0]->ID) . $parameter_pass . $issue_id ); ?>" target="_blank"><?php echo __('Edit','participace-projekty'); ?></a>
-
-				<?php } ?>
             </div>
         </div>
     </div>

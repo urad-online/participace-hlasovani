@@ -296,18 +296,18 @@ if ( is_front_page() || is_home() ) {
         jQuery( document ).ready(function() {
 
             var imported_cat = <?php echo json_encode( $voting_view_filters->get_value_array('scategory')); ?>;
-
             var imported_status = <?php echo json_encode($voting_view_filters->get_value_array('sstatus')); ?>;
             var imported_keyword = <?php echo json_encode($voting_view_filters->get_value_array('keyword')); ?>;
             var i;
 
+						var countOfFilterParams = imported_status.length + imported_cat.length + imported_keyword.length;
 
-            if (imported_status || imported_cat || imported_keyword) {
+						if (countOfFilterParams > 0) {
                 jQuery('#pbvFilteringIndicator').css('color', '#1ABC9C');
-				jQuery('#pbvStatusCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
-				jQuery('#pbvCatCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
+								jQuery('#pbvStatusCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
+								jQuery('#pbvCatCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
 
-                if (imported_status) {
+                if (imported_status.length > 0) {
                     jQuery('#imcStatFilteringLabel').show();
 
                     jQuery('#pbvToggleStatusCheckbox').prop('checked', false);
@@ -317,7 +317,7 @@ if ( is_front_page() || is_home() ) {
                     }
                 }
 
-                if (imported_cat) {
+                if (imported_cat.length > 0) {
                     jQuery('#imcCatFilteringLabel').show();
 
                     jQuery('#pbvToggleCatsCheckbox').prop('checked', false);
@@ -327,7 +327,7 @@ if ( is_front_page() || is_home() ) {
                     }
                 }
 
-                if (imported_keyword) {
+                if (imported_keyword.length > 0) {
                     jQuery('#imcKeywordFilteringLabel').show();
 
                     jQuery('#pbvSearchKeywordInput').val(imported_keyword);
