@@ -96,7 +96,7 @@ class PbVote_ControlPages
 
         $output = '<a href="' . $link . '" class="imc-SingleHeaderLinkStyle" target="_self">
             <i class="material-icons md-'.trim($icon_size).' imc-SingleHeaderIconStyle">how_to_vote</i>
-            <span class="imc-hidden-xs imc-hidden-sm imc-hidden-md">' . __("Registrace k hlasovaní","pb-voting").'</span></a>';
+            <span class="imc-hidden-xs imc-hidden-sm imc-hidden-md">' . __("Register to vote","pb-voting").'</span></a>';
 
         if ($list_item) {
             $output = '<li class="u-pull-right">' . $output . '</li>';

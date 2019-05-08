@@ -211,7 +211,7 @@ class PbVote_ProjectEdit {
         }
 
         $link = $this->render_file_link($value, $input['id']);
-        // <span id="%sName" class="imc-ReportGenericLabelStyle imc-TextColorSecondary">'. __('Vyberte soubor','pb-voting') .'</span>
+        // <span id="%sName" class="imc-ReportGenericLabelStyle imc-TextColorSecondary">'. __('Select a file','pb-voting') .'</span>
         $output = '<div class="imc-row" id="pbProjectSection%s">
                     <div class="imc-row">
                         <h3 class="u-pull-left imc-SectionTitleTextStyle">%s%s %s'.$this->render_tooltip( $help ).'</h3>
@@ -324,7 +324,7 @@ class PbVote_ProjectEdit {
         if ( $mandatory ) {
             return '';
         } else {
-            return ' ( ' . __('volitelné','pb-voting') .' )';
+            return ' ( ' . __('optional','pb-voting') .' )';
             return '<span class="imc-OptionalTextLabelStyle">" " (' . __('optional','pb-voting') .')></span>';
         }
     }

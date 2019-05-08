@@ -64,7 +64,7 @@ function pb_get_custom_fields()
                 'rules' => 'required|min_length[5]|max_length[255]',),
         ),
         'category' => array(
-            'label'     => 'Kategorie',
+            'label'     => 'Categorys',
             'id'        => 'my_custom_taxonomy',
             'type'      => 'category',
             'mandatory' => true,
@@ -297,7 +297,7 @@ function pb_get_custom_fields()
             'DelBtnLabel'   => 'Smazat',
             'help'          => 'Povolené typy příloh: gif, png, jpg, jpeg, pdf',
             'show_mtbx'   => true,
-            'show_form'   => true,
+            'show_form'   => false,
             'js_rules'    => array(
                 'rules'   => 'is_file_type[gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG,pdf,PDF]',
             ),

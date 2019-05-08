@@ -12,10 +12,7 @@ $pb_issues_view_filters = new  PbVote_ArchiveDisplayOptions( 'imc');
 $voting_ids = get_the_ID();
 $hlasovani_meta = get_post_meta( $voting_ids, '', false);
 $params = hlasovani_query_arg( $hlasovani_meta['items'] ) ;
-// $insertpage = getIMCInsertPage();
-// $editpage = getIMCEditPage();
-// $listpage = getIMCArchivePage();
-// $voting_page = get_first_pbvoting_post();
+
 get_header();
 
 

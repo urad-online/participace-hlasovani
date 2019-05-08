@@ -85,9 +85,9 @@ if ( is_front_page() || is_home() ) {
             <div class="imc-SingleHeaderStyle imc-BGColorWhite">
                 <label for="ac-1" class="imc-OverviewFilteringPanelLabelStyle">
                     <span><?php echo __('Search &amp; Filtering', 'pb-voting'); ?></span>
-                    <span style="display: none;" id="pbItemCatFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Kategorie', 'pb-voting');?></span>
-                    <span style="display: none;" id="pbItemStatFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Stav', 'pb-voting');?></span>
-                    <span style="display: none;" id="pbItemKeywordFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Klíčová slova', 'pb-voting');?></span>
+                    <span style="display: none;" id="pbItemCatFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Category', 'pb-voting');?></span>
+                    <span style="display: none;" id="pbItemStatFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Status', 'pb-voting');?></span>
+                    <span style="display: none;" id="pbItemKeywordFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Key words', 'pb-voting');?></span>
                     <i class="material-icons md-24 u-pull-right" id="pbItemFilteringIndicator">filter_list</i>
                 </label>
 
@@ -98,15 +98,15 @@ if ( is_front_page() || is_home() ) {
                 <div class="imc-row imc-DrawerContentsStyle">
 
 					<div class="imc-row">
-						<h3 class="imc-SectionTitleTextStyle"><?php echo __('Vyhledat', 'pb-voting'); ?></h3>
+						<h3 class="imc-SectionTitleTextStyle"><?php echo __('Search', 'pb-voting'); ?></h3>
 
 						<input name="searchKeyword" autocomplete="off" placeholder="<?php
-							echo __('Vyhledat klíčové slovo','pb-voting'); ?>" id="pbItemSearchKeywordInput" type="search" class="imc-InputStyle"/>
+							echo __('Search key words','pb-voting'); ?>" id="pbItemSearchKeywordInput" type="search" class="imc-InputStyle"/>
 					</div>
                     <div class="imc-DrawerFirstCol">
 
                         <input checked="checked" class="imc-CheckboxToggleStyle" id="pbItemToggleStatusCheckbox" type="checkbox" name="pbItemToggleStatusCheckbox" value="all">
-                        <label class="imc-SectionTitleTextStyle" for="pbItemToggleStatusCheckbox"><?php echo __('Stav hlasování', 'pb-voting'); ?></label>
+                        <label class="imc-SectionTitleTextStyle" for="pbItemToggleStatusCheckbox"><?php echo __('Voting status', 'pb-voting'); ?></label>
                         <br>
                         <div id="pbItemStatusCheckboxes" class="imc-row">
 							<?php $all_pb_item_statuses = get_all_pbvote_taxo( $filter_status_taxo);
@@ -127,7 +127,7 @@ if ( is_front_page() || is_home() ) {
 
                         <input checked="checked" class="imc-CheckboxToggleStyle" id="pbItemToggleCatsCheckbox" type="checkbox"
 							name="pbItemToggleCatsCheckbox" value="all">
-                        <label class="imc-SectionTitleTextStyle" for="pbItemToggleCatsCheckbox"><?php echo __('Kategorie', 'pb-voting'); ?></label>
+                        <label class="imc-SectionTitleTextStyle" for="pbItemToggleCatsCheckbox"><?php echo __('Category', 'pb-voting'); ?></label>
                         <br>
 
                         <div id="pbItemCatCheckboxes" class="imc-row">
@@ -193,8 +193,8 @@ if ( is_front_page() || is_home() ) {
                 </div>
 
                 <div class="imc-row-no-margin imc-DrawerButtonRowStyle">
-                    <button class="imc-button imc-button-primary u-pull-right" onclick="pbItemOverviewGetFilteringData();"><?php echo __('Zobrazit vybrané', 'pb-voting'); ?></button>
-                    <button class="imc-button u-pull-right" onclick="pbItemOverviewResetFilters();"><?php echo __('Zobrazit vše', 'pb-voting'); ?></button>
+                    <button class="imc-button imc-button-primary u-pull-right" onclick="pbItemOverviewGetFilteringData();"><?php echo __('Show selected', 'pb-voting'); ?></button>
+                    <button class="imc-button u-pull-right" onclick="pbItemOverviewResetFilters();"><?php echo __('Show all', 'pb-voting'); ?></button>
                 </div>
 
             </article>
@@ -283,7 +283,7 @@ if ( is_front_page() || is_home() ) {
 
                         <div class="imc-Separator"></div>
 
-                        <h1 class="imc-FontRoboto imc-Text-XL imc-TextColorSecondary imc-TextItalic imc-TextMedium imc-CenterContents"><?php echo __('Nejsou dostupné záznamy','pb-voting'); ?></h1>
+                        <h1 class="imc-FontRoboto imc-Text-XL imc-TextColorSecondary imc-TextItalic imc-TextMedium imc-CenterContents"><?php echo __('No record available','pb-voting'); ?></h1>
 
                         <div class="imc-Separator"></div>
 
@@ -291,7 +291,7 @@ if ( is_front_page() || is_home() ) {
 							<a href="<?php echo $insertpage ; ?>" class="imc-LinkStyle"><?php echo __('Report an issue','pb-voting'); ?></a>
 							<?php if($pb_issues_view_filters->is_filtering_active()	) { ?>
                                 <span class="imc-TextColorSecondary ">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-                                <a href="javascript:void(0);" onclick="pbItemOverviewResetFilters();" class="imc-LinkStyle"><?php echo __('Zrušit filtr','pb-voting'); ?></a>
+                                <a href="javascript:void(0);" onclick="pbItemOverviewResetFilters();" class="imc-LinkStyle"><?php echo __('Reset filter','pb-voting'); ?></a>
 							<?php } ?>
 						</span>
 

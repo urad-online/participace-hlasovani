@@ -30,24 +30,6 @@ function pbvote_get_code()
     wp_die(); // this is required to terminate immediately and return a proper response
 }
 
-function pb_voting_set_single_template($single_template) {
-    global $post;
-	// return $single_template;
-
-    if ($post->post_type == PB_VOTING_POST_TYPE ) {
-		$single_template = PB_VOTE_PATH_TEMPL . '/single-'.$post->post_type.'.php';
-	}
-	return $single_template;
-}
-function pb_voting_set_archive_template($archive_template) {
-    global $post;
-	// return $single_template;
-
-    if ($post->post_type == PB_VOTING_POST_TYPE ) {
-		$archive_template = PB_VOTE_PATH_TEMPL . '/archive-'.$post->post_type.'.php';
-	}
-	return $archive_template;
-}
 function get_the_user_ip()
 {
 	global $_SERVER;

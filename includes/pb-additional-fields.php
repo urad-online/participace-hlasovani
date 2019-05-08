@@ -31,7 +31,7 @@ $comments_enabled   = ( empty($generaloptions["imc_comments"])) ? false : $gener
  		foreach ( $this->screen as $single_screen ) {
  			add_meta_box(
  				'informacekprojektu',
- 				__( 'Informace k projektu', 'pb-hlasovani' ),
+ 				__( 'Information to project', 'pb-voting' ),
  				array( $this, 'meta_box_callback' ),
  				$single_screen,
  				'normal',
