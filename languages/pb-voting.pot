@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Participativní projekty - hlasování\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-08 17:52+0000\n"
+"POT-Creation-Date: 2019-05-13 20:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -370,4 +370,7 @@ msgstr ""
 
 #. Author of the plugin
 msgid "Miloslav Stastny"
+msgstr ""
+
+msgid "Issue status"
 msgstr ""

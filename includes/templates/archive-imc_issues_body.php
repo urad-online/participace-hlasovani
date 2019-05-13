@@ -106,7 +106,7 @@ if ( is_front_page() || is_home() ) {
                     <div class="imc-DrawerFirstCol">
 
                         <input checked="checked" class="imc-CheckboxToggleStyle" id="pbItemToggleStatusCheckbox" type="checkbox" name="pbItemToggleStatusCheckbox" value="all">
-                        <label class="imc-SectionTitleTextStyle" for="pbItemToggleStatusCheckbox"><?php echo __('Voting status', 'pb-voting'); ?></label>
+                        <label class="imc-SectionTitleTextStyle" for="pbItemToggleStatusCheckbox"><?php echo __('Issue status', 'pb-voting'); ?></label>
                         <br>
                         <div id="pbItemStatusCheckboxes" class="imc-row">
 							<?php $all_pb_item_statuses = get_all_pbvote_taxo( $filter_status_taxo);

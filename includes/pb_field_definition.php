@@ -64,7 +64,7 @@ function pb_get_custom_fields()
                 'rules' => 'required|min_length[5]|max_length[255]',),
         ),
         'category' => array(
-            'label'     => 'Categorys',
+            'label'     => 'Kategorie',
             'id'        => 'my_custom_taxonomy',
             'type'      => 'category',
             'mandatory' => true,

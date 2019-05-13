@@ -1,7 +1,5 @@
 Potreba udelat:
 1. Zahrnout pb-styles.css do pbvote_style.css
-2. Zmenit preklady z participace-projekty na Imc
 4. Refaktorovat neb zrusit fci pb_enqueue_scripts
-6. VYresit fci pb_user_can_edit v imc-core-functions.php
-7. Zkontrolvt jestli hl stranka "participace-projekty" nebude chybet v pripade ze se bude jmenovat 'improve-my-city'. Viz imc-core-templates.php
-8. Vyresit zakazani komentaru a ratingu. Viz register_general_settings v imc-page-settings.php
+6. VYresit fci pb_user_can_edit v pb-additonal-fields.php
+7. Vyresit zakazani komentaru a ratingu. Viz register_general_settings v imc-page-settings.php
