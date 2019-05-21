@@ -189,3 +189,41 @@ function pbvote_filename_rename_to_hash( $filename )
 		$name = basename( $filename, $ext );
 		return md5( $name ) . $ext;
 }
+function pbvote_selectvoting_generate($is_single_voting = true)
+{
+	if( $is_single_voting) {
+		return "";
+	}
+
+	$all_pb_voting = get_all_pbvoting();
+	$output  = '<div class="imc-row">';
+	$output .= '<input checked="checked" class="imc-CheckboxToggleStyle" id="pbItemToggleVotingCheckbox" type="checkbox" name="pbItemToggleVotingCheckbox" value="all">';
+	$output .= '<label class="imc-SectionTitleTextStyle" for="pbItemToggleVotingCheckbox">'. __('Votings', 'pb-voting') . '</label>';
+	$output .= '<div id="pbItemVotingCheckboxes" class="imc-row">';
+		if ($all_pb_voting) {
+
+				foreach( $all_pb_voting as $pb_voting_item ) {
+					$output .= '<input checked="checked" class="imc-CheckboxStyle" id="pbItem-voting-checkbox-' . esc_html($pb_voting_item->ID) .'" type="checkbox" name="' .  esc_attr($pb_voting_item->post_title) . '" value="' . esc_attr($pb_voting_item->ID) . '">';
+					$output .= '<label for="pbItem-voting-checkbox-' . esc_html($pb_voting_item->ID) .'">' . esc_html($pb_voting_item->post_title) . '</label>';
+					$output .= '</br>';
+				}
+		}
+	$output .= '</div></div>';
+	return $output;
+}
+function get_all_pbvoting()
+{
+	$query_args = array(
+			'post_type' => PB_VOTING_POST_TYPE,
+			'post_status' => "publish",
+			'paged' => 1,
+			'posts_per_page' => -1,
+	);
+	$pom = new WP_Query( $query_args );
+	if ( is_wp_error($pom) ) {
+		return "";
+	} else {
+		return $pom->posts;
+	}
+
+}

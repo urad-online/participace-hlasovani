@@ -19,7 +19,10 @@ $parameter_pass = "&issueid=";
 
 if ( get_option('permalink_structure') ) { $perma_structure = true; } else {$perma_structure = false;}
 if (!empty($voting_ids)) {
-	$pb_issues_view_filters->set_value_param('svoting', $voting_ids);
+		$pb_issues_view_filters->set_value_param('svoting', $voting_ids);
+		$is_single_voting = true;
+} else {
+		$is_single_voting = false;
 }
 
 wp_enqueue_script( 'imc-gmap' );
@@ -95,98 +98,96 @@ if ( is_front_page() || is_home() ) {
 
             <article class="ac-small imc-DropShadow">
 
-                <div class="imc-row imc-DrawerContentsStyle">
+              <div class="imc-row imc-DrawerContentsStyle">
 
-					<div class="imc-row">
-						<h3 class="imc-SectionTitleTextStyle"><?php echo __('Search', 'pb-voting'); ?></h3>
+							<?PHP echo pbvote_selectvoting_generate($is_single_voting);?>
+							<div class="imc-row">
+								<h3 class="imc-SectionTitleTextStyle"><?php echo __('Search', 'pb-voting'); ?></h3>
 
-						<input name="searchKeyword" autocomplete="off" placeholder="<?php
-							echo __('Search key words','pb-voting'); ?>" id="pbItemSearchKeywordInput" type="search" class="imc-InputStyle"/>
-					</div>
-                    <div class="imc-DrawerFirstCol">
+								<input name="searchKeyword" autocomplete="off" placeholder="<?php
+									echo __('Search key words','pb-voting'); ?>" id="pbItemSearchKeywordInput" type="search" class="imc-InputStyle"/>
+							</div>
+                <div class="imc-DrawerFirstCol">
 
-                        <input checked="checked" class="imc-CheckboxToggleStyle" id="pbItemToggleStatusCheckbox" type="checkbox" name="pbItemToggleStatusCheckbox" value="all">
-                        <label class="imc-SectionTitleTextStyle" for="pbItemToggleStatusCheckbox"><?php echo __('Issue status', 'pb-voting'); ?></label>
-                        <br>
-                        <div id="pbItemStatusCheckboxes" class="imc-row">
-							<?php $all_pb_item_statuses = get_all_pbvote_taxo( $filter_status_taxo);
-							if ($all_pb_item_statuses) { ?>
+                    <input checked="checked" class="imc-CheckboxToggleStyle" id="pbItemToggleStatusCheckbox" type="checkbox" name="pbItemToggleStatusCheckbox" value="all">
+                    <label class="imc-SectionTitleTextStyle" for="pbItemToggleStatusCheckbox"><?php echo __('Issue status', 'pb-voting'); ?></label>
 
-								<?php foreach( $all_pb_item_statuses as $pb_item_status ) { ?>
+                    <div id="pbItemStatusCheckboxes" class="imc-row">
+											<?php $all_pb_item_statuses = get_all_pbvote_taxo( $filter_status_taxo);
+											if ($all_pb_item_statuses) { ?>
 
-                                    <input checked="checked" class="imc-CheckboxStyle" id="pbItem-stat-checkbox-<?php echo esc_html($pb_item_status->term_id); ?>" type="checkbox" name="<?php echo esc_attr($pb_item_status->name); ?>" value="<?php echo esc_attr($pb_item_status->term_id); ?>">
-                                    <label for="pbItem-stat-checkbox-<?php echo esc_html($pb_item_status->term_id); ?>"><?php echo esc_html($pb_item_status->name); ?></label>
-                                    <br>
-
-								<?php }
-							} ?>
-                        </div>
+													<?php foreach( $all_pb_item_statuses as $pb_item_status ) { ?>
+                            <input checked="checked" class="imc-CheckboxStyle" id="pbItem-stat-checkbox-<?php echo esc_html($pb_item_status->term_id); ?>" type="checkbox" name="<?php echo esc_attr($pb_item_status->name); ?>" value="<?php echo esc_attr($pb_item_status->term_id); ?>">
+                            <label for="pbItem-stat-checkbox-<?php echo esc_html($pb_item_status->term_id); ?>"><?php echo esc_html($pb_item_status->name); ?></label>
+														</br>
+													<?php }
+											} ?>
                     </div>
+                  </div>
 
-                    <div class="imc-DrawerSecondCol">
+                  <div class="imc-DrawerSecondCol">
 
-                        <input checked="checked" class="imc-CheckboxToggleStyle" id="pbItemToggleCatsCheckbox" type="checkbox"
-							name="pbItemToggleCatsCheckbox" value="all">
-                        <label class="imc-SectionTitleTextStyle" for="pbItemToggleCatsCheckbox"><?php echo __('Category', 'pb-voting'); ?></label>
-                        <br>
+                    <input checked="checked" class="imc-CheckboxToggleStyle" id="pbItemToggleCatsCheckbox" type="checkbox"
+												name="pbItemToggleCatsCheckbox" value="all">
+                    <label class="imc-SectionTitleTextStyle" for="pbItemToggleCatsCheckbox"><?php echo __('Category', 'pb-voting'); ?></label>
+                    <br>
+	                    <div id="pbItemCatCheckboxes" class="imc-row">
 
-                        <div id="pbItemCatCheckboxes" class="imc-row">
+												<?php $all_pb_item_category = get_all_pbvote_taxo( $filter_category_taxo , true);
 
-							<?php $all_pb_item_category = get_all_pbvote_taxo( $filter_category_taxo , true);
+												$count = count($all_pb_item_category);
+												$numItemsPerRow = ceil($count / 2);
+												$index  = 0;
 
-							$count = count($all_pb_item_category);
-							$numItemsPerRow = ceil($count / 2);
-							$index  = 0;
+												echo '<div class="imc-grid-6 imc-columns">';
+												foreach( $all_pb_item_category as $pb_item_category ) {
+													if ($index > 0 and $index % $numItemsPerRow == 0) {
+														echo '</div><div class="imc-grid-6 imc-columns">';
+													} ?>
 
-							echo '<div class="imc-grid-6 imc-columns">';
-							foreach( $all_pb_item_category as $pb_item_category ) {
-								if ($index > 0 and $index % $numItemsPerRow == 0) {
-									echo '</div><div class="imc-grid-6 imc-columns">';
-								} ?>
+	                        <div class="imc-row">
 
-                                <div class="imc-row">
+	                            <input checked class="imc-CheckboxStyle" id="pbItem-cat-checkbox-<?php echo esc_html($pb_item_category->term_id); ?>" type="checkbox" name="<?php echo esc_attr($pb_item_category->name); ?>" value="<?php echo esc_attr($pb_item_category->term_id); ?>">
+	                            <label for="pbItem-cat-checkbox-<?php echo esc_html($pb_item_category->term_id); ?>"><?php echo esc_html($pb_item_category->name); ?></label>
 
-                                    <input checked class="imc-CheckboxStyle" id="pbItem-cat-checkbox-<?php echo esc_html($pb_item_category->term_id); ?>" type="checkbox" name="<?php echo esc_attr($pb_item_category->name); ?>" value="<?php echo esc_attr($pb_item_category->term_id); ?>">
-                                    <label for="pbItem-cat-checkbox-<?php echo esc_html($pb_item_category->term_id); ?>"><?php echo esc_html($pb_item_category->name); ?></label>
+															<?php $args = array(
+																'hide_empty'    => false,
+																'hierarchical'  => true,
+																'parent'        => $pb_item_category->term_id
+															);
+															$childterms = get_terms( $filter_category_taxo, $args);
 
-									<?php $args = array(
-										'hide_empty'    => false,
-										'hierarchical'  => true,
-										'parent'        => $pb_item_category->term_id
-									);
-									$childterms = get_terms( $filter_category_taxo, $args);
+															if (!empty($childterms)) { ?>
 
-									if (!empty($childterms)) { ?>
+	                              <div id="pbItemCatChildCheckboxes">
 
-                                        <div id="pbItemCatChildCheckboxes">
+																	<?php foreach ( $childterms as $childterm ) { ?>
 
-											<?php foreach ( $childterms as $childterm ) { ?>
+	                                  <input checked="checked" class="imc-CheckboxStyle imc-CheckboxChildStyle" id="pbItem-cat-checkbox-<?php echo esc_html($childterm->term_id); ?>" type="checkbox" name="<?php echo esc_attr($childterm->name); ?>" value="<?php echo esc_attr($childterm->term_id); ?>">
+	                                  <label for="pbItem-cat-checkbox-<?php echo esc_html($childterm->term_id); ?>"><?php echo esc_html($childterm->name); ?></label>
 
-                                                <input checked="checked" class="imc-CheckboxStyle imc-CheckboxChildStyle" id="pbItem-cat-checkbox-<?php echo esc_html($childterm->term_id); ?>" type="checkbox" name="<?php echo esc_attr($childterm->name); ?>" value="<?php echo esc_attr($childterm->term_id); ?>">
-                                                <label for="pbItem-cat-checkbox-<?php echo esc_html($childterm->term_id); ?>"><?php echo esc_html($childterm->name); ?></label>
+																		<?php $args = array('hide_empty' => false, 'hierarchical'  => true, 'parent' => $childterm->term_id);
+																		$grandchildterms = get_terms( $filter_category_taxo, $args);
 
-												<?php $args = array('hide_empty' => false, 'hierarchical'  => true, 'parent' => $childterm->term_id);
-												$grandchildterms = get_terms( $filter_category_taxo, $args);
+																		if (!empty($childterms)) { ?>
 
-												if (!empty($childterms)) { ?>
+		                                  <div id="pbItemCatGrandChildCheckboxes">
 
-                                                    <div id="pbItemCatGrandChildCheckboxes">
-
-														<?php foreach ($grandchildterms as $grandchild ) { ?>
-                                                            <input checked="checked" class="imc-CheckboxStyle imc-CheckboxGrandChildStyle"
-																id="pbItem-cat-checkbox-<?php echo esc_html($grandchild->term_id); ?>" type="checkbox"
-																name="<?php echo esc_attr($grandchild->name); ?>" value="<?php echo esc_attr($grandchild->term_id); ?>">
-                                                            <label for="pbItem-cat-checkbox-<?php echo esc_html($grandchild->term_id); ?>"><?php echo esc_html($grandchild->name); ?></label>
-														<?php } ?>
-                                                    </div>
-												<?php } ?>
-											<?php } ?>
-                                        </div>
-									<?php }?>
-                                </div>
-								<?php $index++;
-							}
-							echo '</div>'; ?>
+																				<?php foreach ($grandchildterms as $grandchild ) { ?>
+		                                      <input checked="checked" class="imc-CheckboxStyle imc-CheckboxGrandChildStyle"
+																						id="pbItem-cat-checkbox-<?php echo esc_html($grandchild->term_id); ?>" type="checkbox"
+																						name="<?php echo esc_attr($grandchild->name); ?>" value="<?php echo esc_attr($grandchild->term_id); ?>">
+		                                      <label for="pbItem-cat-checkbox-<?php echo esc_html($grandchild->term_id); ?>"><?php echo esc_html($grandchild->name); ?></label>
+																				<?php } ?>
+	                                    </div>
+																		<?php } ?>
+																	<?php } ?>
+	                              </div>
+															<?php }?>
+	                          </div>
+													<?php $index++;
+												}
+												echo '</div>'; ?>
 
                         </div>
                     </div>
@@ -333,10 +334,10 @@ if ( is_front_page() || is_home() ) {
 
         jQuery( document ).ready(function() {
 
-            var imported_cat = <?php echo json_encode( $pb_issues_view_filters->get_value_array('scategory')); ?>;
-
-            var imported_status = <?php echo json_encode ($pb_issues_view_filters->get_value_array('sstatus')); ?>;
-            var imported_keyword = <?php echo json_encode($pb_issues_view_filters->get_value_array('keyword')); ?>;
+						var imported_voting  = <?php echo json_encode( $pb_issues_view_filters->get_value_array('svoting')); ?>;
+            var imported_cat     = <?php echo json_encode( $pb_issues_view_filters->get_value_array('scategory')); ?>;
+            var imported_status  = <?php echo json_encode( $pb_issues_view_filters->get_value_array('sstatus')); ?>;
+            var imported_keyword = <?php echo json_encode( $pb_issues_view_filters->get_value_array('keyword')); ?>;
             var i;
 						var countOfFilterParams = imported_status.length + imported_cat.length + imported_keyword.length;
 
@@ -344,16 +345,28 @@ if ( is_front_page() || is_home() ) {
                 jQuery('#pbItemFilteringIndicator').css('color', '#1ABC9C');
 								jQuery('#pbItemStatusCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
 								jQuery('#pbItemCatCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
+								jQuery('#pbItemVotingCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
+
+                if ( imported_voting.length > 0) {
+                    // jQuery('#pbItemStatFilteringLabel').show();
+                    jQuery('#pbItemToggleVotingCheckbox').prop('checked', false);
+
+                    for (i=0;i<imported_voting.length;i++) {
+                        jQuery('#pbItem-voting-checkbox-'+imported_voting[i]).prop('checked', true);
+                    }
+                } else {
+										jQuery('#pbItemVotingCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', true); });
+                }
 
                 if ( imported_status.length > 0) {
                     jQuery('#pbItemStatFilteringLabel').show();
-
                     jQuery('#pbItemToggleStatusCheckbox').prop('checked', false);
-                    jQuery('#pbItemToggleStatusCheckbox').prop('checked', true);
 
                     for (i=0;i<imported_status.length;i++) {
                         jQuery('#pbItem-stat-checkbox-'+imported_status[i]).prop('checked', true);
                     }
+                } else {
+										jQuery('#pbItemStatusCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', true); });
                 }
 
                 if (imported_cat.length > 0) {
@@ -364,6 +377,8 @@ if ( is_front_page() || is_home() ) {
                     for (i=0;i<imported_cat.length;i++) {
                         jQuery('#pbItem-cat-checkbox-'+imported_cat[i]).prop('checked', true);
                     }
+                } else {
+										jQuery('#pbItemCatCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', true); });
                 }
 
                 if (imported_keyword.length > 0) {
@@ -382,9 +397,13 @@ if ( is_front_page() || is_home() ) {
         // Checkbox select propagation
         jQuery(function () {
             jQuery("input[type='checkbox']").change(function () {
-				jQuery(this).siblings('#pbItemStatusCheckboxes')
-				.find("input[type='checkbox']")
-				.prop('checked', this.checked);
+								jQuery(this).siblings('#pbItemVotingCheckboxes')
+								.find("input[type='checkbox']")
+								.prop('checked', this.checked);
+
+								jQuery(this).siblings('#pbItemStatusCheckboxes')
+								.find("input[type='checkbox']")
+								.prop('checked', this.checked);
 
                 jQuery(this).siblings('#pbItemCatCheckboxes')
                     .find("input[type='checkbox']")
@@ -402,31 +421,43 @@ if ( is_front_page() || is_home() ) {
         });
 
         function pbItemOverviewGetFilteringData() {
+            var selectedVoting = '';
+            var notSelectedVoting = '';
             var selectedStatus = '';
             var notSelectedStatus = '';
             var selectedCats = '';
             var notSelectedCats = '';
             var keywordString = '';
+            var filter2 = '';
+            var filter3 = '';
+            var filter4 = '';
+            var filter5 = '';
 
-			jQuery('#pbItemStatusCheckboxes input:checkbox:checked').each(function() { selectedStatus = selectedStatus + jQuery(this).attr('value') +','; });
-			selectedStatus = selectedStatus.slice(0, -1);
+						jQuery('#pbItemVotingCheckboxes input:checkbox:checked').each(function() { selectedVoting = selectedVoting + jQuery(this).attr('value') +','; });
+						selectedVoting = selectedVoting.slice(0, -1);
 
-			jQuery('#pbItemStatusCheckboxes input:checkbox:not(:checked)').each(function() { notSelectedStatus = notSelectedStatus + jQuery(this).attr('value') +','; });
-			notSelectedStatus = notSelectedStatus.slice(0, -1);
+						jQuery('#pbItemVotingCheckboxes input:checkbox:not(:checked)').each(function() { notSelectedVoting = notSelectedVoting + jQuery(this).attr('value') +','; });
+						notSelectedVoting = notSelectedVoting.slice(0, -1);
 
-			// if ( notSelectedStatus.length === 0) {
-			// 	selectedStatus = "all";
-			// }
+						jQuery('#pbItemStatusCheckboxes input:checkbox:checked').each(function() { selectedStatus = selectedStatus + jQuery(this).attr('value') +','; });
+						selectedStatus = selectedStatus.slice(0, -1);
 
-			jQuery('#pbItemCatCheckboxes input:checkbox:checked').each(function() { selectedCats = selectedCats + jQuery(this).attr('value') +','; });
-			selectedCats = selectedCats.slice(0, -1);
+						jQuery('#pbItemStatusCheckboxes input:checkbox:not(:checked)').each(function() { notSelectedStatus = notSelectedStatus + jQuery(this).attr('value') +','; });
+						notSelectedStatus = notSelectedStatus.slice(0, -1);
 
-			jQuery('#pbItemCatCheckboxes input:checkbox:not(:checked)').each(function() { notSelectedCats = notSelectedCats + jQuery(this).attr('value') +','; });
-			notSelectedCats = notSelectedCats.slice(0, -1);
+						// if ( notSelectedStatus.length === 0) {
+						// 	selectedStatus = "all";
+						// }
 
-			// if ( notSelectedCats.length === 0) {
-			// 	selectedCats = "all";
-			// }
+						jQuery('#pbItemCatCheckboxes input:checkbox:checked').each(function() { selectedCats = selectedCats + jQuery(this).attr('value') +','; });
+						selectedCats = selectedCats.slice(0, -1);
+
+						jQuery('#pbItemCatCheckboxes input:checkbox:not(:checked)').each(function() { notSelectedCats = notSelectedCats + jQuery(this).attr('value') +','; });
+						notSelectedCats = notSelectedCats.slice(0, -1);
+
+						// if ( notSelectedCats.length === 0) {
+						// 	selectedCats = "all";
+						// }
 
             if (jQuery('#pbItemSearchKeywordInput').val() !== '') {
                 keywordString = jQuery('#pbItemSearchKeywordInput').val();
@@ -435,10 +466,19 @@ if ( is_front_page() || is_home() ) {
             var base = <?php echo json_encode( $my_permalink ) ; ?>;
             var tempfilter1 = <?php echo json_encode(  $pb_issues_view_filters->create_url_variables_short()); ?>;
             var filter1 = decodeURIComponent(tempfilter1);
-            var filter2 = '&sstatus=' + selectedStatus;
-            var filter3 = '&scategory=' + selectedCats;
-            var filter4 = '&keyword=' + keywordString;
-            var link = base + filter1 + filter2 + filter3 + filter4;
+						if ( notSelectedStatus.length > 0 ) {
+	            var filter2 = '&sstatus=' + selectedStatus;
+						}
+						if ( notSelectedCats.length > 0 ) {
+	            var filter3 = '&scategory=' + selectedCats;
+						}
+						if ( keywordString.length > 0 ) {
+	            var filter4 = '&keyword=' + keywordString;
+						}
+						if ( notSelectedVoting.length > 0 ) {
+							var filter5 = '&svoting=' + selectedVoting;
+						}
+            var link = base + filter1 + filter2 + filter3 + filter4 + filter5;
 
             window.location = link;
         }

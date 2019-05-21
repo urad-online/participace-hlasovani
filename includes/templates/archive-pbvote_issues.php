@@ -1,6 +1,6 @@
 <?php
 /**
- * The template for displaying all single issues and attachments
+ * The template for displaying all imc issues with pb-vorting filtering options
  *
  */
 
@@ -9,7 +9,10 @@ global $wp_query, $post,$pb_issues_view_filters;
 include_once( PB_VOTE_PATH_TEMPL . '/archive-imc_issues_body.php');
 $pb_issues_view_filters = new  PbVote_ArchiveDisplayOptions( 'imc');
 
-$voting_ids = get_the_ID();
+$voting_ids = null;
+// tohle se musi dat do foreach pro vsechna hlasovani vybrana ve screene
+// $hlasovani_meta = get_post_meta( $voting_ids, '', false);
+// $params = hlasovani_query_arg( $hlasovani_meta['items'] ) ;
 
 get_header();
 
