@@ -14,10 +14,10 @@ $listpage = getIMCArchivePage();
 $voting_page = get_first_pbvoting_post();
 
 if ( get_option('permalink_structure') ) { $perma_structure = true; } else {$perma_structure = false;}
-if( $perma_structure){$parameter_pass = '/?myparam=';} else{$parameter_pass = '&myparam=';}
+if( $perma_structure){$parameter_pass = '/?edit_id=';} else{$parameter_pass = '&edit_id=';}
 
 $user_id = get_current_user_id();
-$plugin_path_url = imc_calculate_plugin_base_url();
+$plugin_path_url = pbvote_calculate_plugin_base_url();
 $issues_pp_counter = 0;
 
 $params = hlasovani_query_arg( $hlasovani_meta['items']);

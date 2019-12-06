@@ -41,6 +41,12 @@ function pb_voting_enqueue_extension()
 
     wp_localize_script('pb-voting', 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
 
+    wp_register_script('pb-project-edit',   PB_VOTE_URL . '/assets/js/pb-project-edit.js', array('jquery'),'1.1', true);
+    wp_enqueue_script('pb-project-edit');
+		wp_localize_script('pb-project-edit', 'pbFormInitialData', array(
+			        'completed_off' => 'Uložit si pro budoucí editaci',
+			        'completed_on'  => 'Odeslat návrh ke schválení',
+            ));
 }
 
 function pbvote_class_autoloader( $class_name ) {
@@ -71,7 +77,10 @@ function pbvote_class_autoloader( $class_name ) {
 function add_pbvote_template( $templates )
 {
     $templates = array_merge( $templates, array(
-        '/archive-hlasovani.php'   => 'Přehled hlasování', ));
+        '/archive-hlasovani.php'   => 'Přehled hlasování',
+        '/edit-project_issues.php' => "Oprava projektu",
+        '/insert-project_issues.php' => "Přidat nový projekt",
+       ));
     return $templates;
 }
 function register_pbvote_templates( $atts )
@@ -120,7 +129,7 @@ function pb_voting_view_template( $template)
     }
     return $template;
 }
-add_filter( 'single_template',      'pb_voting_set_single_template' );
+add_filter( 'single_template',      'pb_voting_set_single_template', 20 );
 add_filter( 'archive_template',     'pb_voting_set_archive_template' );
 add_filter( 'theme_page_templates', 'add_pbvote_template' );
 add_filter( 'template_include',     'pb_voting_view_template');

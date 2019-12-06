@@ -15,20 +15,20 @@ global $voting_enabled;
         <div class="imc-OverviewTileImageStyle imc-CenterContents">
 
             <?php $author_id = intval(get_the_author_meta('ID'));
-            if ( intval($author_id, 10) === intval($user_id, 10) && !pb_user_can_edit(get_the_ID(), $user_id)  )  { ?>
+            if ( intval($author_id, 10) === intval($user_id, 10) && !pbvote_user_can_edit(get_the_ID(), $user_id)  )  { ?>
 
-                <img alt="My Issue icon" title="<?php echo __('My Issue','participace-projekty'); ?>" src="<?php echo esc_url($plugin_path_url);?>/img/ic_my_issue_grid.png" class="imc-OverviewGridMyIssueIconStyle">
+                <img alt="My Issue icon" title="<?php echo __('My Issue','pb-voting'); ?>" src="<?php echo esc_url($plugin_path_url);?>/img/ic_my_issue_grid.png" class="imc-OverviewGridMyIssueIconStyle">
 
-            <?php } else if(pb_user_can_edit(get_the_ID(), $user_id)) { ?>
+            <?php } else if(pbvote_user_can_edit(get_the_ID(), $user_id)) { ?>
 
-                <a class="imc-button-primary imc-button imc-OverviewTileEditButtonStyle" href="<?php echo esc_url( get_permalink($editpage[0]->ID) . $parameter_pass . $issue_id ) ; ?>" target="_blank"><?php echo __('Edit','participace-projekty'); ?></a>
+                <a class="imc-button-primary imc-button imc-OverviewTileEditButtonStyle" href="<?php echo esc_url( $editpage . $parameter_pass . $issue_id ) ; ?>" target="_blank"><?php echo __('Edit','pb-voting'); ?></a>
 
             <?php } ?>
 
             <?php if ( has_post_thumbnail() ) { ?>
 
                 <a href="<?php echo esc_url(get_permalink());?>" class="imc-BlockLevelLinkStyle">
-                    <?php echo esc_html(the_post_thumbnail( array(480, 480) )); ?>
+                    <?php echo esc_html(the_post_thumbnail(array(50,50))); ?>
                 </a>
 
             <?php } else { ?>
@@ -36,7 +36,7 @@ global $voting_enabled;
                 <a href="<?php echo esc_url(get_permalink());?>" class="imc-BlockLevelLinkStyle">
                     <div class="imc-OverviewGridNoPhotoWrapperStyle">
                         <i class="imc-EmptyStateIconStyle material-icons md-huge">landscape</i>
-                        <span class="imc-DisplayBlock imc-ReportGenericLabelStyle imc-TextColorHint"><?php echo __('No photo submitted','participace-projekty'); ?></span>
+                        <span class="imc-DisplayBlock imc-ReportGenericLabelStyle imc-TextColorHint"><?php echo __('No photo submitted','pb-voting'); ?></span>
                     </div>
                 </a>
 
@@ -100,7 +100,7 @@ global $voting_enabled;
                     <?php $time_create = get_post_time('U', false);
 
                     if ($time_create < 0 || !$time_create ) {
-                        $timeString = __('Under moderation','participace-projekty');
+                        $timeString = __('Under moderation','pb-voting');
                     }
                     else {
                         $timeString = imc_calculate_relative_date($time_create);
@@ -120,7 +120,7 @@ global $voting_enabled;
 
                     <span class="imc-DisplayBlock imc-OverviewGridStepLabelStyle imc-TextColorSecondary">
                         <?php
-                        //printf( _nx( '1 Comment', '%1$s Comments', get_comments_number(), 'comments number', 'participace-projekty' ), number_format_i18n( get_comments_number() ) );
+                        //printf( _nx( '1 Comment', '%1$s Comments', get_comments_number(), 'comments number', 'pb-voting' ), number_format_i18n( get_comments_number() ) );
                         //comments_number( 'No comments', '1 comment', '% comments' );
                         ?>
 

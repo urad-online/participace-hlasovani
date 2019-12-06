@@ -12,7 +12,7 @@ class PbVote_ArchiveDisplayOptions
         'sorder' => 1,
         'view'   => 1,
     );
-    private $param_list_long  = array( 'ppage','sorder', 'view', 'sstatus', 'scategory', 'keyword');
+    private $param_list_long  = array( 'ppage','sorder', 'view', 'sstatus', 'scategory', 'keyword', 'svoting');
     private $param_list_short = array( 'ppage','sorder', 'view');
     private $param_list_conv_function = array(
             'ppage'  => 'conv_int',
@@ -67,9 +67,9 @@ class PbVote_ArchiveDisplayOptions
             $this->perma_structure = false;
         }
         if( $this->perma_structure) {
-            $this->parameter_pass = '/?myparam=';
+            $this->parameter_pass = '/?edit_id=';
         } else{
-            $this->parameter_pass = '&myparam=';
+            $this->parameter_pass = '&edit_id=';
         }
 
     }
@@ -252,6 +252,13 @@ class PbVote_ArchiveDisplayOptions
             $class_selected = "";
         }
         return '<li><a href="' . $url . '" class="imc-SingleHeaderLinkStyle '. $class_selected . '"><i class="material-icons md-36 imc-VerticalAlignMiddle">'. $label . '</i></a></li>';
+    }
+
+    public function set_value_param( $key, $value)
+    {
+        if ((! empty($key)) && (! empty($value))) {
+            $this->filter_params_view[ $key] =  $value;
+        }
     }
 
 }

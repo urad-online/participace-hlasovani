@@ -37,6 +37,7 @@ class PbVote_ArchiveDisplayFilterData
         $this->set_query_args_category();
         $this->set_query_args_status();
         $this->set_query_args_order();
+        $this->set_query_args_voting();
         $this->set_query_args_custom();
     }
 
@@ -100,6 +101,11 @@ class PbVote_ArchiveDisplayFilterData
             }
         }
 
+    }
+
+    public function set_query_args_voting()
+    {
+      // not needed for hlasovani
     }
 
     public function set_query_args_custom()
@@ -175,7 +181,6 @@ class PbVote_ArchiveDisplayFilterData
     public function  get_query_data()
     {
         $pom = new WP_Query( $this->query_args );
-        // $pom = get_posts( $this->query_args );
         return $pom;
     }
 }

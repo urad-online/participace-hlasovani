@@ -1,0 +1,258 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Participativní projekty - hlasování\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-11-30 18:22+0000\n"
+"PO-Revision-Date: 2019-12-06 19:28+0000\n"
+"Last-Translator: admin <admin@urad.online>\n"
+"Language-Team: Čeština\n"
+"Language: cs_CZ\n"
+"Plural-Forms: nplurals=3; plural=( n == 1 ) ? 0 : ( n >= 2 && n <= 4 ) ? 1 : "
+"2;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.3.1; wp-5.2.4"
+
+#: includes/pb_voting_functions.php:190
+msgid "Select a category"
+msgstr "Vyberte kategorii"
+
+#: includes/classes/pbvote-controlpages.php:91
+msgid "Registrace k hlasovaní"
+msgstr ""
+
+#: includes/classes/pbvote-controlpages.php:111
+msgid "Report an issue"
+msgstr "Přidat návrh"
+
+#: includes/classes/pbvote-projectedit.php:328
+msgid "volitelné"
+msgstr ""
+
+#: includes/classes/pbvote-projectedit.php:329
+msgid "optional"
+msgstr "volitené"
+
+#: includes/classes/pbvote-projectedit.php:353
+msgid "Address"
+msgstr "Adresa"
+
+#: includes/classes/pbvote-projectedit.php:354
+msgid "Locate"
+msgstr "Lokalizovat"
+
+#: includes/classes/pbvote-projectedit.php:355
+msgid "Add an address"
+msgstr "Přidat adresu"
+
+#: includes/classes/pbvote-projectedit.php:394
+msgid "Photo"
+msgstr "Foto"
+
+#: includes/classes/pbvote-projectedit.php:395
+msgid "Add photo"
+msgstr "Přidat foto"
+
+#: includes/classes/pbvote-projectedit.php:396
+msgid "Delete Photo"
+msgstr "Smazat foto"
+
+#: includes/classes/pbvote-projectedit.php:398
+msgid "No photo attached"
+msgstr "Žádné foto"
+
+#: includes/classes/pbvote-projectedit.php:399
+msgid ""
+"Photo size must be smaller in size, please resize it or select a smaller one!"
+msgstr "Foto musí být menší, prosím změňte velikost nebo vyberte jiné!"
+
+#: includes/classes/pbvote-projectedit.php:400
+msgid "A photo has been selected:"
+msgstr "Vybrané foto:"
+
+#: includes/classes/pbvote-projectedit.php:778
+msgid "Status changed: "
+msgstr "Stav byl změněn:"
+
+#: includes/templates/archive-hlasovani.php:46
+#: includes/templates/archive-imc_issues_body.php:52
+msgid "Display: "
+msgstr "Zobrazit:"
+
+#: includes/templates/archive-hlasovani.php:56
+#: includes/templates/archive-imc_issues_body.php:62
+msgid "Order: "
+msgstr "Pořadí:"
+
+#: includes/templates/archive-hlasovani.php:74
+#: includes/templates/archive-imc_issues_body.php:88
+msgid "Search &amp; Filtering"
+msgstr "Hledat &amp; Filtrovat"
+
+#: includes/templates/archive-hlasovani.php:75
+#: includes/templates/archive-hlasovani.php:117
+#: includes/templates/archive-imc_issues_body.php:89
+#: includes/templates/archive-imc_issues_body.php:131
+msgid "Kategorie"
+msgstr ""
+
+#: includes/templates/archive-hlasovani.php:76
+#: includes/templates/archive-imc_issues_body.php:90
+msgid "Stav"
+msgstr ""
+
+#: includes/templates/archive-hlasovani.php:77
+#: includes/templates/archive-imc_issues_body.php:91
+msgid "Klíčová slova"
+msgstr ""
+
+#: includes/templates/archive-hlasovani.php:88
+#: includes/templates/archive-imc_issues_body.php:102
+msgid "Vyhledat"
+msgstr ""
+
+#: includes/templates/archive-hlasovani.php:91
+#: includes/templates/archive-imc_issues_body.php:105
+msgid "Vyhledat klíčové slovo"
+msgstr ""
+
+#: includes/templates/archive-hlasovani.php:96
+#: includes/templates/archive-imc_issues_body.php:110
+msgid "Stav hlasování"
+msgstr ""
+
+#: includes/templates/archive-hlasovani.php:183
+#: includes/templates/archive-imc_issues_body.php:197
+msgid "Zobrazit vybrané"
+msgstr ""
+
+#: includes/templates/archive-hlasovani.php:184
+#: includes/templates/archive-imc_issues_body.php:198
+msgid "Zobrazit vše"
+msgstr ""
+
+#: includes/templates/archive-hlasovani.php:250
+#: includes/templates/archive-imc_issues_body.php:287
+msgid "Nejsou dostupné záznamy"
+msgstr ""
+
+#: includes/templates/archive-hlasovani.php:257
+#: includes/templates/archive-imc_issues_body.php:295
+msgid "Zrušit filtr"
+msgstr ""
+
+#: includes/templates/archive-hlasovani.php:279
+#: includes/templates/archive-imc_issues_body.php:317
+msgid "Showing"
+msgstr "Zobrazení"
+
+#: includes/templates/archive-hlasovani.php:279
+#: includes/templates/archive-imc_issues_body.php:317
+msgid "of"
+msgstr "z"
+
+#: includes/templates/archive-hlasovani.php:279
+#: includes/templates/archive-imc_issues_body.php:317
+msgid "issues"
+msgstr "položky"
+
+#: includes/templates/archive-imc_issues_body.php:292
+msgid "Přidat položku"
+msgstr ""
+
+#: includes/templates/edit-project_issues.php:92
+#: includes/templates/edit-project_issues.php:157
+#: includes/templates/insert-project_issues.php:87
+#: includes/templates/insert-project_issues.php:178
+msgid "Return to overview"
+msgstr "Zpět na přehled"
+
+#: includes/templates/edit-project_issues.php:108
+msgid "Edit issue"
+msgstr "Změnit záznam"
+
+#: includes/templates/edit-project_issues.php:176
+msgid "You are not authorised to edit an issue"
+msgstr "Nemáte oprávnění ke změně položky"
+
+#: includes/templates/edit-project_issues.php:180
+#: includes/templates/insert-project_issues.php:224
+msgid "Please login!"
+msgstr "Přihlašte se prosím!"
+
+#: includes/templates/insert-project_issues.php:115
+msgid "Report a new issue"
+msgstr "Přidat nový návrh"
+
+#: includes/templates/insert-project_issues.php:216
+msgid "You are not authorised to report an issue"
+msgstr "Nemáte oprávnění k založení nové popložky"
+
+#: includes/templates/pb-item-part-archive-grid.php:20
+#: includes/templates/pb-item-part-archive-list.php:142
+#: includes/templates/pbvote-part-archive-list.php:143
+msgid "My Issue"
+msgstr "Moje položky"
+
+#: includes/templates/pb-item-part-archive-grid.php:24
+#: includes/templates/pb-item-part-archive-list.php:146
+#: includes/templates/pbvote-part-archive-list.php:147
+msgid "Edit"
+msgstr "Změnit"
+
+#: includes/templates/pb-item-part-archive-grid.php:39
+#: includes/templates/pb-item-part-archive-list.php:133
+#: includes/templates/pbvote-part-archive-grid.php:39
+#: includes/templates/pbvote-part-archive-list.php:134
+msgid "No photo submitted"
+msgstr "Nebylo přidáno žádné foto"
+
+#: includes/templates/pb-item-part-archive-grid.php:103
+#: includes/templates/pb-item-part-archive-list.php:88
+#: includes/templates/pbvote-part-archive-grid.php:92
+#: includes/templates/pbvote-part-archive-list.php:89
+msgid "Under moderation"
+msgstr "Změny jsou moderovány"
+
+#: includes/templates/pb-item-part-archive-list.php:106
+#: includes/templates/pbvote-part-archive-grid.php:113
+#: includes/templates/pbvote-part-archive-list.php:107
+#, php-format
+msgctxt "comments number"
+msgid "1 Comment"
+msgid_plural "%1$s Comments"
+msgstr[0] "1 komentář"
+msgstr[1] "komentářů %1$s"
+msgstr[2] ""
+
+#: includes/templates/reg_widget_content.php:9
+msgid "Registrace k hlasování"
+msgstr ""
+
+#: includes/templates/reg_widget_content.php:10
+msgid "Registrační údaj"
+msgstr ""
+
+#: includes/templates/reg_widget_content.php:12
+msgid "Hlasovací kód"
+msgstr ""
+
+#. Name of the plugin
+msgid "Participativní projekty - hlasování"
+msgstr ""
+
+#. Description of the plugin
+msgid ""
+"Registrayion for a voting. Integration Limesurvey and https://sms.sluzba.cz"
+msgstr ""
+
+#. URI of the plugin
+#. Author URI of the plugin
+msgid "https://urad.online"
+msgstr ""
+
+#. Author of the plugin
+msgid "Miloslav Stastny"
+msgstr ""

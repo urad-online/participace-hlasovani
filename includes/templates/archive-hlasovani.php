@@ -113,7 +113,7 @@ if ( is_front_page() || is_home() ) {
                     <div class="imc-DrawerSecondCol">
 
                         <input checked="checked" class="imc-CheckboxToggleStyle" id="pbvToggleCatsCheckbox" type="checkbox"
-							name="pbvToggleCatsCheckbox" value="all">
+																name="pbvToggleCatsCheckbox" value="all">
                         <label class="imc-SectionTitleTextStyle" for="pbvToggleCatsCheckbox"><?php echo __('Kategorie', 'pb-voting'); ?></label>
                         <br>
 

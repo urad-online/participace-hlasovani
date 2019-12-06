@@ -6,23 +6,25 @@
  */
 function pb_items_archive_imc_issues_body($pb_issues_view_filters)
 {
-global $wp_query, $post ;
-$insertpage = getIMCInsertPage();
-$editpage = getIMCEditPage();
-$listpage = getIMCArchivePage();
-$voting_page = get_pbvoting_page_link('hlasovani-p8-2018');
-// $voting_page = get_first_pbvoting_post();
+global $wp_query, $post, $voting_ids ;
+
 $filter_category_taxo = 'imccategory';
 $filter_status_taxo   = 'imcstatus';
 $filter_params_view   = array();
+$control_pages = new PbVote_ControlPages( $voting_ids);
+// mst: tohle prepsat
+$editpage = $control_pages->get_url_edit();
+// $voting_page = get_pbvoting_page_link('hlasovani-p8-2018');
 
 if ( get_option('permalink_structure') ) { $perma_structure = true; } else {$perma_structure = false;}
+if (!empty($voting_ids)) {
+	$pb_issues_view_filters->set_value_param('svoting', $voting_ids);
+}
 
 wp_enqueue_script( 'imc-gmap' );
 wp_enqueue_script( 'mapsV3_infobubble' ); // Insert addon lib for Google Maps V3 -> to style infowindows
 wp_enqueue_script( 'mapsV3_richmarker' ); // Insert addon lib for Google Maps V3 -> to style marker
 
-// $voting_page = get_first_pbvoting_post();
 /********************************************* ISSUES PER PAGE ********************************************************/
 
 $user_id = get_current_user_id();
@@ -63,6 +65,14 @@ if ( is_front_page() || is_home() ) {
                 </li>
 
 				<?php echo $pb_issues_view_filters->generate_lists_long_view($my_permalink)?>
+				<?php
+					if ($control_pages->can_vote()) {
+						echo $control_pages->gen_button_vote(true, "36");
+					}
+					if ($control_pages->can_add_project()) {
+						echo $control_pages->gen_button_add(true, "36");
+					}
+				?>
             </ul>
         </nav>
     </div>
@@ -277,11 +287,11 @@ if ( is_front_page() || is_home() ) {
                         <div class="imc-Separator"></div>
 
                         <span class="imc-CenterContents imc-TextMedium imc-Text-LG imc-FontRoboto">
-							<a href="<?php echo esc_url( get_permalink($insertpage[0]->ID) ); ?>" class="imc-LinkStyle"><?php echo __('Přidat položku','pb-voting'); ?></a>
-							<?php if($pb_issues_view_filters->is_filtering_active()	) { ?>
+												<?php echo $control_pages->gen_button_add( false, 36 ); ?>
+												<?php if($pb_issues_view_filters->is_filtering_active()	) { ?>
                                 <span class="imc-TextColorSecondary ">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
                                 <a href="javascript:void(0);" onclick="pbItemOverviewResetFilters();" class="imc-LinkStyle"><?php echo __('Zrušit filtr','pb-voting'); ?></a>
-							<?php } ?>
+												<?php } ?>
 						</span>
 
                         <div class="imc-Separator"></div>

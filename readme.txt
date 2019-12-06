@@ -2,7 +2,7 @@
 Contributors: Otevreny Urad/ M.Stastny
 Tags: partcipation, project, voting, municip`ality
 Requires at least: 4.4
-Tested up to: 4.9.8
+Tested up to: 5.2.2
 Stable tag: trunk
 License: AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.en.html
@@ -34,10 +34,11 @@ Can be used as well with local wordpress database
     f. SMSGATE_PASSWD
 8. Add new voting statuses with slugs novy, aktivni, pozastaveny, ukonceny,...
     set term_meta "allow_voting" and "allow_adding_project" true/false for each term
+8. Add new voting categories with any values
 9. Create new post of the type hlasovani
 
 ===== How to use it ======
-Precondition - exists post type hlasovani, taxonomy voting_status.
+Precondition - exists post type hlasovani, taxonomy voting_status, voting_category.
 The widget is call by shortcode
 examples:
 do_shortcode('[pb_vote_reg_widget voting_id="123456" force_display=true]')
