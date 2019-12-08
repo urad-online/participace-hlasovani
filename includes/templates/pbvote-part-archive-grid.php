@@ -28,7 +28,7 @@ global $voting_enabled, $comments_enabled;
             <?php if ( has_post_thumbnail() ) { ?>
 
                 <a href="<?php echo esc_url(get_permalink());?>" class="imc-BlockLevelLinkStyle">
-                    <?php echo esc_html(the_post_thumbnail( array(480, 480) )); ?>
+                    <?php echo esc_html(the_post_thumbnail(  "thumbnail", array( "class"=>"pbvote-OverviewTileImageStyle") )); ?>
                 </a>
 
             <?php } else { ?>

@@ -320,3 +320,10 @@ function pbvote_filename_rename_to_hash( $filename ) {
 	$name = basename( $filename, $ext );
 	return md5( $name ) . $ext;
 }
+function add_link_to_voting( $parent_id, $post_id )
+{
+		$items =  get_post_meta( $parent_id, "_pods_items", true);
+		array_push( $items, $post_id );
+		// $new_items =  json_encode( $newitems);
+		update_post_meta( $parent_id, "_pods_items", $items);
+}

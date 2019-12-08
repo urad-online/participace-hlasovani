@@ -161,3 +161,52 @@ input[type="checkbox"].pbvote-collapse-section:not(checked) ~ label div i.materi
     visibility: visible;
     opacity: 1;
 }
+.pbvote-OverviewTileCategoryIcon {
+    height: 24px;
+    width: 24px;
+    border: none;
+    background-color: transparent;
+    border-radius: 3px;
+    margin-right: 6px;
+}
+
+.pbvote-OverviewListCategoryIcon {
+    max-width: 48px;
+    max-height: 48px;
+    height: 100%;
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    border-radius: 3px;
+    margin: 0 auto;
+}
+.pbvote-OverviewListImageStyle {
+    max-height: 200px;
+    max-width:  100%;
+    min-height: 90px;
+    min-width:  100%;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+}
+.pbvote-OverviewTileImageStyle {
+    max-height: 200px;
+    max-width:  100%;
+    min-height: 100px;
+    min-width: 100%;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+}
+
+.pbvote-OverviewTileImageStyle img.wp-post-image{
+    max-height: 200px;
+    max-width:  100%;
+    min-height: 100px;
+    min-width: 100%;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+}

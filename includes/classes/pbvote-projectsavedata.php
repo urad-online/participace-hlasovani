@@ -338,7 +338,8 @@ class PbVote_ProjectSaveData {
     private function add_link_to_voting( $parent_id )
     {
         $items =  get_post_meta( $parent_id, "_pods_items", true);
-        $new_items =  array_push( $items, $this->post_id );
-        update_post_meta( $parent_id, "_pods_items", $new_items);
+        array_push( $items, $this->post_id );
+        update_post_meta( $parent_id, "_pods_items", $items);
+        add_post_meta( $parent_id, "items", $this->post_id, false);
     }
 }
