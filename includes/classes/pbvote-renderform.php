@@ -1,15 +1,8 @@
-<<<<<<< HEAD
 <?php
 class PbVote_RenderForm {
     public static $file_type_image =  "gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG";
     public static $file_type_scan  =  "pdf,PDF";
     public static $file_type_docs  =  "doc,DOC,xls,XLS,docX,DOCX,xlsx,XLSX";
-=======
-
-<?php
-
-class PbVote_RenderForm {
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
     private $fields;
     private $fields_layout;
     private $fields_single;
@@ -23,11 +16,7 @@ class PbVote_RenderForm {
     {
 
         if ( false === ( $this->fields = get_option( 'pb_custom_fields_definition' ) ) ) {
-<<<<<<< HEAD
             $this->fields = $this->pb_get_custom_fields();
-=======
-            $this->fields = pb_get_custom_fields();
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
             add_option( 'pb_custom_fields_definition', json_encode( $this->fields, JSON_UNESCAPED_UNICODE) );
         } else {
             $this->fields = json_decode( $this->fields, true);
@@ -38,13 +27,8 @@ class PbVote_RenderForm {
     private function read_form_fields_layout()
     {
         if ( false === ( $fields_layouts = get_option( 'pb_custom_fields_layout' ) ) ) {
-<<<<<<< HEAD
             $this->fields_layout = $this->pb_get_custom_fields_layout();
             $this->fields_single = $this->pb_get_custom_fields_single();
-=======
-            $this->fields_layout = pb_get_custom_fields_layout();
-            $this->fields_single = pb_get_custom_fields_single();
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
             add_option( 'pb_custom_fields_layout', json_encode( array(
                 'form'   => $this->fields_layout,
                 'single' => $this->fields_single,
@@ -87,11 +71,7 @@ class PbVote_RenderForm {
 
     public function get_form_fields_js_validation()
     {
-<<<<<<< HEAD
         $fields = $this->pb_get_custom_fields();
-=======
-        $fields = pb_get_custom_fields();
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
         $output = array();
         foreach ($this->fields as $key => $value) {
             if (! empty( $value['js_rules'] )) {
@@ -117,7 +97,6 @@ class PbVote_RenderForm {
         return $this->fields_single;
 
     }
-<<<<<<< HEAD
     public static function get_file_type_image()
     {
         return self::$file_type_image;
@@ -564,7 +543,5 @@ class PbVote_RenderForm {
         );
         return $custom_fields;
     }
-=======
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
 
 }

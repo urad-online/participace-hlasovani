@@ -3,20 +3,12 @@
  * PB 1.00
  * Renders part of the form with PB Project additional fields
  * Used both by insert and edit page
-<<<<<<< HEAD
  * class pbProjectEdit renders form
  * class pbProjectSaveData saves data
  *
  */
 class PbVote_ProjectEdit
 {
-=======
- * class PbVote_ProjectEdit renders form
- * class pbProjectSaveData saves data
- *
- */
-class PbVote_ProjectEdit {
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
     private $file_type_image = "gif, png, jpg, jpeg";
     private $file_type_scan  = "pdf" ;
     private $file_type_docs  = "doc, xls, docx, xlsx";
@@ -220,11 +212,7 @@ class PbVote_ProjectEdit {
         }
 
         $link = $this->render_file_link($value, $input['id']);
-<<<<<<< HEAD
         // <span id="%sName" class="imc-ReportGenericLabelStyle imc-TextColorSecondary">'. __('Vyberte soubor','pb-voting') .'</span>
-=======
-        // <span id="%sName" class="imc-ReportGenericLabelStyle imc-TextColorSecondary">'. __('Select a file','pb-voting') .'</span>
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
         $output = '<div class="imc-row" id="pbProjectSection%s">
                     <div class="imc-row">
                         <h3 class="u-pull-left imc-SectionTitleTextStyle">%s%s %s'.$this->render_tooltip( $help ).'</h3>
@@ -337,11 +325,7 @@ class PbVote_ProjectEdit {
         if ( $mandatory ) {
             return '';
         } else {
-<<<<<<< HEAD
             return ' ( ' . __('volitelné','pb-voting') .' )';
-=======
-            return ' ( ' . __('optional','pb-voting') .' )';
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
             return '<span class="imc-OptionalTextLabelStyle">" " (' . __('optional','pb-voting') .')></span>';
         }
     }
@@ -457,18 +441,10 @@ class PbVote_ProjectEdit {
             $value = 0;
         }
 
-<<<<<<< HEAD
         $output = '<h3 class="imc-SectionTitleTextStyle">%s%s</h3>
             <label class="imc-CustomSelectStyle u-full-width">';
         $output .= pbvote_insert_cat_dropdown( 'my_custom_taxonomy', $value );
         $output .= '</label><label id="%sLabel" class="imc-ReportFormErrorLabelStyle imc-TextColorPrimary"></label>';
-=======
-        $output =  '<h3 class="imc-SectionTitleTextStyle">%s%s</h3>';
-        $output .= '<label class="imc-CustomSelectStyle u-full-width">';
-        $output .= $this->insert_cat_dropdown( 'my_custom_taxonomy', $value );
-        $output .= '</label><label id="%sLabel" class="imc-ReportFormErrorLabelStyle imc-TextColorPrimary"></label>';
-
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
         if ( empty( $input ) ) {
             return $output;
         } else {
@@ -488,52 +464,6 @@ class PbVote_ProjectEdit {
         return $this->form_fields->get_form_fields_js_validation();
     }
 
-<<<<<<< HEAD
-=======
-    private function insert_cat_dropdown( $taxonomy = 'my_custom_taxonomy', $selected_term_id = 0) {
-
-    	function create_select_with_grandchildren( $fieldName, $selected_term_id  ) {
-    		$args = array('hide_empty' => false, 'hierarchical' => true, 'parent' => 0);
-    		$terms = get_terms('imccategory', $args);
-
-    		$html = '';
-    		$html .= '<select name="' . $fieldName . '" id="'.$fieldName.'"class="' . $fieldName . ' "' . '>';
-
-    		$html .= '<option value="" class="imc-CustomOptionDisabledStyle" disabled selected>'.__('Select a category','pb-voting').'</option>';
-
-    		foreach ( $terms as $term ) {
-    			$selected = ((!empty( $selected_term_id)) && ( $selected_term_id == $term->term_id )) ? "selected" : "";
-    			$html .= '<option class="imc-CustomOptionParentStyle" '.$selected.' value="' . $term->term_id . '" >'.$term->name.'</option>';
-
-    			$args = array(
-    				'hide_empty'    => false,
-    				'hierarchical'  => true,
-    				'parent'        => $term->term_id
-    			);
-    			$childterms = get_terms('imccategory', $args);
-
-    			foreach ( $childterms as $childterm ) {
-    				$html .= '<option class="imc-CustomOptionChildStyle" value="' . $childterm->term_id . '">&nbsp; ' . $childterm->name . '</option>';
-
-    				$args = array('hide_empty' => false, 'hierarchical'  => true, 'parent' => $childterm->term_id);
-    				$granchildterms = get_terms('imccategory', $args);
-
-    				foreach ( $granchildterms as $granchild ) {
-    					$html .= '<option class="imc-CustomOptionGrandchildStyle" value="' . $granchild->term_id . '">&nbsp;&nbsp; ' . $granchild->name . '</option>';
-    				}
-    			}
-    		}
-    		$html .=  "</select>";
-
-    		return $html;
-    	}
-
-    	$selector = create_select_with_grandchildren( $taxonomy, $selected_term_id);
-    	return $selector;
-
-    }
-
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
 }
 
  ?>

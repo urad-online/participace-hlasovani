@@ -130,8 +130,7 @@ class PbVote_ArchiveDisplayOptions
     {
         if ( !empty($this->filter_params_view['status']) ||
              !empty($this->filter_params_view['scategory']) ||
-             !empty($this->filter_params_view['keyword']) ||
-             !empty($this->filter_params_view['svoting'])
+             !empty($this->filter_params_view['keyword'])
             ) {
             $this->filtering_active = true;
         }

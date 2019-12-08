@@ -6,7 +6,7 @@
  *
  */
 
-function pb_item_archive_show_list($post, $editpage, $parameter_pass, $user_id, $pendingColorClass, $plugin_path_url ) {
+function pb_item_archive_show_list($post, $editpage, $parameter_pass, $user_id, $pendingColorClass, $plugin_path_url) {
 global $voting_enabled, $comments_enabled;
 
 	$issue_id = intval($post->ID, 10);
@@ -143,11 +143,7 @@ global $voting_enabled, $comments_enabled;
 
 				<?php } else if(pbvote_user_can_edit(get_the_ID(), $user_id)) { ?>
 
-<<<<<<< HEAD
                     <a class="imc-button-primary imc-button-small imc-OverviewListEditButtonStyle" href="<?php echo esc_url( $editpage . $parameter_pass . $issue_id ); ?>" target="_blank"><?php echo __('Edit','pb-voting'); ?></a>
-=======
-                    <a class="imc-button-primary imc-button-small imc-OverviewListEditButtonStyle" href="<?php echo $editpage . $parameter_pass . $issue_id ; ?>" target="_blank"><?php echo __('Edit','pb-voting'); ?></a>
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
 
 				<?php } ?>
             </div>

@@ -1,22 +1,5 @@
 <?php
-<<<<<<< HEAD
 class PbVote_ProjectSaveData {
-=======
-/**
- * PB 1.00
- * Renders part of the form with PB Project additional fields
- * Used both by insert and edit page
- * class pbProjectEdit renders form
- * class pbProjectSaveData saves data
- *
- */
-/*
-* Class pbProjectSaveData - save data for insert and update
-*/
-class PbVote_ProjectSaveData {
-    private $file_type_image = "gif, png, jpg, jpeg";
-    private $file_type_scan  = "pdf" ;
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
     private $post_id         = null;
     private $post_data       = null;
     private $status_taxo     = 'imcstatus';
@@ -24,27 +7,16 @@ class PbVote_ProjectSaveData {
     /*
     * Create new project
     */
-<<<<<<< HEAD
     public function project_insert( $voting_id )
     {
         $imccategory_id = esc_attr(strip_tags($_POST['my_custom_taxonomy']));
         $voting_period_slug = get_parent_taxo_slug($voting_id);
-=======
-    public function project_insert( $voting_id = 0)
-    {
-        $imccategory_id = esc_attr(strip_tags($_POST['my_custom_taxonomy']));
-
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
     	// Check options if the status of new issue is pending or publish
 
       	$generaloptions = get_option( 'general_settings' );
       	$moderateOption = $generaloptions["moderate_new"];
 
-<<<<<<< HEAD
     	//CREATE THE ISSUE TO DB
-=======
-      	//CREATE THE ISSUE TO DB
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
 
       	$this->post_data = array(
       		'post_title' => esc_attr(strip_tags($_POST['postTitle'])),
@@ -52,18 +24,13 @@ class PbVote_ProjectSaveData {
       		'post_type' => 'imc_issues',
       		'post_status' => ($moderateOption == 2) ? 'publish' : 'pending',
       		'post_name'   => sanitize_title( $_POST['postTitle']),
-<<<<<<< HEAD
       		'tax_input' => array( 'imccategory' => $imccategory_id,
                                 'voting-period' => $voting_period_slug),
-=======
-      		'tax_input' => array( 'imccategory' => $imccategory_id ),
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
       	);
 
         $this->get_metadata_from_request( $_POST, false);
 
       	$this->post_id = wp_insert_post( $this->post_data, true);
-<<<<<<< HEAD
 
       	if ( $this->post_id && ( ! is_wp_error($this->post_id)) ) {
       		$this->insert_attachments( $_FILES );
@@ -96,41 +63,6 @@ class PbVote_ProjectSaveData {
       imcplus_mailnotify_4submit($this->post_id,$imccategory_id, $this->post_data['meta_input']['imc_address']);
 
       return $this->post_id;
-=======
-        // $this->post_id = null;
-
-      	if ( $this->post_id && ( ! is_wp_error($this->post_id)) ) {
-      		$this->insert_attachments( $_FILES );
-          $this->add_issue_to_voting_collection($voting_id, $this->post_id);
-      	}
-
-      	// Choose the imcstatus with smaller id
-      	// zmenit order by imc_term_order
-
-      	$pb_edit_completed = (! empty( $_POST['pb_project_edit_completed']) ) ?  $_POST['pb_project_edit_completed'] : 0;
-      	$all_status_terms = get_terms( $this->status_taxo , array( 'hide_empty' => 0 , 'orderby' => 'id', 'order' => 'ASC') );
-      	if ( $pb_edit_completed ) {
-      		$first_status = $all_status_terms[1];
-      	} else {
-      		$first_status = $all_status_terms[0];
-      	}
-
-      	wp_set_object_terms($this->post_id, $first_status->name, $this->status_taxo);
-
-      	//Create Log if moderate is OFF
-
-      	if($moderateOption == 2) {
-
-      		imcplus_crelog_frontend_nomoder($this->post_id, $first_status->term_id, get_current_user_id());
-
-      	}
-
-      	$this->project_insert_image();
-
-        imcplus_mailnotify_4submit($this->post_id,$imccategory_id, $this->post_data['meta_input']['imc_address']);
-
-        return $this->post_id;
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
     }
 
     /*
@@ -138,11 +70,7 @@ class PbVote_ProjectSaveData {
     */
     public function update_project()
     {
-<<<<<<< HEAD
     	$this->post_id = intval( sanitize_text_field( $_GET['edit_id'] ));
-=======
-    	$this->post_id = intval( sanitize_text_field( $_GET['issueid'] ));
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
     	$issue_id = $this->post_id ;
 
     	$lat = esc_attr(strip_tags($_POST['imcLatValue']));
@@ -165,22 +93,12 @@ class PbVote_ProjectSaveData {
     	if (is_wp_error($post_id)) {
             return $post_id;
     	}
-<<<<<<< HEAD
         $this->get_metadata_from_request( $_POST, true);
 
       	$this->update_postmeta();
         $this->project_update_image();
       	$this->update_attachments( $_FILES );
 
-=======
-      $this->get_metadata_from_request( $_POST, true);
-
-    	$this->update_postmeta();
-
-        $this->project_update_image();
-
-    	$this->update_attachments( $_FILES );
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
         $this->update_project_status();
 
         return $this->post_id;
@@ -225,15 +143,9 @@ class PbVote_ProjectSaveData {
     	$orientation = intval(strip_tags($_POST['imcPhotoOri']), 10);
 
     	if ($orientation !== 0) {
-<<<<<<< HEAD
     		$attachment_id = imc_upload_img( $image, $this->post_id, $this->post_data['post_title'], $orientation);
     	} else {
     		$attachment_id = imc_upload_img( $image, $this->post_id, $this->post_data['post_title'], null);
-=======
-    		$attachment_id = pbvote_upload_img( $image, $this->post_id, $this->post_data['post_title'], $orientation);
-    	} else {
-    		$attachment_id = pbvote_upload_img( $image, $this->post_id, $this->post_data['post_title'], null);
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
     	}
 
     	set_post_thumbnail( $this->post_id, $attachment_id );
@@ -317,11 +229,7 @@ class PbVote_ProjectSaveData {
     {
         if (( $file['error'] == '0') && (! empty($attachment_type))  &&
                 ( $this->check_file_type($file['name'],$attachment_type)) ) {
-<<<<<<< HEAD
             $attachment_id = imc_upload_img( $file, $this->post_id, $this->post_id . '-' . $attachment_type, null);
-=======
-            $attachment_id = pbvote_upload_img( $file, $this->post_id, $this->post_id . '-' . $attachment_type, null);
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
             if ( $attachment_id) {
                 $url = wp_get_attachment_url( $attachment_id);
                 update_post_meta( $this->post_id, $attachment_type, $url);
@@ -342,28 +250,16 @@ class PbVote_ProjectSaveData {
     {
         switch ($attach_type) {
             case 'featured_image':
-<<<<<<< HEAD
             $allowed_file_type = PbVote_RenderForm::get_file_type_image();
-=======
-            $allowed_file_type = FILE_TYPES_IMAGE;
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
             break;
 
             case 'pb_project_mapa':;
             case 'pb_project_podporovatele':
-<<<<<<< HEAD
             $allowed_file_type = PbVote_RenderForm::get_file_type_image().PbVote_RenderForm::get_file_type_scan();
             break;
 
             default:
             $allowed_file_type = PbVote_RenderForm::get_file_type_image().PbVote_RenderForm::get_file_type_scan().PbVote_RenderForm::get_file_type_docs();
-=======
-            $allowed_file_type = FILE_TYPES_IMAGE.FILE_TYPES_SCAN;
-            break;
-
-            default:
-            $allowed_file_type = FILE_TYPES_IMAGE.FILE_TYPES_SCAN.FILE_TYPES_DOCS;
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
             break;
         }
         $type = wp_check_filetype(basename($file)) ;
@@ -439,7 +335,6 @@ class PbVote_ProjectSaveData {
         //fires mail notification
         imcplus_mailnotify_4imcstatuschange($transition, $post_id, $theUser);
     }
-<<<<<<< HEAD
     private function add_link_to_voting( $parent_id )
     {
         $items =  get_post_meta( $parent_id, "_pods_items", true);
@@ -447,17 +342,3 @@ class PbVote_ProjectSaveData {
         update_post_meta( $parent_id, "_pods_items", $new_items);
     }
 }
-=======
-
-    private function add_issue_to_voting_collection($voting_id = 0, $post_id = 0)
-    {
-        $all_meta = get_post_meta($voting_id);
-        if ($voting_id && $post_id) {
-          $result = add_post_meta( $voting_id, 'items', $post_id);
-        }
-    }
-
-}
-
- ?>
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090

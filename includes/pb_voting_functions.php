@@ -30,7 +30,6 @@ function pbvote_get_code()
     wp_die(); // this is required to terminate immediately and return a proper response
 }
 
-<<<<<<< HEAD
 function pb_voting_set_single_template($single_template)
 {
     global $post;
@@ -55,8 +54,6 @@ function pb_voting_set_archive_template($archive_template) {
 	}
 	return $archive_template;
 }
-=======
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
 function get_the_user_ip()
 {
 	global $_SERVER;
@@ -232,7 +229,6 @@ function pbvote_insert_cat_dropdown( $taxonomy = 'my_custom_taxonomy', $selected
 
 function pom_fun( $input)
 {
-<<<<<<< HEAD
 	$pom = get_included_files();
 
 	$output = array_search( "D:\web\parti\wp-admin\includes\image.php", $pom);
@@ -317,104 +313,10 @@ function pbvote_upload_img($file = array(), $parent_post_id, $issue_title, $orie
 	}
 	return false;
 }
-=======
-	$pom = new PbVote_ArchiveDisplayFilterDataImcIssues( $input->get_filter_params());
-	$pom1 = $pom->get_query_data();
-	return $input;
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
 
 function pbvote_filename_rename_to_hash( $filename ) {
 	$info = pathinfo( $filename );
 	$ext  = empty( $info['extension'] ) ? '' : '.' . $info['extension'];
 	$name = basename( $filename, $ext );
 	return md5( $name ) . $ext;
-}
-function pbvote_upload_img($file = array(), $parent_post_id, $issue_title, $orientation = null) {
-
-		require_once( ABSPATH . 'wp-admin/includes/admin.php' );
-
-		add_filter( 'sanitize_file_name', 'pbvote_filename_rename_to_hash', 10 );
-		$file_return = wp_handle_upload( $file, array(
-			'test_form' => false,
-			'unique_filename_callback' => 'imc_rename_attachment' // Use this to rename photo
-		) );
-		remove_filter( 'sanitize_file_name', 'pbvote_filename_rename_to_hash', 10 );
-
-		if( isset( $file_return['error'] ) || isset( $file_return['upload_error_handler'] ) ) {
-			return false;
-		} else {
-
-		$filename = $file_return['file'];
-
-		if ($orientation) {
-			imc_fix_img_orientation( $filename, $file_return['type'], $orientation );
-		}
-
-		$attachment = array(
-			'post_mime_type' => $file_return['type'],
-			'post_title' => mb_convert_encoding(preg_replace( '/\.[^.]+$/', '', basename( $filename ) ), "UTF-8"),
-			'post_content' => '',
-			'post_status' => 'inherit',
-			'guid' => $file_return['url']
-		);
-
-		$attachment_id = wp_insert_attachment( $attachment, $file_return['url'], $parent_post_id );
-		require_once(ABSPATH . 'wp-admin/includes/image.php');
-
-		$attachment_data = wp_generate_attachment_metadata( $attachment_id, $filename );
-
-		wp_update_attachment_metadata( $attachment_id, $attachment_data );
-
-		if( 0 < intval( $attachment_id, 10 ) ) {
-			return $attachment_id;
-		}
-
-	}
-	return false;
-}
-
-function pbvote_filename_rename_to_hash( $filename )
-{
-		$info = pathinfo( $filename );
-		$ext  = empty( $info['extension'] ) ? '' : '.' . $info['extension'];
-		$name = basename( $filename, $ext );
-		return md5( $name ) . $ext;
-}
-function pbvote_selectvoting_generate($is_single_voting = true)
-{
-	if( $is_single_voting) {
-		return "";
-	}
-
-	$all_pb_voting = get_all_pbvoting();
-	$output  = '<div class="imc-row">';
-	$output .= '<input checked="checked" class="imc-CheckboxToggleStyle" id="pbItemToggleVotingCheckbox" type="checkbox" name="pbItemToggleVotingCheckbox" value="all">';
-	$output .= '<label class="imc-SectionTitleTextStyle" for="pbItemToggleVotingCheckbox">'. __('Votings', 'pb-voting') . '</label>';
-	$output .= '<div id="pbItemVotingCheckboxes" class="imc-row">';
-		if ($all_pb_voting) {
-
-				foreach( $all_pb_voting as $pb_voting_item ) {
-					$output .= '<input checked="checked" class="imc-CheckboxStyle" id="pbItem-voting-checkbox-' . esc_html($pb_voting_item->ID) .'" type="checkbox" name="' .  esc_attr($pb_voting_item->post_title) . '" value="' . esc_attr($pb_voting_item->ID) . '">';
-					$output .= '<label for="pbItem-voting-checkbox-' . esc_html($pb_voting_item->ID) .'">' . esc_html($pb_voting_item->post_title) . '</label>';
-					$output .= '</br>';
-				}
-		}
-	$output .= '</div></div>';
-	return $output;
-}
-function get_all_pbvoting()
-{
-	$query_args = array(
-			'post_type' => PB_VOTING_POST_TYPE,
-			'post_status' => "publish",
-			'paged' => 1,
-			'posts_per_page' => -1,
-	);
-	$pom = new WP_Query( $query_args );
-	if ( is_wp_error($pom) ) {
-		return "";
-	} else {
-		return $pom->posts;
-	}
-
 }

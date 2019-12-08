@@ -6,11 +6,11 @@ $survey_id  = $this->pbvoting_meta["survey_id"][0];
 // $survey_id  = get_post_meta( $post_id, "survey_id", true);
 $regist_code_help = ( $this->msg_type == "sms") ? "číslo mobilního telefonu ve formátu (+420) nnn nnn nnn" : "emailovou adresu" ;
 $reg_widget_labels = array(
-    'title'       => $this->get_meta_value( 'regform_title', __('Registrate to vote', 'pb-voting')),
-    'input_id'    => $this->get_meta_value( 'regform_voter_id', __('Registration data','pb-voting')),
-    'input_help'  => $this->get_meta_value( 'regform_input_help', 'Enter ' . __($regist_code_help,'pb-voting')),
-    'input_token' => $this->get_meta_value( 'regform_token_id',  __('Voting code','pb-voting')),
-    'submit_btn'  => $this->get_meta_value( 'regform_submit_btn', __('Send','pb-voting') ),
+    'title'       => $this->get_meta_value( 'regform_title', __('Registrace k hlasování', 'pb-voting')),
+    'input_id'    => $this->get_meta_value( 'regform_voter_id', __('Registrační údaj','pb-voting')),
+    'input_help'  => $this->get_meta_value( 'regform_input_help', 'Zadejte ' . __($regist_code_help,'pb-voting')),
+    'input_token' => $this->get_meta_value( 'regform_token_id',  __('Hlasovací kód','pb-voting')),
+    'submit_btn'  => $this->get_meta_value( 'regform_submit_btn', 'Odeslat' ),
 );
 /*
 Add survay_id if not included in URL
