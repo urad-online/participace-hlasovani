@@ -5,10 +5,6 @@
  *
  */
 
-// $insertpage = getIMCInsertPage();
-// $editpage = getIMCEditPage();
-// $listpage = getIMCArchivePage();
-// $voting_page = get_first_pbvoting_post();
 global $wp_query, $post;
 $insertpage = "";
 $editpage = "";
@@ -72,9 +68,9 @@ if ( is_front_page() || is_home() ) {
             <div class="imc-SingleHeaderStyle imc-BGColorWhite">
                 <label for="ac-1" class="imc-OverviewFilteringPanelLabelStyle">
                     <span><?php echo __('Search &amp; Filtering', 'pb-voting'); ?></span>
-                    <span style="display: none;" id="imcCatFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Kategorie', 'pb-voting');?></span>
-                    <span style="display: none;" id="imcStatFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Stav', 'pb-voting');?></span>
-                    <span style="display: none;" id="imcKeywordFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Klíčová slova', 'pb-voting');?></span>
+                    <span style="display: none;" id="imcCatFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Category', 'pb-voting');?></span>
+                    <span style="display: none;" id="imcStatFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Status', 'pb-voting');?></span>
+                    <span style="display: none;" id="imcKeywordFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Key words', 'pb-voting');?></span>
                     <i class="material-icons md-24 u-pull-right" id="pbvFilteringIndicator">filter_list</i>
                 </label>
 
@@ -85,15 +81,15 @@ if ( is_front_page() || is_home() ) {
                 <div class="imc-row imc-DrawerContentsStyle">
 
 					<div class="imc-row">
-						<h3 class="imc-SectionTitleTextStyle"><?php echo __('Vyhledat', 'pb-voting'); ?></h3>
+						<h3 class="imc-SectionTitleTextStyle"><?php echo __('Search', 'pb-voting'); ?></h3>
 
 						<input name="searchKeyword" autocomplete="off" placeholder="<?php
-							echo __('Vyhledat klíčové slovo','pb-voting'); ?>" id="pbvSearchKeywordInput" type="search" class="imc-InputStyle"/>
+							echo __('Search key words','pb-voting'); ?>" id="pbvSearchKeywordInput" type="search" class="imc-InputStyle"/>
 					</div>
                     <div class="imc-DrawerFirstCol">
 
                         <input checked="checked" class="imc-CheckboxToggleStyle" id="pbvToggleStatusCheckbox" type="checkbox" name="pbvToggleStatusCheckbox" value="all">
-                        <label class="imc-SectionTitleTextStyle" for="pbvToggleStatusCheckbox"><?php echo __('Stav hlasování', 'pb-voting'); ?></label>
+                        <label class="imc-SectionTitleTextStyle" for="pbvToggleStatusCheckbox"><?php echo __('Voting status', 'pb-voting'); ?></label>
                         <br>
                         <div id="pbvStatusCheckboxes" class="imc-row">
 							<?php $all_pbvstatus = get_all_pbvote_taxo( $voting_status_taxo);
@@ -113,8 +109,13 @@ if ( is_front_page() || is_home() ) {
                     <div class="imc-DrawerSecondCol">
 
                         <input checked="checked" class="imc-CheckboxToggleStyle" id="pbvToggleCatsCheckbox" type="checkbox"
+<<<<<<< HEAD
 																name="pbvToggleCatsCheckbox" value="all">
                         <label class="imc-SectionTitleTextStyle" for="pbvToggleCatsCheckbox"><?php echo __('Kategorie', 'pb-voting'); ?></label>
+=======
+							name="pbvToggleCatsCheckbox" value="all">
+                        <label class="imc-SectionTitleTextStyle" for="pbvToggleCatsCheckbox"><?php echo __('Category', 'pb-voting'); ?></label>
+>>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
                         <br>
 
                         <div id="pbvCatCheckboxes" class="imc-row">
@@ -180,8 +181,8 @@ if ( is_front_page() || is_home() ) {
                 </div>
 
                 <div class="imc-row-no-margin imc-DrawerButtonRowStyle">
-                    <button class="imc-button imc-button-primary u-pull-right" onclick="pbvOverviewGetFilteringData();"><?php echo __('Zobrazit vybrané', 'pb-voting'); ?></button>
-                    <button class="imc-button u-pull-right" onclick="pbvOverviewResetFilters();"><?php echo __('Zobrazit vše', 'pb-voting'); ?></button>
+                    <button class="imc-button imc-button-primary u-pull-right" onclick="pbvOverviewGetFilteringData();"><?php echo __('Show selected', 'pb-voting'); ?></button>
+                    <button class="imc-button u-pull-right" onclick="pbvOverviewResetFilters();"><?php echo __('Show all', 'pb-voting'); ?></button>
                 </div>
 
             </article>
@@ -247,14 +248,14 @@ if ( is_front_page() || is_home() ) {
 
                         <div class="imc-Separator"></div>
 
-                        <h1 class="imc-FontRoboto imc-Text-XL imc-TextColorSecondary imc-TextItalic imc-TextMedium imc-CenterContents"><?php echo __('Nejsou dostupné záznamy','pb-voting'); ?></h1>
+                        <h1 class="imc-FontRoboto imc-Text-XL imc-TextColorSecondary imc-TextItalic imc-TextMedium imc-CenterContents"><?php echo __('No records available','pb-voting'); ?></h1>
 
                         <div class="imc-Separator"></div>
 
                         <span class="imc-CenterContents imc-TextMedium imc-Text-LG imc-FontRoboto">
 							<?php if($voting_view_filters->is_filtering_active()	) { ?>
                                 <span class="imc-TextColorSecondary ">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-                                <a href="javascript:void(0);" onclick="pbvOverviewResetFilters();" class="imc-LinkStyle"><?php echo __('Zrušit filtr','pb-voting'); ?></a>
+                                <a href="javascript:void(0);" onclick="pbvOverviewResetFilters();" class="imc-LinkStyle"><?php echo __('Reset filter','pb-voting'); ?></a>
 							<?php } ?>
 						</span>
 
@@ -296,18 +297,18 @@ if ( is_front_page() || is_home() ) {
         jQuery( document ).ready(function() {
 
             var imported_cat = <?php echo json_encode( $voting_view_filters->get_value_array('scategory')); ?>;
-
             var imported_status = <?php echo json_encode($voting_view_filters->get_value_array('sstatus')); ?>;
             var imported_keyword = <?php echo json_encode($voting_view_filters->get_value_array('keyword')); ?>;
             var i;
 
+						var countOfFilterParams = imported_status.length + imported_cat.length + imported_keyword.length;
 
-            if (imported_status || imported_cat || imported_keyword) {
+						if (countOfFilterParams > 0) {
                 jQuery('#pbvFilteringIndicator').css('color', '#1ABC9C');
-				jQuery('#pbvStatusCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
-				jQuery('#pbvCatCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
+								jQuery('#pbvStatusCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
+								jQuery('#pbvCatCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
 
-                if (imported_status) {
+                if (imported_status.length > 0) {
                     jQuery('#imcStatFilteringLabel').show();
 
                     jQuery('#pbvToggleStatusCheckbox').prop('checked', false);
@@ -317,7 +318,7 @@ if ( is_front_page() || is_home() ) {
                     }
                 }
 
-                if (imported_cat) {
+                if (imported_cat.length > 0) {
                     jQuery('#imcCatFilteringLabel').show();
 
                     jQuery('#pbvToggleCatsCheckbox').prop('checked', false);
@@ -327,7 +328,7 @@ if ( is_front_page() || is_home() ) {
                     }
                 }
 
-                if (imported_keyword) {
+                if (imported_keyword.length > 0) {
                     jQuery('#imcKeywordFilteringLabel').show();
 
                     jQuery('#pbvSearchKeywordInput').val(imported_keyword);

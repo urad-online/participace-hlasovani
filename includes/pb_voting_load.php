@@ -1,4 +1,8 @@
 <?php
+global $votes_mtbx;
+
+spl_autoload_register('pbvote_class_autoloader', true);
+add_action( 'after_setup_theme', array( 'PbVote_Templates', 'get_instance' ) );
 
 // require_once PB_VOTE_PATH_INC .'/pb_voting_post_types.php';
 require_once PB_VOTE_PATH_INC .'/smssluzbacz/apixml30.php';
@@ -8,9 +12,9 @@ include_once( PB_VOTE_PATH_TEMPL . '/pbvote-part-archive-grid.php' );
 include_once( PB_VOTE_PATH_TEMPL . '/pb-item-part-archive-list.php' );
 include_once( PB_VOTE_PATH_TEMPL . '/pb-item-part-archive-grid.php' );
 
-global $votes_mtbx;
-
-spl_autoload_register('pbvote_class_autoloader', true);
+include_once( PB_VOTE_PATH_INC . '/pb_field_definition.php' );
+include_once( PB_VOTE_PATH_INC . '/pb-additional-fields.php' );
+include_once( PB_VOTE_PATH_INC . '/pb-add-terms-fields.php' );
 
 function pb_voting_register_actions_filters_after_init()
 {
@@ -49,25 +53,8 @@ function pb_voting_enqueue_extension()
             ));
 }
 
-function pbvote_class_autoloader( $class_name ) {
 
-    /**
-     * If the class being requested does not start with our prefix,
-     * we know it's not one in our project
-     */
-    if ( 0 !== strpos( $class_name, 'PbVote_' ) ) {
-        return;
-    }
-
-    $file_name = str_replace(
-        array( 'PbVote_', '_' ),      // Prefix | Underscores
-        array( '', '-' ),         // Remove | Replace with hyphens
-        strtolower( $class_name ) // lowercase
-    );
-
-    // Compile our path from the current location
-    $file =  PB_VOTE_PATH_INC . '/classes/'. $file_name .'.php';
-
+<<<<<<< HEAD
     // If a file is found
     if ( file_exists( $file ) ) {
         // Then load it up!
@@ -84,52 +71,81 @@ function add_pbvote_template( $templates )
     return $templates;
 }
 function register_pbvote_templates( $atts )
+=======
+function pb_enqueue_scripts( )
+>>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
 {
-    // Create the key used for the themes cache
-    $cache_key = 'page_templates-' . md5( get_theme_root() . '/' . get_stylesheet() );
-
-    // Retrieve the cache list.
-    // If it doesn't exist, or it's empty prepare an array
-    $templates = wp_get_theme()->get_page_templates();
-    if ( empty( $templates ) ) {
-        $templates = array();
-    }
-
-    // New cache, therefore remove the old one
-    wp_cache_delete( $cache_key , 'themes');
-
-    // Now add our template to the list of templates by merging our templates
-    // with the existing templates array from the cache.
-    $templates = array_merge( $templates, $this->templates );
-
-    // Add the modified cache to allow WordPress to pick it up for listing
-    // available templates
-    wp_cache_add( $cache_key, $templates, 'themes', 1800 );
-
-    return $atts;
-
-}
-function pb_voting_view_template( $template)
-{
-    // Get global post
     global $post;
 
-    // Return template if post is empty
-    if ( ! $post ) {
-        return $template;
-    }
+	wp_enqueue_style( 'pb-project', PB_VOTE_URL . '/assets/css/pb-styles.css' );
 
-    // Return default template if we don't have a custom one defined
-    $file = get_post_meta( $post->ID, '_wp_page_template', true );
-    if ( $file ) {
-        $file = PB_VOTE_PATH_TEMPL . $file;
-        if ( file_exists( $file ) ) {
-            return $file;
+	if ( is_object( $post)) {
+        if (is_page( $post->ID)) {
+            switch ( $post->post_name) {
+                case 'imc-edit-issue':
+                case 'novy-navrh-projektu':
+                    $edit_show = 'edit';
+					// $map_options = get_option('gmap_settings');
+					// $mapOptions = array(
+					// 	'initial_lat'  	  => $map_options["gmap_initial_lat"],
+					// 	'initial_lng'  	  => $map_options["gmap_initial_lng"],
+					// 	'initial_zoom'    => $map_options["gmap_initial_zoom"],
+					// 	'initial_mscroll' => $map_options["gmap_mscroll"],
+					// 	'initial_bound'   => $map_options["gmap_boundaries"],
+					// );
+
+					wp_register_script('pb-project-edit',  PB_VOTE_URL . '/assets/js/pb-project-edit.js', array('jquery'),'1.1', true);
+			        wp_enqueue_script('pb-project-edit');
+					wp_localize_script('pb-project-edit', 'pbFormInitialData', array(
+						        'completed_off' => 'Uložit si pro budoucí editaci',
+						        'completed_on'  => 'Odeslat návrh ke schválení',
+								// 'mapOptions'	=> $mapOptions ,
+		            ));
+                    break;
+
+                default:
+                    $edit_show = 'unknown page';
+                    break;
+            }
+        } elseif ( is_single($post->ID) and ($post->post_type = 'imc-issues')) {
+            $edit_show = 'show_single';
+        } else {
+            $edit_show = 'other';
         }
     }
-    return $template;
+
 }
+add_action( 'wp_enqueue_scripts',  'pb_enqueue_scripts');
+
+function pbvote_class_autoloader( $class_name ) {
+
+  /**
+  * If the class being requested does not start with our prefix,
+  * we know it's not one in our project
+  */
+  if ( 0 !== strpos( $class_name, 'PbVote_' ) ) {
+    return;
+  }
+
+  $file_name = str_replace(
+    array( 'PbVote_', '_' ),      // Prefix | Underscores
+    array( '', '-' ),         // Remove | Replace with hyphens
+    strtolower( $class_name ) // lowercase
+  );
+
+  // Compile our path from the current location
+  $file =  PB_VOTE_PATH_INC . '/classes/'. $file_name .'.php';
+
+  // If a file is found
+  if ( file_exists( $file ) ) {
+    // Then load it up!
+    require( $file );
+  }
+}
+<<<<<<< HEAD
 add_filter( 'single_template',      'pb_voting_set_single_template', 20 );
 add_filter( 'archive_template',     'pb_voting_set_archive_template' );
 add_filter( 'theme_page_templates', 'add_pbvote_template' );
 add_filter( 'template_include',     'pb_voting_view_template');
+=======
+>>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090

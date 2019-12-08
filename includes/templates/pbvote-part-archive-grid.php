@@ -2,7 +2,7 @@
 
 /**
  * 14.01
- * IMC-Archive part for grid-option
+ * PbVoting - hlasovani-Archive part for grid-option
  *
  */
 

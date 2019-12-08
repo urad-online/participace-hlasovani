@@ -5,6 +5,7 @@ class PbVote_ArchiveDisplayFilterDataImcIssues extends PbVote_ArchiveDisplayFilt
     public $taxo_category = "imccategory";
     public $post_type     = 'imc_issues';
 
+<<<<<<< HEAD
     public function set_query_args_voting()
     {
         $imc_items = array();
@@ -24,13 +25,15 @@ class PbVote_ArchiveDisplayFilterDataImcIssues extends PbVote_ArchiveDisplayFilt
         $this->query_args['post__in'] = $posts_in;
     }
     
+=======
+>>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
     public function set_query_args_custom_1()
     {
-        $this->user_params['voting_id'] = "1248,1212,1267";
-        $this->user_params['voting_id'] = "1248";
+        // $this->user_params['voting_id'] = "1248,1212,1267";
+        // $this->user_params['voting_id'] = "1248";
         $imc_items = array();
-        if(! empty( $this->user_params['voting_id'] )) {
-            $voting_ids = explode(",",  $this->user_params['voting_id']);
+        if(! empty( $this->user_params['svoting'] )) {
+            $voting_ids = explode(",",  $this->user_params['svoting']);
             foreach ($voting_ids as $post_id) {
                 $items =  get_post_meta( $post_id, "_pods_items", true);
                 if (!empty($items)) {

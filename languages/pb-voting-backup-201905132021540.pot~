@@ -3,11 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Participativní projekty - hlasování\n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< HEAD
-"POT-Creation-Date: 2019-12-06 19:20+0000\n"
-=======
-"POT-Creation-Date: 2019-05-13 20:21+0000\n"
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
+"POT-Creation-Date: 2019-05-08 17:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -17,92 +13,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-<<<<<<< HEAD
-"X-Loco-Version: 2.3.1; wp-5.2.4"
-
-#: includes/pb_voting_functions.php:196
-msgid "Select a category"
-msgstr ""
-
-#: includes/pb_voting_post_types.php:9
-msgid "Přidat hlasování"
-msgstr ""
-
-#: includes/pb_voting_post_types.php:10
-msgid "Upravit  hlasování"
-msgstr ""
-
-#: includes/pb_voting_post_types.php:11
-msgid "Nové hlasování"
-msgstr ""
-
-#: includes/pb_voting_post_types.php:12
-msgid "Všechna hlasování"
-msgstr ""
-
-#: includes/pb_voting_post_types.php:13
-msgid "Přehled hlasování"
-msgstr ""
-
-#: includes/pb_voting_post_types.php:14
-msgid "Hledat hlasování"
-msgstr ""
-
-#: includes/pb_voting_post_types.php:15
-msgid "Žádné hlasování nalezeno"
-msgstr ""
-
-#: includes/pb_voting_post_types.php:16
-msgid "Žádné hlasování nalezeno v koši"
-msgstr ""
-
-#: includes/classes/pbvote-controlpages.php:94
-msgid "Registrace k hlasovaní"
-msgstr ""
-
-#: includes/classes/pbvote-controlpages.php:114
-#: includes/classes/pbvote-controlpages.php:131
-msgid "Report an issue"
-msgstr ""
-
-#: includes/classes/pbvote-projectedit.php:328
-msgid "volitelné"
-msgstr ""
-
-#: includes/classes/pbvote-projectedit.php:329
-msgid "optional"
-msgstr ""
-
-#: includes/classes/pbvote-projectedit.php:353
-msgid "Address"
-msgstr ""
-
-#: includes/classes/pbvote-projectedit.php:354
-msgid "Locate"
-msgstr ""
-
-#: includes/classes/pbvote-projectedit.php:355
-msgid "Add an address"
-msgstr ""
-
-#: includes/classes/pbvote-projectedit.php:394
-msgid "Photo"
-msgstr ""
-
-#: includes/classes/pbvote-projectedit.php:395
-msgid "Add photo"
-msgstr ""
-
-#: includes/classes/pbvote-projectedit.php:396
-msgid "Delete Photo"
-msgstr ""
-
-#: includes/classes/pbvote-projectedit.php:398
-msgid "No photo attached"
-msgstr ""
-
-#: includes/classes/pbvote-projectedit.php:399
-=======
 "X-Loco-Version: 2.2.2; wp-4.9.10"
 
 #: includes/pb-additional-fields.php:34
@@ -152,130 +62,10 @@ msgid "No photo attached"
 msgstr ""
 
 #: includes/classes/pbvote-projectedit.php:398
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
 msgid ""
 "Photo size must be smaller in size, please resize it or select a smaller one!"
 msgstr ""
 
-<<<<<<< HEAD
-#: includes/classes/pbvote-projectedit.php:400
-msgid "A photo has been selected:"
-msgstr ""
-
-#: includes/classes/pbvote-projectsavedata.php:306
-msgid "Status changed: "
-msgstr ""
-
-#: includes/templates/archive-hlasovani.php:46
-#: includes/templates/archive-imc_issues_body.php:50
-msgid "Display: "
-msgstr ""
-
-#: includes/templates/archive-hlasovani.php:56
-#: includes/templates/archive-imc_issues_body.php:60
-msgid "Order: "
-msgstr ""
-
-#: includes/templates/archive-hlasovani.php:74
-#: includes/templates/archive-imc_issues_body.php:86
-msgid "Search &amp; Filtering"
-msgstr ""
-
-#: includes/templates/archive-hlasovani.php:75
-#: includes/templates/archive-hlasovani.php:117
-#: includes/templates/archive-imc_issues_body.php:87
-#: includes/templates/archive-imc_issues_body.php:129
-msgid "Kategorie"
-msgstr ""
-
-#: includes/templates/archive-hlasovani.php:76
-#: includes/templates/archive-imc_issues_body.php:88
-msgid "Stav"
-msgstr ""
-
-#: includes/templates/archive-hlasovani.php:77
-#: includes/templates/archive-imc_issues_body.php:89
-msgid "Klíčová slova"
-msgstr ""
-
-#: includes/templates/archive-hlasovani.php:88
-#: includes/templates/archive-imc_issues_body.php:100
-msgid "Vyhledat"
-msgstr ""
-
-#: includes/templates/archive-hlasovani.php:91
-#: includes/templates/archive-imc_issues_body.php:103
-msgid "Vyhledat klíčové slovo"
-msgstr ""
-
-#: includes/templates/archive-hlasovani.php:96
-#: includes/templates/archive-imc_issues_body.php:108
-msgid "Stav hlasování"
-msgstr ""
-
-#: includes/templates/archive-hlasovani.php:183
-#: includes/templates/archive-imc_issues_body.php:195
-msgid "Zobrazit vybrané"
-msgstr ""
-
-#: includes/templates/archive-hlasovani.php:184
-#: includes/templates/archive-imc_issues_body.php:196
-msgid "Zobrazit vše"
-msgstr ""
-
-#: includes/templates/archive-hlasovani.php:250
-#: includes/templates/archive-imc_issues_body.php:285
-msgid "Nejsou dostupné záznamy"
-msgstr ""
-
-#: includes/templates/archive-hlasovani.php:257
-#: includes/templates/archive-imc_issues_body.php:293
-msgid "Zrušit filtr"
-msgstr ""
-
-#: includes/templates/archive-hlasovani.php:279
-#: includes/templates/archive-imc_issues_body.php:315
-msgid "Showing"
-msgstr ""
-
-#: includes/templates/archive-hlasovani.php:279
-#: includes/templates/archive-imc_issues_body.php:315
-msgid "of"
-msgstr ""
-
-#: includes/templates/archive-hlasovani.php:279
-#: includes/templates/archive-imc_issues_body.php:315
-msgid "issues"
-msgstr ""
-
-#: includes/templates/edit-project_issues.php:93
-#: includes/templates/edit-project_issues.php:158
-#: includes/templates/insert-project_issues.php:86
-#: includes/templates/insert-project_issues.php:177
-#: includes/templates/single-imc_issues.php:65
-msgid "Return to overview"
-msgstr ""
-
-#: includes/templates/edit-project_issues.php:109
-#: includes/templates/single-imc_issues.php:72
-msgid "Edit issue"
-msgstr ""
-
-#: includes/templates/edit-project_issues.php:177
-msgid "You are not authorised to edit an issue"
-msgstr ""
-
-#: includes/templates/edit-project_issues.php:181
-#: includes/templates/insert-project_issues.php:223
-msgid "Please login!"
-msgstr ""
-
-#: includes/templates/insert-project_issues.php:114
-msgid "Report a new issue"
-msgstr ""
-
-#: includes/templates/insert-project_issues.php:215
-=======
 #: includes/classes/pbvote-projectedit.php:399
 msgid "A photo has been selected:"
 msgstr ""
@@ -400,17 +190,12 @@ msgid "Report a new issue"
 msgstr ""
 
 #: includes/templates/insert-pbvote_issues.php:114
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
 msgid "You are not authorised to report an issue"
 msgstr ""
 
 #: includes/templates/pb-item-part-archive-grid.php:20
 #: includes/templates/pb-item-part-archive-list.php:142
-<<<<<<< HEAD
-#: includes/templates/single-imc_issues.php:453
-=======
 #: includes/templates/single-pbvote_issues.php:428
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
 msgid "My Issue"
 msgstr ""
 
@@ -422,32 +207,20 @@ msgstr ""
 #: includes/templates/pb-item-part-archive-grid.php:39
 #: includes/templates/pb-item-part-archive-list.php:133
 #: includes/templates/pbvote-part-archive-grid.php:39
-<<<<<<< HEAD
-#: includes/templates/pbvote-part-archive-list.php:120
-=======
 #: includes/templates/pbvote-part-archive-list.php:135
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
 msgid "No photo submitted"
 msgstr ""
 
 #: includes/templates/pb-item-part-archive-grid.php:103
 #: includes/templates/pb-item-part-archive-list.php:88
 #: includes/templates/pbvote-part-archive-grid.php:85
-<<<<<<< HEAD
-#: includes/templates/pbvote-part-archive-list.php:82
-=======
 #: includes/templates/pbvote-part-archive-list.php:90
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
 msgid "Under moderation"
 msgstr ""
 
 #: includes/templates/pb-item-part-archive-list.php:106
 #: includes/templates/pbvote-part-archive-grid.php:106
-<<<<<<< HEAD
-#: includes/templates/pbvote-part-archive-list.php:100
-=======
 #: includes/templates/pbvote-part-archive-list.php:108
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
 #, php-format
 msgctxt "comments number"
 msgid "1 Comment"
@@ -456,60 +229,6 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/templates/reg_widget_content.php:9
-<<<<<<< HEAD
-msgid "Registrace k hlasování"
-msgstr ""
-
-#: includes/templates/reg_widget_content.php:10
-msgid "Registrační údaj"
-msgstr ""
-
-#: includes/templates/reg_widget_content.php:12
-msgid "Hlasovací kód"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:82
-msgid "Under Moderation"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:208
-msgid "Description"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:216
-msgid "Photos"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:223
-msgid "No photos submitted"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:238
-msgid "Comments"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:251
-msgid "No Comments"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:253
-msgid " Comments"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:255
-msgid "1 Comment"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:265
-msgid "Post Comment"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:268
-msgid "Add a comment"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:272
-=======
 msgid "Registrate to vote"
 msgstr ""
 
@@ -566,18 +285,13 @@ msgid "Add a comment"
 msgstr ""
 
 #: includes/templates/single-pbvote_issues.php:247
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
 #, php-format
 msgid ""
 "You must be <a class=\"imc-LinkStyle\" href=\"%s\">logged in</a> to post a "
 "comment."
 msgstr ""
 
-<<<<<<< HEAD
-#: includes/templates/single-imc_issues.php:277
-=======
 #: includes/templates/single-pbvote_issues.php:252
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
 #, php-format
 msgid ""
 "Logged in as <span class=\"imc-TextColorPrimary\">%2$s</span>. <a "
@@ -585,60 +299,6 @@ msgid ""
 "out?</a>"
 msgstr ""
 
-<<<<<<< HEAD
-#: includes/templates/single-imc_issues.php:296
-msgid "No comments submitted"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:301
-msgid "comments"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:336
-msgid "Pending"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:357
-msgid "Administrator"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:362
-msgid "Issue author"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:404
-msgid "Comments are disabled"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:421
-msgid "Messages"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:428
-msgid "Location"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:456
-msgid "My issue"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:474
-msgid "Voted"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:482
-msgid "Vote"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:492
-msgid "Timeline"
-msgstr ""
-
-#: includes/templates/single-imc_issues.php:510
-#: includes/templates/single-imc_issues.php:527
-#: includes/templates/single-imc_issues.php:542
-#: includes/templates/single-imc_issues.php:554
-=======
 #: includes/templates/single-pbvote_issues.php:271
 msgid "No comments submitted"
 msgstr ""
@@ -691,7 +351,6 @@ msgstr ""
 #: includes/templates/single-pbvote_issues.php:502
 #: includes/templates/single-pbvote_issues.php:517
 #: includes/templates/single-pbvote_issues.php:529
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
 msgid "by"
 msgstr ""
 
@@ -712,9 +371,3 @@ msgstr ""
 #. Author of the plugin
 msgid "Miloslav Stastny"
 msgstr ""
-<<<<<<< HEAD
-=======
-
-msgid "Issue status"
-msgstr ""
->>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090

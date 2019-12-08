@@ -105,7 +105,24 @@ class PbVote_ArchiveDisplayFilterData
 
     public function set_query_args_voting()
     {
+<<<<<<< HEAD
       // not needed for hlasovani
+=======
+        $imc_items = array();
+        if(! empty( $this->user_params['svoting'] )) {
+            $voting_ids = explode(",",  $this->user_params['svoting']);
+            foreach ($voting_ids as $post_id) {
+                $items =  get_post_meta( $post_id, "_pods_items", true);
+                if (!empty($items)) {
+                    $imc_items = array_merge( $imc_items, (array) $items );
+                }
+            }
+        }
+        $posts_in = array_unique($imc_items);
+        if (count($posts_in) > 0) {
+            $this->query_args['post__in'] = $posts_in;
+        }
+>>>>>>> 6571ac8cdc6380f1de48e7819c40d38e03512090
     }
 
     public function set_query_args_custom()

@@ -17,6 +17,21 @@ function pbvote_register_post_type()
         'parent_item_colon'  => '',
         'menu_name'          => 'PB Hlasování'
       );
+    $labels1 = array(
+        'name'               => _x( 'Voting Participation', 'post type general name' ),
+        'singular_name'      => _x( 'Voting Participation', 'post type singular name' ),
+        'add_new'            => _x( 'Add', 'book' ),
+        'add_new_item'       => __( 'Add voting' ),
+        'edit_item'          => __( 'Edit voting' ),
+        'new_item'           => __( 'New voting' ),
+        'all_items'          => __( 'All votings' ),
+        'view_item'          => __( 'View votings' ),
+        'search_items'       => __( 'Search voting' ),
+        'not_found'          => __( 'Voting not found' ),
+        'not_found_in_trash' => __( 'Voting not found in trash' ),
+        'parent_item_colon'  => '',
+        'menu_name'          => 'Votings'
+      );
     $args = array(
         'labels'        => $labels,
         'description'   => 'Správa hlasování o participativních projektech',
@@ -74,7 +89,7 @@ class VotingInfoMetabox {
    }
    private function set_meta_fields()
    {
-       // $pom = new pbRenderForm();
+       // $pom = new PbVote_RenderForm();
        $this->meta_fields = array(
            'voting_date_from' => array(
                'label'     => 'Datum začátku hlasování',
