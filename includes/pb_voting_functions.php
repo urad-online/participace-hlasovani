@@ -1,4 +1,8 @@
 <?php
+$generaloptions     = get_option( 'general_settings' );
+$voting_enabled     = ( empty($generaloptions["imc_ratings"]))  ? false : $generaloptions["imc_ratings"];
+$comments_enabled   = ( empty($generaloptions["imc_comments"])) ? false : $generaloptions["imc_comments"];
+
 function pb_vote_get_registration_widget( $atts, $content, $tag)
 {
 	$new_widget = new PbVote_GenWidget( $atts);

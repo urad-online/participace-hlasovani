@@ -12,8 +12,6 @@ class PbVote_ProjectSaveData {
         $imccategory_id = esc_attr(strip_tags($_POST['my_custom_taxonomy']));
         $voting_period_slug = get_parent_taxo_slug($voting_id);
     	// Check options if the status of new issue is pending or publish
-
-      	$generaloptions = get_option( 'general_settings' );
       	$moderateOption = $generaloptions["moderate_new"];
 
     	//CREATE THE ISSUE TO DB

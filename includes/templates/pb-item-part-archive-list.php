@@ -143,7 +143,7 @@ global $voting_enabled, $comments_enabled;
 
 				<?php } else if(pbvote_user_can_edit(get_the_ID(), $user_id)) { ?>
 
-                    <a class="imc-button-primary imc-button-small imc-OverviewListEditButtonStyle" href="<?php echo esc_url( $editpage . $parameter_pass . $issue_id ); ?>" target="_blank"><?php echo __('Edit','pb-voting'); ?></a>
+                    <a class="imc-button-primary imc-button-small imc-OverviewListEditButtonStyle" href="<?php echo esc_url( $editpage . $parameter_pass . $issue_id ); ?>" target="_self"><?php echo __('Edit','pb-voting'); ?></a>
 
 				<?php } ?>
             </div>

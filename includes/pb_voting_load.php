@@ -1,4 +1,5 @@
 <?php
+global $metabox_pbvote;
 
 // require_once PB_VOTE_PATH_INC .'/pb_voting_post_types.php';
 require_once PB_VOTE_PATH_INC .'/smssluzbacz/apixml30.php';
@@ -129,7 +130,16 @@ function pb_voting_view_template( $template)
     }
     return $template;
 }
+
+function pbvote_admin_init()
+{
+  global $metabox_pbvote;
+  if ( empty($metabox_pbvote) ) {
+    // $metabox_pbvote = new PbVote_ImcIssueDetailMetabox;
+  }
+}
 add_filter( 'single_template',      'pb_voting_set_single_template', 20 );
 add_filter( 'archive_template',     'pb_voting_set_archive_template' );
 add_filter( 'theme_page_templates', 'add_pbvote_template' );
 add_filter( 'template_include',     'pb_voting_view_template');
+add_action( 'admin_init', 'pbvote_admin_init');
