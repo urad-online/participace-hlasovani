@@ -135,7 +135,7 @@ function pbvote_admin_init()
 {
   global $metabox_pbvote;
   if ( empty($metabox_pbvote) ) {
-    // $metabox_pbvote = new PbVote_ImcIssueDetailMetabox;
+    $metabox_pbvote = new PbVote_ImcIssueDetailMetabox;
   }
 }
 add_filter( 'single_template',      'pb_voting_set_single_template', 20 );

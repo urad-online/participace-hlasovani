@@ -2,12 +2,12 @@
 /*
 Plugin Name: Participativní projekty - hlasování
 Plugin URI: https://urad.online
-Description: Registration for a voting. Integration Limesurvey and https://sms.sluzba.cz
+Description: Registrace, spr8va a hlasování o návrzích participativního rozpočtu. Integrace s Limesurvey a https://sms.sluzba.cz
 Author: Miloslav Stastny
-Version: 0.1
+Version: 1.1
 Author URI: https://urad.online
 Text Domain: pb-voting
-Domain Path: /languages/
+Domain Path: /languages
 */
 // define( 'DELIVERY_MSG_TYPE',  'Email'); // values Email, Sms
 

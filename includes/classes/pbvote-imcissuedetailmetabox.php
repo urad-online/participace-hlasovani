@@ -19,7 +19,7 @@ class PbVote_ImcIssueDetailMetabox {
   public function __construct() {
    add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
    add_action( 'admin_footer', array( $this, 'media_fields' ) );
-   add_action( 'save_post', array( $this, 'save_fields' ), 1 );
+   add_action( 'save_post', array( $this, 'save_fields' ),20 );
        $this->set_meta_fields();
   }
 
@@ -143,23 +143,25 @@ class PbVote_ImcIssueDetailMetabox {
     }
 
     foreach ( $this->meta_fields as $meta_field ) {
-      $old = get_post_meta($post_id, $meta_field['id'], true);
-      $new = $_POST[$field['id']];
-      if ( $new && $new != $old ) {
-        switch ( $meta_field['type'] ) {
-          case 'email':
-          $_POST[ $meta_field['id'] ] = sanitize_email( $_POST[ $meta_field['id'] ] );
-          break;
-          case 'text':
-          $_POST[ $meta_field['id'] ] = sanitize_text_field( $_POST[ $meta_field['id'] ] );
-          break;
+
+        $old = get_post_meta($post_id, $meta_field['id'], true);
+        $new = (!empty($_POST[$meta_field['id']])) ? $_POST[$meta_field['id']] : "";
+        if ( $new && $new != $old ) {
+          switch ( $meta_field['type'] ) {
+            case 'email':
+            $_POST[ $meta_field['id'] ] = sanitize_email( $_POST[ $meta_field['id'] ] );
+            break;
+            case 'text':
+            $_POST[ $meta_field['id'] ] = sanitize_text_field( $_POST[ $meta_field['id'] ] );
+            break;
+          }
+          update_post_meta( $post_id, $meta_field['id'], $new );
+        } elseif ( $meta_field['type'] === 'checkbox' ) {
+          update_post_meta( $post_id, $meta_field['id'], '0' );
+        } elseif ('' == $new && $old) {
+          delete_post_meta( $post_id, $meta_field['id'], $old );
         }
-        update_post_meta( $post_id, $meta_field['id'], $new );
-      } elseif ( $meta_field['type'] === 'checkbox' ) {
-        update_post_meta( $post_id, $meta_field['id'], '0' );
-      } elseif ('' == $new && $old) {
-        delete_post_meta( $post_id, $meta_field['id'], $old );
-      }
+
     }
   }
   public function get_fields()

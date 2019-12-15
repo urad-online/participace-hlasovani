@@ -14,7 +14,10 @@ class PbVote_RenderForm {
     }
     private function read_form_fields()
     {
+        $this->fields = $this->pb_get_custom_fields();
 
+        return;
+        // cancelled using of saved options
         if ( false === ( $this->fields = get_option( 'pb_custom_fields_definition' ) ) ) {
             $this->fields = $this->pb_get_custom_fields();
             add_option( 'pb_custom_fields_definition', json_encode( $this->fields, JSON_UNESCAPED_UNICODE) );
@@ -26,6 +29,11 @@ class PbVote_RenderForm {
 
     private function read_form_fields_layout()
     {
+      $this->fields_layout = $this->pb_get_custom_fields_layout();
+      $this->fields_single = $this->pb_get_custom_fields_single();
+      return;
+      // cancelled using of saved options
+
         if ( false === ( $fields_layouts = get_option( 'pb_custom_fields_layout' ) ) ) {
             $this->fields_layout = $this->pb_get_custom_fields_layout();
             $this->fields_single = $this->pb_get_custom_fields_single();
