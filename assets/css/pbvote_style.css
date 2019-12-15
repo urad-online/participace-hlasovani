@@ -16,7 +16,7 @@ Template: javo-spot
   width: 100%;
   display: inline-block;
   height: auto;
-  cursor: pointer;
+  /* cursor: pointer; */
   background: #ffffff;
   /* border-bottom: 2px solid rgba(0,0,0,0.12); */
 }
@@ -28,15 +28,15 @@ Template: javo-spot
     height: inherit;
 }
 
-.pbvote-collapse-section-style:hover {
-  background-color: #efefef;
-}
+/* .pbvote-collapse-section-style:hover { */
+  /* background-color: #efefef; */
+/* } */
 
 .pbvote-collapse-section-container article {
   background: #E6E6E6;
   /* margin-top: -10px; */
   overflow: hidden;
-  max-height: 0;
+  max-height: 1500;
   position: inherit;
   z-index: 10;
   transition: max-height 0.3s ease-in-out, box-shadow 0.1s linear;
@@ -60,11 +60,11 @@ input[type="checkbox"].pbvote-collapse-section:checked ~ article.pbvote-collapsi
 }
 
 input[type="checkbox"].pbvote-collapse-section:checked ~ label div i.material-icons.md-24::before{
-    content:"expand_less";
+    /* content:"expand_less"; */
 }
 
 input[type="checkbox"].pbvote-collapse-section:not(checked) ~ label div i.material-icons.md-24::before{
-    content:"expand_more";
+    /* content:"expand_more"; */
 }
 .pbvote-collapsible-section {
     padding: 0px 15px 0px 15px;
@@ -90,6 +90,10 @@ input[type="checkbox"].pbvote-collapse-section:not(checked) ~ label div i.materi
 .pbvote-RegWidgetInputStyle {
     width: 100%;
 }
+.pbvote-RegWidgetInputStyle.edit-sm{
+    width: 20%;
+}
+
 .pbvote-RegWidgetSubmitLinkStyle a {
     display: block;
     color: #999;
@@ -103,16 +107,106 @@ input[type="checkbox"].pbvote-collapse-section:not(checked) ~ label div i.materi
     margin-top: 10px;
 }
 .pbvote-RegWidgetBtn {
-    background-color: red;
-    display: block;
+    background-color: #007bff;
+    font-weight: bold;
+    font-size: 14px;
+    border-radius: 4px;
 }
 
 .pbvote-RegWidgetBtn:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.pbvote-RegWidgetBtn:hover {
+    background-color: #0274be;
 }
 
 .pbvote-row{
     margin: 10px;
     display: block;
+}
+.pbvote-row-centred{
+    text-align: center;
+    align: middle;
+}
+.pbvote-RegWidgetBtnStyle{
+    display: inline-block;
+    text-align: center;
+}
+.pbvote-RegWidgetLinkStyle{
+    /* font-weight: bold; */
+    font-size: 18px;
+}
+.pb_tooltip {
+    position: relative;
+    display: inline-block;
+}
+.pb_tooltip .pb_tooltip_text {
+    visibility: hidden;
+    width: 250px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.pb_tooltip:hover .pb_tooltip_text {
+    visibility: visible;
+    opacity: 1;
+}
+.pbvote-OverviewTileCategoryIcon {
+    height: 24px;
+    width: 24px;
+    border: none;
+    background-color: transparent;
+    border-radius: 3px;
+    margin-right: 6px;
+}
+
+.pbvote-OverviewListCategoryIcon {
+    max-width: 48px;
+    max-height: 48px;
+    height: 100%;
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    border-radius: 3px;
+    margin: 0 auto;
+}
+.pbvote-OverviewListImageStyle {
+    max-height: 200px;
+    max-width:  100%;
+    min-height: 90px;
+    min-width:  100%;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+}
+.pbvote-OverviewTileImageStyle {
+    max-height: 200px;
+    max-width:  100%;
+    min-height: 100px;
+    min-width: 100%;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+}
+
+.pbvote-OverviewTileImageStyle img.wp-post-image{
+    max-height: 200px;
+    max-width:  100%;
+    min-height: 100px;
+    min-width: 100%;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
 }

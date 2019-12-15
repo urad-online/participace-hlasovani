@@ -14,7 +14,8 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
         $this->password  = (!empty( $this->pbvoting_meta['voting_password'][0])) ? $this->pbvoting_meta['voting_password'][0] : LIMESURVEY_PASSWORD;
         $this->max_number_of_tokens = (!empty( $this->pbvoting_meta['max_number_of_tokens'][0])) ? intval($this->pbvoting_meta['max_number_of_tokens'][0]) : 2;
 
-        $this->survey_url  = $this->base_url . '/index.php/admin/survey/sa/view/surveyid/' . $this->survey_id;
+        // $this->survey_url  = $this->base_url . '/index.php/admin/survey/sa/view/surveyid/' . $this->survey_id;
+        $this->survey_url  = $this->base_url . '/' . $this->survey_id;
         $this->limeapi_url = $this->base_url . '/admin/remotecontrol';
 
     }
@@ -24,22 +25,21 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
         $this->rpc_client_file = PB_VOTE_PATH_INC.'/jsonrpcphp/JsonRPCClient.php';
         require_once $this->rpc_client_file ;
 
-        if ($this->msg_type === "Email" ) {
+        if ($this->msg_type === "email" ) {
             $this->used_attr = 'email';
         } else {
             $this->used_attr = 'attribute_1';
         }
 
-        $this->rcp_client = new \org\jsonrpcphp\JsonRPCClient( $this->limeapi_url.'/admin/remotecontrol' );
-        $this->sessionKey = $this->rcp_client->get_session_key( $this->login, $this->password );
-
-        if ( $this->sessionKey ) {
-            return true;
-        } else {
-            $this->output = array( "result" => "error", "message" => 'Chyba připojení na server s průzkumy.',);
+        $this->rcp_client = new \org\jsonrpcphp\JsonRPCClient( $this->limeapi_url );
+        try {
+            $this->sessionKey = $this->rcp_client->get_session_key( $this->login, $this->password );
+        } catch (Exception $e) {
+            $this->set_error( 'Chyba připojení na server s průzkumy.');
             return false;
         }
 
+        return true;
     }
 
     public function get_voter_by_id( $voting_id, $voter_id)
@@ -62,9 +62,15 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
             $aConditions = null;
         }
 
-        $list = $this->rcp_client->list_participants( $this->sessionKey, $this->survey_id, 0, 5, false, $this->attributes, $aConditions );
+        try {
+            $list = $this->rcp_client->list_participants( $this->sessionKey, $this->survey_id, 0, 5, false, $this->attributes, $aConditions );
+            $last_rec = array( "index" => -1, "expiration_time" => 0);
+        } catch (Exception $e) {
+            $list = array();
+            $this->set_error( 'Chyba připojení na server s průzkumy.');
+            return false;
+        }
 
-        $last_rec = array( "index" => -1, "expiration_time" => 0);
 
         if (( count($list) > 0 ) && ( empty( $list['status']))) {
             foreach ($list as $key => $value) {
@@ -86,9 +92,15 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
 
     public function convert_token_record( $input)
     {
+        if ($this->used_attr === "email" ) {
+            $voter_id = $input['participant_info']['email'];
+        } else {
+            $voter_id = $input[ $this->used_attr ] ;
+        }
+
         $output = array(
             "id" => $input['tid'],
-            "voter_id" => $input['attribute_1'],
+            "voter_id" => $voter_id,
             "expiration_time" => $input['validuntil'],
             "status" => ( $input['completed'] == 'N') ? "new" : "closed",
         );
@@ -112,7 +124,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
         }
 
         if ( $this->index >= ( $this->max_number_of_tokens - 1) ) {
-            $this->output = array( 'result' => 'error', 'message' => 'Vyčerpán počet zaslaných kódů - max '.$this->max_number_of_tokens, );
+            $this->set_error( 'Vyčerpán počet zaslaných kódů - max '.$this->max_number_of_tokens );
             return false;
         }
         $new_particip = array(array(
@@ -128,12 +140,21 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
             $new_particip[0][ 'remindercount' ] = 1;
         }
 
-        $new_row = $this->rcp_client->add_participants( $this->sessionKey, $this->survey_id, $new_particip, true );
+        try {
+            $new_row = $this->rcp_client->add_participants( $this->sessionKey, $this->survey_id, $new_particip, true );
+        } catch (Exception $e) {
+            $new_row = array( 'status' => 'Chyba připojení na server s průzkumy při vytváření nové registrace.');
+        }
+
         // print_r($new_row, null );
 
         if (! empty( $new_row[0]['token'])) {
+            $this->survey_url .= '?token='.$new_row[0]['token'];
+            $this->code_id = $new_row[0]['tid'];
+            $this->log_error( "novy token: " . $new_row[0]['token'] );
             return $new_row[0]['token'];
         } else {
+            $this->set_error( $new_row['status'] );
             return false;
         }
     }
@@ -143,6 +164,25 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
         if (! empty( $this->sessionKey ) ) {
             $this->rcp_client->release_session_key( $this->sessionKey );
         }
+    }
+
+    public function clear_new_code()
+    {
+        $result = true;
+        $this->log_error( "Mazání nového záznamu");
+        if ( ! empty( $this->code_id )) {
+            try {
+                $deleted_ids = $this->rcp_client->delete_participants( $this->sessionKey, $this->survey_id, array( $this->code_id));
+            } catch (Exception $e) {
+                $deleted_ids = array();
+            }
+
+            if ( count( $deleted_ids) == 0 ) {
+                $this->set_error( 'Chyba při mazání registrace' );
+                $result = false;
+            }
+        }
+        return $result;
     }
 
     public function __destruct()

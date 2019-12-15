@@ -1,235 +1,66 @@
 <?php
 /**
- * Template Name: Archive Issue Page
+ * Template Name: Stranka Seznam hlasovani
  * The template for displaying archive pages
  *
  */
 
-wp_enqueue_script( 'imc-gmap' );
-wp_enqueue_script( 'mapsV3_infobubble' ); // Insert addon lib for Google Maps V3 -> to style infowindows
-wp_enqueue_script( 'mapsV3_richmarker' ); // Insert addon lib for Google Maps V3 -> to style marker
-
-$insertpage = getIMCInsertPage();
-$editpage = getIMCEditPage();
-$listpage = getIMCArchivePage();
-$voting_page = get_first_pbvoting_post();
+// $insertpage = getIMCInsertPage();
+// $editpage = getIMCEditPage();
+// $listpage = getIMCArchivePage();
+// $voting_page = get_first_pbvoting_post();
+global $wp_query, $post;
+$insertpage = "";
+$editpage = "";
+$listpage = "";
+$voting_page = "";
+$voting_category_taxo = 'voting_category';
+$voting_status_taxo   = 'voting_status';
+$filter_params_view   = array();
 
 if ( get_option('permalink_structure') ) { $perma_structure = true; } else {$perma_structure = false;}
-if( $perma_structure){$parameter_pass = '/?myparam=';} else{$parameter_pass = '&myparam=';}
-
 
 /********************************************* ISSUES PER PAGE ********************************************************/
-////Validating: User Input Data
-$safe_ppage_values = array( -1, 6, 12, 24 ); //all possible options
-$safe_ppage = isset($_GET['ppage']) ? intval( $_GET['ppage'] ) : '';
-
-if ( ! in_array( $safe_ppage, $safe_ppage_values, true ) ) {$safe_ppage = '';}
-//$safe_ppage = sanitize_text_field( $safe_ppage );//Sanitizing: Cleaning User Input
-//Pass the safe ppage input to session variable
-if($safe_ppage!=''){$_SESSION['ppage_session']= $safe_ppage;}
-if(isset($_SESSION['ppage_session'])) { $imported_ppage = $_SESSION['ppage_session'];} else { $imported_ppage = '6'; }
-$imported_ppage_label = $imported_ppage;
-if($imported_ppage=='-1') {$imported_ppage_label = 'All'; }
-
-/**********************************************************************************************************************/
-
-/********************************************* ORDER OF OVERVIEW ISSUES ***********************************************/
-//Validating: User Input Data
-$safe_sorder_values = array( 1,2 ); //all possible options, 1=order by date, 2=order by votes
-$safe_sorder = isset($_GET['sorder']) ? intval( $_GET['sorder'] ) : '';
-
-if ( ! in_array( $safe_sorder, $safe_sorder_values, true ) ) {$safe_sorder = '';}
-//$safe_sorder = sanitize_text_field( $safe_sorder );//Sanitizing: Cleaning User Input
-//Pass the safe order input to session variable
-if($safe_sorder!=''){$_SESSION['sorder_session']= $safe_sorder;}
-if(isset($_SESSION['sorder_session'])) { $imported_order = $_SESSION['sorder_session'];} else { $imported_order = '1'; }
-$imported_order_label = __('Date', 'participace-projekty');
-if ($imported_order == '2') {$imported_order_label = __('Votes', 'participace-projekty'); }
-
-
-/**********************************************************************************************************************/
-
-/********************************************* VIEW OF OVERVIEW ISSUES ************************************************/
-
-//We need default view from Settings
-$generaloptions = get_option( 'general_settings' );
-$defaultViewOption = $generaloptions["default_view"];
-if($defaultViewOption=='1'){$defaultView='1';}else{$defaultView='2';}
-
-//Validating: User Input Data
-$safe_view_values = array( 1,2 ); //all possible options, 1=order by date, 2=order by votes
-$safe_view = isset($_GET['view']) ? intval( $_GET['view'] ) : '';
-
-if ( ! in_array( $safe_view, $safe_view_values, true ) ) {$safe_view = '';}
-//$safe_view = sanitize_text_field( $safe_view );//Sanitizing: Cleaning User Input
-//Pass the safe order input to session variable
-if($safe_view!=''){$_SESSION['view_session']= $safe_view;}
-if(isset($_SESSION['view_session'])) { $imported_view = $_SESSION['view_session'];} else { $imported_view = $defaultView; }
-
-/**********************************************************************************************************************/
-
-/********************************************* FILTERED IDS OF STATUS *************************************************/
-// Sanitizing: Cleaning User Input
-$safe_status = isset($_GET['sstatus']) ? sanitize_text_field( $_GET['sstatus'] ) : '';
-
-// Validating: User Input Data
-$safe_status = array_map( 'intval', array_filter( explode(',', $safe_status), 'is_numeric' ) );
-if ( ! $safe_status ) {$safe_status = '';}
-//Pass the safe status_ids input to session variable
-if(isset($safe_status) && $safe_status!='') {
-	$_SESSION['sstatus_session'] = $safe_status;
-}else{
-	$_SESSION['sstatus_session'] = false;
-}
-
-if($_SESSION['sstatus_session']) {
-	$imported_sstatus = implode(",", $_SESSION['sstatus_session']);
-	$imported_sstatus4checkbox = $_SESSION['sstatus_session'];
-}else{
-	$imported_sstatus = false;
-	$imported_sstatus4checkbox = '';
-}
-
-/**********************************************************************************************************************/
-
-/********************************************* FILTERED IDS OF CATEGORY ***********************************************/
-//Sanitizing: Cleaning User Input
-$safe_category = isset($_GET['scategory']) ? sanitize_text_field( $_GET['scategory'] ) : '';
-
-//Validating: User Input Data
-$safe_category = array_map( 'intval', array_filter( explode(',', $safe_category), 'is_numeric' ) );
-if ( ! $safe_category ) {$safe_category = '';}
-//Pass the safe category_ids input to session variable
-if(isset($safe_category) && $safe_category!='') {
-	$_SESSION['scategory_session'] = $safe_category;
-}else{
-	$_SESSION['scategory_session'] = false;
-}
-
-if($_SESSION['scategory_session']) {
-	$imported_scategory = implode(",", $_SESSION['scategory_session']);
-	$imported_scategory4checkbox = $_SESSION['scategory_session'];
-}else{
-	$imported_scategory = false;
-	$imported_scategory4checkbox = '';
-}
-
-/**********************************************************************************************************************/
-
-/********************************************* FILTERED KEYWORD *******************************************************/
-//Sanitizing: Cleaning User Input
-$safe_keyword = isset($_GET['keyword']) ? sanitize_text_field( $_GET['keyword'] ) : '';
-
-
-//Validating: User Input Data (if lenght is more than 40 chars)
-if ( strlen( $safe_keyword ) > 40 ) {$safe_keyword = substr( $safe_keyword, 0, 40 );}
-//Pass the safe keyword input to session variable
-if(isset($safe_keyword) && $safe_keyword!='') {
-	$_SESSION['keyword_session'] = $safe_keyword;
-}else{
-	$_SESSION['keyword_session'] = false;
-}
-if($_SESSION['keyword_session']) {
-	$imported_keyword = $_SESSION['keyword_session'];
-}else{
-	$imported_keyword = false;
-}
-
-/**********************************************************************************************************************/
-
-
-//DEBUGGING
-//echo("<script>console.log('ppage: ".$safe_ppage."');</script>");
-//echo("<script>console.log('ppage_session: ".$_SESSION['ppage_session']."');</script>");
-//echo("<script>console.log('sorder: ".$safe_sorder."');</script>");
-//echo("<script>console.log('sorder_session: ".$_SESSION['sorder_session']."');</script>");
-//echo("<script>console.log('view: ".$safe_view."');</script>");
-//echo("<script>console.log('view_session: ".$_SESSION['view_session']."');</script>");
-//echo("<script>console.log('sstatus: ".$safe_status."');</script>");
-//echo("<script>console.log('sstatus_session: ".$_SESSION['sstatus_session']."');</script>");
-//echo("<script>console.log('imported_sstatus: ".$imported_sstatus."');</script>");
-//echo("<script>console.log('scategory: ".$safe_category."');</script>");
-//echo("<script>console.log('scategory_session: ".$_SESSION['scategory_session']."');</script>");
-//echo("<script>console.log('imported_scategory: ".$imported_scategory."');</script>");
-//echo("<script>console.log('keyword: ".$safe_keyword."');</script>");
-//echo("<script>console.log('keyword_session: ".$_SESSION['keyword_session']."');</script>");
-
-
-$filtering_active = false;
-if (!empty($imported_scategory) || !empty($imported_sstatus) || !empty($imported_keyword)) {$filtering_active = true;}
 
 $user_id = get_current_user_id();
-$plugin_path_url = imc_calculate_plugin_base_url();
 $issues_pp_counter = 0;
 
+$voting_view_filters = new  PbVote_ArchiveDisplayOptions();
 get_header();
-
 
 if ( is_front_page() || is_home() ) {
 	$front_page_id = get_option('page_on_front');
 	$my_permalink = _get_page_link($front_page_id);
 }else{
 	$my_permalink = get_the_permalink();
-} ?>
+}
+
+?>
     <div class="imc-SingleHeaderStyle imc-BGColorWhite">
 
         <nav class="imc-OverviewHeaderNavStyle">
             <ul class="imc-OverviewNavUlStyle">
                 <li>
                     <label class="imc-NaviSelectStyle">
-                        <select id="imcSelectDisplayComponent" title="Issues to display" onchange="imcFireNavigation('imcSelectDisplayComponent')">
-                            <option class="imc-CustomOptionDisabledStyle" value="<?php echo esc_attr($imported_ppage); ?>" selected disabled><?php echo __('Display: ', 'participace-projekty'); ?> <?php echo esc_html($imported_ppage_label); ?></option>
+                        <select id="pbvSelectDisplayComponent" title="Issues to display" onchange="pbvFireNavigation('pbvSelectDisplayComponent')">
+                            <option class="imc-CustomOptionDisabledStyle" value="<?php echo esc_attr($voting_view_filters->get_value('ppage')); ?>" selected disabled><?php echo __('Display: ', 'pb-voting'); ?> <?php echo esc_html($voting_view_filters->get_label('ppage', $voting_view_filters->get_value('ppage'))); ?></option>
 
-                            <option value="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $issues_per_page = '6', $imported_order, $imported_view, $imported_sstatus, $imported_scategory, $imported_keyword) ); ?>">6</option>
-                            <option value="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $issues_per_page = '12', $imported_order, $imported_view, $imported_sstatus, $imported_scategory, $imported_keyword) ); ?>">12</option>
-                            <option value="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $issues_per_page = '24',$imported_order, $imported_view, $imported_sstatus, $imported_scategory, $imported_keyword) ); ?>">24</option>
-                            <option value="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $issues_per_page = '-1', $imported_order, $imported_view, $imported_sstatus, $imported_scategory, $imported_keyword) ); ?>"><?php echo __('All', 'participace-projekty'); ?></option>
+							<?php echo $voting_view_filters->generate_options_long_ppage($my_permalink)?>
                         </select>
                     </label>
                 </li>
 
                 <li>
                     <label class="imc-NaviSelectStyle">
-                        <select id="imcSelectOrderingComponent" title="Order by" onchange="imcFireNavigation('imcSelectOrderingComponent')">
-                            <option class="imc-CustomOptionDisabledStyle" value="<?php echo esc_attr($imported_order); ?>" selected disabled><?php echo __('Order: ', 'participace-projekty'); ?>  <?php echo esc_html($imported_order_label); ?></option>
+                        <select id="pbvSelectOrderingComponent" title="Order by" onchange="pbvFireNavigation('pbvSelectOrderingComponent')">
+                            <option class="imc-CustomOptionDisabledStyle" value="<?php echo esc_attr($voting_view_filters->get_value('sorder')); ?>" selected disabled><?php echo __('Order: ', 'pb-voting'); ?>  <?php echo esc_html($voting_view_filters->get_label('sorder', $voting_view_filters->get_value('sorder'))); ?></option>
 
-                            <option value="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $imported_ppage, $theorder = '1', $imported_view, $imported_sstatus, $imported_scategory, $imported_keyword) ); ?>"><?php echo __('Date', 'participace-projekty'); ?></option>
-                            <option value="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $imported_ppage, $theorder = '2', $imported_view, $imported_sstatus, $imported_scategory, $imported_keyword) ); ?>"><?php echo __('Votes', 'participace-projekty'); ?></option>
+							<?php echo $voting_view_filters->generate_options_long_sorder($my_permalink)?>
                         </select>
                     </label>
                 </li>
 
-				<?php if ($imported_view == '1') { ?>
-
-                    <li><a href="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $imported_ppage, $imported_order, $theview = '1', $imported_sstatus, $imported_scategory, $imported_keyword) ); ?>" class="imc-SingleHeaderLinkStyle imc-NavSelectedStyle"><i class="material-icons md-36 imc-VerticalAlignMiddle">view_stream</i></a></li>
-
-                    <li><a href="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $imported_ppage, $imported_order, $theview = '2', $imported_sstatus, $imported_scategory, $imported_keyword) ); ?>" class="imc-SingleHeaderLinkStyle"><i class="material-icons md-36 imc-VerticalAlignMiddle">apps</i></a></li>
-
-				<?php } else { ?>
-
-                    <li><a href="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $imported_ppage, $imported_order, $theview = '1', $imported_sstatus, $imported_scategory, $imported_keyword) ); ?>" class="imc-SingleHeaderLinkStyle"><i class="material-icons md-36 imc-VerticalAlignMiddle">view_stream</i></a></li>
-
-                    <li><a href="<?php echo esc_url( $my_permalink . imcCreateFilterVariablesLong($perma_structure, $imported_ppage, $imported_order, $theview = '2', $imported_sstatus, $imported_scategory, $imported_keyword) ); ?>" class="imc-SingleHeaderLinkStyle imc-NavSelectedStyle"><i class="material-icons md-36 imc-VerticalAlignMiddle">apps</i></a></li>
-
-				<?php } ?>
-				<?php if ($voting_page !== '#') { ?>
-					<li class="u-pull-right">
-						<a href="<?php echo $voting_page; ?>" class="imc-SingleHeaderLinkStyle" target="_blank">
-							<i class="material-icons md-36 imc-SingleHeaderIconStyle">how_to_vote</i>
-							<span class="imc-hidden-xs imc-hidden-sm imc-hidden-md"><?php echo __('Registrace k hlasovaní','participace-projekty'); ?></span>
-						</a>
-					</li>
-				<?php } else { ?>
-
-					<li class="u-pull-right">
-						<a href="<?php echo esc_url( get_permalink($insertpage[0]->ID) ); ?>" class="imc-SingleHeaderLinkStyle">
-							<i class="material-icons md-36 imc-SingleHeaderIconStyle">add_circle</i>
-							<span class="imc-hidden-xs imc-hidden-sm imc-hidden-md"><?php echo __('Report an issue','participace-projekty'); ?></span>
-						</a>
-					</li>
-				<?php } ?>
-
-
+				<?php echo $voting_view_filters->generate_lists_long_view($my_permalink)?>
             </ul>
         </nav>
     </div>
@@ -240,11 +71,11 @@ if ( is_front_page() || is_home() ) {
             <input class="imc-DrawerCheckbox" id="ac-1" name="accordion-1" type="checkbox" />
             <div class="imc-SingleHeaderStyle imc-BGColorWhite">
                 <label for="ac-1" class="imc-OverviewFilteringPanelLabelStyle">
-                    <span><?php echo __('Search &amp; Filtering', 'participace-projekty'); ?></span>
-                    <span style="display: none;" id="imcCatFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Category', 'participace-projekty');?></span>
-                    <span style="display: none;" id="imcStatFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Status', 'participace-projekty');?></span>
-                    <span style="display: none;" id="imcKeywordFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Keyword', 'participace-projekty');?></span>
-                    <i class="material-icons md-24 u-pull-right" id="imcFilteringIndicator">filter_list</i>
+                    <span><?php echo __('Search &amp; Filtering', 'pb-voting'); ?></span>
+                    <span style="display: none;" id="imcCatFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Kategorie', 'pb-voting');?></span>
+                    <span style="display: none;" id="imcStatFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Stav', 'pb-voting');?></span>
+                    <span style="display: none;" id="imcKeywordFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Klíčová slova', 'pb-voting');?></span>
+                    <i class="material-icons md-24 u-pull-right" id="pbvFilteringIndicator">filter_list</i>
                 </label>
 
             </div>
@@ -254,24 +85,24 @@ if ( is_front_page() || is_home() ) {
                 <div class="imc-row imc-DrawerContentsStyle">
 
 					<div class="imc-row">
-						<h3 class="imc-SectionTitleTextStyle"><?php echo __('Search', 'participace-projekty'); ?></h3>
+						<h3 class="imc-SectionTitleTextStyle"><?php echo __('Vyhledat', 'pb-voting'); ?></h3>
 
-						<input name="searchKeyword" autocomplete="off" placeholder="<?php echo __('Keyword search','participace-projekty'); ?>" id="imcSearchKeywordInput" type="search" class="imc-InputStyle"/>
+						<input name="searchKeyword" autocomplete="off" placeholder="<?php
+							echo __('Vyhledat klíčové slovo','pb-voting'); ?>" id="pbvSearchKeywordInput" type="search" class="imc-InputStyle"/>
 					</div>
                     <div class="imc-DrawerFirstCol">
 
-                        <input checked="checked" class="imc-CheckboxToggleStyle" id="imcToggleStatusCheckbox" type="checkbox" name="imcToggleStatusCheckbox" value="">
-                        <label class="imc-SectionTitleTextStyle" for="imcToggleStatusCheckbox"><?php echo __('Issue status', 'participace-projekty'); ?></label>
+                        <input checked="checked" class="imc-CheckboxToggleStyle" id="pbvToggleStatusCheckbox" type="checkbox" name="pbvToggleStatusCheckbox" value="all">
+                        <label class="imc-SectionTitleTextStyle" for="pbvToggleStatusCheckbox"><?php echo __('Stav hlasování', 'pb-voting'); ?></label>
                         <br>
+                        <div id="pbvStatusCheckboxes" class="imc-row">
+							<?php $all_pbvstatus = get_all_pbvote_taxo( $voting_status_taxo);
+							if ($all_pbvstatus) { ?>
 
-                        <div id="imcStatusCheckboxes" class="imc-row">
-							<?php $all_imcstatus = get_all_imcstatus();
-							if ($all_imcstatus) { ?>
+								<?php foreach( $all_pbvstatus as $pbvstatus ) { ?>
 
-								<?php foreach( $all_imcstatus as $imcstatus ) { ?>
-
-                                    <input checked="checked" class="imc-CheckboxStyle" id="imc-stat-checkbox-<?php echo esc_html($imcstatus->term_id); ?>" type="checkbox" name="<?php echo esc_attr($imcstatus->name); ?>" value="<?php echo esc_attr($imcstatus->term_id); ?>">
-                                    <label for="imc-stat-checkbox-<?php echo esc_html($imcstatus->term_id); ?>"><?php echo esc_html($imcstatus->name); ?></label>
+                                    <input checked="checked" class="imc-CheckboxStyle" id="pbv-stat-checkbox-<?php echo esc_html($pbvstatus->term_id); ?>" type="checkbox" name="<?php echo esc_attr($pbvstatus->name); ?>" value="<?php echo esc_attr($pbvstatus->term_id); ?>">
+                                    <label for="pbv-stat-checkbox-<?php echo esc_html($pbvstatus->term_id); ?>"><?php echo esc_html($pbvstatus->name); ?></label>
                                     <br>
 
 								<?php }
@@ -281,56 +112,58 @@ if ( is_front_page() || is_home() ) {
 
                     <div class="imc-DrawerSecondCol">
 
-                        <input checked="checked" class="imc-CheckboxToggleStyle" id="imcToggleCatsCheckbox" type="checkbox" name="imcToggleCatsCheckbox" value="">
-                        <label class="imc-SectionTitleTextStyle" for="imcToggleCatsCheckbox"><?php echo __('Categories', 'participace-projekty'); ?></label>
+                        <input checked="checked" class="imc-CheckboxToggleStyle" id="pbvToggleCatsCheckbox" type="checkbox"
+																name="pbvToggleCatsCheckbox" value="all">
+                        <label class="imc-SectionTitleTextStyle" for="pbvToggleCatsCheckbox"><?php echo __('Kategorie', 'pb-voting'); ?></label>
                         <br>
 
-                        <div id="imcCatCheckboxes" class="imc-row">
+                        <div id="pbvCatCheckboxes" class="imc-row">
 
-							<?php $all_imccategory = get_all_imccategory();
+							<?php $all_pbvcategory = get_all_pbvote_taxo( $voting_category_taxo , true);
 
-							$count = count($all_imccategory);
+							$count = count($all_pbvcategory);
 							$numItemsPerRow = ceil($count / 2);
 							$index  = 0;
 
 							echo '<div class="imc-grid-6 imc-columns">';
-							foreach( $all_imccategory as $imccategory ) {
+							foreach( $all_pbvcategory as $pbvcategory ) {
 								if ($index > 0 and $index % $numItemsPerRow == 0) {
 									echo '</div><div class="imc-grid-6 imc-columns">';
 								} ?>
 
                                 <div class="imc-row">
 
-                                    <input checked="checked" class="imc-CheckboxStyle" id="imc-cat-checkbox-<?php echo esc_html($imccategory->term_id); ?>" type="checkbox" name="<?php echo esc_attr($imccategory->name); ?>" value="<?php echo esc_attr($imccategory->term_id); ?>">
-                                    <label for="imc-cat-checkbox-<?php echo esc_html($imccategory->term_id); ?>"><?php echo esc_html($imccategory->name); ?></label>
+                                    <input checked class="imc-CheckboxStyle" id="pbv-cat-checkbox-<?php echo esc_html($pbvcategory->term_id); ?>" type="checkbox" name="<?php echo esc_attr($pbvcategory->name); ?>" value="<?php echo esc_attr($pbvcategory->term_id); ?>">
+                                    <label for="pbv-cat-checkbox-<?php echo esc_html($pbvcategory->term_id); ?>"><?php echo esc_html($pbvcategory->name); ?></label>
 
 									<?php $args = array(
 										'hide_empty'    => false,
 										'hierarchical'  => true,
-										'parent'        => $imccategory->term_id
+										'parent'        => $pbvcategory->term_id
 									);
-									$childterms = get_terms('imccategory', $args);
+									$childterms = get_terms( $voting_category_taxo, $args);
 
 									if (!empty($childterms)) { ?>
 
-                                        <div id="imcCatChildCheckboxes">
+                                        <div id="pbvCatChildCheckboxes">
 
 											<?php foreach ( $childterms as $childterm ) { ?>
 
-                                                <input checked="checked" class="imc-CheckboxStyle imc-CheckboxChildStyle" id="imc-cat-checkbox-<?php echo esc_html($childterm->term_id); ?>" type="checkbox" name="<?php echo esc_attr($childterm->name); ?>" value="<?php echo esc_attr($childterm->term_id); ?>">
-                                                <label for="imc-cat-checkbox-<?php echo esc_html($childterm->term_id); ?>"><?php echo esc_html($childterm->name); ?></label>
+                                                <input checked="checked" class="imc-CheckboxStyle imc-CheckboxChildStyle" id="pbv-cat-checkbox-<?php echo esc_html($childterm->term_id); ?>" type="checkbox" name="<?php echo esc_attr($childterm->name); ?>" value="<?php echo esc_attr($childterm->term_id); ?>">
+                                                <label for="pbv-cat-checkbox-<?php echo esc_html($childterm->term_id); ?>"><?php echo esc_html($childterm->name); ?></label>
 
 												<?php $args = array('hide_empty' => false, 'hierarchical'  => true, 'parent' => $childterm->term_id);
-												$grandchildterms = get_terms('imccategory', $args);
+												$grandchildterms = get_terms( $voting_category_taxo, $args);
 
 												if (!empty($childterms)) { ?>
 
-                                                    <div id="imcCatChildCheckboxes">
-
+                                                    <div id="pbvCatGrandChildCheckboxes">
 
 														<?php foreach ($grandchildterms as $grandchild ) { ?>
-                                                            <input checked="checked" class="imc-CheckboxStyle imc-CheckboxGrandChildStyle" id="imc-cat-checkbox-<?php echo esc_html($grandchild->term_id); ?>" type="checkbox" name="<?php echo esc_attr($grandchild->name); ?>" value="<?php echo esc_attr($grandchild->term_id); ?>">
-                                                            <label for="imc-cat-checkbox-<?php echo esc_html($grandchild->term_id); ?>"><?php echo esc_html($grandchild->name); ?></label>
+                                                            <input checked="checked" class="imc-CheckboxStyle imc-CheckboxGrandChildStyle"
+																id="pbv-cat-checkbox-<?php echo esc_html($grandchild->term_id); ?>" type="checkbox"
+																name="<?php echo esc_attr($grandchild->name); ?>" value="<?php echo esc_attr($grandchild->term_id); ?>">
+                                                            <label for="pbv-cat-checkbox-<?php echo esc_html($grandchild->term_id); ?>"><?php echo esc_html($grandchild->name); ?></label>
 														<?php } ?>
                                                     </div>
 												<?php } ?>
@@ -347,8 +180,8 @@ if ( is_front_page() || is_home() ) {
                 </div>
 
                 <div class="imc-row-no-margin imc-DrawerButtonRowStyle">
-                    <button class="imc-button imc-button-primary u-pull-right" onclick="imcOverviewGetFilteringData();"><?php echo __('Apply filters', 'participace-projekty'); ?></button>
-                    <button class="imc-button u-pull-right" onclick="imcOverviewResetFilters();"><?php echo __('Reset filters', 'participace-projekty'); ?></button>
+                    <button class="imc-button imc-button-primary u-pull-right" onclick="pbvOverviewGetFilteringData();"><?php echo __('Zobrazit vybrané', 'pb-voting'); ?></button>
+                    <button class="imc-button u-pull-right" onclick="pbvOverviewResetFilters();"><?php echo __('Zobrazit vše', 'pb-voting'); ?></button>
                 </div>
 
             </article>
@@ -365,40 +198,9 @@ if ( is_front_page() || is_home() ) {
 
 				<?php
 				// Get current page and append to custom query parameters array
-				$paged = 1;
-				if ( get_query_var( 'paged' ) ) {$paged = get_query_var('paged'); // On a paged page.
-				} else if ( get_query_var( 'page' ) ) {$paged = get_query_var('page'); // On a "static" page.
-				}
-
-				//Basic query calls depending the user
-				if ( !is_user_logged_in() ){ //not user
-					$custom_query_args = imcLoadIssuesForGuests($paged,$imported_ppage,$imported_sstatus,$imported_scategory);
-				}else{ //admin!
-					if(current_user_can( 'administrator' )){
-						$custom_query_args = imcLoadIssuesForAdmins($paged,$imported_ppage,$imported_sstatus,$imported_scategory);
-					}else{
-						$custom_query_args = imcLoadIssuesForUsers($paged,$imported_ppage,$user_id,$imported_sstatus,$imported_scategory);
-					}
-				}
-
-				//search string
-				if(!$imported_keyword == false){
-					$custom_query_args['s'] = $imported_keyword;
-					$custom_query_args['exact'] = false;
-				}
-
-				//sorting by date or likes
-				if ($imported_order == '1') {
-					$custom_query_args['orderby'] = 'date';
-				}else{
-					$custom_query_args['meta_key'] = 'imc_likes';
-					$custom_query_args['orderby'] = 'meta_value_num';
-					$custom_query_args['order']= 'DESC';
-				}
-
-
-				// Instantiate custom query
-				$custom_query = new WP_Query($custom_query_args);
+				$voting_items = new PbVote_ArchiveDisplayFilterData( $voting_view_filters->get_filter_params());
+				$paged = $voting_items->get_paged();
+				$custom_query = $voting_items->get_query_data();
 
 				// Pagination fix
 				$temp_query = $wp_query;
@@ -407,6 +209,7 @@ if ( is_front_page() || is_home() ) {
 
 				// Output custom query loop
 				if ($custom_query->have_posts()) :
+					$pbvote_current_view = $voting_view_filters->get_value('view');
 					while ($custom_query->have_posts()) :
 
 						$custom_query->the_post();
@@ -416,43 +219,23 @@ if ( is_front_page() || is_home() ) {
 						$pendingColorClass = 'imc-ColorRed';
 						$issues_pp_counter = $issues_pp_counter + 1;
 
-						if ($imported_view == '1') {
+						if ($pbvote_current_view == '1') {
 							//LIST VIEW
-							imc_archive_show_list($post, $editpage, $parameter_pass, $user_id, $pendingColorClass, $plugin_path_url);
+							pbvote_archive_show_list($post, $editpage, $voting_view_filters->parameter_pass, $user_id, $pendingColorClass, $voting_view_filters->get_plugin_base_url());
 						} else {
 							//GRID VIEW
-							imc_archive_show_grid($post, $editpage, $parameter_pass, $user_id, $pendingColorClass, $plugin_path_url);
+							pbvote_archive_show_grid($post, $editpage, $voting_view_filters->parameter_pass, $user_id, $pendingColorClass, $voting_view_filters->get_plugin_base_url());
 						}
 
-						$imccategory_currentterm = get_the_terms($post->ID, 'imccategory');
-						if ($imccategory_currentterm) {
-							$current_category_id = $imccategory_currentterm[0]->term_id;
-							$term_thumb = get_term_by('id', $current_category_id, 'imccategory');
+						$pbvcategory_currentterm = get_the_terms($post->ID, $voting_category_taxo);
+						if ($pbvcategory_currentterm) {
+							$current_category_id = $pbvcategory_currentterm[0]->term_id;
+							$term_thumb = get_term_by('id', $current_category_id, $voting_category_taxo);
 							$cat_thumb_arr = wp_get_attachment_image_src( $term_thumb->term_image);
 						}
 
-						$jsonIssuesArr[] = array (
-							'title' => get_the_title(),
-							'lat' => get_post_meta($post->ID, "imc_lat", true),
-							'lng' => get_post_meta($post->ID, "imc_lng", true),
-							'id' => get_the_ID(),
-							'url' => get_permalink(),
-							'photo' => get_the_post_thumbnail($post->ID, 'post-thumbnail'),
-							'imc_url' => plugins_url(),
-							'cat' => $imccategory_currentterm[0]->name,
-							'catIcon' => $cat_thumb_arr[0],
-							'votes' => intval(get_post_meta($post->ID, 'imc_likes', true), 10),
-							'myIssue' => $myIssue
-						);
-
 					endwhile;
 				else :
-
-					$map_options = get_option('gmap_settings');
-					$jsonIssuesArr[] = array (
-						'lat' => $map_options["gmap_initial_lat"],
-						'lng' => $map_options["gmap_initial_lng"]
-					);
 
 					?>
 
@@ -464,15 +247,14 @@ if ( is_front_page() || is_home() ) {
 
                         <div class="imc-Separator"></div>
 
-                        <h1 class="imc-FontRoboto imc-Text-XL imc-TextColorSecondary imc-TextItalic imc-TextMedium imc-CenterContents"><?php echo __('There are no issues','participace-projekty'); ?></h1>
+                        <h1 class="imc-FontRoboto imc-Text-XL imc-TextColorSecondary imc-TextItalic imc-TextMedium imc-CenterContents"><?php echo __('Nejsou dostupné záznamy','pb-voting'); ?></h1>
 
                         <div class="imc-Separator"></div>
 
                         <span class="imc-CenterContents imc-TextMedium imc-Text-LG imc-FontRoboto">
-							<a href="<?php echo esc_url( get_permalink($insertpage[0]->ID) ); ?>" class="imc-LinkStyle"><?php echo __('Add a new issue','participace-projekty'); ?></a>
-							<?php if($filtering_active) { ?>
+							<?php if($voting_view_filters->is_filtering_active()	) { ?>
                                 <span class="imc-TextColorSecondary ">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-                                <a href="javascript:void(0);" onclick="imcOverviewResetFilters();" class="imc-LinkStyle"><?php echo __('Reset filters','participace-projekty'); ?></a>
+                                <a href="javascript:void(0);" onclick="pbvOverviewResetFilters();" class="imc-LinkStyle"><?php echo __('Zrušit filtr','pb-voting'); ?></a>
 							<?php } ?>
 						</span>
 
@@ -490,20 +272,20 @@ if ( is_front_page() || is_home() ) {
             <div class="imc-OverviewPaginationContainerStyle">
 
 				<?php $total_issues = $custom_query->found_posts;
-				$start_indicator = (($paged - 1) * $imported_ppage) + 1;
+				$start_indicator = (($paged - 1) * $voting_view_filters->get_value('ppage')) + 1;
 				if ($total_issues === 0) {$start_indicator = 0;}
-				$end_indicator = (($paged - 1) * $imported_ppage) + $issues_pp_counter; ?>
+				$end_indicator = (($paged - 1) * $voting_view_filters->get_value('ppage')) + $issues_pp_counter; ?>
 
-                <p class="img-PaginationLabelStyle imc-TextColorSecondary"><?php echo __('Showing','participace-projekty'); ?> <b><?php echo esc_html($start_indicator); ?></b> - <b><?php echo esc_html($end_indicator) ?></b> <?php echo __('of','participace-projekty'); ?> <b><?php echo esc_html($total_issues) ?></b> <?php echo __('issues','participace-projekty'); ?></p>
+                <p class="img-PaginationLabelStyle imc-TextColorSecondary"><?php echo __('Showing','pb-voting'); ?> <b><?php echo esc_html($start_indicator); ?></b> - <b><?php echo esc_html($end_indicator) ?></b> <?php echo __('of','pb-voting'); ?> <b><?php echo esc_html($total_issues) ?></b> <?php echo __('issues','pb-voting'); ?></p>
 
-				<?php imc_paginate($custom_query, $paged, $imported_ppage, $imported_order, $imported_view, $imported_sstatus, $imported_scategory, $imported_keyword); ?>
+				<?php imc_paginate($custom_query, $paged, $voting_view_filters->get_value('ppage'), $voting_view_filters->get_value('sorder'), $voting_view_filters->get_value('view'), $voting_view_filters->get_value('sstatus'), $voting_view_filters->get_value('scategory'), $voting_view_filters->get_value('keyword')); ?>
             </div>
 
         </div>
 
-        <div class="imc-OverviewMapContainerStyle">
+        <!-- <div class="imc-OverviewMapContainerStyle">
             <div id="imcOverviewMap" class="imc-OverviewMapStyle"></div>
-        </div>
+        </div> -->
 
     </div>
 
@@ -511,51 +293,49 @@ if ( is_front_page() || is_home() ) {
     <script>
         /*setOverviewLayout();*/
 
-        document.onload = imcInitOverviewMap(<?php echo json_encode($jsonIssuesArr) ?>, <?php echo json_encode($plugin_path_url) ?>);
-
         jQuery( document ).ready(function() {
 
-            var imported_cat = <?php echo json_encode($imported_scategory4checkbox); ?>;
+            var imported_cat = <?php echo json_encode( $voting_view_filters->get_value_array('scategory')); ?>;
 
-            console.log(imported_cat);
-
-            var imported_status = <?php echo json_encode($imported_sstatus4checkbox); ?>;
-            var imported_keyword = <?php echo json_encode($imported_keyword); ?>;
+            var imported_status = <?php echo json_encode($voting_view_filters->get_value_array('sstatus')); ?>;
+            var imported_keyword = <?php echo json_encode($voting_view_filters->get_value_array('keyword')); ?>;
             var i;
 
+
             if (imported_status || imported_cat || imported_keyword) {
-                jQuery('#imcFilteringIndicator').css('color', '#1ABC9C');
+                jQuery('#pbvFilteringIndicator').css('color', '#1ABC9C');
+				jQuery('#pbvStatusCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
+				jQuery('#pbvCatCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
 
                 if (imported_status) {
                     jQuery('#imcStatFilteringLabel').show();
 
-                    jQuery('#imcToggleStatusCheckbox').prop('checked', false);
+                    jQuery('#pbvToggleStatusCheckbox').prop('checked', false);
 
                     for (i=0;i<imported_status.length;i++) {
-                        jQuery('#imc-stat-checkbox-'+imported_status[i]).prop('checked', false);
+                        jQuery('#pbv-stat-checkbox-'+imported_status[i]).prop('checked', true);
                     }
                 }
 
                 if (imported_cat) {
                     jQuery('#imcCatFilteringLabel').show();
 
-                    jQuery('#imcToggleCatsCheckbox').prop('checked', false);
+                    jQuery('#pbvToggleCatsCheckbox').prop('checked', false);
 
                     for (i=0;i<imported_cat.length;i++) {
-                        jQuery('#imc-cat-checkbox-'+imported_cat[i]).prop('checked', false);
+                        jQuery('#pbv-cat-checkbox-'+imported_cat[i]).prop('checked', true);
                     }
                 }
 
                 if (imported_keyword) {
                     jQuery('#imcKeywordFilteringLabel').show();
 
-                    jQuery('#imcSearchKeywordInput').val(imported_keyword);
+                    jQuery('#pbvSearchKeywordInput').val(imported_keyword);
                 }
             }
         });
 
-
-        function imcFireNavigation(id) {
+        function pbvFireNavigation(id) {
             location.href = jQuery('#'+id)[0].value;
             jQuery( id +" option:disabled" ).prop('selected', true);
         }
@@ -563,43 +343,58 @@ if ( is_front_page() || is_home() ) {
         // Checkbox select propagation
         jQuery(function () {
             jQuery("input[type='checkbox']").change(function () {
-                jQuery(this).siblings('#imcCatCheckboxes')
+				jQuery(this).siblings('#pbvStatusCheckboxes')
+				.find("input[type='checkbox']")
+				.prop('checked', this.checked);
+
+                jQuery(this).siblings('#pbvCatCheckboxes')
                     .find("input[type='checkbox']")
                     .prop('checked', this.checked);
 
-                jQuery(this).siblings('#imcStatusCheckboxes')
+                jQuery(this).siblings('#pbvCatChildCheckboxes')
                     .find("input[type='checkbox']")
                     .prop('checked', this.checked);
 
-                jQuery(this).siblings('#imcCatChildCheckboxes')
-                    .find("input[type='checkbox']")
-                    .prop('checked', this.checked);
-
-                jQuery(this).siblings('#imcCatGrandChildCheckboxes')
+                jQuery(this).siblings('#pbvCatGrandChildCheckboxes')
                     .find("input[type='checkbox']")
                     .prop('checked', this.checked);
 
             });
         });
 
-        function imcOverviewGetFilteringData() {
+        function pbvOverviewGetFilteringData() {
             var selectedStatus = '';
+            var notSelectedStatus = '';
             var selectedCats = '';
+            var notSelectedCats = '';
             var keywordString = '';
 
-            jQuery('#imcStatusCheckboxes input:checkbox:not(:checked)').each(function() { selectedStatus = selectedStatus + jQuery(this).attr('value') +','; });
-            selectedStatus = selectedStatus.slice(0, -1);
+			jQuery('#pbvStatusCheckboxes input:checkbox:checked').each(function() { selectedStatus = selectedStatus + jQuery(this).attr('value') +','; });
+			selectedStatus = selectedStatus.slice(0, -1);
 
-            jQuery('#imcCatCheckboxes input:checkbox:not(:checked)').each(function() { selectedCats = selectedCats + jQuery(this).attr('value') +','; });
-            selectedCats = selectedCats.slice(0, -1);
+			jQuery('#pbvStatusCheckboxes input:checkbox:not(:checked)').each(function() { notSelectedStatus = notSelectedStatus + jQuery(this).attr('value') +','; });
+			notSelectedStatus = notSelectedStatus.slice(0, -1);
 
-            if (jQuery('#imcSearchKeywordInput').val() !== '') {
-                keywordString = jQuery('#imcSearchKeywordInput').val();
+			// if ( notSelectedStatus.length === 0) {
+			// 	selectedStatus = "all";
+			// }
+
+			jQuery('#pbvCatCheckboxes input:checkbox:checked').each(function() { selectedCats = selectedCats + jQuery(this).attr('value') +','; });
+			selectedCats = selectedCats.slice(0, -1);
+
+			jQuery('#pbvCatCheckboxes input:checkbox:not(:checked)').each(function() { notSelectedCats = notSelectedCats + jQuery(this).attr('value') +','; });
+			notSelectedCats = notSelectedCats.slice(0, -1);
+
+			// if ( notSelectedCats.length === 0) {
+			// 	selectedCats = "all";
+			// }
+
+            if (jQuery('#pbvSearchKeywordInput').val() !== '') {
+                keywordString = jQuery('#pbvSearchKeywordInput').val();
             }
 
-
             var base = <?php echo json_encode( $my_permalink ) ; ?>;
-            var tempfilter1 = <?php echo json_encode( imcCreateFilterVariablesShort($perma_structure, $imported_ppage, $imported_order, $imported_view ) ); ?>;
+            var tempfilter1 = <?php echo json_encode(  $voting_view_filters->create_url_variables_short()); ?>;
             var filter1 = decodeURIComponent(tempfilter1);
             var filter2 = '&sstatus=' + selectedStatus;
             var filter3 = '&scategory=' + selectedCats;
@@ -609,7 +404,7 @@ if ( is_front_page() || is_home() ) {
             window.location = link;
         }
 
-        function imcOverviewResetFilters() {
+        function pbvOverviewResetFilters() {
             var i;
             var	checkboxes = document.getElementsByTagName('input');
 
@@ -621,9 +416,9 @@ if ( is_front_page() || is_home() ) {
                 }
             }
 
-            jQuery('#imcSearchKeywordInput').val('');
+            jQuery('#pbvSearchKeywordInput').val('');
 
-            imcOverviewGetFilteringData();
+            pbvOverviewGetFilteringData();
         }
     </script>
 

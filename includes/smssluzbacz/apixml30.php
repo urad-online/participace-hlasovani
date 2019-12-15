@@ -8,9 +8,7 @@ define("API_CONFIRMER","confirm");
 define("WITH_DR_REQUEST",20);
 define("WITHOUT_DR_REQUEST",0);
 define("DEFAULT_DR_REQUEST",WITHOUT_DR_REQUEST);
-
 define("API_INFO","info/credit");
-
 
 class ApiXml30{
  	private $login, $password, $smsgateapi_url, $params, $encoding;
@@ -47,29 +45,24 @@ class ApiXml30{
 	public function send_message($recipient,$text, $send_at = null, $dr_request = null ){
 		if ($dr_request == null)
 			$dr_request = DEFAULT_DR_REQUEST;
-		if ($send_at == null) {
-            $send_at_tag =  '';
-        } else {
-            $send_at_tag =  '<send_at>'.date('YmdHis').'/<send_at>';
-        }
-
-		$xml = '<outgoing_message><dr_request>'.$dr_request.'</dr_request>'.$send_at_tag.'<text>'.$text.'</text><recipient>'.$recipient.'</recipient></outgoing_message>';
+		if ($send_at == null)
+            $send_at =  date('YmdHis');
+        $xml = "<outgoing_message><dr_request>".$dr_request."</dr_request><send_at>".$send_at."</send_at><text>".$text."</text><recipient>".$recipient."</recipient></outgoing_message>";
 		return $this->send_xml_request( $xml );
 	}
 
 
 	private function get_params_for_xml_request($data) {
-	    $params = array('https' => array(
-	      'method' => 'POST',
-	      'content' =>  htmlspecialchars_decode( $data),
-    		'header' => 'Content-type: text/xml',
+	    $params = array('http' => array(
+	        'method' => 'POST',
+	        'content' =>  $data,
+    	    'header'  => 'Content-type: text/xml',
 	    ));
-	    return $params;
+	    return stream_context_create( $params );
 	}
 
 	private function send_xml_request($data){
-        $params =  $this->get_params_for_xml_request($data);
-		$handle = fopen($this->get_url(API_RECEIVER),'rb',false, stream_context_create( $params) );
+        $handle = fopen( $this->get_url( API_RECEIVER ),'rb', false, $this->get_params_for_xml_request( $data ));
 		return $this->send_request($handle);
 	}
 
@@ -84,7 +77,7 @@ class ApiXml30{
 		return $contents;
 	}
 
-	private function get_url($type) { return API_URL.$type.'?login='.$this->login.'&password='.$this->password; }
+	private function get_url($type) { return API_URL.$type."?login=".$this->login."&password=".$this->password; }
 
 	public function smsgate_get_account_info()
     {

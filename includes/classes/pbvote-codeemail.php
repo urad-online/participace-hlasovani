@@ -26,7 +26,12 @@ class PbVote_CodeEmail
             return false;
         }
 
-        $email_text = "Aktivacni kod: ".$input['code']." platny do ". $input['expiration_time'];
+        if (! empty($input['message'])) {
+            $email_text = $input['message'];
+        } else {
+            $email_text = "Aktivacni kod: ".$input['code']." platny do ". $input['expiration_time'];
+        }
+
 
         $email_send = wp_mail( $input['voter_id'], $this->email_subject, $email_text, $this->email_header );
 
