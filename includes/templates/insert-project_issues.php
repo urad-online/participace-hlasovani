@@ -11,6 +11,8 @@
 
 $project_single = null;
 
+$page_content = $post->post_content;
+
 wp_enqueue_script('imc-gmap');
 
 if (isset($_GET['votingid'])) {
@@ -39,7 +41,7 @@ $project_single = new PbVote_ProjectEdit;
 
 get_header();
 
-
+echo apply_filters( 'the_content', $page_content );
 
 
 

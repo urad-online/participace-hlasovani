@@ -10,6 +10,7 @@ Text Domain: pb-voting
 Domain Path: /languages
 */
 // define( 'DELIVERY_MSG_TYPE',  'Email'); // values Email, Sms
+global $metabox_pbvote;
 
 define( 'PB_VOTE_PATH',       dirname(__FILE__));
 define( 'PB_VOTE_PATH_INC',   PB_VOTE_PATH.'/includes');
@@ -75,7 +76,11 @@ function pb_vote_on_init()
 
 function pb_vote_on_admnin_init( )
 {
-    // add_action( 'save_post', 'pbvoting_metabox_save', 20, 3 );
+  global $metabox_pbvote;
+  if ( empty($metabox_pbvote) ) {
+    $metabox_pbvote = new PbVote_ImcIssueDetailMetabox;
+  }
+
 }
 
 function pb_vote_plugin_loaded()
