@@ -26,8 +26,6 @@ function pb_voting_register_actions_filters_after_init()
     pb_voting_enqueue_extension();
 
     add_shortcode( 'pb_vote_reg_widget', 'pb_vote_get_registration_widget');
-    add_shortcode( 'pb_vote_test', 'pb_vote_test_shortcode');
-
 }
 
 function pb_voting_enqueue_extension()
@@ -135,9 +133,3 @@ add_filter( 'single_template',      'pb_voting_set_single_template', 20 );
 add_filter( 'archive_template',     'pb_voting_set_archive_template' );
 add_filter( 'theme_page_templates', 'add_pbvote_template' );
 add_filter( 'template_include',     'pb_voting_view_template');
-
-function pb_vote_test_shortcode(  $atts, $content, $tag )
-{
-  $output = "<h1>Obsah shortcodu</h1>";
-  return $output;
-}

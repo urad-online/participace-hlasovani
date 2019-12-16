@@ -41,10 +41,6 @@ $project_single = new PbVote_ProjectEdit;
 
 get_header();
 
-echo apply_filters( 'the_content', $page_content );
-
-
-
 /************************** GMAP SETTINGS *************************************/
 
 $map_options = get_option('gmap_settings');
@@ -67,7 +63,15 @@ $plugin_path_url = pbvote_calculate_plugin_base_url();
 
 $user = wp_get_current_user();
 
-
+?>
+<div class="imc-BGColorGray">
+	<div class="imc-SingleHeaderStyle imc-BGColorWhite">
+		<div class="imc-container">
+			<?php echo apply_filters( 'the_content', $page_content ); ?>
+		</div>
+	</div>
+</div>
+<?php
 
 if( is_user_logged_in() ) {
 

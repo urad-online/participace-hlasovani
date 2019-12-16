@@ -5,6 +5,7 @@
  */
 
 $project_single = null;
+$page_content = $post->post_content;
 wp_enqueue_script('imc-gmap');
 
 $user = wp_get_current_user();
@@ -83,7 +84,15 @@ $issue_lat 		= $pb_project_meta[ 'imc_lat'][0];
 $issue_lng 		= $pb_project_meta[ 'imc_lng'][0];
 
 $plugin_path_url = pbvote_calculate_plugin_base_url();
-
+?>
+<div class="imc-BGColorGray">
+	<div class="imc-SingleHeaderStyle imc-BGColorWhite">
+		<div class="imc-container">
+			<?php echo apply_filters( 'the_content', $page_content ); ?>
+		</div>
+	</div>
+</div>
+<?php
 if(pbvote_user_can_edit($given_issue_id, $user->ID)) { ?>
     <div class="imc-BGColorGray">
 
