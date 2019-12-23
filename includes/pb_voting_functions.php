@@ -190,7 +190,11 @@ function pbvote_calculate_plugin_base_url() {
 
 function pbvote_insert_cat_dropdown( $taxonomy = 'my_custom_taxonomy', $selected_term_id = 0) {
 
-	function create_select_with_grandchildren( $fieldName, $selected_term_id  ) {
+	$selector = create_select_with_grandchildren( $taxonomy, $selected_term_id);
+	return $selector;
+
+}
+function create_select_with_grandchildren( $fieldName, $selected_term_id  ) {
 		$args = array('hide_empty' => false, 'hierarchical' => true, 'parent' => 0);
 		$terms = get_terms('imccategory', $args);
 
@@ -224,12 +228,8 @@ function pbvote_insert_cat_dropdown( $taxonomy = 'my_custom_taxonomy', $selected
 		$html .=  "</select>";
 
 		return $html;
-	}
-
-	$selector = create_select_with_grandchildren( $taxonomy, $selected_term_id);
-	return $selector;
-
 }
+
 
 function pom_fun( $input)
 {
@@ -330,4 +330,19 @@ function add_link_to_voting( $parent_id, $post_id )
 		array_push( $items, $post_id );
 		// $new_items =  json_encode( $newitems);
 		update_post_meta( $parent_id, "_pods_items", $items);
+}
+
+function pbvote_project_insert_shortcode( $atts, $content, $tag)
+{
+	$project_new = new PbVote_ProjectInsert( $atts);
+	if ( $project_new->is_submitted() ) {
+		$result = $project_new->save_data() ;
+		if ( $result) {
+			return $project_new->show_datasave_ok();
+		}
+	} else {
+		// return $pom->render_save_form() ;
+		return $project_new->render_form() ;
+	}
+
 }
