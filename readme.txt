@@ -49,3 +49,6 @@ and displayed according to voting_status
 The generated tokens are sent by email or text messages. The text message is defined in post's meta field.
 The message can have these placeholders tha are replace by values:
 {#token}, {#expiration_time}, {#survey_url}, {#code_spell}
+
+How to call shortcode for new project form examples
+[pbvote_project_insert voting_id="1379" voting_slug="hlasovani-2020" ]
