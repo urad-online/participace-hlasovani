@@ -122,8 +122,9 @@ class PbVote_ProjectSaveData {
             'pb_project_cile'                => esc_attr(sanitize_textarea_field($data['pb_project_cile'])),
             'pb_project_akce'                => esc_attr(sanitize_textarea_field($data['pb_project_akce'])),
             'pb_project_prospech'            => esc_attr(sanitize_textarea_field($data['pb_project_prospech'])),
-            'pb_project_naklady_celkem'      => esc_attr(sanitize_textarea_field($data['pb_project_naklady_celkem'])),
-            'pb_project_naklady_navyseni'    => (! empty($data['pb_project_naklady_navyseni'])) ? esc_attr(sanitize_textarea_field($data['pb_project_naklady_navyseni'])) : '0',
+            'pb_project_naklady'             => json_decode(stripslashes($data['pb_project_naklady'])),
+            // 'pb_project_naklady_celkem'      => esc_attr(sanitize_textarea_field($data['pb_project_naklady_celkem'])),
+            // 'pb_project_naklady_navyseni'    => (! empty($data['pb_project_naklady_navyseni'])) ? esc_attr(sanitize_textarea_field($data['pb_project_naklady_navyseni'])) : '0',
         );
         if ( ! $update ) {
             $this->post_data['meta_input']['imc_likes'] = '0';
@@ -177,7 +178,7 @@ class PbVote_ProjectSaveData {
             // $_FILE['id'], fields - error, name, size, tmp_name, type, pro prazdne je error = 4 ostatni prazdne,
             $this->insert_attachment_1($files['pb_project_podporovatele'],  'pb_project_podporovatele');
             $this->insert_attachment_1($files['pb_project_mapa'],           'pb_project_mapa');
-            $this->insert_attachment_1($files['pb_project_naklady'],        'pb_project_naklady');
+            // $this->insert_attachment_1($files['pb_project_naklady'],        'pb_project_naklady');
             $this->insert_attachment_1($files['pb_project_dokumentace1'],   'pb_project_dokumentace1');
             $this->insert_attachment_1($files['pb_project_dokumentace2'],   'pb_project_dokumentace2');
             $this->insert_attachment_1($files['pb_project_dokumentace3'],   'pb_project_dokumentace3');
@@ -214,7 +215,7 @@ class PbVote_ProjectSaveData {
         $list = array(
             'pb_project_podporovatele',
             'pb_project_mapa',
-            'pb_project_naklady',
+            // 'pb_project_naklady',
             'pb_project_dokumentace1',
             'pb_project_dokumentace2',
             'pb_project_dokumentace3',

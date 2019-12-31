@@ -26,7 +26,7 @@ class PbVote_ProjectInsert
       if (isset($_POST['submitted'])) {
         $this->is_submitted = true;
       }
-      
+
       if ($this->atts['voting_id'] == 0) {
         if ( ! empty($this->atts['voting_slug'])) {
           $this->voting_id = $this->get_voting_id_by_slug( $this->atts['voting_slug'] );
