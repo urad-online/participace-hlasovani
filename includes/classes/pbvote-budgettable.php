@@ -74,7 +74,7 @@ class PbVote_BudgetTable
       $output .= '<div class="imc-grid-2 imc-columns"><h6 id="total_budget_sum" name="total_budget_sum">'.number_format($this->total_sum,0).'</h6></div></div></div>';
       if ($this->allow_edit) {
         $output .= '<div class="imc-grid-4 imc-columns">';
-        $output .= '<button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Přidat položku</button></div>';
+        $output .= '<button type="button" class="imc-button add-new"><i class="material-icons md-24 imc-AlignIconToButton">add_circle</i>Přidat položku</button></div>';
       }
       $output .= '</div></div>';
       return $output;
