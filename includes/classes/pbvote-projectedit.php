@@ -331,7 +331,7 @@ class PbVote_ProjectEdit
             }
         }
 
-        $output = '<h3 class="imc-SectionTitleTextStyle" style="display:inline-block;"><label id="%sName" for="%s">%s%s</label>'. $this->render_tooltip($help) .'
+        $output = '<h3 class="imc-SectionTitleTextStyle" style="display:inline-block;"><label id="%sName" for="%s">%s%s'. $this->render_tooltip($help) .'</label>
             </h3><input type="checkbox"  %s %s name="%s" id="%s" class="imc-InputStyle" value="1"
             style="width:20px; height:20px; display:inline-block;margin-left:10px"/>
             <label id="%sLabel" class="imc-ReportFormErrorLabelStyle imc-TextColorPrimary"></label>';
