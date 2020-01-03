@@ -11,6 +11,7 @@ Domain Path: /languages
 */
 // define( 'DELIVERY_MSG_TYPE',  'Email'); // values Email, Sms
 global $metabox_pbvote;
+global $moje_uri;
 
 define( 'PB_VOTE_PATH',       dirname(__FILE__));
 define( 'PB_VOTE_PATH_INC',   PB_VOTE_PATH.'/includes');
@@ -76,6 +77,7 @@ function pb_vote_on_init()
 
 function pb_vote_on_admnin_init( )
 {
+  global $wp_query;
   global $metabox_pbvote;
   if ( empty($metabox_pbvote) ) {
     $metabox_pbvote = new PbVote_ImcIssueDetailMetabox;
@@ -87,7 +89,6 @@ function pb_vote_plugin_loaded()
 {
     register_deactivation_hook( __FILE__, 'pb_vote_deactivate' );
     require_once PB_VOTE_PATH_INC .'/pb_voting_load.php';
-
 
 }
 function pb_vote_uninstall()

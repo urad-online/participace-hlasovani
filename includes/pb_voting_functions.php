@@ -346,3 +346,63 @@ function pbvote_project_insert_shortcode( $atts, $content, $tag)
 	}
 
 }
+/**
+ * 1.1.2
+ * Custom Pagination links for overview issues
+ *
+ */
+
+
+if ( ! function_exists('pbvote_paginate') ) {
+	function pbvote_paginate($cb_qry = NULL, $my_paged , $page, $order, $view, $status, $category, $keyword, $svoting ) {
+
+		$cb_paged2 = $my_paged;
+
+		if ( $cb_qry == NULL ) {
+			global $wp_query;
+			$cb_total = $GLOBALS['wp_query']->max_num_pages;
+			$cb_paged = get_query_var('paged');
+		} else {
+			if ( is_page() ) {
+				$cb_total = $cb_qry->max_num_pages;
+				$cb_pagination_type = 'n';
+				$cb_paged = get_query_var('page');
+			} else {
+				global $wp_query;
+				// $cb_paged = get_query_var('paged');
+				// $cb_total = $GLOBALS['wp_query']->max_num_pages;
+				$pom = $wp_query;
+				$wp_query = $cb_qry;
+				$cb_paged = get_query_var('paged');
+				$wp_query = $pom;
+				$cb_total = $cb_qry->max_num_pages;
+			}
+		}
+		if (! empty($svoting)) {
+			$link = get_the_permalink( $svoting);
+		} else {
+			$link = get_pagenum_link(1);
+		}
+		$cb_pagination = paginate_links(array(
+			'base' => preg_replace('/\?.*/', '', $link) . '%_%',
+			'format' => '?page=%#%',
+			'current' => max(1, $cb_paged2),
+			'total' => $cb_total,
+			'mid_size' => 2,
+			'type' => 'list',
+			'prev_text' => '<i class="material-icons md-24">chevron_left</i>',
+			'next_text' => '<i class="material-icons md-24">chevron_right</i>',
+			'add_args' => array(
+				'ppage' => $page,
+				'sorder' => $order,
+				'view' => $view,
+				'sstatus' => $status,
+				'scategory' => $category,
+				'keyword' => $keyword,
+				'svoting' => $svoting,
+			)
+		));
+
+		echo '<nav class="imc-PaginationStyle">' . $cb_pagination  .'</nav>';
+	}
+}

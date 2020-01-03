@@ -23,10 +23,8 @@ class PbVote_BudgetTable
         $this->budget_data = $data;
       }
       $this->allow_edit = $allow_edit;
-      // wp_register_style('pbvote-table-style', PB_VOTE_URL . '/assets/css/pbvote_table_style.css', array(),'1.0', "all");
       wp_register_script('pb-budget-table',   PB_VOTE_URL . '/assets/js/pb-budget-table.js', array('jquery'),'1.1', false);
 
-      // wp_enqueue_style('pbvote-table-style');
       wp_enqueue_script('pb-budget-table');
       wp_localize_script('pb-budget-table', 'pbTableListsData', array(
                 'types' => $this->budget_item_type,

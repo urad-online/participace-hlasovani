@@ -287,7 +287,6 @@ if(pbvote_user_can_edit($given_issue_id, $user->ID)) { ?>
                 var orientation = 0;
                 if (data.exif) {
                     orientation = data.exif.get('Orientation');
-                    console.log(orientation);
                 }
                 document.getElementById('imcPhotoOri').value = parseInt(orientation, 10);
 

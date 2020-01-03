@@ -54,35 +54,30 @@ get_header(); ?>
         <!--Start the loop.-->
 		<?php
 		while ( have_posts() ) : the_post();
-			$issue_id = get_the_ID();
-			$user_id = get_current_user_id();
-			$user = wp_get_current_user(); ?>
+				$issue_id = get_the_ID();
+				$user_id = get_current_user_id();
+				$user = wp_get_current_user(); ?>
 
-            <div class="imc-SingleHeaderStyle imc-BGColorWhite">
+        <div class="imc-SingleHeaderStyle imc-BGColorWhite">
 
-                <a href="<?php echo esc_url( $listpage ) ; ?>" class="u-pull-left imc-SingleHeaderLinkStyle ">
-                    <i class="material-icons md-36 imc-SingleHeaderIconStyle">keyboard_arrow_left</i>
-                    <span><?php echo __('Return to overview','pb-voting');  ?></span>
+            <a href="<?php echo esc_url( $listpage ) ; ?>" class="u-pull-left imc-SingleHeaderLinkStyle ">
+                <i class="material-icons md-36 imc-SingleHeaderIconStyle">keyboard_arrow_left</i>
+                <span><?php echo __('Return to overview','pb-voting');  ?></span>
+            </a>
+						<?php if(pbvote_user_can_edit(get_the_ID(), $user_id)) { ?>
+                <a href="<?php echo esc_url( $editpage . $parameter_pass . $issue_id ); ?>" class="u-pull-right imc-SingleHeaderLinkStyle">
+                    <i class="material-icons md-36 imc-SingleHeaderIconStyle">mode_edit</i>
+                    <span class="imc-hidden-xs imc-hidden-sm"><?php echo __('Edit issue','pb-voting');  ?></span>
                 </a>
+						<?php } ?>
+        </div>
 
-
-								<?php if(pbvote_user_can_edit(get_the_ID(), $user_id)) { ?>
-				                    <a href="<?php echo esc_url( $editpage . $parameter_pass . $issue_id ); ?>" class="u-pull-right imc-SingleHeaderLinkStyle">
-				                        <i class="material-icons md-36 imc-SingleHeaderIconStyle">mode_edit</i>
-				                        <span class="imc-hidden-xs imc-hidden-sm"><?php echo __('Edit issue','pb-voting');  ?></span>
-				                    </a>
-
-								<?php } ?>
-            </div>
-
-			<?php if (get_post_status( $issue_id ) !== 'publish') { ?>
-
-                <div class="imc-SingleHeaderStyle imc-BGColorRed">
-                    <h2 class="imc-PageTitleTextStyle imc-TextColorPrimary imc-CenterContents" style="line-height: 60px;">
-						<?php echo __('Under Moderation','pb-voting');  ?></h2>
-                </div>
-
-			<?php } ?>
+				<?php if (get_post_status( $issue_id ) !== 'publish') { ?>
+	            <div class="imc-SingleHeaderStyle imc-BGColorRed">
+	                <h2 class="imc-PageTitleTextStyle imc-TextColorPrimary imc-CenterContents" style="line-height: 60px;">
+									<?php echo __('Under Moderation','pb-voting');  ?></h2>
+	            </div>
+				<?php } ?>
 
             <div class="imc-Separator"></div>
 
@@ -94,40 +89,31 @@ get_header(); ?>
                         <div class="imc-grid-8 imc-columns">
                             <div class="imc-CardLayoutStyle">
                                 <div class="imc-row">
-																	<?php $imccategory_currentterm = get_the_terms($post->ID , 'imccategory' );
-																	if ($imccategory_currentterm) {
-																		$current_category_name = $imccategory_currentterm[0]->name;
-																		$current_category_id = $imccategory_currentterm[0]->term_id;
-																		$term_thumb = get_term_by('id', $current_category_id, 'imccategory');
-																		$cat_thumb_arr = wp_get_attachment_image_src( $term_thumb->term_image);
-																	}?>
-
-							                    <div class="imc-grid-2 imc-columns">
-
-																		<?php if ( $cat_thumb_arr ) { ?>
-
-								                            <img src="<?php echo esc_url($cat_thumb_arr[0]); ?>" class="imc-SingleCategoryIcon">
-
-																		<?php }	else { ?>
-
-								                            <img src="<?php echo esc_url(plugins_url()); ?>/pb-voting/img/ic_default_cat.png" class="imc-SingleCategoryIcon">
-
-																		<?php } ?>
-
-						                        <div class="imc-row-no-margin imc-CenterContents">
-						                            <span class="imc-Text-SM imc-TextColorSecondary imc-TextBold imc-FontRoboto">#</span>
-						                            <span class="imc-Text-SM imc-TextColorSecondary imc-TextMedium imc-FontRoboto"><?php echo esc_html(the_ID()); ?></span>
-						                        </div>
-							                    </div>
-
-							                    <div class="imc-grid-10 imc-columns">
-																	<?php the_title( '<h2 class="imc-PageTitleTextStyle imc-TextColorPrimary">', '</h2>' );?>
-							                                        <p class="imc-SingleCategoryTextStyle imc-Text-LG imc-TextColorSecondary"><?php echo esc_html($current_category_name); ?> </p>
-							                    </div>
+																		<?php $imccategory_currentterm = get_the_terms($post->ID , 'imccategory' );
+																		if ($imccategory_currentterm) {
+																			$current_category_name = $imccategory_currentterm[0]->name;
+																			$current_category_id = $imccategory_currentterm[0]->term_id;
+																			$term_thumb = get_term_by('id', $current_category_id, 'imccategory');
+																			$cat_thumb_arr = wp_get_attachment_image_src( $term_thumb->term_image);
+																		}?>
+								                    <div class="imc-grid-2 imc-columns">
+																			<?php if ( $cat_thumb_arr ) { ?>
+									                            <img src="<?php echo esc_url($cat_thumb_arr[0]); ?>" class="imc-SingleCategoryIcon">
+																			<?php }	else { ?>
+									                            <img src="<?php echo esc_url(plugins_url()); ?>/pb-voting/img/ic_default_cat.png" class="imc-SingleCategoryIcon">
+																			<?php } ?>
+							                        <div class="imc-row-no-margin imc-CenterContents">
+							                            <span class="imc-Text-SM imc-TextColorSecondary imc-TextBold imc-FontRoboto">#</span>
+							                            <span class="imc-Text-SM imc-TextColorSecondary imc-TextMedium imc-FontRoboto"><?php echo esc_html(the_ID()); ?></span>
+							                        </div>
+								                    </div>
+								                    <div class="imc-grid-10 imc-columns">
+																		<?php the_title( '<h2 class="imc-PageTitleTextStyle imc-TextColorPrimary">', '</h2>' );?>
+                                    <p class="imc-SingleCategoryTextStyle imc-Text-LG imc-TextColorSecondary"><?php echo esc_html($current_category_name); ?> </p>
+								                    </div>
                                 </div>
 
                                 <div class="imc-row">
-
                                     <i class="material-icons md-18 imc-TextColorSecondary imc-AlignIconToLabel">access_time</i>
                                     <span class="imc-SingleInformationTextStyle imc-TextColorSecondary imc-FontRoboto imc-TextMedium imc-Text-SM">
 																			<?php the_date(get_option('date_format')); ?>
@@ -135,245 +121,219 @@ get_header(); ?>
 
                                     <i class="material-icons md-18 imc-TextColorSecondary imc-AlignIconToLabel">person</i>
                                     <span class="imc-SingleInformationTextStyle imc-TextColorSecondary imc-FontRoboto imc-TextMedium imc-Text-SM">
-													<?php the_author(); ?>
-												</span>
-
-									<?php if ((get_post_status( $issue_id ) == 'publish') && ($voting_enabled)) { ?>
-										<i class="material-icons md-18 imc-TextColorSecondary imc-AlignIconToLabel">thumb_up</i>
-                                        <span class="imc-SingleInformationTextStyle imc-TextColorSecondary imc-FontRoboto imc-TextMedium
-											imc-Text-SM"><?php echo esc_html(intval(get_post_meta($post->ID, "imc_likes", true), 10)); ?></span>
-
-									<?php } ?>
-
+																			<?php the_author(); ?>
+																		</span>
+																		<?php if ((get_post_status( $issue_id ) == 'publish') && ($voting_enabled)) { ?>
+																			<i class="material-icons md-18 imc-TextColorSecondary imc-AlignIconToLabel">thumb_up</i>
+									                                        <span class="imc-SingleInformationTextStyle imc-TextColorSecondary imc-FontRoboto imc-TextMedium
+																				imc-Text-SM"><?php echo esc_html(intval(get_post_meta($post->ID, "imc_likes", true), 10)); ?></span>
+																		<?php } ?>
                                 </div>
 
-								<?php if (get_post_status( $issue_id ) == 'publish') { ?>
+																<?php if (get_post_status( $issue_id ) == 'publish') { ?>
 
-                                    <div class="imc-row">
+		                                <div class="imc-row">
+																				<?php $imcstatus_currentterm = get_the_terms($post->ID , 'imcstatus' );
+																				if ($imcstatus_currentterm) {
+																					$current_step_name = $imcstatus_currentterm[0]->name;
+																					$current_order_step_id = get_term_meta( $imcstatus_currentterm[0]->term_id, 'imc_term_order');
 
-										<?php $imcstatus_currentterm = get_the_terms($post->ID , 'imcstatus' );
-										if ($imcstatus_currentterm) {
-											$current_step_name = $imcstatus_currentterm[0]->name;
-											$current_order_step_id = get_term_meta( $imcstatus_currentterm[0]->term_id, 'imc_term_order');
+																					$term_color_data = get_option('tax_imcstatus_color_' . $imcstatus_currentterm[0]->term_id);
+																					$step_color = $term_color_data;
+																				} ?>
 
-											$term_color_data = get_option('tax_imcstatus_color_' . $imcstatus_currentterm[0]->term_id);
-											$step_color = $term_color_data;
-										} ?>
+																				<ul class="imc-progress-indicator">
+																						<?php // Calculate grid based on number of Statuses
+																						$all_steps = get_terms( 'imcstatus', 'order=ASC&hide_empty=0' );
 
-                                        <ul class="imc-progress-indicator">
-											<?php // Calculate grid based on number of Statuses
-											$all_steps = get_terms( 'imcstatus', 'order=ASC&hide_empty=0' );
+																						if ( ! empty( $all_steps ) && ! is_wp_error( $all_steps ) ) {
+																							foreach ( $all_steps as $step ) {
+																								$color = get_option('tax_imcstatus_color_' . $step->term_id);
+																								$step_order_id = get_term_meta( $step->term_id, 'imc_term_order');
+																								if ($step_order_id[0] <= $current_order_step_id[0] ) { ?>
+			                                              <style>
+			                                                  .imc-progress-indicator > li .bubble:before, .imc-progress-indicator > li.imc-stepId-<?php echo esc_attr($step->term_id); ?> .bubble:after{
+			                                                      background-color: #<?php echo esc_attr($color);?>;
+			                                                      border-color: #<?php echo esc_attr($color);?>;
+			                                                  }
+			                                              </style>
 
-											if ( ! empty( $all_steps ) && ! is_wp_error( $all_steps ) ) {
-												foreach ( $all_steps as $step ) {
+											                              <li class="imc-stepId-<?php echo esc_attr($step->term_id); ?> imc-FontRobotoSlab imc-Text-XS imc-TextBold imc-TextBold" style="color: rgba(0, 0, 0, 0.87);">
+																												<span class="bubble" style="background-color: #<?php echo esc_attr($color);?>; color: #<?php echo esc_attr($color);?>; "></span>
+																												<?php echo esc_html($step->name); ?>
+																										</li>
 
-													$color = get_option('tax_imcstatus_color_' . $step->term_id);
+																								<?php }	else { ?>
+			                                              <style>
+			                                                  .imc-progress-indicator > li .bubble:before, .imc-progress-indicator > li.imc-stepId-<?php echo esc_attr($step->term_id); ?> .bubble:after {
+			                                                      background-color: #dddddd;
+			                                                      border-color: #dddddd;
+			                                                  }
+			                                              </style>
+			                                              <li class="imc-stepId-<?php echo esc_attr($step->term_id); ?> imc-FontRobotoSlab imc-Text-XS imc-TextBold imc-TextBold" style="color: rgba(0, 0, 0, 0.3);">
+																												<span class="bubble" style="background-color: #dddddd; color: #dddddd;"></span>
+																												<?php echo esc_html($step->name); ?>
+																										</li>
+																								<?php }
+																							}
+																						} ?>
+			                                  </ul>
+		                                </div>
+																<?php } ?>
 
-													$step_order_id = get_term_meta( $step->term_id, 'imc_term_order');
-
-													if ($step_order_id[0] <= $current_order_step_id[0] ) { ?>
-                                                        <style>
-                                                            .imc-progress-indicator > li .bubble:before, .imc-progress-indicator > li.imc-stepId-<?php echo esc_attr($step->term_id); ?> .bubble:after{
-                                                                background-color: #<?php echo esc_attr($color);?>;
-                                                                border-color: #<?php echo esc_attr($color);?>;
-                                                            }
-                                                        </style>
-
-                                                        <li class="imc-stepId-<?php echo esc_attr($step->term_id); ?> imc-FontRobotoSlab imc-Text-XS imc-TextBold imc-TextBold" style="color: rgba(0, 0, 0, 0.87);">
-															<span class="bubble" style="background-color: #<?php echo esc_attr($color);?>; color: #<?php echo esc_attr($color);?>; ">
-															</span><?php echo esc_html($step->name); ?></li>
-
-													<?php }	else { ?>
-                                                        <style>
-                                                            .imc-progress-indicator > li .bubble:before, .imc-progress-indicator > li.imc-stepId-<?php echo esc_attr($step->term_id); ?> .bubble:after {
-                                                                background-color: #dddddd;
-                                                                border-color: #dddddd;
-                                                            }
-                                                        </style>
-
-                                                        <li class="imc-stepId-<?php echo esc_attr($step->term_id); ?> imc-FontRobotoSlab imc-Text-XS imc-TextBold imc-TextBold" style="color: rgba(0, 0, 0, 0.3);">
-															<span class="bubble" style="background-color: #dddddd; color: #dddddd;">
-															</span> <?php echo esc_html($step->name); ?></li>
-													<?php }
-												}
-											} ?>
-                                        </ul>
-                                    </div>
-
-								<?php } ?>
-
-								<?php
-								if (get_the_content()) { ?>
+																<?php
+																if (get_the_content()) { ?>
                                     <div class="imc-row">
                                         <h3 class="imc-SectionTitleTextStyle"><?php echo __('Description','pb-voting'); ?></h3>
                                         <div class="imc-SingleDescriptionStyle imc-TextColorSecondary imc-JustifyText"><?php the_content(); ?></div>
                                     </div>
-								<?php } ?>
-
-
+																<?php } ?>
                                 <div class="imc-row-no-margin">
-									<?php $img_url = wp_get_attachment_url( get_post_thumbnail_id($post->ID) ); ?>
+																		<?php $img_url = wp_get_attachment_url( get_post_thumbnail_id($post->ID) ); ?>
                                     <h3 class="imc-SectionTitleTextStyle"><?php echo __('Photos','pb-voting'); ?></h3>
 
-									<?php if ($img_url) { ?>
+																		<?php if ($img_url) { ?>
                                         <a href="<?php echo esc_url($img_url); ?>" target="_blank"> <?php the_post_thumbnail('thumbnail'); ?> </a> <!--thumbnail medium large full-->
-									<?php } else { ?>
+																		<?php } else { ?>
                                         <div class="imc-row imc-CenterContents">
                                             <i class="material-icons md-huge imc-TextColorHint">landscape</i>
                                             <span class="imc-NotAvailableTextStyle imc-TextColorHint imc-DisplayBlock"><?php echo __('No photos submitted', 'pb-voting'); ?></span>
                                         </div>
-									<?php }?>
-
+																		<?php }?>
                                 </div>
-									<hr class="imc-HorizontalWhitespaceSeparator" style="padding-top:10px">
-									<?php
-									$project_meta = get_post_meta( $issue_id );
-									echo $project_single->template_part_pb_project( $project_meta );
-									?>
+																<hr class="imc-HorizontalWhitespaceSeparator" style="padding-top:10px">
+																<?php
+																$project_meta = get_post_meta( $issue_id );
+																echo $project_single->template_part_pb_project( $project_meta );
+																?>
                             </div> <!--End Card-->
 
-							<?php if ((get_post_status( $issue_id ) == 'publish') && ($comments_enabled)) { ?>
-
+														<?php if ((get_post_status( $issue_id ) == 'publish') && ($comments_enabled)) { ?>
                                 <div class="imc-CardLayoutStyle">
                                     <h3 class="imc-SectionTitleTextStyle"><?php echo __('Comments','pb-voting'); ?></h3>
-
-									<?php if ( comments_open() || get_comments_number() ) {
-										$comments = get_comments(array( 'post_id' => $post->ID)); ?>
-
-										<?php if ( is_user_logged_in() ) { ?>
-
+																		<?php if ( comments_open() || get_comments_number() ) {
+																				$comments = get_comments(array( 'post_id' => $post->ID)); ?>
+																				<?php if ( is_user_logged_in() ) { ?>
                                             <div class="imc-CommentsFormWrapperStyle imc-row">
 
-												<?php
+																								<?php
+																								$comments_number = get_comments_number();
+																								if ( $comments_number == 0 ) {
+																									$comments_string = __('No Comments', 'pb-voting');
+																								} elseif ( $comments_number > 1 ) {
+																									$comments_string = $comments_number . __(' Comments', 'pb-voting');
+																								} else {
+																									$comments_string = __('1 Comment', 'pb-voting');
+																								}
 
-												$comments_number = get_comments_number();
-												if ( $comments_number == 0 ) {
-													$comments_string = __('No Comments', 'pb-voting');
-												} elseif ( $comments_number > 1 ) {
-													$comments_string = $comments_number . __(' Comments', 'pb-voting');
-												} else {
-													$comments_string = __('1 Comment', 'pb-voting');
-												}
+																								/* Customizing comments form */
+																								$comment_args = array(
+																									'id_form'           => 'commentform_custom',
+																									'class_form'      	=> 'imc-CommentFormStyle',
+																									'id_submit'         => 'imc-submit',
+																									'class_submit'      => 'imc-button imc-button-primary u-pull-right',
+																									'name_submit'       => 'imc-submit',
+																									'label_submit'      => __( 'Post Comment', 'pb-voting' ),
+																									'format'            => 'xhtml',
+																									'comment_field' =>  '<div class="imc-row-no-margin"><p class="comment-form-comment"><label for="comment"></label>'.
+																									                    '<textarea placeholder="'. __('Add a comment','pb-voting') . '" class="imc-InputStyle imc-CommentTextArea" id="comment_custom" name="comment" rows="2" aria-required="true">' .
+																									                    '</textarea></p></div>',
+																									'must_log_in' => '<p class="must-log-in">' .
+																									                 sprintf(
+																										                 __( 'You must be <a class="imc-LinkStyle" href="%s">logged in</a> to post a comment.', 'pb-voting' ),
+																										                 wp_login_url( apply_filters( 'the_permalink', get_permalink() ) )
+																									                 ) . '</p>',
+																									'logged_in_as' => '<div class="imc-row-no-margin"><span class="comment-count">'.esc_html($comments_string).'</span><p class="logged-in-as">' .
+																									                  sprintf(
+																										                  __( 'Logged in as <span class="imc-TextColorPrimary">%2$s</span>. <a class="imc-LinkStyle" href="%3$s" title="Log out of this account">Log out?</a>','pb-voting' ),
+																										                  admin_url( 'profile.php' ),
+																										                  $user_identity,
+																										                  wp_logout_url( apply_filters( 'the_permalink', get_permalink( ) ) )
+																									                  ) . '</p></div>',
+																									'comment_notes_before' => '',
+																									'comment_notes_after' => '',
+																								);
 
-												/* Customizing comments form */
-												$comment_args = array(
-													'id_form'           => 'commentform_custom',
-													'class_form'      	=> 'imc-CommentFormStyle',
-													'id_submit'         => 'imc-submit',
-													'class_submit'      => 'imc-button imc-button-primary u-pull-right',
-													'name_submit'       => 'imc-submit',
-													'label_submit'      => __( 'Post Comment', 'pb-voting' ),
-													'format'            => 'xhtml',
-													'comment_field' =>  '<div class="imc-row-no-margin"><p class="comment-form-comment"><label for="comment"></label>'.
-													                    '<textarea placeholder="'. __('Add a comment','pb-voting') . '" class="imc-InputStyle imc-CommentTextArea" id="comment_custom" name="comment" rows="2" aria-required="true">' .
-													                    '</textarea></p></div>',
-													'must_log_in' => '<p class="must-log-in">' .
-													                 sprintf(
-														                 __( 'You must be <a class="imc-LinkStyle" href="%s">logged in</a> to post a comment.', 'pb-voting' ),
-														                 wp_login_url( apply_filters( 'the_permalink', get_permalink() ) )
-													                 ) . '</p>',
-													'logged_in_as' => '<div class="imc-row-no-margin"><span class="comment-count">'.esc_html($comments_string).'</span><p class="logged-in-as">' .
-													                  sprintf(
-														                  __( 'Logged in as <span class="imc-TextColorPrimary">%2$s</span>. <a class="imc-LinkStyle" href="%3$s" title="Log out of this account">Log out?</a>','pb-voting' ),
-														                  admin_url( 'profile.php' ),
-														                  $user_identity,
-														                  wp_logout_url( apply_filters( 'the_permalink', get_permalink( ) ) )
-													                  ) . '</p></div>',
-													'comment_notes_before' => '',
-													'comment_notes_after' => '',
-												);
-
-												comment_form($comment_args); ?>
+																								comment_form($comment_args); ?>
 
                                             </div>
-
-										<?php } else {
-
-											if (empty($comments)) { ?>
-
+																				<?php } else {
+																						if (empty($comments)) { ?>
                                                 <div class="imc-row imc-CenterContents">
                                                     <i class="material-icons md-huge imc-TextColorHint">comment</i>
                                                     <span class="imc-NotAvailableTextStyle imc-TextColorHint imc-DisplayBlock"><?php echo __('No comments submitted', 'pb-voting'); ?></span>
                                                 </div>
-
-											<?php } else {  ?>
-
+																						<?php } else {  ?>
                                                 <div class="imc-row imc-CommentsFormWrapperStyle imc-CommentsCounterStyle"><span class="comment-count"><?php echo intval($comments[0]->comment_count).'&nbsp;'.__('comments','pb-voting'); ?></span></div>
-
-											<?php }
-										} ?>
+																						<?php }
+																				} ?>
 
                                         <div class="imc-CommentsWrapperStyle imc-row">
+																						<?php foreach($comments as $comment) {
 
-											<?php foreach($comments as $comment) {
+																								$comment_id = $comment->comment_ID;
+																								$comment_message = $comment->comment_content;
+																								$comment_author = $comment->comment_author;
 
-												$comment_id = $comment->comment_ID;
-												$comment_message = $comment->comment_content;
-												$comment_author = $comment->comment_author;
+																								$user_object = new WP_User($comment->user_id);
+																								$roles = $user_object->roles;
+																								$role = array_shift($roles);
 
-												$user_object = new WP_User($comment->user_id);
-												$roles = $user_object->roles;
-												$role = array_shift($roles);
+																								if ($role === 'administrator') {
+																									$args = array( 'class' => 'imc-CommentAuthorIconStyle imc-AdminIconStyle');
+																								} else {
+																									$args = array( 'class' => 'imc-CommentAuthorIconStyle imc-PlainUserIconStyle');
+																								}
 
-												if ($role === 'administrator') {
-													$args = array( 'class' => 'imc-CommentAuthorIconStyle imc-AdminIconStyle');
-												} else {
-													$args = array( 'class' => 'imc-CommentAuthorIconStyle imc-PlainUserIconStyle');
-												}
+																								/* Check if comment author is the logged in user */
+																								$author_is_me = false;
+																								if ( intval ($comment->user_id, 10) === intval($current_user->ID, 10) )  {
+																									$author_is_me = true;
+																								}
 
-												/* Check if comment author is the logged in user */
-												$author_is_me = false;
-												if ( intval ($comment->user_id, 10) === intval($current_user->ID, 10) )  {
-													$author_is_me = true;
-												}
+																								$approved_comment = $comment->comment_approved;
+																								if($approved_comment) {
+																									$comment_class = '';
+																									$comment_pending_string = '';
+																								} else {
+																									$comment_class = 'imc-CommentPending';
+																									$comment_pending_string = __('Pending','pb-voting');
+																								}
 
-												$approved_comment = $comment->comment_approved;
-												if($approved_comment) {
-													$comment_class = '';
-													$comment_pending_string = '';
-												} else {
-													$comment_class = 'imc-CommentPending';
-													$comment_pending_string = __('Pending','pb-voting');
-												}
+																								if (intval ($approved_comment) === 0) {
 
-												if (intval ($approved_comment) === 0) {
+																									if ( !is_user_logged_in() ) {
+																										continue;
+																									}
+																									if(!current_user_can( 'administrator' ) && !$author_is_me){
+																										continue;
+																									}
 
-													if ( !is_user_logged_in() ) {
-														continue;
-													}
-
-													if(!current_user_can( 'administrator' ) && !$author_is_me){
-														continue;
-													}
-
-												} ?>
-
+																								} ?>
                                                 <div class="<?php echo esc_attr($comment_class); ?> imc-CommentStyle imc-row">
 
                                                     <div class="imc-grid-1 imc-column imc-hidden-sm">
-														<?php $commenter_role = "";
+																												<?php $commenter_role = "";
 
-														if ($role === 'administrator') {
-															$commenter_role = "&nbsp;&bull;&nbsp;&nbsp;" .__('Administrator','pb-voting');
-															$comment_avatar = "ic_avatar_admin.png";
-														}
-														else if ( intval ($comment->user_id, 10) === intval(get_the_author_meta('ID')) ) {
+																												if ($role === 'administrator') {
+																													$commenter_role = "&nbsp;&bull;&nbsp;&nbsp;" .__('Administrator','pb-voting');
+																													$comment_avatar = "ic_avatar_admin.png";
+																												}	else if ( intval ($comment->user_id, 10) === intval(get_the_author_meta('ID')) ) {
 
-															$commenter_role = "&nbsp;&bull;&nbsp;&nbsp;" .__('Issue author','pb-voting');
+																													$commenter_role = "&nbsp;&bull;&nbsp;&nbsp;" .__('Issue author','pb-voting');
 
-															if($author_is_me) {
-																$comment_avatar = "ic_avatar_author_me.png";
-															} else {
-																$comment_avatar = "ic_avatar_author.png";
-															}
-														}
-														else {
-															if($author_is_me) {
-																$comment_avatar = "ic_avatar_user_me.png";
-															} else {
-																$comment_avatar = "ic_avatar_user.png";
-															}
-														} ?>
+																													if($author_is_me) {
+																														$comment_avatar = "ic_avatar_author_me.png";
+																													} else {
+																														$comment_avatar = "ic_avatar_author.png";
+																													}
+																												} else {
+																													if($author_is_me) {
+																														$comment_avatar = "ic_avatar_user_me.png";
+																													} else {
+																														$comment_avatar = "ic_avatar_user.png";
+																													}
+																												} ?>
 
                                                         <img src="<?php echo esc_url($plugin_path_url);?>/img/<?php echo $comment_avatar; ?>" class="imc-CommentIconStyle">
 
@@ -394,20 +354,17 @@ get_header(); ?>
                                                     </div>
 
                                                 </div>
-
-											<?php } ?>
+																						<?php } ?>
 
                                         </div>
 
-									<?php } else { ?>
-
+																		<?php } else { ?>
                                         <h3 class="imc-NotAvailableTextStyle imc-TextColorSecondary"><?php echo __('Comments are disabled','pb-voting'); ?></h3>
-
-									<?php } ?>
+																		<?php } ?>
 
                                 </div> <!--End Card-->
 
-							<?php } ?>
+														<?php } ?>
 
                         </div>
 
@@ -448,13 +405,13 @@ get_header(); ?>
 										wp_nonce_field('post_nonce', 'post_nonce_field');
 
 										if ($user_id === intval(get_the_author_meta('ID'), 10) ) { ?>
-                                            <div class="imc-CardLayoutStyle imc-CenterContents">
-                                                <img alt="My Issue icon" class="imc-VerticalAlignMiddle"
-                                                     title="<?php echo __('My Issue', 'pb-voting'); ?>"
-                                                     src="<?php echo esc_url(plugins_url('pb-voting/img/ic_my_issue_grid.png')); ?>">
-                                                <span
-                                                        class="imc-Text-MD imc-TextMedium imc-TextColorSecondary imc-FontRoboto"><?php echo __('My issue', 'pb-voting'); ?></span>
-                                            </div>
+                        <div class="imc-CardLayoutStyle imc-CenterContents">
+                            <img alt="My Issue icon" class="imc-VerticalAlignMiddle"
+                                 title="<?php echo __('My Issue', 'pb-voting'); ?>"
+                                 src="<?php echo esc_url(plugins_url('pb-voting/img/ic_my_issue_grid.png')); ?>">
+                            <span
+                                    class="imc-Text-MD imc-TextMedium imc-TextColorSecondary imc-FontRoboto"><?php echo __('My issue', 'pb-voting'); ?></span>
+                        </div>
 
 										<?php } else {
 											$hasVoted = false;
@@ -466,31 +423,30 @@ get_header(); ?>
 												}
 											}
 											if ($hasVoted) { ?>
-                                                <button type="submit"
-                                                        class="imc-button imc-button-primary-disabled imc-button-block"
-                                                        disabled>
-                                                    <i class="material-icons md-18 imc-VerticalAlignMiddle">thumb_up</i>
-                                                    <span
-                                                            class="imc-Text-MD imc-TextRegular imc-FontRoboto">&nbsp; <?php echo __('Voted', 'pb-voting'); ?></span>
-                                                </button>
+                          <button type="submit"
+                                  class="imc-button imc-button-primary-disabled imc-button-block"
+                                  disabled>
+                              <i class="material-icons md-18 imc-VerticalAlignMiddle">thumb_up</i>
+                              <span
+                                      class="imc-Text-MD imc-TextRegular imc-FontRoboto">&nbsp; <?php echo __('Voted', 'pb-voting'); ?></span>
+                          </button>
 
 											<?php } else { ?>
-                                                <button type="submit"
-                                                        class="u-full-width imc-button imc-button-primary imc-button-block">
-                                                    <i class="material-icons md-18 imc-VerticalAlignMiddle">thumb_up</i>
-                                                    <span
-                                                            class="imc-Text-MD imc-TextRegular imc-FontRoboto">&nbsp; <?php echo __('Vote', 'pb-voting'); ?></span>
-                                                </button>
+	                        <button type="submit"
+	                                class="u-full-width imc-button imc-button-primary imc-button-block">
+	                            <i class="material-icons md-18 imc-VerticalAlignMiddle">thumb_up</i>
+	                            <span
+	                                    class="imc-Text-MD imc-TextRegular imc-FontRoboto">&nbsp; <?php echo __('Vote', 'pb-voting'); ?></span>
+	                        </button>
 											<?php }
 										} ?>
 
-                                    </form>
+                    </form>
 								<?php } ?>
 
-                                <!-- Start Issue Timeline -->
-                                <div class="imc-CardLayoutStyle">
-                                    <h3 class="imc-SectionTitleTextStyle"><?php echo __('Timeline','pb-voting'); ?></h3>
-
+                <!-- Start Issue Timeline -->
+		                <div class="imc-CardLayoutStyle">
+		                    <h3 class="imc-SectionTitleTextStyle"><?php echo __('Timeline','pb-voting'); ?></h3>
 
 									<?php
 
@@ -499,16 +455,16 @@ get_header(); ?>
 									// If there is only one item, show it
 									if (count($timeline) == 1) { ?>
 
-                                        <div class="imc-row-no-margin">
-                                            <span class="imc-SingleTimelineStepCircleStyle imc-circle" style="background-color: #<?php echo esc_attr($timeline[0]->color);?> "></span>
-                                            <span class="imc-SingleTimelineStepTitleStyle imc-TextColorPrimary"><?php echo esc_html($timeline[0]->title); ?></span>
-                                        </div>
+                      <div class="imc-row-no-margin">
+                          <span class="imc-SingleTimelineStepCircleStyle imc-circle" style="background-color: #<?php echo esc_attr($timeline[0]->color);?> "></span>
+                          <span class="imc-SingleTimelineStepTitleStyle imc-TextColorPrimary"><?php echo esc_html($timeline[0]->title); ?></span>
+                      </div>
 
-                                        <div class="imc-row-no-margin imc-SingleTimelineItemStyle imc-SingleTimelineLastItem">
-                                            <span class="imc-SingleTimelineItemDescStyle imc-TextColorPrimary"><?php echo esc_html($timeline[0]->description); ?></span>
+                      <div class="imc-row-no-margin imc-SingleTimelineItemStyle imc-SingleTimelineLastItem">
+                          <span class="imc-SingleTimelineItemDescStyle imc-TextColorPrimary"><?php echo esc_html($timeline[0]->description); ?></span>
 
-                                            <span class="imc-SingleTimelineItemFooterTextStyle imc-TextColorPrimary"><?php echo imc_calculate_relative_date($timeline[0]->dateTimestamp), ' ', __('by','pb-voting'), ' ', esc_html($timeline[0]->name); ?></span>
-                                        </div>
+                          <span class="imc-SingleTimelineItemFooterTextStyle imc-TextColorPrimary"><?php echo imc_calculate_relative_date($timeline[0]->dateTimestamp), ' ', __('by','pb-voting'), ' ', esc_html($timeline[0]->name); ?></span>
+                      </div>
 
 									<?php  } else {
 
@@ -517,42 +473,42 @@ get_header(); ?>
 
 										?>
 
-                                        <div class="imc-row-no-margin">
-                                            <span class="imc-SingleTimelineStepCircleStyle imc-circle" style="background-color: #<?php echo esc_attr($timeline[0]->color);?> "></span>
-                                            <span class="imc-SingleTimelineStepTitleStyle imc-TextColorPrimary"><?php echo esc_html($timeline[0]->title); ?></span>
-                                        </div>
+                      <div class="imc-row-no-margin">
+                          <span class="imc-SingleTimelineStepCircleStyle imc-circle" style="background-color: #<?php echo esc_attr($timeline[0]->color);?> "></span>
+                          <span class="imc-SingleTimelineStepTitleStyle imc-TextColorPrimary"><?php echo esc_html($timeline[0]->title); ?></span>
+                      </div>
 
-                                        <div class="imc-row imc-SingleTimelineItemStyle" style="border-left: 3px solid rgba(0,0,0,0.23);">
-                                            <span class="imc-SingleTimelineItemDescStyle imc-TextColorPrimary"><?php echo esc_html($timeline[0]->description); ?></span>
-                                            <span class="imc-SingleTimelineItemFooterTextStyle imc-TextColorPrimary"><?php echo esc_html(imc_calculate_relative_date($timeline[0]->dateTimestamp)), ' ', __('by','pb-voting'), ' ', esc_html($timeline[0]->name); ?></span>
-                                        </div>
+                      <div class="imc-row imc-SingleTimelineItemStyle" style="border-left: 3px solid rgba(0,0,0,0.23);">
+                          <span class="imc-SingleTimelineItemDescStyle imc-TextColorPrimary"><?php echo esc_html($timeline[0]->description); ?></span>
+                          <span class="imc-SingleTimelineItemFooterTextStyle imc-TextColorPrimary"><?php echo esc_html(imc_calculate_relative_date($timeline[0]->dateTimestamp)), ' ', __('by','pb-voting'), ' ', esc_html($timeline[0]->name); ?></span>
+                      </div>
 
 										<?php // Loop through the rest
 										$rest_tml_items = array_slice($timeline, 1);
 
 										foreach ($rest_tml_items as $val) {	?>
 
-                                            <div class="imc-row-no-margin">
-                                                <span class="imc-SingleTimelineStepCircleStyle imc-circle" style="background-color: #<?php echo esc_attr($val->color);?> "></span>
-                                                <span class="imc-SingleTimelineStepTitleStyle imc-TextColorPrimary"><?php echo esc_html($val->title); ?></span>
-                                            </div>
+                          <div class="imc-row-no-margin">
+                              <span class="imc-SingleTimelineStepCircleStyle imc-circle" style="background-color: #<?php echo esc_attr($val->color);?> "></span>
+                              <span class="imc-SingleTimelineStepTitleStyle imc-TextColorPrimary"><?php echo esc_html($val->title); ?></span>
+                          </div>
 
-                                            <div class="imc-row imc-SingleTimelineItemStyle" style="border-left: 3px solid rgba(0,0,0,0.12);">
-                                                <span class="imc-SingleTimelineItemDescStyle imc-TextColorSecondary"><?php echo esc_html($val->description); ?></span>
-                                                <span class="imc-SingleTimelineItemFooterTextStyle imc-TextColorSecondary"><?php echo esc_html(imc_calculate_relative_date($val->dateTimestamp)), ' ', __('by','pb-voting'), ' ',  esc_html($val->name); ?></span>
-                                            </div>
+                          <div class="imc-row imc-SingleTimelineItemStyle" style="border-left: 3px solid rgba(0,0,0,0.12);">
+                              <span class="imc-SingleTimelineItemDescStyle imc-TextColorSecondary"><?php echo esc_html($val->description); ?></span>
+                              <span class="imc-SingleTimelineItemFooterTextStyle imc-TextColorSecondary"><?php echo esc_html(imc_calculate_relative_date($val->dateTimestamp)), ' ', __('by','pb-voting'), ' ',  esc_html($val->name); ?></span>
+                          </div>
 
 										<?php } ?>
 
-                                        <div class="imc-row-no-margin">
-                                            <span class="imc-SingleTimelineStepCircleStyle imc-circle" style="background-color: #<?php echo esc_attr($last_tml_item->color);?> "></span>
-                                            <span class="imc-SingleTimelineStepTitleStyle imc-TextColorPrimary"><?php echo esc_html($last_tml_item->title); ?></span>
-                                        </div>
+                        <div class="imc-row-no-margin">
+                            <span class="imc-SingleTimelineStepCircleStyle imc-circle" style="background-color: #<?php echo esc_attr($last_tml_item->color);?> "></span>
+                            <span class="imc-SingleTimelineStepTitleStyle imc-TextColorPrimary"><?php echo esc_html($last_tml_item->title); ?></span>
+                        </div>
 
-                                        <div class="imc-row-no-margin imc-SingleTimelineItemStyle imc-SingleTimelineLastItem">
-                                            <span class="imc-SingleTimelineItemDescStyle imc-TextColorSecondary"><?php echo esc_html($last_tml_item->description); ?></span>
-                                            <span class="imc-SingleTimelineItemFooterTextStyle imc-TextColorSecondary"><?php echo esc_html(imc_calculate_relative_date($last_tml_item->dateTimestamp)), ' ', __('by','pb-voting'), ' ',  esc_html($last_tml_item->name); ?></span>
-                                        </div>
+                        <div class="imc-row-no-margin imc-SingleTimelineItemStyle imc-SingleTimelineLastItem">
+                            <span class="imc-SingleTimelineItemDescStyle imc-TextColorSecondary"><?php echo esc_html($last_tml_item->description); ?></span>
+                            <span class="imc-SingleTimelineItemFooterTextStyle imc-TextColorSecondary"><?php echo esc_html(imc_calculate_relative_date($last_tml_item->dateTimestamp)), ' ', __('by','pb-voting'), ' ',  esc_html($last_tml_item->name); ?></span>
+                        </div>
 
 									<?php } ?>
 

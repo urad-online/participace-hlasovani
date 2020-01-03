@@ -278,7 +278,7 @@ if ( is_front_page() || is_home() ) {
 
                 <p class="img-PaginationLabelStyle imc-TextColorSecondary"><?php echo __('Showing','pb-voting'); ?> <b><?php echo esc_html($start_indicator); ?></b> - <b><?php echo esc_html($end_indicator) ?></b> <?php echo __('of','pb-voting'); ?> <b><?php echo esc_html($total_issues) ?></b> <?php echo __('issues','pb-voting'); ?></p>
 
-				<?php imc_paginate($custom_query, $paged, $voting_view_filters->get_value('ppage'), $voting_view_filters->get_value('sorder'), $voting_view_filters->get_value('view'), $voting_view_filters->get_value('sstatus'), $voting_view_filters->get_value('scategory'), $voting_view_filters->get_value('keyword')); ?>
+				<?php pbvote_paginate($custom_query, $paged, $voting_view_filters->get_value('ppage'), $voting_view_filters->get_value('sorder'), $voting_view_filters->get_value('view'), $voting_view_filters->get_value('sstatus'), $voting_view_filters->get_value('scategory'), $voting_view_filters->get_value('keyword')); ?>
             </div>
 
         </div>
