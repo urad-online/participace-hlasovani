@@ -1,6 +1,6 @@
 === Hlasovani projektech  ===
 Contributors: Otevreny Urad/ M.Stastny
-Tags: partcipation, project, voting, municip`ality
+Tags: participation, project, voting, municipality
 Requires at least: 4.4
 Tested up to: 5.2.2
 Stable tag: trunk
