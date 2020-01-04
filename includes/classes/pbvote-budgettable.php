@@ -29,19 +29,19 @@ class PbVote_BudgetTable
       wp_localize_script('pb-budget-table', 'pbTableListsData', array(
                 'types' => $this->budget_item_type,
                 // 'vat'   => $this->vat_values,
-                'table_def' => $this->table_def,
+                'table_def'   => $this->table_def,
                 'budget_data' => $this->budget_data,
               ));
     }
     public function render_table( )
     {
       $output =  '<div class="container"><div class="table-wrapper">';
-      $output .= '<input type="hidden" id="pb_project_naklady" name="pb_project_naklady" value="'.json_encode( $this->budget_data, JSON_UNESCAPED_UNICODE).'">';
+      $output .= '<input type="hidden" id="pb_project_naklady" name="pb_project_naklady" value="'. json_encode( ($this->allow_edit) ? $this->budget_data : array(), JSON_UNESCAPED_UNICODE) .'">';
       // $output .= '<div class="table-title"><div class="imc-row"><div class="imc-grid-8 imc-columns"><h2>Rozpočet návrhu</h2></div></div></div>';
       $output .= '<table class="pbvote-budget-table table-bordered" style="width:100%">';
       $output .= $this->render_col_header();
       $output .= $this->render_body();
-      $output .= '<tbody></tbody></table>';
+      $output .= '</table>';
       $output .= $this->render_add_button();
       $output .= '</div></div>';
       return $output;
@@ -65,11 +65,13 @@ class PbVote_BudgetTable
       $output .= '</tr></thead>';
       return $output;
     }
+
     private function render_add_button()
     {
       $output =  '<div class="table-title row-total"><div class="imc-row">';
-      $output .= '<div class="imc-grid-8 imc-columns"><div class="imc-row"><div class="imc-grid-4 imc-columns"><h6>Celková částka :</h6></div>';
-      $output .= '<div class="imc-grid-2 imc-columns"><h6 id="total_budget_sum" name="total_budget_sum">'.number_format($this->total_sum,0).'</h6></div></div></div>';
+      $output .= '<div class="imc-grid-8 imc-columns">';
+      $output .=   '<h4><span class="keep-space">Celková částka :   </span><span id="total_budget_sum" name="total_budget_sum">'.number_format($this->total_sum,0).'</span></h4>';
+      $output .= '</div>';
       if ($this->allow_edit) {
         $output .= '<div class="imc-grid-4 imc-columns">';
         $output .= '<button type="button" class="imc-button add-new"><i class="material-icons md-24 imc-AlignIconToButton">add_circle</i>Přidat položku</button></div>';
@@ -77,12 +79,13 @@ class PbVote_BudgetTable
       $output .= '</div></div>';
       return $output;
     }
+
     private function render_body()
     {
         $this->total_sum = 0;
-        if ($this->allow_edit) {
-          $output = '<tbody></tbody>';
-        } else {
+        // if ($this->allow_edit) {
+        //   $output = '<tbody></tbody>';
+        // } else {
           $output = '<tbody>';
           if (count( $this->budget_data) > 0) {
             $field_count = count( $this->table_def);
@@ -94,12 +97,26 @@ class PbVote_BudgetTable
                   $this->total_sum += intval($item[$i]);
                 }
               }
+              if ($this->allow_edit) {
+                $output .= $this->render_control_buttons();
+              }
               $output .= '</tr>';
             };
           }
           $output .= '</tbody>';
-        }
+        // }
         return $output;
+    }
+
+    private function render_control_buttons()
+    {
+      $output = '<td>';
+      $output .= '<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">playlist_add</i></a>';
+      $output .= '<a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">edit</i></a>';
+      $output .= '<a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">delete</i></a>';
+      $output .= '<a class="cancel" title="Cancel" data-toggle="tooltip"><i class="material-icons">cancel</i></a>';
+      $output .= '</td>';
+      return $output;
     }
 
     private function format_value( $value, $classes)

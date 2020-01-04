@@ -248,6 +248,7 @@ table.pbvote-budget-table {
     table-layout: fixed;
     font-weight: bold;
     font-size: 14px;
+    border-collapse: collapse;
 }
 
 table.pbvote-budget-table tr td {
@@ -255,7 +256,6 @@ table.pbvote-budget-table tr td {
 }
 table.pbvote-budget-table tr th, table.pbvote-budget-table tr td {
     border: 2px solid #888888;
-    border-color:  ;
     padding: 3px 3px 3px 5px;
 }
 table.pbvote-budget-table th i {
@@ -316,3 +316,7 @@ table.pbvote-budget-table td.integer, td.percent {
   text-align: right;
 }
 .percent:after{ content: '%'; }
+
+span.keep-space {
+  white-space: pre;
+}

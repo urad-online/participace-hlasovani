@@ -95,7 +95,7 @@ jQuery(document).ready(function(){
     });
     get_initial_params();
     read_data_to_list();
-    render_rows();
+    // render_rows();
 });
 function render_rows (){
     var total_sum = 0;
