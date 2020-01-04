@@ -109,6 +109,15 @@ class PbVote_ImcIssueDetailMetabox {
              $meta_value
            );
            break;
+         case 'budgettable':
+             if (empty($meta_value)) {
+               $value_table = array();
+             } else {
+               $value_table =  $meta_value;
+             }
+             $table = new PbVote_BudgetTable( true, $value_table);
+             $input = $table->render_table();
+           break;
          default:
            $input = sprintf(
              '<input %s id="%s" name="%s" type="%s" value="%s">',
@@ -146,6 +155,9 @@ class PbVote_ImcIssueDetailMetabox {
 
         $old = get_post_meta($post_id, $meta_field['id'], true);
         $new = (!empty($_POST[$meta_field['id']])) ? $_POST[$meta_field['id']] : "";
+        if ( $meta_field['id'] == "pb_project_naklady") {
+          $new = json_decode(stripslashes( $_POST[$meta_field['id']] ));
+        }
         if ( $new && $new != $old ) {
           switch ( $meta_field['type'] ) {
             case 'email':

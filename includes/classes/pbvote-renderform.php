@@ -124,7 +124,7 @@ class PbVote_RenderForm {
     {
         return array(
                 'goals', 'actions', 'profits', 'address',
-                'parcel', 'map', 'cost', 'budget_total',
+                'parcel', 'map', 'cost',
                 'attach1', 'attach2', 'attach3',
             );
     }
@@ -145,10 +145,6 @@ class PbVote_RenderForm {
             array( 'type' => 'field', 'data' => array( 'field' => 'photo', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'map', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'cost', 'columns' => 0)),
-            array( 'type' => 'row', 'data' => array(
-                array('type' => 'field', 'data' => array( 'field' => 'budget_total', 'columns' => 5)),
-                array('type' => 'field', 'data' => array( 'field' => 'budget_increase', 'columns' => 6)),
-            )),
             array( 'type' => 'field', 'data' => array( 'field' => 'attach1', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'attach2', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'attach3', 'columns' => 0)),
@@ -313,59 +309,17 @@ class PbVote_RenderForm {
                 ),
             ),
             'cost' => array(
-                'label'         => 'Předpokládané náklady (povinná příloha)',
+                'label'         => 'Předpokládané náklady (povinný údaj)',
                 'id'            => 'pb_project_naklady',
-                'type'          => 'media',
+                'type'          => 'budgettable',
                 'title'         => "cost",
                 'mandatory'     => true,
-                'material_icon' => 'file_upload',
-                // 'material_icon' => 'credit_card',
-                'AddBtnLabel'   => 'Vložit',
-                'DelBtnLabel'   => 'Smazat',
-                'help'          => 'Povolené typy příloh: gif, png, jpg, jpeg, pdf, doc, docx, xls, xlsx',
+                'help'          => 'Zadejte předpokládané náklady. Částky uveďte včetně DPH',
                 'show_mtbx'     => true,
                 'show_form'     => true,
-                'js_rules'      => array(
-                    'rules' => 'is_file_type[gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG,pdf,PDF,doc,DOC,xls,XLS]',
-                ),
-            ),
-            'costName' => array(
-                'label'     => 'Předpokládané náklady',
-                'id'        => 'pb_project_nakladyName',
-                'show_mtbx'     => false,
-                'js_rules'      => array(
-                    'rules' => 'required',
-                ),
-            ),
-            'budget_total' => array(
-                'label'     => 'Celkové náklady',
-                'id'        => 'pb_project_naklady_celkem',
-                'type'      => 'text',
-                // 'options'   => 'min="100000" max="2000000" step="1000" style="text-align:right" ',
-                'mandatory' => true,
-                'placeholder' => 'Vyplňte celkové náklady projektu',
-                // 'title'     => "Celkove naklady",
-                'columns'   => 5,
-                'show_mtbx'   => true,
-                'show_form'   => true,
                 'js_rules'    => array(
-                    'rules'   => 'required|integer|greater_than[99999]|less_than[2000001]',
-                    'depends' => 'pb_project_js_validate_required',
-                ),
-            ),
-            'budget_increase' => array(
-                'label'     => 'Náklady byly navýšeny o rezervu 10%',
-                'id'        => 'pb_project_naklady_navyseni',
-                'default'   => 'no',
-                'type'      => 'checkbox',
-                // 'title'     => "budget_increase",
-                'mandatory' => true,
-                'columns'   => 6,
-                'show_mtbx'   => true,
-                'show_form'   => true,
-                'js_rules'    => array(
-                    'rules'   => 'required',
-                    'depends' => 'pb_project_js_validate_required',
+                  'rules'   => 'required|integer|greater_than[99]|less_than[10000001]',
+                  'depends' => 'pb_project_js_validate_required',
                 ),
             ),
             'attach1' => array(

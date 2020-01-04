@@ -50,6 +50,9 @@ class PbVote_ProjectSingle {
             case 'textarea':
                 $this->render_field_text( $order, $field['label'], $value);
                 break;
+            case 'budgettable':
+                $this->render_budget_table( $order, $field['label'], $value);
+                break;
             default:
                 $this->render_field_text( $order, $field['label'], $value);
         }
@@ -79,6 +82,19 @@ class PbVote_ProjectSingle {
             $order,
             $label,
             $value);
+    }
+
+    private function render_budget_table( $order = '', $label = '', $value = '')
+    {
+        $output = '<div class="imc-row">
+            <h3 class="imc-SectionTitleTextStyle">%s%s</h3>';
+        printf( $output ,
+            $order,
+            $label);
+
+        $table = new PbVote_BudgetTable( false, unserialize( $value));
+        echo $table->render_table();
+        echo '</div>';
     }
 
     private function render_field_get_value( $id, $values)

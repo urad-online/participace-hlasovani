@@ -1,25 +1,18 @@
 <?php
 /**
- * The template for displaying all single issues and attachments
+ * The template for displaying all single hlasivani and all linked issues
  *
  */
 
-// $pb_project_single = new pbProjectSingle;
 global $wp_query, $post,$pb_issues_view_filters;
+
 include_once( PB_VOTE_PATH_TEMPL . '/archive-imc_issues_body.php');
 $pb_issues_view_filters = new  PbVote_ArchiveDisplayOptions( 'imc');
 
 $voting_ids = get_the_ID();
 global  $voting_ids;
-$hlasovani_meta = get_post_meta( $voting_ids, '', false);
-// $params = hlasovani_query_arg( $hlasovani_meta['items'] ) ;
-// $insertpage = getIMCInsertPage();
-// $editpage = getIMCEditPage();
-// $listpage = getIMCArchivePage();
-// $voting_page = get_first_pbvoting_post();
+// $hlasovani_meta = get_post_meta( $voting_ids, '', false);
 get_header();
-
-
 ?>
 
     <div>

@@ -1,9 +1,9 @@
 /*
-Theme plugin: cgbm search
-Description: Maintaining CGBM model.
-Author: Mila
-Version: 0.1
-Template: javo-spot
+Theme plugin: participativni projekty - hlasovani
+Description: Maintaining voting and project.
+Author: Miloslav Stastny
+Version: 1.1.0
+Template: n/a
 */
 
 @charset "utf-8";
@@ -209,4 +209,114 @@ input[type="checkbox"].pbvote-collapse-section:not(checked) ~ label div i.materi
     overflow: hidden;
     position: relative;
     border-bottom: 1px solid rgba(0,0,0,0.12);
+}
+.table-title .add-new i {
+  margin-right: 4px;
+}
+.table-wrapper {
+	width: 100%;
+	margin: 5px auto;
+  background: #fff;
+  padding: 5px;
+  box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.table-title {
+    /* padding-bottom: 10px; */
+    margin: 0 0 10px;
+
+}
+.table-title h2 {
+    margin: 6px 0 0;
+    font-size: 22px;
+    color: black;
+}
+.table-title .add-new {
+    float: right;
+  	min-height: 30px;
+  	font-weight: bold;
+  	text-shadow: none;
+  	min-width: 100px;
+  	line-height: 13px;
+}
+.table-title .add-new i {
+	margin-right: 4px;
+}
+div.row-total{
+	margin: 10px 5px 10px 5px;
+}
+table.pbvote-budget-table {
+    table-layout: fixed;
+    font-weight: bold;
+    font-size: 14px;
+    border-collapse: collapse;
+}
+
+table.pbvote-budget-table tr td {
+    font-weight: normal;
+}
+table.pbvote-budget-table tr th, table.pbvote-budget-table tr td {
+    border: 2px solid #888888;
+    padding: 3px 3px 3px 5px;
+}
+table.pbvote-budget-table th i {
+    font-size: 13px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+table.pbvote-budget-table th:last-child {
+    width: 100px;
+}
+table.pbvote-budget-table td a {
+		cursor: pointer;
+    display: inline-block;
+    margin: 0 5px;
+		min-width: 24px;
+}
+table.pbvote-budget-table td a.add {
+      color: #27C46B;
+}
+table.pbvote-budget-table td a.edit {
+    color: #FFC107;
+}
+table.pbvote-budget-table td a.delete {
+    color: #E34724;
+}
+table.pbvote-budget-table td a.cancel {
+    color: #E34724;
+}
+table.pbvote-budget-table td i {
+    font-size: 19px;
+}
+table.pbvote-budget-table td a.add i {
+      font-size: 24px;
+      margin-right: -1px;
+      position: relative;
+      top: 3px;
+  }
+  table.pbvote-budget-table .form-control {
+      height: 32px;
+      line-height: 32px;
+      box-shadow: none;
+      border-radius: 2px;
+      padding: 3px 3px 3px 3px;
+  }
+table.pbvote-budget-table .form-control.error {
+  border-color: #f50000;
+}
+table.pbvote-budget-table td .add {
+  display: none;
+}
+table.pbvote-budget-table td .cancel {
+  display: none;
+}
+table.pbvote-budget-table td.text-left {
+  text-align: left;
+}
+table.pbvote-budget-table td.integer, td.percent {
+  text-align: right;
+}
+.percent:after{ content: '%'; }
+
+span.keep-space {
+  white-space: pre;
 }

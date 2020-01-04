@@ -9,12 +9,9 @@ class PbVote_ArchiveDisplayFilterData
 
     public function __construct( $params)
     {
-        $this->paged = 1;
+        global $wp_query;
         $this->user_params = $params;
-
-        if ( get_query_var( 'paged' ) ) {$this->paged = get_query_var('paged'); // On a paged page.
-        } else if ( get_query_var( 'page' ) ) {$this->paged = get_query_var('page'); // On a "static" page.
-        }
+        $this->set_query_args_page_number();
 
         //Basic query calls depending the user
         if ( is_user_logged_in() && current_user_can( 'administrator' ) ){ //not user
@@ -86,6 +83,14 @@ class PbVote_ArchiveDisplayFilterData
     			),)
     		);
         }
+    }
+    private function  set_query_args_page_number()
+    {
+      if(! empty( $this->user_params['page'] )) {
+          $this->paged = $this->user_params['page'];
+      } else {
+          $this->paged = 1;
+      }
     }
 
     public function set_query_args_order()
@@ -181,6 +186,36 @@ class PbVote_ArchiveDisplayFilterData
     public function  get_query_data()
     {
         $pom = new WP_Query( $this->query_args );
+        // $this->save_to_session( $pom);
         return $pom;
     }
+
+    private function save_to_session( $query)
+    {
+        if ( ! empty($query) ) {
+            $_SESSION[ 'pbvote_issues_query' ] = json_encode( $query );
+        } else {
+            if ( isset($_SESSION[ 'pbvote_issues_query' ]) ) {
+                unset($_SESSION[ 'pbvote_issues_query' ]);
+            }
+        }
+    }
+
+    private function get_from_session()
+    {
+        if (isset($_SESSION[ 'pbvote_issues_query' ])) {
+            return json_decode( $_SESSION[ 'pbvote_issues_query' ], false);
+        } else {
+            return null;
+        }
+    }
+    public function set_query_paged()
+    {
+      if ( get_query_var( 'paged' ) ) {
+        $this->paged = get_query_var('paged'); // On a paged page.
+      } else if ( get_query_var( 'page' ) ) {
+        $this->paged = get_query_var('page'); // On a "static" page.
+      }
+    }
 }
+//

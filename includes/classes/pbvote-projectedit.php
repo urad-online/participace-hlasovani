@@ -96,6 +96,9 @@ class PbVote_ProjectEdit
             echo '<div class="imc-grid-'.$columns.' imc-columns">';
         }
         switch ( $field['type'] ) {
+            case 'budgettable':
+                $this->render_budget_table( $order, $field, $value, $help);
+                break;
             case 'media':
                 $this->render_file_attachment( $order, $field, $value, $help);
                 break;
@@ -195,6 +198,36 @@ class PbVote_ProjectEdit
                 $input['id']
             );
         }
+    }
+    private function render_budget_table( $order, $input = null, $value = '', $help = '' )
+    {
+        if ( !empty( $input['mandatory']) && $input['mandatory'] ) {
+            $mandatory = $this->render_mandatory( $input['mandatory']) ;
+        } else {
+            $mandatory = $this->render_mandatory( false);
+        }
+        $options = '';
+        if ( ! empty($input['options'])) {
+            $options = " ".$input['options'];
+        }
+
+        if (empty($value)) {
+          $value_table = array();
+        } else {
+          $value_table = unserialize( $value);
+        }
+
+        $table = new PbVote_BudgetTable( true, $value_table);
+        $output = '<h3 class="imc-SectionTitleTextStyle">%s%s %s'.$this->render_tooltip( $help ).'</h3>';
+
+        printf( $output,
+            $order,
+            $input['label'],
+            $mandatory,
+        );
+
+        $output = $table->render_table();
+        echo $output;
     }
 
     private function render_file_attachment( $order, $input, $value = '', $help = '')
@@ -298,7 +331,7 @@ class PbVote_ProjectEdit
             }
         }
 
-        $output = '<h3 class="imc-SectionTitleTextStyle" style="display:inline-block;"><label id="%sName" for="%s">%s%s</label>'. $this->render_tooltip($help) .'
+        $output = '<h3 class="imc-SectionTitleTextStyle" style="display:inline-block;"><label id="%sName" for="%s">%s%s'. $this->render_tooltip($help) .'</label>
             </h3><input type="checkbox"  %s %s name="%s" id="%s" class="imc-InputStyle" value="1"
             style="width:20px; height:20px; display:inline-block;margin-left:10px"/>
             <label id="%sLabel" class="imc-ReportFormErrorLabelStyle imc-TextColorPrimary"></label>';

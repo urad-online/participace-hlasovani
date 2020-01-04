@@ -1,5 +1,4 @@
 Potreba udelat:
-1. Zahrnout pb-styles.css do pbvote_style.css
-4. Refaktorovat neb zrusit fci pb_enqueue_scripts
-6. VYresit fci pb_user_can_edit v pb-additonal-fields.php
-7. Vyresit zakazani komentaru a ratingu. Viz register_general_settings v imc-page-settings.php
+1. Vyresit zakazani komentaru a ratingu. Viz register_general_settings v imc-page-settings.php
+2. Udelat insert-project_issues na shortcode
+3. Změnit na moznost parametrizace seznam dodatecnych poli pro imc_issues

@@ -20,6 +20,7 @@ class PbVote_ArchiveDisplayOptions
             'view'   => 'conv_int',);
     private $translate_domain = 'pb-voting';
     private $session_param_name = "pbv_display_params";
+    private $paged  = null;
 
     public function __construct( $name_suffix = "voting")
     {
@@ -31,6 +32,8 @@ class PbVote_ArchiveDisplayOptions
         }
 
         $this->save_to_session();
+        // pagination page number is not saved in SESSION
+        $this->set_parem_query_paged();
         $this->set_default();
         $this->set_filtering_active();
     }
@@ -259,6 +262,28 @@ class PbVote_ArchiveDisplayOptions
         if ((! empty($key)) && (! empty($value))) {
             $this->filter_params_view[ $key] =  $value;
         }
+    }
+    public function set_parem_query_paged()
+    {
+      if ( get_query_var( 'paged' ) ) {
+        $value = get_query_var('paged'); // On a paged page.
+      } else if ( get_query_var( 'page' ) ) {
+        $value = get_query_var('page'); // On a "static" page.
+      } else {
+        $value = 0;
+      }
+      if ( $value !== 0 ) {
+        $this->filter_params_view[ 'page'] =  $value;
+      }
+    }
+    public function get_query_paged()
+    {
+      if ( isset( $this->filter_params_view[ 'page'] ) ) {
+        $this->paged = get_query_var('paged'); // On a paged page.
+      } else if ( get_query_var( 'page' ) ) {
+        $this->paged = get_query_var('page'); // On a "static" page.
+      }
+      return $this->paged;
     }
 
 }
