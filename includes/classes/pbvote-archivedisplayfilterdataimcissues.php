@@ -17,12 +17,11 @@ class PbVote_ArchiveDisplayFilterDataImcIssues extends PbVote_ArchiveDisplayFilt
                 }
             }
         }
-        
+
         $posts_in = array_unique($imc_items);
-        if (count($posts_in) == 0) {
-          array_push($posts_in, 0);
+        if (count($posts_in) > 0) {
+          $this->query_args['post__in'] = $posts_in;
         }
-        $this->query_args['post__in'] = $posts_in;
     }
 
     public function set_query_args_custom_1()

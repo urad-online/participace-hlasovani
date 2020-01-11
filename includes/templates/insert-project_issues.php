@@ -25,6 +25,7 @@ if ( $project_new->is_submitted() ) {
 } else {
 	get_header();
 	?>
+	<div>
 	<div class="imc-BGColorGray">
 		<div class="imc-SingleHeaderStyle imc-BGColorWhite">
 			<div class="imc-container">

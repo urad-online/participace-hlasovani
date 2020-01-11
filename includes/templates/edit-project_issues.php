@@ -94,7 +94,8 @@ $plugin_path_url = pbvote_calculate_plugin_base_url();
 </div>
 <?php
 if(pbvote_user_can_edit($given_issue_id, $user->ID)) { ?>
-    <div class="imc-BGColorGray">
+    <!-- <div class="imc-BGColorGray"> -->
+    <div>
 
         <div class="imc-SingleHeaderStyle imc-BGColorWhite">
             <a href="<?php echo esc_url( $return_url ); ?>" class="u-pull-left imc-SingleHeaderLinkStyle ">

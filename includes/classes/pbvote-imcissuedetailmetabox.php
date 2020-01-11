@@ -115,7 +115,7 @@ class PbVote_ImcIssueDetailMetabox {
              } else {
                $value_table =  $meta_value;
              }
-             $table = new PbVote_BudgetTable( true, $value_table);
+             $table = new PbVote_BudgetTable( false, $value_table);
              $input = $table->render_table();
            break;
          default:

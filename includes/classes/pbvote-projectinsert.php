@@ -156,7 +156,8 @@ class PbVote_ProjectInsert
     private function print_form()
     {
       ?>
-      <div class="imc-BGColorGray">
+      <!-- <div class="imc-BGColorGray"> -->
+      <div >
         <div class="imc-Separator"></div>
         <div class="imc-container">
             <!-- INSERT FORM BEGIN -->

@@ -12,14 +12,14 @@ class PbVote_ArchiveDisplayOptions
         'sorder' => 1,
         'view'   => 1,
     );
-    private $param_list_long  = array( 'ppage','sorder', 'view', 'sstatus', 'scategory', 'keyword', 'svoting');
+    public $param_list_long  = array( 'ppage','sorder', 'view', 'sstatus', 'scategory', 'keyword', 'svoting');
     private $param_list_short = array( 'ppage','sorder', 'view');
     private $param_list_conv_function = array(
             'ppage'  => 'conv_int',
             'sorder' => 'conv_int',
             'view'   => 'conv_int',);
     private $translate_domain = 'pb-voting';
-    private $session_param_name = "pbv_display_params";
+    public $session_param_name = "pbv_display_params";
     private $paged  = null;
 
     public function __construct( $name_suffix = "voting")
@@ -275,15 +275,6 @@ class PbVote_ArchiveDisplayOptions
       if ( $value !== 0 ) {
         $this->filter_params_view[ 'page'] =  $value;
       }
-    }
-    public function get_query_paged()
-    {
-      if ( isset( $this->filter_params_view[ 'page'] ) ) {
-        $this->paged = get_query_var('paged'); // On a paged page.
-      } else if ( get_query_var( 'page' ) ) {
-        $this->paged = get_query_var('page'); // On a "static" page.
-      }
-      return $this->paged;
     }
 
 }
