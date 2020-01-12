@@ -320,3 +320,6 @@ table.pbvote-budget-table td.integer, td.percent {
 span.keep-space {
   white-space: pre;
 }
+.form-control.pb-table-input {
+  width: 100%;
+}

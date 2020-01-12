@@ -137,7 +137,7 @@ function gen_action_buttons()  {
 function render_select( list_values, id, value = "", input_class, attr )
 {
   var selected = "";
-  var output = '<select class="form-control '+input_class+'" name="'+id+'" id="'+ id +'"'+ attr +'>';
+  var output = '<select class="form-control pb-table-input '+input_class+'" name="'+id+'" id="'+ id +'"'+ attr +'>';
   list_values.forEach(function(item){
     if (item == value ) {
       selected = "selected";
@@ -164,7 +164,7 @@ function render_input( id, type, value, input_class, attr)
         output = render_select( type_values , id, value, input_class, attr);
         break;
       default:
-        output = '<input type="text" class="form-control '+input_class+'" value="' + value + '"'+ attr +'>';
+        output = '<input type="text" class="form-control pb-table-input '+input_class+'" value="' + value + '"'+ attr +'>';
 
   }
   return output;

@@ -243,6 +243,17 @@ if(pbvote_user_can_edit($given_issue_id, $user->ID)) { ?>
 				// console.log('validuju povinna pole');
 				return jQuery('#pb_project_edit_completed').prop('checked');
 			});
+			validator.registerCallback( 'pb_project_js_validate_array', function(value){
+				var result = false;
+				var pom = Array.from(JSON.parse( value ));
+				if( Array.isArray(pom)) {
+						if ( pom.length > 0) {
+							result = true;
+						}
+				};
+				return result;
+			}).setMessage('pb_project_js_validate_array', 'Tabulka s předpokládanými náklady musí mít alespoň jednu položku.');;
+
         });
     })();
 
