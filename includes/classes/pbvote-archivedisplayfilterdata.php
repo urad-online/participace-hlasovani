@@ -3,6 +3,7 @@ class PbVote_ArchiveDisplayFilterData
 {
     public $taxo_status   = "voting_status";
     public $taxo_category = "voting_category";
+    public $taxo_period   = "voting-period";
     public $post_type     = PB_VOTING_POST_TYPE;
     public $query_args, $paged, $user_params, $select_statuses;
     private $ids_in =  array();
@@ -33,6 +34,7 @@ class PbVote_ArchiveDisplayFilterData
         $this->set_query_args_keyword();
         $this->set_query_args_category();
         $this->set_query_args_status();
+        $this->set_query_args_period();
         $this->set_query_args_order();
         $this->set_query_args_voting();
         $this->set_query_args_custom();
@@ -54,6 +56,13 @@ class PbVote_ArchiveDisplayFilterData
     {
         if(! empty( $this->user_params['sstatus'] )) {
             $this->set_query_add_taxo( $this->taxo_status, $this->user_params['sstatus']);
+            // $this->get_id_list_by_taxo($this->taxo_status, $this->user_params['sstatus'], "term_taxonomy_id" ); //todelete
+        }
+    }
+    public function set_query_args_period()
+    {
+        if(! empty( $this->user_params['speriod'] )) {
+            $this->set_query_add_taxo( $this->taxo_period, $this->user_params['speriod']);
             // $this->get_id_list_by_taxo($this->taxo_status, $this->user_params['sstatus'], "term_taxonomy_id" ); //todelete
         }
     }

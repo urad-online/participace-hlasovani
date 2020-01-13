@@ -94,7 +94,8 @@ $plugin_path_url = pbvote_calculate_plugin_base_url();
 </div>
 <?php
 if(pbvote_user_can_edit($given_issue_id, $user->ID)) { ?>
-    <div class="imc-BGColorGray">
+    <!-- <div class="imc-BGColorGray"> -->
+    <div>
 
         <div class="imc-SingleHeaderStyle imc-BGColorWhite">
             <a href="<?php echo esc_url( $return_url ); ?>" class="u-pull-left imc-SingleHeaderLinkStyle ">
@@ -126,13 +127,14 @@ if(pbvote_user_can_edit($given_issue_id, $user->ID)) { ?>
 
                         <div class="imc-Separator"></div>
 
-						<?php echo $project_single->template_project_edit(
+						<?php	echo $project_single->template_project_edit(
 										array(
 											'lat' => $pb_project_meta[ 'imc_lat'][0],
 											'lon' => $pb_project_meta[ 'imc_lng'][0],
 										),
 										$pb_project_meta
-										) ;?>
+										) ;
+										?>
 
                         <div class="imc-row">
                             <span class="u-pull-left imc-ReportFormSubmitErrorsStyle" id="imcReportFormSubmitErrors"></span>
@@ -242,6 +244,17 @@ if(pbvote_user_can_edit($given_issue_id, $user->ID)) { ?>
 				// console.log('validuju povinna pole');
 				return jQuery('#pb_project_edit_completed').prop('checked');
 			});
+			validator.registerCallback( 'pb_project_js_validate_array', function(value){
+				var result = false;
+				var pom = Array.from(JSON.parse( value ));
+				if( Array.isArray(pom)) {
+						if ( pom.length > 0) {
+							result = true;
+						}
+				};
+				return result;
+			}).setMessage('pb_project_js_validate_array', 'Tabulka s předpokládanými náklady musí mít alespoň jednu položku.');;
+
         });
     })();
 

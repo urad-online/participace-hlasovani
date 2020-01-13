@@ -80,6 +80,7 @@ function add_pbvote_template( $templates )
         '/archive-hlasovani.php'   => 'Přehled hlasování',
         '/edit-project_issues.php' => "Oprava projektu",
         '/insert-project_issues.php' => "Přidat nový projekt",
+        '/archive-pbvote_issues.php' => "Přehled všech projektů",
        ));
     return $templates;
 }

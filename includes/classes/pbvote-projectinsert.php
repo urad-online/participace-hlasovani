@@ -156,7 +156,8 @@ class PbVote_ProjectInsert
     private function print_form()
     {
       ?>
-      <div class="imc-BGColorGray">
+      <!-- <div class="imc-BGColorGray"> -->
+      <div >
         <div class="imc-Separator"></div>
         <div class="imc-container">
             <!-- INSERT FORM BEGIN -->
@@ -216,35 +217,46 @@ class PbVote_ProjectInsert
                   var validator = new FormValidator('report_an_issue_form',
   					<?PHP echo $this->project_single->render_fields_js_validation(); ?>,
   				function(errors, events) {
-  					jQuery('label.imc-ReportFormErrorLabelStyle').html("");
-                      if (errors.length > 0) {
-                          var i, j;
-                          var errorLength;
-                          jQuery("#imcReportFormSubmitErrors").html("");
-                          jQuery('#postTitleLabel').html();
+    					jQuery('label.imc-ReportFormErrorLabelStyle').html("");
+                  if (errors.length > 0) {
+                      var i, j;
+                      var errorLength;
+                      jQuery("#imcReportFormSubmitErrors").html("");
+                      jQuery('#postTitleLabel').html();
 
-                          for (i = 0, errorLength = errors.length; i < errorLength; i++) {
-                              if (errors[i].name === "featured_image") {
-  								imcDeleteAttachedImage('imcReportAddImgInput');
-  								jQuery("#imcReportFormSubmitErrors").html(errors[i].message);
-                              } else {
-  								for(j=0; j < Math.min(1, errors[i].messages.length); j++) {
-  									/* zobrazuje se jen prvni chyba, validator vraci stejnou chybu pokud je vice praidel */
-  									jQuery('#'+errors[i].id+'Label').html(errors[i].messages[j]);
-  									jQuery("#imcReportFormSubmitErrors").append("<p>"+errors[i].message+"</p>");
-  								}
-                              }
+                      for (i = 0, errorLength = errors.length; i < errorLength; i++) {
+                          if (errors[i].name === "featured_image") {
+              								imcDeleteAttachedImage('imcReportAddImgInput');
+              								jQuery("#imcReportFormSubmitErrors").html(errors[i].message);
+                          } else {
+              								for(j=0; j < Math.min(1, errors[i].messages.length); j++) {
+              									/* zobrazuje se jen prvni chyba, validator vraci stejnou chybu pokud je vice praidel */
+              									jQuery('#'+errors[i].id+'Label').html(errors[i].messages[j]);
+              									jQuery("#imcReportFormSubmitErrors").append("<p>"+errors[i].message+"</p>");
+              								}
                           }
-                      } else {
-                          jQuery('#imcInsertIssueSubmitBtn').attr('disabled', 'disabled');
-                          jQuery('label.imc-ReportFormErrorLabelStyle').html();
                       }
-                  });
+                  } else {
+                      jQuery('#imcInsertIssueSubmitBtn').attr('disabled', 'disabled');
+                      jQuery('label.imc-ReportFormErrorLabelStyle').html();
+                  }
+            });
     				validator.registerConditional( 'pb_project_js_validate_required', function(field){
-  					/* povinna pole se validuji pouze pokud narhovatel zaskrtne odeslat k vyhodnoceni
-  					 plati pro pole s pravidlem "depends" */
-  					return jQuery('#pb_project_edit_completed').prop('checked');
-  				});
+    					/* povinna pole se validuji pouze pokud narhovatel zaskrtne odeslat k vyhodnoceni
+    					 plati pro pole s pravidlem "depends" */
+    					return jQuery('#pb_project_edit_completed').prop('checked');
+    				});
+    				validator.registerCallback( 'pb_project_js_validate_array', function(value){
+              var result = false;
+              var pom = Array.from(JSON.parse( value ));
+              if( Array.isArray(pom)) {
+                  if ( pom.length > 0) {
+                    result = true;
+                  }
+              };
+    					return result;
+    				}).setMessage('pb_project_js_validate_array', 'Tabulka s předpokládanými náklady musí mít alespoň jednu položku.');;
+
               });
           })();
 

@@ -1,25 +1,24 @@
 <?php
 /**
- * Template Name: Stranka Seznam hlasovani
+ * Template Name: Stranka prehled vsech projektu
  * The template for displaying archive pages
  *
  */
-function pb_items_archive_imc_issues_body($pb_issues_view_filters)
-{
-global $wp_query, $post, $voting_ids ;
+ get_header();
 
+global $wp_query, $post;
 $filter_category_taxo = 'imccategory';
 $filter_status_taxo   = 'imcstatus';
+$filter_period_taxo   = 'voting-period';
 $filter_params_view   = array();
-$control_pages = new PbVote_ControlPages( $voting_ids);
+
+
+$pb_issues_view_filters = new  PbVote_ArchiveDisplayOptionsInclPeriod( 'imc');
+$control_pages = new PbVote_ControlPages( null);
 // mst: tohle prepsat
 $editpage = $control_pages->get_url_edit();
-// $voting_page = get_pbvoting_page_link('hlasovani-p8-2018');
 
 if ( get_option('permalink_structure') ) { $perma_structure = true; } else {$perma_structure = false;}
-if (!empty($voting_ids)) {
-	$pb_issues_view_filters->set_value_param('svoting', $voting_ids);
-}
 
 wp_enqueue_script( 'imc-gmap' );
 wp_enqueue_script( 'mapsV3_infobubble' ); // Insert addon lib for Google Maps V3 -> to style infowindows
@@ -87,6 +86,7 @@ if ( is_front_page() || is_home() ) {
                     <span style="display: none;" id="pbItemCatFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Kategorie', 'pb-voting');?></span>
                     <span style="display: none;" id="pbItemStatFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Stav', 'pb-voting');?></span>
                     <span style="display: none;" id="pbItemKeywordFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Klíčová slova', 'pb-voting');?></span>
+                    <span style="display: none;" id="pbItemPeriodFilteringLabel" class="u-pull-right imc-OverviewFilteringLabelStyle"><?php echo __('Voting period', 'pb-voting');?></span>
                     <i class="material-icons md-24 u-pull-right" id="pbItemFilteringIndicator">filter_list</i>
                 </label>
 
@@ -121,6 +121,7 @@ if ( is_front_page() || is_home() ) {
                     </div>
 
                     <div class="imc-DrawerSecondCol">
+											<div class="imc-row">
 
                         <input checked="checked" class="imc-CheckboxToggleStyle" id="pbItemToggleCatsCheckbox" type="checkbox"
 														name="pbItemToggleCatsCheckbox" value="all">
@@ -176,6 +177,24 @@ if ( is_front_page() || is_home() ) {
 														}
 														echo '</div>'; ?>
                         </div>
+											</div>
+											<div class="imc-rows">
+												<!-- speriod -->
+												<input checked="checked" class="imc-CheckboxToggleStyle" id="pbItemTogglePeriodCheckbox" type="checkbox" name="pbItemTogglePeriodCheckbox" value="all">
+                        <label class="imc-SectionTitleTextStyle" for="pbItemTogglePeriodCheckbox"><?php echo __('Voting period', 'pb-voting'); ?></label>
+                        <br>
+                        <div id="pbItemPeriodCheckboxes" class="imc-row">
+														<?php $all_pb_item_periods = get_all_pbvote_taxo( $filter_period_taxo);
+														if ($all_pb_item_periods) { ?>
+
+															<?php foreach( $all_pb_item_periods as $pb_item_period ) { ?>
+                                  <input checked="checked" class="imc-CheckboxStyle" id="pbItem-period-checkbox-<?php echo esc_html($pb_item_period->term_id); ?>" type="checkbox" name="<?php echo esc_attr($pb_item_period->name); ?>" value="<?php echo esc_attr($pb_item_period->term_id); ?>">
+                                  <label for="pbItem-period-checkbox-<?php echo esc_html($pb_item_period->term_id); ?>"><?php echo esc_html($pb_item_period->name); ?></label>
+                                  <br>
+															<?php }
+														} ?>
+                        </div>
+											</div>
                     </div>
                 </div>
 
@@ -308,7 +327,7 @@ if ( is_front_page() || is_home() ) {
         </div>
 
     </div>
-<!-- script prepsat podle archive-pbvote_issues.php -->
+
     <!-- Initialize Map Scripts -->
     <script>
         /*setOverviewLayout();*/
@@ -317,17 +336,19 @@ if ( is_front_page() || is_home() ) {
         jQuery( document ).ready(function() {
 
             var imported_cat = <?php echo json_encode( $pb_issues_view_filters->get_value_array('scategory')); ?>;
-
             var imported_status = <?php echo json_encode($pb_issues_view_filters->get_value_array('sstatus')); ?>;
             var imported_keyword = <?php echo json_encode($pb_issues_view_filters->get_value_array('keyword')); ?>;
+            var imported_period  = <?php echo json_encode($pb_issues_view_filters->get_value_array('speriod')); ?>;
             var i;
 
-            if (imported_status || imported_cat || imported_keyword) {
+						// jQuery('span.imc-OverviewFilteringLabelStyle').hide();
+            if (imported_status || imported_cat || imported_keyword || imported_period) {
                 jQuery('#pbItemFilteringIndicator').css('color', '#1ABC9C');
 								jQuery('#pbItemStatusCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
 								jQuery('#pbItemCatCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
+								jQuery('#pbItemPeriodCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
 
-                if (imported_status) {
+                if (imported_status.length > 0) {
                     jQuery('#pbItemStatFilteringLabel').show();
 
                     jQuery('#pbItemToggleStatusCheckbox').prop('checked', false);
@@ -337,7 +358,7 @@ if ( is_front_page() || is_home() ) {
                     }
                 }
 
-                if (imported_cat) {
+                if (imported_cat.length > 0) {
                     jQuery('#pbItemCatFilteringLabel').show();
 
                     jQuery('#pbItemToggleCatsCheckbox').prop('checked', false);
@@ -347,11 +368,21 @@ if ( is_front_page() || is_home() ) {
                     }
                 }
 
-                if (imported_keyword) {
+                if (imported_keyword.length > 0) {
                     jQuery('#pbItemKeywordFilteringLabel').show();
 
                     jQuery('#pbItemSearchKeywordInput').val(imported_keyword);
                 }
+
+								if (imported_period.length > 0) {
+									jQuery('#pbItemPeriodFilteringLabel').show();
+
+									jQuery('#pbItemTogglePeriodCheckbox').prop('checked', false);
+
+									for (i=0;i<imported_period.length;i++) {
+										jQuery('#pbItem-period-checkbox-'+imported_period[i]).prop('checked', true);
+									}
+								}
             }
         });
 
@@ -367,6 +398,7 @@ if ( is_front_page() || is_home() ) {
                 jQuery(this).siblings('#pbItemCatCheckboxes').find("input[type='checkbox']").prop('checked', this.checked);
                 jQuery(this).siblings('#pbItemCatChildCheckboxes').find("input[type='checkbox']").prop('checked', this.checked);
                 jQuery(this).siblings('#pbItemCatGrandChildCheckboxes').find("input[type='checkbox']").prop('checked', this.checked);
+								jQuery(this).siblings('#pbItemPeriodCheckboxes').find("input[type='checkbox']").prop('checked', this.checked);
             });
         });
 
@@ -376,38 +408,57 @@ if ( is_front_page() || is_home() ) {
             var selectedCats = '';
             var notSelectedCats = '';
             var keywordString = '';
+						var selectedPeriod = '';
+						var notSelectedPeriod = '';
 
-			jQuery('#pbItemStatusCheckboxes input:checkbox:checked').each(function() { selectedStatus = selectedStatus + jQuery(this).attr('value') +','; });
-			selectedStatus = selectedStatus.slice(0, -1);
+						jQuery('#pbItemStatusCheckboxes input:checkbox:checked').each(function() { selectedStatus = selectedStatus + jQuery(this).attr('value') +','; });
+						selectedStatus = selectedStatus.slice(0, -1);
 
-			jQuery('#pbItemStatusCheckboxes input:checkbox:not(:checked)').each(function() { notSelectedStatus = notSelectedStatus + jQuery(this).attr('value') +','; });
-			notSelectedStatus = notSelectedStatus.slice(0, -1);
+						jQuery('#pbItemStatusCheckboxes input:checkbox:not(:checked)').each(function() { notSelectedStatus = notSelectedStatus + jQuery(this).attr('value') +','; });
+						notSelectedStatus = notSelectedStatus.slice(0, -1);
 
-			// if ( notSelectedStatus.length === 0) {
-			// 	selectedStatus = "all";
-			// }
+						if ( notSelectedStatus.length === 0) {
+							selectedStatus = [];
+						}
 
-			jQuery('#pbItemCatCheckboxes input:checkbox:checked').each(function() { selectedCats = selectedCats + jQuery(this).attr('value') +','; });
-			selectedCats = selectedCats.slice(0, -1);
+						jQuery('#pbItemCatCheckboxes input:checkbox:checked').each(function() { selectedCats = selectedCats + jQuery(this).attr('value') +','; });
+						selectedCats = selectedCats.slice(0, -1);
 
-			jQuery('#pbItemCatCheckboxes input:checkbox:not(:checked)').each(function() { notSelectedCats = notSelectedCats + jQuery(this).attr('value') +','; });
-			notSelectedCats = notSelectedCats.slice(0, -1);
+						jQuery('#pbItemCatCheckboxes input:checkbox:not(:checked)').each(function() { notSelectedCats = notSelectedCats + jQuery(this).attr('value') +','; });
+						notSelectedCats = notSelectedCats.slice(0, -1);
 
-			// if ( notSelectedCats.length === 0) {
-			// 	selectedCats = "all";
-			// }
+						if ( notSelectedCats.length === 0) {
+							selectedCats = [];
+						}
+
+						jQuery('#pbItemPeriodCheckboxes input:checkbox:checked').each(function() { selectedPeriod += jQuery(this).attr('value') +','; });
+						selectedPeriod = selectedPeriod.slice(0, -1);
+
+						jQuery('#pbItemPeriodCheckboxes input:checkbox:not(:checked)').each(function() { notSelectedPeriod += jQuery(this).attr('value') +','; });
+						notSelectedPeriod = notSelectedPeriod.slice(0, -1);
+						if ( notSelectedPeriod.length === 0) {
+							selectedPeriod = [];
+						}
 
             if (jQuery('#pbItemSearchKeywordInput').val() !== '') {
                 keywordString = jQuery('#pbItemSearchKeywordInput').val();
             }
 
-            var base = <?php echo json_encode( $my_permalink ) ; ?>;
+            var link = <?php echo json_encode( $my_permalink ) ; ?>;
             var tempfilter1 = <?php echo json_encode(  $pb_issues_view_filters->create_url_variables_short()); ?>;
-            var filter1 = decodeURIComponent(tempfilter1);
-            var filter2 = '&sstatus=' + selectedStatus;
-            var filter3 = '&scategory=' + selectedCats;
-            var filter4 = '&keyword=' + keywordString;
-            var link = base + filter1 + filter2 + filter3 + filter4;
+            link += decodeURIComponent(tempfilter1);
+						if (selectedStatus.length :>0) {
+							link += '&sstatus=' + selectedStatus;
+						}
+						if (selectedCats.length :>0) {
+							link += '&scategory=' + selectedCats;
+						}
+						if (keywordString.length :>0) {
+							link += '&keyword=' + keywordString;
+						}
+						if (selectedPeriod.length :>0) {
+							link += '&speriod=' + selectedPeriod;
+						}
 
             window.location = link;
         }
@@ -429,4 +480,5 @@ if ( is_front_page() || is_home() ) {
             pbItemOverviewGetFilteringData();
         }
     </script>
-<?php } ?>
+
+<?php get_footer(); ?>

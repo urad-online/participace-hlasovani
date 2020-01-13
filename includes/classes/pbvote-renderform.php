@@ -194,8 +194,6 @@ class PbVote_RenderForm {
                 'placeholder' => 'Vyplňte obsah svého projektu',
                 'show_mtbx' => false,
                 'show_form' => true,
-                'js_rules'  => array(
-                    'rules' => 'required',),
             ),
             'actions' => array(
                 'label'     => 'Co by se mělo udělat',
@@ -302,23 +300,23 @@ class PbVote_RenderForm {
             'mapName' => array(
                 'label'     => 'Mapa (situační nákres)',
                 'id'        => 'pb_project_mapaName',
-                'show_mtbx'     => false,
-                'js_rules'      => array(
-                    'rules' => 'required',
-                    'depends' => 'pb_project_js_validate_required',
+                'show_mtbx' => false,
+                'js_rules'  => array(
+                  'rules'   => 'required',
+                  'depends' => 'pb_project_js_validate_required',
                 ),
             ),
             'cost' => array(
-                'label'         => 'Předpokládané náklady (povinný údaj)',
-                'id'            => 'pb_project_naklady',
-                'type'          => 'budgettable',
-                'title'         => "cost",
-                'mandatory'     => true,
-                'help'          => 'Zadejte předpokládané náklady. Částky uveďte včetně DPH',
-                'show_mtbx'     => true,
-                'show_form'     => true,
-                'js_rules'    => array(
-                  'rules'   => 'required|integer|greater_than[99]|less_than[10000001]',
+                'label'     => 'Předpokládané náklady (povinný údaj)',
+                'id'        => 'pb_project_naklady',
+                'type'      => 'budgettable',
+                'title'     => "cost",
+                'mandatory' => true,
+                'help'      => 'Zadejte předpokládané náklady. Částky uveďte včetně DPH',
+                'show_mtbx' => true,
+                'show_form' => true,
+                'js_rules'  => array(
+                  'rules'   => 'required|!callback_pb_project_js_validate_array',
                   'depends' => 'pb_project_js_validate_required',
                 ),
             ),
@@ -441,7 +439,7 @@ class PbVote_RenderForm {
                 'label'     => 'Podpisový arch',
                 'id'        => 'pb_project_podporovateleName',
                 'show_mtbx'   => false,
-                'js_rules'      => array(
+                'js_rules'    => array(
                     'rules'   => 'required',
                     'depends' => 'pb_project_js_validate_required',
                 ),
@@ -473,7 +471,7 @@ class PbVote_RenderForm {
                 'show_mtbx'   => true,
                 'show_form'   => true,
                 'js_rules'    => array(
-                    'rules'   => 'required]',
+                    'rules'   => 'required',
                     'depends' => 'pb_project_js_validate_required',
                 ),
             ),
@@ -489,7 +487,7 @@ class PbVote_RenderForm {
                 'show_form'   => true,
                 'js_rules'    => array(
                     'name'    => 'Souhlas s podmínkami',
-                    'rules'   => 'required]',
+                    'rules'   => 'required',
                     'depends' => 'pb_project_js_validate_required',
                 ),
             ),

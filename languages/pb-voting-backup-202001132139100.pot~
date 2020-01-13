@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Participativní projekty - hlasování\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-13 21:39+0000\n"
+"POT-Creation-Date: 2020-01-13 21:35+0000\n"
 "Language: \n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -419,7 +419,7 @@ msgstr ""
 
 #. Description of the plugin
 msgid ""
-"Registrace, správa a hlasování o návrzích participativního rozpočtu. "
+"Registrace, spr8va a hlasování o návrzích participativního rozpočtu. "
 "Integrace s Limesurvey a https://sms.sluzba.cz"
 msgstr ""
 
