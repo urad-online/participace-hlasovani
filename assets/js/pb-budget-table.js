@@ -8,21 +8,20 @@ var table_def = [];
 var value_to_total_sum_index = -1;
 jQuery(document).ready(function(){
     // jQuery('[data-toggle="tooltip"]').tooltip();
-  	var actions = jQuery("table td:last-child").html();
 	// Append table with add row form on add new button click
     jQuery(".add-new").click(function(){
-  		jQuery(this).attr("disabled", "disabled");
-  		var index = jQuery("table tbody tr:last-child").index();
-      var row = render_row_edit();
-      jQuery("table").append(row);
-  		jQuery("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
-      // jQuery('[data-toggle="tooltip"]').tooltip();
-      row_edit_index = -1;
+    		jQuery(this).attr("disabled", "disabled");
+    		var index = jQuery("table.pbvote-budget-table tbody tr:last-child").index();
+        var row = render_row_edit();
+        jQuery("table.pbvote-budget-table").append(row);
+    		jQuery("table.pbvote-budget-table tbody tr").eq(index + 1).find(".add, .edit").toggle();
+        // jQuery('[data-toggle="tooltip"]').tooltip();
+        row_edit_index = -1;
     });
 	// Add row on add button click
   	jQuery(document).on("click", ".add", function(){
     		var empty = false;
-    		var input = jQuery(this).parents("tr").find('input[type="text"], select');
+    		var input = jQuery(this).closest("tr").find('input[type="text"], select');
         var i = 0;
         input.each(function(){
       			if(!jQuery(this).val()){
@@ -34,7 +33,7 @@ jQuery(document).ready(function(){
             jQuery(this).parents("td").addClass( table_def[i].class);
             i++;
     		});
-    		jQuery(this).parents("tr").find(".error").first().focus();
+    		jQuery(this).closest("tr").find(".error").first().focus();
     		if(!empty){
             i = 0;
             row_values = [];
@@ -44,9 +43,9 @@ jQuery(document).ready(function(){
               i++;
       			});
             udate_data_in_list( row_values, row_edit_index);
-      			jQuery(this).parents("tr").find(".add, .edit").toggle();
+      			jQuery(this).closest("td").find(".add, .edit").toggle();
             if (row_edit_index > -1 ) {
-              jQuery(this).parents("tr").find(".delete, .cancel").toggle();
+              jQuery(this).closest("td").find(".delete, .cancel").toggle();
             }
       			jQuery(".add-new").removeAttr("disabled");
     		}
@@ -56,42 +55,44 @@ jQuery(document).ready(function(){
       row_values = [];
       row_edit_index  = return_row_index( jQuery(this).parents("tr") );
       var i=0;
-      jQuery(this).parents("tr").find("td:not(:last-child)").each(function(){
+      var pocetsloupcu = jQuery(this).parents("td").siblings("td");
+      // jQuery(this).parents("tr").find("td:not(:last-child)").each(function(){
+      jQuery(this).parents("td").siblings("td").each(function(){
           row_values.push(jQuery(this).text());
     			// jQuery(this).html('<input type="text" class="form-control" value="' + jQuery(this).text() + '">');
     			jQuery(this).html(render_input( table_def[i].id, table_def[i].input_type, jQuery(this).text(), table_def[i].class, table_def[i].attr));
           jQuery(this).removeClass();
           i++;
   		});
-  		jQuery(this).parents("tr").find(".add, .edit, .delete, .cancel").toggle();
+  		jQuery(this).closest("td").find(".add, .edit, .delete, .cancel").toggle();
   		jQuery(".add-new").attr("disabled", "disabled");
     });
   	// Delete row on delete button click
   	jQuery(document).on("click", ".delete", function(){
-      row_edit_index  = return_row_index( jQuery(this).parents("tr") );
-      jQuery(this).parents("tr").remove();
+      row_edit_index  = return_row_index( jQuery(this).closest("tr") );
+      jQuery(this).closest("tr").remove();
       delete_data_from_list( row_edit_index );
   		jQuery(".add-new").removeAttr("disabled");
     });
     // Cancel editing and set original values on cancel button click
   	jQuery(document).on("click", ".cancel", function(){
-        var input = jQuery(this).parents("tr").find('input[type="text"], select');
+        var input = jQuery(this).closest("tr").find('input[type="text"], select');
         var i = 0;
         input.each(function(){
-          jQuery(this).parents("td").addClass( table_def[i].class);
-          jQuery(this).parent("td").html(row_values[i]);
+          jQuery(this).closest("td").addClass( table_def[i].class);
+          jQuery(this).closest("td").html(row_values[i]);
           i++;
         });
-        jQuery(this).parents("tr").find(".add, .edit, .delete, .cancel").toggle();
+        jQuery(this).closest("td").find(".add, .edit, .delete, .cancel").toggle();
         jQuery(".add-new").removeAttr("disabled");
     });
 
-    jQuery(document).on("change", ".calculate", function(){
+    jQuery(document).on("change", ".pb-table-input.calculate", function(){
       result = 1;
-      jQuery(this).parents("tr").find(".calculate").each(function(){
+      jQuery(this).closest("tr").find(".calculate").each(function(){
         result *= jQuery(this).val();
       });
-      jQuery(this).parents("tr").find(".result").val(result);
+      jQuery(this).closest("tr").find(".result").val(result);
     });
     get_initial_params();
     read_data_to_list();
@@ -172,7 +173,7 @@ function render_input( id, type, value, input_class, attr)
 
 function return_row_index( element)
 {
-  var parent = jQuery(element).parents("tbody").find('tr');
+  var parent = jQuery(element).parents("tbody.pbvote-budget-table-body").find('tr');
   var parent_array = Array.from(parent);
   const index = Array.from(parent).indexOf(element[0]);
   return index;

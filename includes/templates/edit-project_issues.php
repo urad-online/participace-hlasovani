@@ -127,13 +127,14 @@ if(pbvote_user_can_edit($given_issue_id, $user->ID)) { ?>
 
                         <div class="imc-Separator"></div>
 
-						<?php echo $project_single->template_project_edit(
+						<?php	echo $project_single->template_project_edit(
 										array(
 											'lat' => $pb_project_meta[ 'imc_lat'][0],
 											'lon' => $pb_project_meta[ 'imc_lng'][0],
 										),
 										$pb_project_meta
-										) ;?>
+										) ;
+										?>
 
                         <div class="imc-row">
                             <span class="u-pull-left imc-ReportFormSubmitErrorsStyle" id="imcReportFormSubmitErrors"></span>

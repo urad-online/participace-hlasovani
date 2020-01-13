@@ -23,6 +23,11 @@ class PbVote_BudgetTable
         $this->budget_data = $data;
       }
       $this->allow_edit = $allow_edit;
+      $pom = $GLOBALS['wp_styles'];
+      if ( ! wp_style_is('material-icons') ) {
+          wp_register_style('material-icons', PB_VOTE_URL . '/assets/css/pb-styles-material-icons.css', array(),'1.0', "all");
+          wp_enqueue_style('material-icons');
+      }
       wp_register_script('pb-budget-table',   PB_VOTE_URL . '/assets/js/pb-budget-table.js', array('jquery'),'1.1', false);
 
       wp_enqueue_script('pb-budget-table');
@@ -86,7 +91,7 @@ class PbVote_BudgetTable
         // if ($this->allow_edit) {
         //   $output = '<tbody></tbody>';
         // } else {
-          $output = '<tbody>';
+          $output = '<tbody class="pbvote-budget-table-body">';
           if (count( $this->budget_data) > 0) {
             $field_count = count( $this->table_def);
             foreach ($this->budget_data as $item) {

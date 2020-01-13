@@ -308,7 +308,7 @@ if ( is_front_page() || is_home() ) {
         </div>
 
     </div>
-
+<!-- script prepsat podle archive-pbvote_issues.php -->
     <!-- Initialize Map Scripts -->
     <script>
         /*setOverviewLayout();*/
