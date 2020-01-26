@@ -213,6 +213,10 @@ input[type="checkbox"].pbvote-collapse-section:not(checked) ~ label div i.materi
 .table-title .add-new i {
   margin-right: 4px;
 }
+.add-new:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 .table-wrapper {
 	width: 100%;
 	margin: 5px auto;
@@ -283,6 +287,10 @@ table.pbvote-budget-table td a.delete {
 }
 table.pbvote-budget-table td a.cancel {
     color: #E34724;
+}
+a.edit:disabled {
+/* table.pbvote-budget-table td a.edit:disabled { */
+  cursor: not-allowed;
 }
 table.pbvote-budget-table td i {
     font-size: 19px;
