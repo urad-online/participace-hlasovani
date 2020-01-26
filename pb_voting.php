@@ -14,7 +14,7 @@ global $metabox_pbvote;
 
 define( 'PB_VOTE_PATH',       dirname(__FILE__));
 define( 'PB_VOTE_PATH_INC',   PB_VOTE_PATH.'/includes');
-define( 'PB_VOTE_URL',        plugins_url('pb_voting'));
+define( 'PB_VOTE_URL',        plugins_url(basename(PB_VOTE_PATH)));
 define( 'PB_VOTE_PATH_TEMPL', PB_VOTE_PATH_INC.'/templates');
 define( 'PB_VOTING_POST_TYPE',      'hlasovani');
 define( 'PB_VOTING_STATUS_TAXO',    'voting_status');

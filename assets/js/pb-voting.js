@@ -1,7 +1,7 @@
 /**
  * @since 1.0.0
  * @requires jQuery
- * @output pb_voting/js/pb-voting.js
+ * @output assets/js/pb-voting.js
  */
 
 var cgbmSelectForm;
