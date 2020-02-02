@@ -111,7 +111,7 @@ global $voting_enabled, $comments_enabled;
 						<?php $total_likes = intval (get_post_meta($post->ID, 'imc_likes', true), 10); ?>
 	                    <div class="imc-DisplayInlineBlock">
 	                        <i class="material-icons md-18 imc-TextColorSecondary imc-AlignIconToLabel">thumb_up</i>
-	                        <span class="imc-OverviewListStepLabelStyle imc-TextColorSecondary"><?php //echo esc_html($total_likes); ?></span>
+	                        <span class="imc-OverviewListStepLabelStyle imc-TextColorSecondary"><?php echo esc_html($total_likes); ?></span>
 	                    </div>
 					<?PHP } ?>
                 </div>

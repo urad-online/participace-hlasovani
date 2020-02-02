@@ -56,7 +56,8 @@ get_header(); ?>
 		while ( have_posts() ) : the_post();
 				$issue_id = get_the_ID();
 				$user_id = get_current_user_id();
-				$user = wp_get_current_user(); ?>
+				$user = wp_get_current_user();
+				$issue_status = get_post_status( $issue_id );	?>
 
         <div class="imc-SingleHeaderStyle imc-BGColorWhite">
 
@@ -72,7 +73,7 @@ get_header(); ?>
 						<?php } ?>
         </div>
 
-				<?php if (get_post_status( $issue_id ) !== 'publish') { ?>
+				<?php if ($issue_status !== 'publish') { ?>
 	            <div class="imc-SingleHeaderStyle imc-BGColorRed">
 	                <h2 class="imc-PageTitleTextStyle imc-TextColorPrimary imc-CenterContents" style="line-height: 60px;">
 									<?php echo __('Under Moderation','pb-voting');  ?></h2>
@@ -100,7 +101,7 @@ get_header(); ?>
 																			<?php if ( $cat_thumb_arr ) { ?>
 									                            <img src="<?php echo esc_url($cat_thumb_arr[0]); ?>" class="imc-SingleCategoryIcon">
 																			<?php }	else { ?>
-									                            <img src="<?php echo esc_url(plugins_url()); ?>/pb-voting/img/ic_default_cat.png" class="imc-SingleCategoryIcon">
+									                            <img src="<?php echo esc_url(esc_url($plugin_path_url));?>/img/ic_default_cat.png" class="imc-SingleCategoryIcon">
 																			<?php } ?>
 							                        <div class="imc-row-no-margin imc-CenterContents">
 							                            <span class="imc-Text-SM imc-TextColorSecondary imc-TextBold imc-FontRoboto">#</span>
@@ -123,14 +124,14 @@ get_header(); ?>
                                     <span class="imc-SingleInformationTextStyle imc-TextColorSecondary imc-FontRoboto imc-TextMedium imc-Text-SM">
 																			<?php the_author(); ?>
 																		</span>
-																		<?php if ((get_post_status( $issue_id ) == 'publish') && ($voting_enabled)) { ?>
+																		<?php if (($issue_status == 'publish') && ($voting_enabled)) { ?>
 																			<i class="material-icons md-18 imc-TextColorSecondary imc-AlignIconToLabel">thumb_up</i>
 									                                        <span class="imc-SingleInformationTextStyle imc-TextColorSecondary imc-FontRoboto imc-TextMedium
 																				imc-Text-SM"><?php echo esc_html(intval(get_post_meta($post->ID, "imc_likes", true), 10)); ?></span>
 																		<?php } ?>
                                 </div>
 
-																<?php if (get_post_status( $issue_id ) == 'publish') { ?>
+																<?php if ($issue_status == 'publish') { ?>
 
 		                                <div class="imc-row">
 																				<?php $imcstatus_currentterm = get_the_terms($post->ID , 'imcstatus' );
@@ -208,7 +209,7 @@ get_header(); ?>
 																?>
                             </div> <!--End Card-->
 
-														<?php if ((get_post_status( $issue_id ) == 'publish') && ($comments_enabled)) { ?>
+														<?php if (($issue_status == 'publish') && ($comments_enabled)) { ?>
                                 <div class="imc-CardLayoutStyle">
                                     <h3 class="imc-SectionTitleTextStyle"><?php echo __('Comments','pb-voting'); ?></h3>
 																		<?php if ( comments_open() || get_comments_number() ) {
@@ -391,7 +392,7 @@ get_header(); ?>
                             </div>
 
 							<?php
-							if ((get_post_status( $issue_id ) == 'publish') ){
+							if (($issue_status == 'publish') ){
 
 								// Check if user can vote
 								$voterslist = get_post_meta($post->ID, "imc_allvoters", false);
@@ -408,7 +409,7 @@ get_header(); ?>
                         <div class="imc-CardLayoutStyle imc-CenterContents">
                             <img alt="My Issue icon" class="imc-VerticalAlignMiddle"
                                  title="<?php echo __('My Issue', 'pb-voting'); ?>"
-                                 src="<?php echo esc_url(plugins_url('pb-voting/img/ic_my_issue_grid.png')); ?>">
+                                 src="<?php echo esc_url($plugin_path_url);?>/img/ic_my_issue_grid.png')); ?>">
                             <span
                                     class="imc-Text-MD imc-TextMedium imc-TextColorSecondary imc-FontRoboto"><?php echo __('My issue', 'pb-voting'); ?></span>
                         </div>
