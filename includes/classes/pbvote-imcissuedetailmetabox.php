@@ -17,10 +17,10 @@ class PbVote_ImcIssueDetailMetabox {
    }
 
   public function __construct() {
-   add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
-   add_action( 'admin_footer', array( $this, 'media_fields' ) );
-   add_action( 'save_post', array( $this, 'save_fields' ),20 );
-       $this->set_meta_fields();
+     add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+     add_action( 'admin_footer', array( $this, 'media_fields' ) );
+     add_action( 'save_post', array( $this, 'save_fields' ),20 );
+     $this->set_meta_fields();
   }
 
   public function add_meta_boxes() {
@@ -45,22 +45,22 @@ class PbVote_ImcIssueDetailMetabox {
   public function media_fields() {
    ?><script>
      jQuery(document).ready(function($){
-       if ( typeof wp.media !== 'undefined' ) {
+       if ( typeof window.wp.media !== 'undefined' ) {
          var _custom_media = true,
-         _orig_send_attachment = wp.media.editor.send.attachment;
+         var _orig_send_attachment = window.wp.media.editor.send.attachment;
          $('.informacekprojektu-media').click(function(e) {
-           var send_attachment_bkp = wp.media.editor.send.attachment;
+           var send_attachment_bkp = window.wp.media.editor.send.attachment;
            var button = $(this);
            var id = button.attr('id').replace('_button', '');
            _custom_media = true;
-             wp.media.editor.send.attachment = function(props, attachment){
+             window.wp.media.editor.send.attachment = function(props, attachment){
              if ( _custom_media ) {
                $('input#'+id).val(attachment.url);
              } else {
                return _orig_send_attachment.apply( this, [props, attachment] );
              };
            }
-           wp.media.editor.open(button);
+           window.wp.media.editor.open(button);
            return false;
          });
          $('.add_media').on('click', function(){
