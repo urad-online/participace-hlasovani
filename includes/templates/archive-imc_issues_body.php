@@ -6,40 +6,40 @@
  */
 function pb_items_archive_imc_issues_body($pb_issues_view_filters)
 {
-global $wp_query, $post, $voting_ids ;
+		global $wp_query, $post, $voting_ids ;
 
-$filter_category_taxo = 'imccategory';
-$filter_status_taxo   = 'imcstatus';
-$filter_params_view   = array();
-$control_pages = new PbVote_ControlPages( $voting_ids);
-// mst: tohle prepsat
-$editpage = $control_pages->get_url_edit();
-// $voting_page = get_pbvoting_page_link('hlasovani-p8-2018');
+		$filter_category_taxo = 'imccategory';
+		$filter_status_taxo   = 'imcstatus';
+		$filter_params_view   = array();
+		$control_pages = new PbVote_ControlPages( $voting_ids);
+		// mst: tohle prepsat
+		$editpage = $control_pages->get_url_edit();
+		// $voting_page = get_pbvoting_page_link('hlasovani-p8-2018');
 
-if ( get_option('permalink_structure') ) { $perma_structure = true; } else {$perma_structure = false;}
-if (!empty($voting_ids)) {
-	$pb_issues_view_filters->set_value_param('svoting', $voting_ids);
-}
+		if ( get_option('permalink_structure') ) { $perma_structure = true; } else {$perma_structure = false;}
+		if (!empty($voting_ids)) {
+			$pb_issues_view_filters->set_value_param('svoting', $voting_ids);
+		}
 
-wp_enqueue_script( 'imc-gmap' );
-wp_enqueue_script( 'mapsV3_infobubble' ); // Insert addon lib for Google Maps V3 -> to style infowindows
-wp_enqueue_script( 'mapsV3_richmarker' ); // Insert addon lib for Google Maps V3 -> to style marker
+		wp_enqueue_script( 'imc-gmap' );
+		wp_enqueue_script( 'mapsV3_infobubble' ); // Insert addon lib for Google Maps V3 -> to style infowindows
+		wp_enqueue_script( 'mapsV3_richmarker' ); // Insert addon lib for Google Maps V3 -> to style marker
 
-/********************************************* ISSUES PER PAGE ********************************************************/
+		/********************************************* ISSUES PER PAGE ********************************************************/
 
-$user_id = get_current_user_id();
-$issues_pp_counter = 0;
+		$user_id = get_current_user_id();
+		$issues_pp_counter = 0;
 
-// $pb_issues_view_filters = new  PbVote_ArchiveDisplayOptions( 'imc'); //todo
+		// $pb_issues_view_filters = new  PbVote_ArchiveDisplayOptions( 'imc'); //todo
 
-if ( is_front_page() || is_home() ) {
-	$front_page_id = get_option('page_on_front');
-	$my_permalink = _get_page_link($front_page_id);
-}else{
-	$my_permalink = get_the_permalink();
-}
+		if ( is_front_page() || is_home() ) {
+			$front_page_id = get_option('page_on_front');
+			$my_permalink = _get_page_link($front_page_id);
+		}else{
+			$my_permalink = get_the_permalink();
+		}
 
-?>
+		?>
     <div class="imc-SingleHeaderStyle imc-BGColorWhite">
 
         <nav class="imc-OverviewHeaderNavStyle">
@@ -308,125 +308,7 @@ if ( is_front_page() || is_home() ) {
         </div>
 
     </div>
-<!-- script prepsat podle archive-pbvote_issues.php -->
-    <!-- Initialize Map Scripts -->
-    <script>
-        /*setOverviewLayout();*/
-		document.onload = imcInitOverviewMap(<?php echo json_encode($jsonIssuesArr) ?>, <?php echo json_encode( $pb_issues_view_filters->get_plugin_base_url()) ?>);
 
-        jQuery( document ).ready(function() {
-
-            var imported_cat = <?php echo json_encode( $pb_issues_view_filters->get_value_array('scategory')); ?>;
-
-            var imported_status = <?php echo json_encode($pb_issues_view_filters->get_value_array('sstatus')); ?>;
-            var imported_keyword = <?php echo json_encode($pb_issues_view_filters->get_value_array('keyword')); ?>;
-            var i;
-
-            if (imported_status || imported_cat || imported_keyword) {
-                jQuery('#pbItemFilteringIndicator').css('color', '#1ABC9C');
-								jQuery('#pbItemStatusCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
-								jQuery('#pbItemCatCheckboxes input:checkbox').each(function() { jQuery(this).prop('checked', false); });
-
-                if (imported_status) {
-                    jQuery('#pbItemStatFilteringLabel').show();
-
-                    jQuery('#pbItemToggleStatusCheckbox').prop('checked', false);
-
-                    for (i=0;i<imported_status.length;i++) {
-                        jQuery('#pbItem-stat-checkbox-'+imported_status[i]).prop('checked', true);
-                    }
-                }
-
-                if (imported_cat) {
-                    jQuery('#pbItemCatFilteringLabel').show();
-
-                    jQuery('#pbItemToggleCatsCheckbox').prop('checked', false);
-
-                    for (i=0;i<imported_cat.length;i++) {
-                        jQuery('#pbItem-cat-checkbox-'+imported_cat[i]).prop('checked', true);
-                    }
-                }
-
-                if (imported_keyword) {
-                    jQuery('#pbItemKeywordFilteringLabel').show();
-
-                    jQuery('#pbItemSearchKeywordInput').val(imported_keyword);
-                }
-            }
-        });
-
-        function pbvFireNavigation(id) {
-            location.href = jQuery('#'+id)[0].value;
-            jQuery( id +" option:disabled" ).prop('selected', true);
-        }
-
-        // Checkbox select propagation
-        jQuery(function () {
-            jQuery("input[type='checkbox']").change(function () {
-								jQuery(this).siblings('#pbItemStatusCheckboxes').find("input[type='checkbox']").prop('checked', this.checked);
-                jQuery(this).siblings('#pbItemCatCheckboxes').find("input[type='checkbox']").prop('checked', this.checked);
-                jQuery(this).siblings('#pbItemCatChildCheckboxes').find("input[type='checkbox']").prop('checked', this.checked);
-                jQuery(this).siblings('#pbItemCatGrandChildCheckboxes').find("input[type='checkbox']").prop('checked', this.checked);
-            });
-        });
-
-        function pbItemOverviewGetFilteringData() {
-            var selectedStatus = '';
-            var notSelectedStatus = '';
-            var selectedCats = '';
-            var notSelectedCats = '';
-            var keywordString = '';
-
-			jQuery('#pbItemStatusCheckboxes input:checkbox:checked').each(function() { selectedStatus = selectedStatus + jQuery(this).attr('value') +','; });
-			selectedStatus = selectedStatus.slice(0, -1);
-
-			jQuery('#pbItemStatusCheckboxes input:checkbox:not(:checked)').each(function() { notSelectedStatus = notSelectedStatus + jQuery(this).attr('value') +','; });
-			notSelectedStatus = notSelectedStatus.slice(0, -1);
-
-			// if ( notSelectedStatus.length === 0) {
-			// 	selectedStatus = "all";
-			// }
-
-			jQuery('#pbItemCatCheckboxes input:checkbox:checked').each(function() { selectedCats = selectedCats + jQuery(this).attr('value') +','; });
-			selectedCats = selectedCats.slice(0, -1);
-
-			jQuery('#pbItemCatCheckboxes input:checkbox:not(:checked)').each(function() { notSelectedCats = notSelectedCats + jQuery(this).attr('value') +','; });
-			notSelectedCats = notSelectedCats.slice(0, -1);
-
-			// if ( notSelectedCats.length === 0) {
-			// 	selectedCats = "all";
-			// }
-
-            if (jQuery('#pbItemSearchKeywordInput').val() !== '') {
-                keywordString = jQuery('#pbItemSearchKeywordInput').val();
-            }
-
-            var base = <?php echo json_encode( $my_permalink ) ; ?>;
-            var tempfilter1 = <?php echo json_encode(  $pb_issues_view_filters->create_url_variables_short()); ?>;
-            var filter1 = decodeURIComponent(tempfilter1);
-            var filter2 = '&sstatus=' + selectedStatus;
-            var filter3 = '&scategory=' + selectedCats;
-            var filter4 = '&keyword=' + keywordString;
-            var link = base + filter1 + filter2 + filter3 + filter4;
-
-            window.location = link;
-        }
-
-        function pbItemOverviewResetFilters() {
-            var i;
-            var	checkboxes = document.getElementsByTagName('input');
-
-            for (i = 0; i < checkboxes.length; i++)
-            {
-                if (checkboxes[i].type === 'checkbox' && checkboxes[i].id !== 'ac-1' )
-                {
-                    checkboxes[i].checked = true;
-                }
-            }
-
-            jQuery('#pbItemSearchKeywordInput').val('');
-
-            pbItemOverviewGetFilteringData();
-        }
-    </script>
-<?php } ?>
+		<?php
+    $pb_issues_view_filters->add_script_to_page( $jsonIssuesArr, $my_permalink );
+}

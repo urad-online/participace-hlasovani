@@ -1,3 +1,9 @@
+/**
+ * @since 1.0.0
+ * @requires jQuery
+ * @output assets/js/pb-voting.js
+ */
+
 var cgbmSelectForm;
 var cgbmEditForm;
 

@@ -223,7 +223,7 @@ class PbVote_ProjectEdit
         printf( $output,
             $order,
             $input['label'],
-            $mandatory,
+            $mandatory
         );
 
         $output = $table->render_table();

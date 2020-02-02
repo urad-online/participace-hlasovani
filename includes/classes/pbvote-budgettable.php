@@ -116,7 +116,8 @@ class PbVote_BudgetTable
     private function render_control_buttons()
     {
       $output = '<td>';
-      $output .= '<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">playlist_add</i></a>';
+      // $output .= '<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">playlist_add</i></a>';
+      $output .= '<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">save</i></a>';
       $output .= '<a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">edit</i></a>';
       $output .= '<a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">delete</i></a>';
       $output .= '<a class="cancel" title="Cancel" data-toggle="tooltip"><i class="material-icons">cancel</i></a>';

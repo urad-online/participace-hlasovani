@@ -11,6 +11,7 @@ jQuery(document).ready(function(){
 	// Append table with add row form on add new button click
     jQuery(".add-new").click(function(){
     		jQuery(this).attr("disabled", "disabled");
+        jQuery("table.pbvote-budget-table tbody").find(".edit, .delete").attr("disabled", "disabled");
     		var index = jQuery("table.pbvote-budget-table tbody tr:last-child").index();
         var row = render_row_edit();
         jQuery("table.pbvote-budget-table").append(row);
@@ -47,11 +48,13 @@ jQuery(document).ready(function(){
             if (row_edit_index > -1 ) {
               jQuery(this).closest("td").find(".delete, .cancel").toggle();
             }
+            jQuery("table.pbvote-budget-table tbody").find(".add, .cancel, .edit, .delete").removeAttr("disabled");
       			jQuery(".add-new").removeAttr("disabled");
     		}
     });
 	// Edit row on edit button click
   	jQuery(document).on("click", ".edit", function(){
+      jQuery("table.pbvote-budget-table tbody").find(".edit, .delete").attr("disabled", "disabled");
       row_values = [];
       row_edit_index  = return_row_index( jQuery(this).parents("tr") );
       var i=0;
@@ -84,6 +87,7 @@ jQuery(document).ready(function(){
           i++;
         });
         jQuery(this).closest("td").find(".add, .edit, .delete, .cancel").toggle();
+        jQuery("table.pbvote-budget-table tbody").find(".add, .cancel, .edit, .delete").removeAttr("disabled");
         jQuery(".add-new").removeAttr("disabled");
     });
 
@@ -127,7 +131,7 @@ function render_row_edit()
 
 function gen_action_buttons()  {
   var output = '<td>' +
-      '<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">playlist_add</i></a>' +
+      '<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">save</i></a>' +
       '<a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">edit</i></a>' +
       '<a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">delete</i></a>' +
       '<a class="cancel" title="Cancel" data-toggle="tooltip"><i class="material-icons">cancel</i></a>' +

@@ -4,20 +4,22 @@ Plugin Name: Participativní projekty - hlasování
 Plugin URI: https://urad.online
 Description: Registrace, správa a hlasování o návrzích participativního rozpočtu. Integrace s Limesurvey a https://sms.sluzba.cz
 Author: Miloslav Stastny
-Version: 1.1.2
+Version: 1.1.5
 Author URI: https://urad.online
 Text Domain: pb-voting
 Domain Path: /languages
 */
 // define( 'DELIVERY_MSG_TYPE',  'Email'); // values Email, Sms
-global $metabox_pbvote;
+global $metabox_pbvote, $voting_enabled;
 
 define( 'PB_VOTE_PATH',       dirname(__FILE__));
 define( 'PB_VOTE_PATH_INC',   PB_VOTE_PATH.'/includes');
-define( 'PB_VOTE_URL',        plugins_url('pb_voting'));
+define( 'PB_VOTE_URL',        plugins_url(basename(PB_VOTE_PATH)));
 define( 'PB_VOTE_PATH_TEMPL', PB_VOTE_PATH_INC.'/templates');
 define( 'PB_VOTING_POST_TYPE',      'hlasovani');
 define( 'PB_VOTING_STATUS_TAXO',    'voting_status');
+$voting_enabled = true ;
+
 if (! defined('PBVOTE_DEBUG')) {
     define( 'PBVOTE_DEBUG',   false );
 }
@@ -46,8 +48,12 @@ function pb_vote_activation()
     global $pb_vote_table_name;
 
     require_once PB_VOTE_PATH_INC. '/pb_voting_create_tables.php';
-
     pb_voting_create_tables();
+    require_once PB_VOTE_PATH_INC. '/pb_voting_create_pages.php';
+    pbvote_create_list_page();
+    pbvote_create_insert_page();
+    pbvote_create_edit_page();
+
 
     $message = "Activated at: ". date('Y-m-d H:i:s');
     file_put_contents( PB_VOTE_PATH . '/pb_vote_plugin_activate.log', $message);
