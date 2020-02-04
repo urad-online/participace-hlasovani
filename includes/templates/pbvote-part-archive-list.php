@@ -7,7 +7,7 @@
  */
 
 function pbvote_archive_show_list($post, $editpage, $parameter_pass, $user_id, $pendingColorClass, $plugin_path_url) {
-global $voting_enabled, $comments_enabled;
+global $comments_enabled;
 
 	$issue_id = intval($post->ID, 10);
 

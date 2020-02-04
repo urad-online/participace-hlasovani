@@ -1,4 +1,5 @@
 Potreba udelat:
-1. Vyresit zakazani komentaru a ratingu. Viz register_general_settings v imc-page-settings.php
-2. Udelat insert-project_issues na shortcode
-3. Změnit na moznost parametrizace seznam dodatecnych poli pro imc_issues
+1. Kontrola pripocteni 10% na rezervu - vratit checkbox
+2. zkontrolvat aby neslo editovat navrh ve stavu odeslano ke kontrole
+3. zkusit resit prilohy podobne jako tabulku s rozpoctem - prodt zaznam se souborem a popisem prilohy
+4. zabratit vkladat neciselne hodnoty v budget tabulce

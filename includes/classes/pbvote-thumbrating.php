@@ -1,52 +1,63 @@
 <?php
-class PbVote_ThumbVoting
+class PbVote_ThumbRating
 {
 		private $icon = 'thumb_up';
 		private $likers_metakey	= 'imc_allvoters';
 		private $likes_count_metakey = 'imc_likes';
 		private $likes_table = 'imc_votes';
 		private $user_already_voted = false;
+		private $status_for_rating  = 'publish';
 
-		public function __construct( $post_id = 0, $author_id = 0 )
+		public function __construct( )
 		{
-				$this->post_id = $post_id;
-				$this->author_id = intval($author_id, 10);
 				$this->current_user = intval(get_current_user_id(), 10);
 		}
 
-		public function get_likes_count()
+		public function show_rating_number( $post_id = 0, $issue_status = 'publish')
 		{
-				return intval(get_post_meta($this->post_id, $this->likes_count_metakey, true), 10);
+				if (PB_RATING_ENABLED && ( $issue_status == $this->status_for_rating)) {
+						$output = '<i class="material-icons md-18 imc-TextColorSecondary imc-AlignIconToLabel">thumb_up</i>
+							<span class="imc-SingleInformationTextStyle imc-TextColorSecondary imc-FontRoboto imc-TextMedium
+							imc-Text-SM">'. esc_html( $this->get_likes_count($post_id)) . '</span>';
+
+				} else {
+						$output = '';
+				}
+				return $output;
 		}
-		public function update_likes_count()
+		public function get_likes_count( $post_id )
+		{
+				return intval(get_post_meta($post_id, $this->likes_count_metakey, true), 10);
+		}
+		public function update_likes_count( $post_id)
 		{
 				if (isset($_POST['post_nonce_field']) && wp_verify_nonce($_POST['post_nonce_field'], 'post_nonce')) {
-						$old_likes = $this->get_likes_count();
+						$old_likes = $this->get_likes_count( $post_id );
 						$new_likes = $old_likes + 1;
 
-						add_post_meta($this->post_id, $this->likers_metakey, $this->current_user, false);
+						add_post_meta($post_id, $this->likers_metakey, $this->current_user, false);
 
 						global $wpdb;
 						$votes_table_name = $wpdb->prefix . $this->likes_table;
 						$wpdb->insert(
 							$votes_table_name,
 							array(
-								'issueid' => $this->post_id,
+								'issueid' => $post_id,
 								'created' => gmdate("Y-m-d H:i:s",time()),
-								'created_by' => $current_user,
+								'created_by' => $this->current_user,
 							)
 						);
 
-						$update = update_post_meta($this->post_id, $this->likes_count_metakey, $new_likes, $old_likes);
+						$update = update_post_meta($post_id, $this->likes_count_metakey, $new_likes, $old_likes);
 						if ($update) {
-								wp_redirect(get_permalink($this->post_id));
+								wp_redirect(get_permalink($post_id));
 						}
 				}
 
 		}
 		private function set_user_has_voted()
 		{
-				$voterslist = get_post_meta($this->post_id, $this->likers_metakey, false);
+				$voterslist = get_post_meta($post_id, $this->likers_metakey, false);
 				if (in_array($this->current_user, $voterslist, true)) {
 						$this->user_already_voted = true;
 				}

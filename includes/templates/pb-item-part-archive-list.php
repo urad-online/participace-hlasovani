@@ -7,7 +7,7 @@
  */
 
 function pb_item_archive_show_list($post, $editpage, $parameter_pass, $user_id, $pendingColorClass, $plugin_path_url) {
-global $voting_enabled, $comments_enabled;
+global $comments_enabled;
 
 	$issue_id = intval($post->ID, 10);
 
@@ -107,7 +107,7 @@ global $voting_enabled, $comments_enabled;
 							?></span>
 						</div>
 					<?PHP } ?>
-					<?php if ($voting_enabled) { ?>
+					<?php if (PB_RATING_ENABLED) { ?>
 						<?php $total_likes = intval (get_post_meta($post->ID, 'imc_likes', true), 10); ?>
 	                    <div class="imc-DisplayInlineBlock">
 	                        <i class="material-icons md-18 imc-TextColorSecondary imc-AlignIconToLabel">thumb_up</i>

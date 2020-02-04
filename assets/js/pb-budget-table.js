@@ -92,11 +92,21 @@ jQuery(document).ready(function(){
     });
 
     jQuery(document).on("change", ".pb-table-input.calculate", function(){
-      result = 1;
-      jQuery(this).closest("tr").find(".calculate").each(function(){
-        result *= jQuery(this).val();
+      var result = 1;
+      var no_error=true;
+      jQuery(this).closest("tr").find("input.calculate").each(function(){
+        var item_value = parseInt(jQuery(this).val(),10);
+        if (Number.isInteger(item_value) && item_value>0) {
+          result *= item_value;
+          jQuery(this).val(item_value);
+        } else {
+          no_error = false;
+          jQuery(this).val("");
+        }
       });
-      jQuery(this).closest("tr").find(".result").val(result);
+      if (no_error) {
+        jQuery(this).closest("tr").find(".result").val(result);
+      }
     });
     get_initial_params();
     read_data_to_list();

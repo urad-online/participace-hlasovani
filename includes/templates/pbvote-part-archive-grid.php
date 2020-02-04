@@ -7,7 +7,7 @@
  */
 
 function pbvote_archive_show_grid($post, $editpage, $parameter_pass, $user_id, $pendingColorClass, $plugin_path_url) {
-global $voting_enabled, $comments_enabled;
+global $comments_enabled;
     $issue_id = intval($post->ID, 10);
 
     $imccategory_currentterm = get_the_terms($post->ID , 'voting_category' );
@@ -43,7 +43,7 @@ global $voting_enabled, $comments_enabled;
             <?php } ?>
 
             <div class="imc-OverviewTileIdStyle"><span class="imc-Text-SM">#</span> <?php echo esc_html($issue_id); ?></div>
-            <?php if ( $voting_enabled) {
+            <?php if ( PB_RATING_ENABLED) {
                 $total_likes = intval (get_post_meta($post->ID, 'imc_likes', true), 10); ?>
                 <div class="imc-OverviewTileVotesStyle">
                     <div class="my-issue-votes">
