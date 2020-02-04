@@ -117,10 +117,10 @@ class PbVote_BudgetTable
     {
       $output = '<td>';
       // $output .= '<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">playlist_add</i></a>';
-      $output .= '<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">save</i></a>';
-      $output .= '<a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">edit</i></a>';
-      $output .= '<a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">delete</i></a>';
-      $output .= '<a class="cancel" title="Cancel" data-toggle="tooltip"><i class="material-icons">cancel</i></a>';
+      $output .= '<a class="add" title="Uložit" data-toggle="tooltip"><i class="material-icons">save</i></a>';
+      $output .= '<a class="edit" title="Upravit" data-toggle="tooltip"><i class="material-icons">edit</i></a>';
+      $output .= '<a class="delete" title="Smazat" data-toggle="tooltip"><i class="material-icons">delete</i></a>';
+      $output .= '<a class="cancel" title="Zrušit" data-toggle="tooltip"><i class="material-icons">cancel</i></a>';
       $output .= '</td>';
       return $output;
     }
