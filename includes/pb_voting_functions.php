@@ -163,7 +163,9 @@ function pbvote_user_can_edit($post_id, $current_user) {
 	$status_terms = get_terms( 'imcstatus' , array( 'hide_empty' => 0 , 'orderby' => 'id', 'order' => 'ASC') );
     $terms_count = count($status_terms);
     if ( $terms_count > 2 ) {
-        $edit_statuses = array($status_terms[0]->term_id, $status_terms[1]->term_id);
+        // $edit_statuses = array($status_terms[0]->term_id, $status_terms[1]->term_id);
+				// jde editovt jen v prvnim stavu
+        $edit_statuses = array($status_terms[0]->term_id, );
     } elseif ($terms_count > 1) {
         $edit_statuses = array($status_terms[0]->term_id, );
     } else {
