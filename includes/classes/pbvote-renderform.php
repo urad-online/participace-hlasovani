@@ -124,7 +124,7 @@ class PbVote_RenderForm {
     {
         return array(
                 'goals', 'actions', 'profits', 'address',
-                'parcel', 'map', 'cost',
+                'parcel', 'map', 'cost','budget_increase',
                 'attach1', 'attach2', 'attach3',
             );
     }
@@ -145,6 +145,7 @@ class PbVote_RenderForm {
             array( 'type' => 'field', 'data' => array( 'field' => 'photo', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'map', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'cost', 'columns' => 0)),
+            array( 'type' => 'field', 'data' => array( 'field' => 'budget_increase', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'attach1', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'attach2', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'attach3', 'columns' => 0)),
@@ -320,6 +321,22 @@ class PbVote_RenderForm {
                   'depends' => 'pb_project_js_validate_required',
                 ),
             ),
+            'budget_increase' => array(
+                'label'     => 'Náklady byly navýšeny o rezervu 10%',
+                'id'        => 'pb_project_naklady_navyseni',
+                'default'   => 'no',
+                'type'      => 'checkbox',
+                // 'title'     => "budget_increase",
+                'mandatory' => true,
+                'columns'   => 6,
+                'show_mtbx'   => true,
+                'show_form'   => true,
+                'js_rules'    => array(
+                    'rules'   => 'required',
+                    'depends' => 'pb_project_js_validate_required',
+                ),
+            ),
+
             'attach1' => array(
                 'label'         => 'Vizualizace, výkresy, fotodokumentace… 1',
                 'id'            => 'pb_project_dokumentace1',

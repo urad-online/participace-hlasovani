@@ -1,6 +1,8 @@
 <?php
+global $comments_enabled;
 $generaloptions     = get_option( 'general_settings' );
 $comments_enabled   = ( empty($generaloptions["imc_comments"])) ? false : $generaloptions["imc_comments"];
+$comments_enabled   = true;
 
 function pb_vote_get_registration_widget( $atts, $content, $tag)
 {

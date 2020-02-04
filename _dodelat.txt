@@ -1,5 +1,5 @@
 Potreba udelat:
 1. Kontrola pripocteni 10% na rezervu - vratit checkbox
-2. zkontrolvat aby neslo editovat navrh ve stavu odeslano ke kontrole
+2. 
 3. zkusit resit prilohy podobne jako tabulku s rozpoctem - prodt zaznam se souborem a popisem prilohy
-4. zabratit vkladat neciselne hodnoty v budget tabulce
+4.
