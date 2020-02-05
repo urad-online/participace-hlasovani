@@ -6,40 +6,38 @@
 global $comments_enabled ;
 wp_enqueue_script('imc-gmap');
 
-$issue_id = $post->ID;
 $project_single = new PbVote_ProjectSingle();
-$control_pages = new PbVote_ControlPages( $issue_id);
-$issue_rating = new PbVote_ThumbRating();
+$control_pages = new PbVote_ControlPages( $post->ID);
 
 if(isset($_POST['submitted']) && isset($_POST['post_nonce_field']) && wp_verify_nonce($_POST['post_nonce_field'], 'post_nonce')) {
 
-	$old_likes = intval(get_post_meta($issue_id, "imc_likes", true), 10);
+	$old_likes = intval(get_post_meta($post->ID, "imc_likes", true), 10);
 	$new_likes = $old_likes + 1;
 
 	$current_user = get_current_user_id();
-	add_post_meta($issue_id, "imc_allvoters", $current_user, false);
+	add_post_meta($post->ID, "imc_allvoters", $current_user, false);
 
 	global $wpdb;
 	$imc_votes_table_name = $wpdb->prefix . 'imc_votes';
 	$wpdb->insert(
 		$imc_votes_table_name,
 		array(
-			'issueid' => $issue_id,
+			'issueid' => $post->ID,
 			'created' => gmdate("Y-m-d H:i:s",time()),
 			'created_by' => $current_user,
 		)
 	);
 
-	$update = update_post_meta($issue_id, "imc_likes", $new_likes, $old_likes);
+	$update = update_post_meta($post->ID, "imc_likes", $new_likes, $old_likes);
 
 	if ($update) {
-		wp_redirect(get_permalink($issue_id));
+		wp_redirect(get_permalink($post->ID));
 		exit;
 	}
 }
 
 $editpage = $control_pages->get_url_edit();
-$listpage = get_parent_url_by_taxo($issue_id);
+$listpage = get_parent_url_by_taxo($post->ID);
 
 if ( get_option('permalink_structure') ) { $perma_structure = true; } else {$perma_structure = false;}
 
@@ -92,7 +90,7 @@ get_header(); ?>
                         <div class="imc-grid-8 imc-columns">
                             <div class="imc-CardLayoutStyle">
                                 <div class="imc-row">
-																		<?php $imccategory_currentterm = get_the_terms($issue_id , 'imccategory' );
+																		<?php $imccategory_currentterm = get_the_terms($post->ID , 'imccategory' );
 																		if ($imccategory_currentterm) {
 																			$current_category_name = $imccategory_currentterm[0]->name;
 																			$current_category_id = $imccategory_currentterm[0]->term_id;
@@ -126,13 +124,17 @@ get_header(); ?>
                                     <span class="imc-SingleInformationTextStyle imc-TextColorSecondary imc-FontRoboto imc-TextMedium imc-Text-SM">
 																			<?php the_author(); ?>
 																		</span>
-																		<?php $issue_rating->show_rating_number( $issue_id, $issue_status) ?>
+																		<?php if (($issue_status == 'publish') && (PB_RATING_ENABLED)) { ?>
+																			<i class="material-icons md-18 imc-TextColorSecondary imc-AlignIconToLabel">thumb_up</i>
+									                                        <span class="imc-SingleInformationTextStyle imc-TextColorSecondary imc-FontRoboto imc-TextMedium
+																				imc-Text-SM"><?php echo esc_html(intval(get_post_meta($post->ID, "imc_likes", true), 10)); ?></span>
+																		<?php } ?>
                                 </div>
 
 																<?php if ($issue_status == 'publish') { ?>
 
 		                                <div class="imc-row">
-																				<?php $imcstatus_currentterm = get_the_terms($issue_id , 'imcstatus' );
+																				<?php $imcstatus_currentterm = get_the_terms($post->ID , 'imcstatus' );
 																				if ($imcstatus_currentterm) {
 																					$current_step_name = $imcstatus_currentterm[0]->name;
 																					$current_order_step_id = get_term_meta( $imcstatus_currentterm[0]->term_id, 'imc_term_order');
@@ -188,7 +190,7 @@ get_header(); ?>
                                     </div>
 																<?php } ?>
                                 <div class="imc-row-no-margin">
-																		<?php $img_url = wp_get_attachment_url( get_post_thumbnail_id($issue_id) ); ?>
+																		<?php $img_url = wp_get_attachment_url( get_post_thumbnail_id($post->ID) ); ?>
                                     <h3 class="imc-SectionTitleTextStyle"><?php echo __('Photos','pb-voting'); ?></h3>
 
 																		<?php if ($img_url) { ?>
@@ -211,7 +213,7 @@ get_header(); ?>
                                 <div class="imc-CardLayoutStyle">
                                     <h3 class="imc-SectionTitleTextStyle"><?php echo __('Comments','pb-voting'); ?></h3>
 																		<?php if ( comments_open() || get_comments_number() ) {
-																				$comments = get_comments(array( 'post_id' => $issue_id)); ?>
+																				$comments = get_comments(array( 'post_id' => $post->ID)); ?>
 																				<?php if ( is_user_logged_in() ) { ?>
                                             <div class="imc-CommentsFormWrapperStyle imc-row">
 
@@ -385,7 +387,7 @@ get_header(); ?>
                                 <div id="imcSingleIssueMapCanvas" class="imc-SingleMapCanvasStyle"></div>
                                 <div class="imc-row-no-margin">
                                     <i class="material-icons md-24 imc-TextColorSecondary imc-VerticalAlignMiddle">place</i>
-                                    <span class="imc-FontRoboto imc-TextBold imc-Text-XS imc-TextColorSecondary"> <?php echo esc_html(get_post_meta($issue_id, "imc_address", true)); ?></span>
+                                    <span class="imc-FontRoboto imc-TextBold imc-Text-XS imc-TextColorSecondary"> <?php echo esc_html(get_post_meta($post->ID, "imc_address", true)); ?></span>
                                 </div>
                             </div>
 
@@ -393,7 +395,7 @@ get_header(); ?>
 							if (($issue_status == 'publish') ){
 
 								// Check if user can vote
-								$voterslist = get_post_meta($issue_id, "imc_allvoters", false);
+								$voterslist = get_post_meta($post->ID, "imc_allvoters", false);
 
 								if ( is_user_logged_in() && (PB_RATING_ENABLED)) { ?>
 
@@ -449,7 +451,7 @@ get_header(); ?>
 
 									<?php
 
-									$timeline = imc_get_issue_timeline($issue_id);
+									$timeline = imc_get_issue_timeline($post->ID);
 
 									// If there is only one item, show it
 									if (count($timeline) == 1) { ?>
@@ -527,8 +529,8 @@ get_header(); ?>
 
     <!-- Scripts -->
     <script>
-        var lat = parseFloat("<?php echo floatval(get_post_meta($issue_id, "imc_lat", true)); ?>");
-        var lng = parseFloat("<?php echo floatval(get_post_meta($issue_id, "imc_lng", true)); ?>");
+        var lat = parseFloat("<?php echo floatval(get_post_meta($post->ID, "imc_lat", true)); ?>");
+        var lng = parseFloat("<?php echo floatval(get_post_meta($post->ID, "imc_lng", true)); ?>");
         document.onload = imcInitializeMap(lat, lng, 'imcSingleIssueMapCanvas', '', false, 15, false);
 
         if(jQuery(".imc-CommentTextArea").length !== 0) {

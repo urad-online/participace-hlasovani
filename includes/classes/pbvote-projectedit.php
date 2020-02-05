@@ -108,6 +108,9 @@ class PbVote_ProjectEdit
             case 'checkbox':
                 $this->render_checkbox( $order, $field, $value, $help);
                 break;
+            case 'checkboxgroup':
+                $this->render_checkboxgroup( $order, $field, $value, $help);
+                break;
             case 'textarea':
                 $this->render_textarea( $order, $field, $value, $help);
                 break;
@@ -352,6 +355,45 @@ class PbVote_ProjectEdit
             );
         }
     }
+    private function render_checkboxgroup( $order, $input, $value , $help = '')
+    {
+        $required = '';
+        $mandatory = '';
+        if (empty($value)) {
+          $values = array();
+        } else {
+          $values = unserialize( $value);
+        }
+
+        $output = '<h3 class="imc-SectionTitleTextStyle" style="display:inline-block;"><label id="%sName" for="%s">%s%s'. $this->render_tooltip($help) .'</label>
+            </h3><label id="%sLabel" class="imc-ReportFormErrorLabelStyle imc-TextColorPrimary"></label>';
+        if ( empty( $input ) ) {
+            return $output;
+        } else {
+            $output .= '<div class="pbvote-CheckboxGroup-container">';
+            $output .= '<input class="pbvote-project-checkboxgroup-input" type="hidden" id="%s" name="%s" value="'. json_encode( empty($values) ? array() : $values , JSON_UNESCAPED_UNICODE) .'">';
+            foreach( $input['items'] as $pb_item ) {
+                if ((! empty($values)) && in_array($pb_item['iid'], $values, true)) {
+                  $checked = 'checked="checked"';
+                } else {
+                  $checked = '';
+                }
+                $output .= '<div><input '.$checked.' class="pbvote-CheckboxGroupStyle imc-CheckboxStyle pbvote-CheckboxGroup-member" id="'.$pb_item['iid'].'" type="checkbox" name="'.$pb_item['iid'].'" value="'.$pb_item['iid'].'">';
+                $output .= '<label for="'.$pb_item['iid'].'">'.$pb_item['ilabel'].'</label>';
+                $output .= '</div>';
+            }
+            $output .= '</div>';
+            printf( $output,
+                $input['id'],
+                $input['id'],
+                $order,
+                $input['label'],
+                $input['id'],
+                $input['id'],
+                $input['id'],
+            );
+        }
+    }
 
     public function render_mandatory( $mandatory = false)
     {
@@ -383,7 +425,8 @@ class PbVote_ProjectEdit
         ';
         printf( $output,
             $order,
-            __('Address','pb-voting'),
+            $input['label'],
+            // __('Address','pb-voting'),
             __('Locate', 'pb-voting'),
             __('Add an address','pb-voting')
         );
@@ -424,7 +467,8 @@ class PbVote_ProjectEdit
 
         printf( $output,
             $order,
-            __('Photo','pb-voting'),
+            $input['label'],
+            // __('Photo','pb-voting'),
             __('Add photo','pb-voting'),
             __('Delete Photo', 'pb-voting'),
             $no_photo,

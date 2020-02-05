@@ -32,34 +32,34 @@ class PbVote_ProjectSaveData {
       	$this->post_id = wp_insert_post( $this->post_data, true);
 
       	if ( $this->post_id && ( ! is_wp_error($this->post_id)) ) {
-      		$this->insert_attachments( $_FILES );
-          $this->add_link_to_voting( $voting_id );
-      	}
+        		$this->insert_attachments( $_FILES );
+            $this->add_link_to_voting( $voting_id );
 
-    	// Choose the imcstatus with smaller id
-    	// zmenit order by imc_term_order
+          	// Choose the imcstatus with smaller id
+          	// zmenit order by imc_term_order
 
-    	$pb_edit_completed = (! empty( $_POST['pb_project_edit_completed']) ) ?  $_POST['pb_project_edit_completed'] : 0;
-    	$all_status_terms = get_terms( $this->status_taxo , array( 'hide_empty' => 0 , 'orderby' => 'id', 'order' => 'ASC') );
-    	if ( $pb_edit_completed ) {
-    		$first_status = $all_status_terms[1];
-    	} else {
-    		$first_status = $all_status_terms[0];
-    	}
+          	$pb_edit_completed = (! empty( $_POST['pb_project_edit_completed']) ) ?  $_POST['pb_project_edit_completed'] : 0;
+          	$all_status_terms = get_terms( $this->status_taxo , array( 'hide_empty' => 0 , 'orderby' => 'id', 'order' => 'ASC') );
+          	if ( $pb_edit_completed ) {
+          		$first_status = $all_status_terms[1];
+          	} else {
+          		$first_status = $all_status_terms[0];
+          	}
 
-    	wp_set_object_terms($this->post_id, $first_status->name, $this->status_taxo);
+          	wp_set_object_terms($this->post_id, $first_status->name, $this->status_taxo);
 
-    	//Create Log if moderate is OFF
+          	//Create Log if moderate is OFF
 
-    	if($moderateOption == 2) {
+          	if($moderateOption == 2) {
 
-    		imcplus_crelog_frontend_nomoder($this->post_id, $first_status->term_id, get_current_user_id());
+          		imcplus_crelog_frontend_nomoder($this->post_id, $first_status->term_id, get_current_user_id());
 
-    	}
+          	}
 
-    	$this->project_insert_image();
+          	$this->project_insert_image();
 
-      imcplus_mailnotify_4submit($this->post_id,$imccategory_id, $this->post_data['meta_input']['imc_address']);
+          imcplus_mailnotify_4submit($this->post_id,$imccategory_id, $this->post_data['meta_input']['imc_address']);
+        }
 
       return $this->post_id;
     }
@@ -112,19 +112,17 @@ class PbVote_ProjectSaveData {
             'imc_lat'		=> esc_attr(sanitize_text_field($data['imcLatValue'])),
             'imc_lng'		=> esc_attr(sanitize_text_field($data['imcLngValue'])),
             'imc_address'	=> esc_attr(sanitize_text_field($data['postAddress'])),
-            'pb_project_navrhovatel_jmeno'   => esc_attr(sanitize_text_field($data['pb_project_navrhovatel_jmeno'])),
-            'pb_project_navrhovatel_adresa'  => esc_attr(sanitize_text_field($data['pb_project_navrhovatel_adresa'])),
-            'pb_project_navrhovatel_telefon' => esc_attr(sanitize_text_field($data['pb_project_navrhovatel_telefon'])),
+            'pb_project_reason'              => esc_attr(sanitize_textarea_field($data['pb_project_reason'])),
+            'pb_project_locality'            => json_decode(stripslashes($data['pb_project_locality'])),
             'pb_project_parcely'             => esc_attr(sanitize_textarea_field($data['pb_project_parcely'])),
+            'pb_project_naklady'             => json_decode(stripslashes($data['pb_project_naklady'])),
+            'pb_project_naklady_navyseni'    => (! empty($data['pb_project_naklady_navyseni'])) ? esc_attr(sanitize_textarea_field($data['pb_project_naklady_navyseni'])) : '0',
+            'pb_project_navrhovatel_jmeno'   => esc_attr(sanitize_text_field($data['pb_project_navrhovatel_jmeno'])),
+            'pb_project_navrhovatel_telefon' => esc_attr(sanitize_text_field($data['pb_project_navrhovatel_telefon'])),
+            'pb_project_navrhovatel_email'   => esc_attr(sanitize_email($data['pb_project_navrhovatel_email'])),
+            'pb_project_navrhovatel_adresa'  => esc_attr(sanitize_text_field($data['pb_project_navrhovatel_adresa'])),
             'pb_project_prohlaseni_veku'     => (! empty($data['pb_project_prohlaseni_veku'])) ? esc_attr(sanitize_text_field($data['pb_project_prohlaseni_veku'])) : '0',
             'pb_project_podminky_souhlas'    => (! empty($data['pb_project_podminky_souhlas'])) ? esc_attr(sanitize_text_field($data['pb_project_podminky_souhlas'])) : '0',
-            'pb_project_navrhovatel_email'   => esc_attr(sanitize_email($data['pb_project_navrhovatel_email'])),
-            'pb_project_cile'                => esc_attr(sanitize_textarea_field($data['pb_project_cile'])),
-            'pb_project_akce'                => esc_attr(sanitize_textarea_field($data['pb_project_akce'])),
-            'pb_project_prospech'            => esc_attr(sanitize_textarea_field($data['pb_project_prospech'])),
-            'pb_project_naklady'             => json_decode(stripslashes($data['pb_project_naklady'])),
-            // 'pb_project_naklady_celkem'      => esc_attr(sanitize_textarea_field($data['pb_project_naklady_celkem'])),
-            // 'pb_project_naklady_navyseni'    => (! empty($data['pb_project_naklady_navyseni'])) ? esc_attr(sanitize_textarea_field($data['pb_project_naklady_navyseni'])) : '0',
         );
         if ( ! $update ) {
             $this->post_data['meta_input']['imc_likes'] = '0';
@@ -175,10 +173,6 @@ class PbVote_ProjectSaveData {
     private function insert_attachments( $files)
     {
         if (! empty( $this->post_id)) {
-            // $_FILE['id'], fields - error, name, size, tmp_name, type, pro prazdne je error = 4 ostatni prazdne,
-            $this->insert_attachment_1($files['pb_project_podporovatele'],  'pb_project_podporovatele');
-            $this->insert_attachment_1($files['pb_project_mapa'],           'pb_project_mapa');
-            // $this->insert_attachment_1($files['pb_project_naklady'],        'pb_project_naklady');
             $this->insert_attachment_1($files['pb_project_dokumentace1'],   'pb_project_dokumentace1');
             $this->insert_attachment_1($files['pb_project_dokumentace2'],   'pb_project_dokumentace2');
             $this->insert_attachment_1($files['pb_project_dokumentace3'],   'pb_project_dokumentace3');

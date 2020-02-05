@@ -257,6 +257,26 @@ class PbVote_ProjectInsert
     					return result;
     				}).setMessage('pb_project_js_validate_array', 'Tabulka s předpokládanými náklady musí mít alespoň jednu položku.');;
 
+            validator.registerCallback( 'pb_project_js_validate_locality', function(value){
+              var result = false;
+              var pom = Array.from(JSON.parse( value ));
+              if( Array.isArray(pom)) {
+                  if ( pom.length > 0) {
+                    result = true;
+                  }
+              };
+    					return result;
+    				}).setMessage('pb_project_js_validate_locality', 'Vyberte alespoň jednu lokalitu, které se návrh týká.');
+
+                jQuery(document).on("change", ".pbvote-CheckboxGroup-member", function(){
+                  var result = [];
+                  var el_to_store_value = jQuery(this).closest("div.pbvote-CheckboxGroup-container").find('input[type="hidden"]').attr('id');
+                  jQuery(this).closest("div.pbvote-CheckboxGroup-container").find(".pbvote-CheckboxGroup-member:checked").each(function(){
+                    result.push(jQuery(this).attr('id'));
+                  });
+                  jQuery("#"+el_to_store_value).val( JSON.stringify(result) );
+                });
+
               });
           })();
 
