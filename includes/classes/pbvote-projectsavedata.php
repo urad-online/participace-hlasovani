@@ -9,8 +9,18 @@ class PbVote_ProjectSaveData {
     */
     public function project_insert( $voting_id )
     {
-        $imccategory_id = esc_attr(strip_tags($_POST['my_custom_taxonomy']));
+        if (! empty( $_POST['my_custom_taxonomy']) ) {
+          $imccategory_id = esc_attr(strip_tags($_POST['my_custom_taxonomy']));
+          $tax_input['imccategory'] = $imccategory_id;
+        } else {
+          $imccategory_id = "";
+          $tax_input = array();
+        }
         $voting_period_slug = get_parent_taxo_slug($voting_id);
+        if (!empty($voting_period_slug)) {
+          $tax_input['voting-period'] = $voting_period_slug;
+        }
+
     	// Check options if the status of new issue is pending or publish
         global $generaloptions;
         $moderateOption = $generaloptions["moderate_new"];
@@ -20,11 +30,10 @@ class PbVote_ProjectSaveData {
       	$this->post_data = array(
       		'post_title' => esc_attr(strip_tags($_POST['postTitle'])),
       		'post_content' => esc_attr(strip_tags($_POST['postContent'])),
-      		'post_type' => 'imc_issues',
+      		'post_type'   => 'imc_issues',
       		'post_status' => ($moderateOption == 2) ? 'publish' : 'pending',
       		'post_name'   => sanitize_title( $_POST['postTitle']),
-      		'tax_input' => array( 'imccategory' => $imccategory_id,
-                                'voting-period' => $voting_period_slug),
+      		'tax_input'   => $tax_input,
       	);
 
         $this->get_metadata_from_request( $_POST, false);
@@ -75,8 +84,13 @@ class PbVote_ProjectSaveData {
     	$lat = esc_attr(strip_tags($_POST['imcLatValue']));
     	$lng = esc_attr(strip_tags($_POST['imcLngValue']));
 
-
-    	$imccategory_id = esc_attr(strip_tags($_POST['my_custom_taxonomy']));
+      if (! empty( $_POST['my_custom_taxonomy']) ) {
+        $imccategory_id = esc_attr(strip_tags($_POST['my_custom_taxonomy']));
+        $tax_input['imccategory'] = $imccategory_id;
+      } else {
+        $imccategory_id = "";
+        $tax_input = array();
+      }
     	$address = esc_attr(strip_tags($_POST['postAddress']));
 
     	//UPDATE THE ISSUE TO DB
@@ -84,7 +98,7 @@ class PbVote_ProjectSaveData {
     		'ID' => $issue_id,
             'post_title' => esc_attr(strip_tags($_POST['postTitle'])),
             'post_content' => esc_attr(strip_tags($_POST['postContent'])),
-            'tax_input' => array( 'imccategory' => $imccategory_id ),
+            'tax_input' => $tax_input,
         );
 
     	$post_id = wp_update_post( $this->post_data, true );

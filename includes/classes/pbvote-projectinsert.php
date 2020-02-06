@@ -246,27 +246,27 @@ class PbVote_ProjectInsert
     					 plati pro pole s pravidlem "depends" */
     					return jQuery('#pb_project_edit_completed').prop('checked');
     				});
-    				validator.registerCallback( 'pb_project_js_validate_array', function(value){
-              var result = false;
-              var pom = Array.from(JSON.parse( value ));
-              if( Array.isArray(pom)) {
-                  if ( pom.length > 0) {
-                    result = true;
-                  }
-              };
-    					return result;
-    				}).setMessage('pb_project_js_validate_array', 'Tabulka s předpokládanými náklady musí mít alespoň jednu položku.');;
+        				validator.registerCallback( 'pb_project_js_validate_array', function(value){
+                  var result = false;
+                  var pom = Array.from(JSON.parse( value ));
+                  if( Array.isArray(pom)) {
+                      if ( pom.length > 0) {
+                        result = true;
+                      }
+                  };
+        					return result;
+        				}).setMessage('pb_project_js_validate_array', 'Tabulka s předpokládanými náklady musí mít alespoň jednu položku.');;
 
-            validator.registerCallback( 'pb_project_js_validate_locality', function(value){
-              var result = false;
-              var pom = Array.from(JSON.parse( value ));
-              if( Array.isArray(pom)) {
-                  if ( pom.length > 0) {
-                    result = true;
-                  }
-              };
-    					return result;
-    				}).setMessage('pb_project_js_validate_locality', 'Vyberte alespoň jednu lokalitu, které se návrh týká.');
+                validator.registerCallback( 'pb_project_js_validate_locality', function(value){
+                  var result = false;
+                  var pom = Array.from(JSON.parse( value ));
+                  if( Array.isArray(pom)) {
+                      if ( pom.length > 0) {
+                        result = true;
+                      }
+                  };
+        					return result;
+        				}).setMessage('pb_project_js_validate_locality', 'Vyberte alespoň jednu lokalitu, které se návrh týká.');
 
                 jQuery(document).on("change", ".pbvote-CheckboxGroup-member", function(){
                   var result = [];

@@ -213,9 +213,9 @@ if(pbvote_user_can_edit($given_issue_id, $user->ID)) { ?>
         jQuery( document ).ready(function() {
 
             var validator = new FormValidator('report_an_issue_form',<?PHP
-				echo $project_single->render_fields_js_validation();
-				?>, function(errors, events) {
-				jQuery('label.imc-ReportFormErrorLabelStyle').html("");
+							echo $project_single->render_fields_js_validation();
+							?>, function(errors, events) {
+							jQuery('label.imc-ReportFormErrorLabelStyle').html("");
                 if (errors.length > 0) {
                     var i, j;
                     var errorLength;
@@ -224,37 +224,57 @@ if(pbvote_user_can_edit($given_issue_id, $user->ID)) { ?>
 
                     for (i = 0, errorLength = errors.length; i < errorLength; i++) {
                         if (errors[i].name === "featured_image") {
-							imcDeleteAttachedImage('imcReportAddImgInput');
-							jQuery("#imcReportFormSubmitErrors").html(errors[i].message);
+														imcDeleteAttachedImage('imcReportAddImgInput');
+														jQuery("#imcReportFormSubmitErrors").html(errors[i].message);
                         } else {
-							for(j=0; j < Math.min(1, errors[i].messages.length); j++) {
-								jQuery('#'+errors[i].id+'Label').html(errors[i].messages[j]);
-								jQuery("#imcReportFormSubmitErrors").append("<p>"+errors[i].message+"</p>");
-							}
+														for(j=0; j < Math.min(1, errors[i].messages.length); j++) {
+															jQuery('#'+errors[i].id+'Label').html(errors[i].messages[j]);
+															jQuery("#imcReportFormSubmitErrors").append("<p>"+errors[i].message+"</p>");
+														}
                         }
                     }
                 } else {
                     jQuery('#imcEditIssueSubmitBtn').attr('disabled', 'disabled');
-					jQuery('label.imc-ReportFormErrorLabelStyle').html();
+										jQuery('label.imc-ReportFormErrorLabelStyle').html();
                 }
             });
-			validator.registerConditional( 'pb_project_js_validate_required', function(field){
-				/* povinna pole se validuji pouze pokud narhovatel zaskrtne odeslat k vyhodnoceni
-				 plati pro pole s pravidlem "depends" */
-				// console.log('validuju povinna pole');
-				return jQuery('#pb_project_edit_completed').prop('checked');
-			});
-			validator.registerCallback( 'pb_project_js_validate_array', function(value){
-				var result = false;
-				var pom = Array.from(JSON.parse( value ));
-				if( Array.isArray(pom)) {
-						if ( pom.length > 0) {
-							result = true;
-						}
-				};
-				return result;
-			}).setMessage('pb_project_js_validate_array', 'Tabulka s předpokládanými náklady musí mít alespoň jednu položku.');;
+						validator.registerConditional( 'pb_project_js_validate_required', function(field){
+							/* povinna pole se validuji pouze pokud narhovatel zaskrtne odeslat k vyhodnoceni
+							 plati pro pole s pravidlem "depends" */
+							// console.log('validuju povinna pole');
+							return jQuery('#pb_project_edit_completed').prop('checked');
+						});
+						validator.registerCallback( 'pb_project_js_validate_array', function(value){
+							var result = false;
+							var pom = Array.from(JSON.parse( value ));
+							if( Array.isArray(pom)) {
+									if ( pom.length > 0) {
+										result = true;
+									}
+							};
+							return result;
+						}).setMessage('pb_project_js_validate_array', 'Tabulka s předpokládanými náklady musí mít alespoň jednu položku.');;
 
+						validator.registerCallback( 'pb_project_js_validate_locality', function(value){
+							var result = false;
+							var pom = Array.from(JSON.parse( value ));
+							if( Array.isArray(pom)) {
+									if ( pom.length > 0) {
+										result = true;
+									}
+							};
+							return result;
+						}).setMessage('pb_project_js_validate_locality', 'Vyberte alespoň jednu lokalitu, které se návrh týká.');
+
+						jQuery(document).on("change", ".pbvote-CheckboxGroup-member", function(){
+							var result = [];
+							var el_to_store_value = jQuery(this).closest("div.pbvote-CheckboxGroup-container").find('input[type="hidden"]').attr('id');
+							jQuery(this).closest("div.pbvote-CheckboxGroup-container").find(".pbvote-CheckboxGroup-member:checked").each(function(){
+								result.push(jQuery(this).attr('id'));
+							});
+							jQuery("#"+el_to_store_value).val( JSON.stringify(result) );
+						});
+						console.log(jQuery('#pb_project_locality').val());
         });
     })();
 

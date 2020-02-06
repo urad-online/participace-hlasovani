@@ -370,8 +370,10 @@ class PbVote_ProjectEdit
         if ( empty( $input ) ) {
             return $output;
         } else {
+          $pom_value = json_encode( empty($values) ? array() : $values , JSON_UNESCAPED_UNICODE);
+          $pom_value = str_replace( '"', '', $pom_value);
             $output .= '<div class="pbvote-CheckboxGroup-container">';
-            $output .= '<input class="pbvote-project-checkboxgroup-input" type="hidden" id="%s" name="%s" value="'. json_encode( empty($values) ? array() : $values , JSON_UNESCAPED_UNICODE) .'">';
+            $output .= '<input class="pbvote-project-checkboxgroup-input" type="hidden" id="%s" name="%s" value="%s">';
             foreach( $input['items'] as $pb_item ) {
                 if ((! empty($values)) && in_array($pb_item['iid'], $values, true)) {
                   $checked = 'checked="checked"';
@@ -391,6 +393,7 @@ class PbVote_ProjectEdit
                 $input['id'],
                 $input['id'],
                 $input['id'],
+                $pom_value,
             );
         }
     }

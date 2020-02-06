@@ -53,6 +53,9 @@ class PbVote_ProjectSingle {
             case 'budgettable':
                 $this->render_budget_table( $order, $field['label'], $value);
                 break;
+            case 'checkboxgroup':
+                $this->render_field_multivalue( $order, $field['label'], $field['items'], $value);
+                break;
             default:
                 $this->render_field_text( $order, $field['label'], $value);
         }
@@ -83,7 +86,35 @@ class PbVote_ProjectSingle {
             $label,
             $value);
     }
+    private function render_field_multivalue( $order = '', $label = '', $options, $value = '')
+    {
+        if (empty($value)) {
+          $values = array();
+        } else {
+          $values = unserialize( $value);
+        }
+        $options_key = $this->convert_2level_array_to_1level( $options, 'iid', 'ilabel');
+        $output = '<div class="imc-row">
+            <h3 class="imc-SectionTitleTextStyle">%s%s</h3>%s
+            </div>';
+        $items = '';
+        foreach ($values as $key) {
+          $items .= '<div class="imc-SingleDescriptionStyle imc-TextColorSecondary imc-JustifyText">'.$options_key[$key].'</div>';
+        }
+        printf( $output ,
+            $order,
+            $label,
+            $items);
+    }
 
+    public function convert_2level_array_to_1level( $list, $key, $value)
+    {
+        $output = array();
+        foreach ($list as $item) {
+          $output[$item[$key]] = $item[$value];
+        }
+        return $output;
+    }
     private function render_budget_table( $order = '', $label = '', $value = '')
     {
         $output = '<div class="imc-row">

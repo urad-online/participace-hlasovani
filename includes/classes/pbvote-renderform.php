@@ -123,8 +123,8 @@ class PbVote_RenderForm {
     private function pb_get_custom_fields_single()
     {
         return array(
-                'goals', 'actions', 'profits', 'address',
-                'parcel', 'map', 'cost','budget_increase',
+                'reason', 'locality',
+                'parcel', 'cost','budget_increase',
                 'attach1', 'attach2', 'attach3',
             );
     }
@@ -134,7 +134,7 @@ class PbVote_RenderForm {
         return array(
             array( 'type' => 'row', 'data' => array(
                 array('type' => 'field', 'data' => array( 'field' => 'title', 'columns' => 6)),
-                array('type' => 'field', 'data' => array( 'field' => 'category', 'columns' => 6)),
+                // array('type' => 'field', 'data' => array( 'field' => 'category', 'columns' => 6)),
             )),
             array( 'type' => 'field', 'data' => array( 'field' => 'content', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'reason', 'columns' => 0)),
@@ -496,7 +496,7 @@ class PbVote_RenderForm {
                 ),
             ),
             'agreement'     => array(
-                'label'     => 'Souhlasím s <a href="'. site_url("podminky-pouziti-a-ochrana-osobnich-udaju/") . '" target="_blank" title="Přejít na stránku s podmínkami">podmínkami použití</a>',
+                'label'     => 'Souhlasím s <a href="'. site_url("podminky-pouziti-zpracovani-a-ochrana-osobnich-udaju/") . '" target="_blank" title="Přejít na stránku s podmínkami">podmínkami použití</a>',
                 'id'        => 'pb_project_podminky_souhlas',
                 'default'   => 'no',
                 'type'      => 'checkbox',
