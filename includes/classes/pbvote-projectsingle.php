@@ -56,6 +56,9 @@ class PbVote_ProjectSingle {
             case 'checkboxgroup':
                 $this->render_field_multivalue( $order, $field['label'], $field['items'], $value);
                 break;
+            case 'attachment':
+                $this->render_field_attache_table( $order, $field['label'], $field, $value);
+                break;
             default:
                 $this->render_field_text( $order, $field['label'], $value);
         }
@@ -127,6 +130,19 @@ class PbVote_ProjectSingle {
         echo $table->render_table();
         echo '</div>';
     }
+    private function render_field_attache_table( $order = '', $label = '', $options, $value = '')
+    {
+        $output = '<div class="imc-row">
+            <h3 class="imc-SectionTitleTextStyle">%s%s</h3>';
+        printf( $output ,
+            $order,
+            $label);
+
+        $table = new PbVote_AttachmentTable( unserialize( $value), $options['id'], false);
+        echo $table->render_table();
+        echo '</div>';
+    }
+
 
     private function render_field_get_value( $id, $values)
     {

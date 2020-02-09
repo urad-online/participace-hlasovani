@@ -125,7 +125,7 @@ class PbVote_RenderForm {
         return array(
                 'reason', 'locality',
                 'parcel', 'cost','budget_increase',
-                'attach1', 'attach2', 'attach3',
+                'attachment',
             );
     }
 
@@ -138,9 +138,6 @@ class PbVote_RenderForm {
             )),
             array( 'type' => 'field', 'data' => array( 'field' => 'content', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'reason', 'columns' => 0)),
-            // array( 'type' => 'field', 'data' => array( 'field' => 'goals', 'columns' => 0)),
-            // array( 'type' => 'field', 'data' => array( 'field' => 'profits', 'columns' => 0)),
-
             array( 'type' => 'field', 'data' => array( 'field' => 'locality', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'postAddress', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'parcel', 'columns' => 0)),
@@ -148,9 +145,8 @@ class PbVote_RenderForm {
             // array( 'type' => 'field', 'data' => array( 'field' => 'map', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'cost', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'budget_increase', 'columns' => 0)),
-            array( 'type' => 'field', 'data' => array( 'field' => 'attach1', 'columns' => 0)),
-            array( 'type' => 'field', 'data' => array( 'field' => 'attach2', 'columns' => 0)),
-            array( 'type' => 'field', 'data' => array( 'field' => 'attach3', 'columns' => 0)),
+            array( 'type' => 'field', 'data' => array( 'field' => 'attachment', 'columns' => 0)),
+            array( 'type' => 'field', 'data' => array( 'field' => 'org_name', 'columns' => 0)),
             array( 'type' => 'row', 'data' => array(
                 array('type' => 'field', 'data' => array( 'field' => 'name', 'columns' => 5)),
                 array('type' => 'field', 'data' => array( 'field' => 'phone', 'columns' => 3)),
@@ -216,36 +212,6 @@ class PbVote_RenderForm {
                     'rules' => 'required',
                     'depends' => 'pb_project_js_validate_required',
                     ),
-            ),
-            'goals' => array(
-                'label'     => 'Proč je projekt důležitý, co je jeho cílem',
-                'id'        => 'pb_project_cile',
-                'type'      => 'textarea',
-                'mandatory' => true,
-                'placeholder' => 'Popište cíle projektu',
-                // 'title'     => "goals",
-                'help'      => 'Nebojte se trochu více rozepsat',
-                'show_mtbx' => true,
-                'show_form' => true,
-                'js_rules'  => array(
-                    'rules' => 'required',
-                    'depends' => 'pb_project_js_validate_required',
-                ),
-            ),
-            'profits' => array(
-                'label'         => 'Kdo bude mít z projektu prospěch',
-                'id'            => 'pb_project_prospech',
-                'type'          => 'textarea',
-                'mandatory'     => true,
-                'placeholder'   => 'Popište kdo a jaký bude mít z projektu prospěch',
-                // 'title'         => 'profit',
-                'help'          => '',
-                'show_mtbx' => true,
-                'show_form' => true,
-                'js_rules'  => array(
-                    'rules' => 'required',
-                    'depends' => 'pb_project_js_validate_required',
-                ),
             ),
             'postAddress' => array(
                 'label'     => 'Lokace místa',
@@ -339,7 +305,7 @@ class PbVote_RenderForm {
                     'depends' => 'pb_project_js_validate_required',
                 ),
             ),
-
+            // not used. Kept as a tenplate for media
             'attach1' => array(
                 'label'         => 'Vizualizace, výkresy, fotodokumentace… 1',
                 'id'            => 'pb_project_dokumentace1',
@@ -357,56 +323,36 @@ class PbVote_RenderForm {
                     'rules'   => 'is_file_type[gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG,pdf,PDF]',
                 ),
             ),
-            'attach2' => array(
-                'label'         => 'Vizualizace, výkresy, fotodokumentace… 2',
-                'id'            => 'pb_project_dokumentace2',
-                'type'          => 'media',
-                'title'         => "attach2",
-                'mandatory'     => false,
-                'material_icon' => 'file_upload',
-                // 'material_icon' => 'content_copy',
-                'AddBtnLabel'   => 'Vložit',
-                'DelBtnLabel'   => 'Smazat',
-                'help'          => 'Povolené typy příloh: gif, png, jpg, jpeg, pdf',
-                'show_mtbx'   => true,
-                'show_form'   => true,
-                'js_rules'    => array(
-                    'rules'   => 'is_file_type[gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG,pdf,PDF]',
-                ),
-            ),
-            'attach3' => array(
-                'label'         => 'Vizualizace, výkresy, fotodokumentace… 3',
-                'id'            => 'pb_project_dokumentace3',
-                'type'          => 'media',
-                'title'         => "attach3",
-                'mandatory'     => false,
-                'material_icon' => 'file_upload',
-                // 'material_icon' => 'content_copy',
-                'AddBtnLabel'   => 'Vložit',
-                'DelBtnLabel'   => 'Smazat',
-                'help'          => 'Povolené typy příloh: gif, png, jpg, jpeg, pdf',
-                'show_mtbx'   => true,
-                'show_form'   => true,
-                'js_rules'    => array(
-                    'rules'   => 'is_file_type[gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG,pdf,PDF]',
-                ),
-            ),
-            'name' => array(
-                'label'     => 'Jméno a příjmení navrhovatele',
-                'id'        => 'pb_project_navrhovatel_jmeno',
+
+            'org_name' => array(
+                'label'     => 'Název organizace',
+                'id'        => 'pb_project_navrhovatel_org',
                 'type'      => 'text',
                 'default'   => '',
-                'mandatory' => true,
-                'placeholder' => 'Vyplňte jméno',
+                'mandatory' => false,
+                'placeholder' => 'Zadejte název právnické osoby',
                 // 'title'     => "Proposer Name",
                 'columns'   => 5,
-                'help'      => 'Jméno navrhovatele je povinné',
+                'help'      => 'Zadejte pokud je navrhovatelem Právnická osoba',
                 'show_mtbx'   => true,
                 'show_form'   => true,
-                'js_rules'    => array(
-                    'rules'   => 'required',
-                    'depends' => 'pb_project_js_validate_required',
-                ),
+            ),
+            'name' => array(
+              'label'     => 'Jméno a příjmení navrhovatele',
+              'id'        => 'pb_project_navrhovatel_jmeno',
+              'type'      => 'text',
+              'default'   => '',
+              'mandatory' => true,
+              'placeholder' => 'Vyplňte jméno',
+              // 'title'     => "Proposer Name",
+              'columns'   => 5,
+              'help'      => 'Jméno navrhovatele je povinné',
+              'show_mtbx'   => true,
+              'show_form'   => true,
+              'js_rules'    => array(
+                'rules'   => 'required',
+                'depends' => 'pb_project_js_validate_required',
+              ),
             ),
             'phone' => array(
                 'label'     => 'Tel. číslo',
@@ -521,7 +467,7 @@ class PbVote_RenderForm {
                 'help'      => 'Pokud necháte nezaškrtnuté, můžete po uložení dat popis projektu doplnit',
             ),
             'locality' => array(
-                'label' => 'Vyberte lokalitu, které se návrh týká',
+                'label' => 'Lokalita, které se návrh týká',
                 'id'    => 'pb_project_locality',
                 'help'  => 'Vyberte jednu nebo více lokalit',
                 'type'  => 'checkboxgroup',
@@ -533,6 +479,21 @@ class PbVote_RenderForm {
                 ),
                 'js_rules'  => array(
                   'rules'   => 'required|!callback_pb_project_js_validate_locality',
+                ),
+            ),
+            'attachment' => array(
+                'label'         => 'Přílohy návrhu',
+                'id'            => 'pb_project_attachment',
+                'type'          => 'attachment',
+                'title'         => "attachment",
+                'mandatory'     => false,
+                'material_icon' => 'file_upload',
+                'AddBtnLabel'   => 'Vyhledat',
+                'help'          => 'Povolené typy příloh: gif, png, jpg, jpeg, pdf',
+                'show_mtbx'   => true,
+                'show_form'   => true,
+                'js_rules'    => array(
+                    'rules'   => 'is_file_type[gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG,pdf,PDF]',
                 ),
             ),
         );

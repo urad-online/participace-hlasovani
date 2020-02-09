@@ -331,3 +331,34 @@ span.keep-space {
 .form-control.pb-table-input {
   width: 100%;
 }
+table.pbvote-attach-table td a.attach-delete {
+    color: #E34724;
+
+}
+.form-control.pbvote-attach-table-text {
+  width: 100%;
+}
+table.pbvote-attach-table {
+    table-layout: fixed;
+    font-weight: bold;
+    font-size: 14px;
+    border-collapse: collapse;
+}
+
+table.pbvote-attach-table tr td {
+    font-weight: normal;
+}
+table.pbvote-attach-table tr th, table.pbvote-attach-table tr td {
+    border: 2px solid #888888;
+    padding: 3px 3px 3px 5px;
+}
+table.pbvote-attach-table td a.attach-action-icon {
+  cursor: pointer;
+  padding: 3px 10px 0px 10px;
+  display: inline-block;
+  min-width: 24px;
+}
+button.attach-add-new:disabled {
+/* table.pbvote-budget-table td a.edit:disabled { */
+  cursor: not-allowed;
+}

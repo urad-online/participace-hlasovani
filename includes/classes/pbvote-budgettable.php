@@ -23,7 +23,7 @@ class PbVote_BudgetTable
         $this->budget_data = $data;
       }
       $this->allow_edit = $allow_edit;
-      $pom = $GLOBALS['wp_styles'];
+
       if ( ! wp_style_is('material-icons') ) {
           wp_register_style('material-icons', PB_VOTE_URL . '/assets/css/pb-styles-material-icons.css', array(),'1.0', "all");
           wp_enqueue_style('material-icons');
@@ -79,7 +79,7 @@ class PbVote_BudgetTable
       $output .= '</div>';
       if ($this->allow_edit) {
         $output .= '<div class="imc-grid-4 imc-columns">';
-        $output .= '<button type="button" class="imc-button add-new"><i class="material-icons md-24 imc-AlignIconToButton">add_circle</i>Přidat položku</button></div>';
+        $output .= '<button type="button" class="imc-button u-pull-right add-new"><i class="material-icons md-24 imc-AlignIconToButton">add_circle</i>Přidat položku</button></div>';
       }
       $output .= '</div></div>';
       return $output;

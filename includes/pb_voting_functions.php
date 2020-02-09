@@ -300,7 +300,8 @@ function pbvote_upload_img($file = array(), $parent_post_id, $issue_title, $orie
 
 		$attachment = array(
 			'post_mime_type' => $file_return['type'],
-			'post_title' => mb_convert_encoding(preg_replace( '/\.[^.]+$/', '', basename( $filename ) ), "UTF-8"),
+			'post_title' => $issue_title,
+			// 'post_title' => mb_convert_encoding(preg_replace( '/\.[^.]+$/', '', basename( $filename ) ), "UTF-8"),
 			'post_content' => '',
 			'post_status' => 'inherit',
 			'guid' => $file_return['url']
@@ -408,4 +409,45 @@ if ( ! function_exists('pbvote_paginate') ) {
 
 		echo '<nav class="imc-PaginationStyle">' . $cb_pagination  .'</nav>';
 	}
+}
+function render_project_attachments( $post_id )
+{
+		$files = get_attachment_list( $post_id);
+		$output =  '<div class="imc-row"><div class="container"><div class="table-wrapper">';
+		$output .= '<table class="pbvote-attach-table table-bordered" style="width:100%">';
+		$output .= '<colgroup>';
+		$output .= '<col style="width:80%">';
+		$output .= '<col style="width:10%">';
+		$output .= '</colgroup><thead><tr>';
+		$output .= '<th>Název</th><th>Úpravy</th>';
+		$output .= '</tr></thead>';
+		$output .= render_project_attachments_table_body($files);
+		$output .= '</table></div>';
+		return $output;
+}
+function get_attachment_list( $post_id)
+{
+	  $list = get_post_meta( $post_id, 'pb_project_attachment');
+		$output = array();
+		foreach ( $list as $key => $value) {
+			  $output[$value] = array(
+					"title" => get_the_title( $value ),
+					"link"  => wp_get_attachment_url($value),
+			);
+		}
+		return $output;
+}
+function render_project_attachments_table_body( $list)
+{
+	 $output = '<body class="pbvote-attach-table-body">';
+	 foreach ($list as $key => $value) {
+			 	$output .= '<tr><td><input id="attch_title_input_'.$key.'" type="text" class="form-control pb-table-input" value="'.$value['title'].'" disabled>';
+				$output .= '<input autocomplete="off" class="imc-ReportAddImgInputStyle" id="%s" type="file" name="%s"/>';
+				$output .= '</td><td>';
+				$output .= '<a class="attach-delete attach-action-icon" title="Odstranit přílohu" data-toggle="tooltip"><i class="material-icons">delete</i></a>';
+				$output .= '<a class="attach-show attach-action-icon" id="attchlink_'.$key.'" href="'.$value['link'].'" target="_blank" title="Zobrazit přílohu" data-toggle="tooltip"><i class="material-icons">file_download</i></a>';
+				$output .= '</td>';
+	 }
+	 $output .= '</body>';
+	 return $output;
 }

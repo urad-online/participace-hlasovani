@@ -274,10 +274,18 @@ if(pbvote_user_can_edit($given_issue_id, $user->ID)) { ?>
 							});
 							jQuery("#"+el_to_store_value).val( JSON.stringify(result) );
 						});
-						console.log(jQuery('#pb_project_locality').val());
+						re_save_hidden_locality();
         });
     })();
-
+		function re_save_hidden_locality()
+		{
+			var result = [];
+			var el_to_store_value = jQuery("div.pbvote-CheckboxGroup-container").find('input[type="hidden"]').attr('id');
+			jQuery("#"+el_to_store_value).closest("div.pbvote-CheckboxGroup-container").find(".pbvote-CheckboxGroup-member:checked").each(function(){
+				result.push(jQuery(this).attr('id'));
+			});
+			jQuery("#"+el_to_store_value).val( JSON.stringify(result) );
+		}
     function imcInitMap() {
         "use strict";
 

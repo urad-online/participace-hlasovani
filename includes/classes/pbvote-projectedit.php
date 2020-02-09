@@ -99,6 +99,9 @@ class PbVote_ProjectEdit
             case 'budgettable':
                 $this->render_budget_table( $order, $field, $value, $help);
                 break;
+            case 'attachment':
+                $this->render_attachment_table( $order, $field, $value, $help);
+                break;
             case 'media':
                 $this->render_file_attachment( $order, $field, $value, $help);
                 break;
@@ -230,6 +233,37 @@ class PbVote_ProjectEdit
         );
 
         $output = $table->render_table();
+        echo $output;
+    }
+    private function render_attachment_table( $order, $input = null, $value = '', $help = '' )
+    {
+        if ( !empty( $input['mandatory']) && $input['mandatory'] ) {
+            $mandatory = $this->render_mandatory( $input['mandatory']) ;
+        } else {
+            $mandatory = $this->render_mandatory( false);
+        }
+        $options = '';
+        if ( ! empty($input['options'])) {
+            $options = " ".$input['options'];
+        }
+
+        if (empty($value)) {
+          $value_table = array();
+          // $value_table = array('81', '82');
+        } else {
+          $value_table = unserialize( $value);
+        }
+
+        $table = new PbVote_AttachmentTable( $value_table, $input['id'], true);
+        $output = '<h3 class="imc-SectionTitleTextStyle">%s%s %s'.$this->render_tooltip( $help ).'</h3>';
+
+        printf( $output,
+            $order,
+            $input['label'],
+            $mandatory
+        );
+
+        $output = $table->render_table( );
         echo $output;
     }
 
@@ -370,8 +404,8 @@ class PbVote_ProjectEdit
         if ( empty( $input ) ) {
             return $output;
         } else {
-          $pom_value = json_encode( empty($values) ? array() : $values , JSON_UNESCAPED_UNICODE);
-          $pom_value = str_replace( '"', '', $pom_value);
+            $pom_value = json_encode( empty($values) ? array() : $values , JSON_UNESCAPED_UNICODE);
+            $pom_value = str_replace( '"', '', $pom_value);
             $output .= '<div class="pbvote-CheckboxGroup-container">';
             $output .= '<input class="pbvote-project-checkboxgroup-input" type="hidden" id="%s" name="%s" value="%s">';
             foreach( $input['items'] as $pb_item ) {
