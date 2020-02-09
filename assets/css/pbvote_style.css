@@ -362,3 +362,9 @@ button.attach-add-new:disabled {
 /* table.pbvote-budget-table td a.edit:disabled { */
   cursor: not-allowed;
 }
+.pbvote-AddFileInputStyle {
+    opacity: 0.01;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}

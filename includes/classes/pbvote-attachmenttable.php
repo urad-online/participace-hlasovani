@@ -164,7 +164,7 @@ class PbVote_AttachmentTable
                 </div>
 
                 <div class="imc-grid-4 imc-columns">
-                        <input autocomplete="off" class="imc-ReportAddImgInputStyle attach-input-add-file attach-input-add-mandatory" id="'.$this->id_prefix.'File" type="file" name="'.$this->id_prefix.'File" onchange="pbProjectAttachTblAddFile(this)"></input>
+                        <input autocomplete="off" class="imc-ReportAddImgInputStyle pbvote-AddFileInputStyle attach-input-add-file attach-input-add-mandatory" id="'.$this->id_prefix.'File" type="file" name="'.$this->id_prefix.'File" onchange="pbProjectAttachTblAddFile(this)"></input>
                         <label for="'.$this->id_prefix.'File">
                             <i class="material-icons md-24 imc-AlignIconToButton">file_upload</i>Vyhledat
                         </label>

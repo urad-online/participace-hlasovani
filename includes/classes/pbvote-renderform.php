@@ -67,6 +67,9 @@ class PbVote_RenderForm {
                 if (!empty( $value['default'])) {
                     $output[ $key]['default'] = $value['default'];
                 }
+                if (!empty( $value['items'])) {
+                    $output[ $key]['items'] = $value['items'];
+                }
             }
         }
         return $output;
@@ -181,7 +184,7 @@ class PbVote_RenderForm {
                 'type'      => 'category',
                 'mandatory' => true,
                 'show_mtbx' => false,
-                'show_form' => true,
+                'show_form' => false,
                 'js_rules'  => array(
                     'rules' => 'required',),
             ),
@@ -317,8 +320,8 @@ class PbVote_RenderForm {
                 'AddBtnLabel'   => 'Vložit',
                 'DelBtnLabel'   => 'Smazat',
                 'help'          => 'Povolené typy příloh: gif, png, jpg, jpeg, pdf',
-                'show_mtbx'   => true,
-                'show_form'   => true,
+                'show_mtbx'   => false,
+                'show_form'   => false,
                 'js_rules'    => array(
                     'rules'   => 'is_file_type[gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG,pdf,PDF]',
                 ),
@@ -421,8 +424,8 @@ class PbVote_RenderForm {
                 'AddBtnLabel'   => 'Vložit',
                 'DelBtnLabel'   => 'Smazat',
                 'help'          => 'Povolené typy příloh: gif, png, jpg, jpeg, pdf',
-                'show_mtbx'   => true,
-                'show_form'   => true,
+                'show_mtbx'   => false,
+                'show_form'   => false,
                 'js_rules'    => array(
                     'rules'   => 'is_file_type[gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG,pdf,PDF]',
                 ),
@@ -471,6 +474,8 @@ class PbVote_RenderForm {
                 'id'    => 'pb_project_locality',
                 'help'  => 'Vyberte jednu nebo více lokalit',
                 'type'  => 'checkboxgroup',
+                'show_mtbx'   => true,
+                'show_form'   => true,
                 'items' => array(
                     array( 'ilabel' => 'Vršovice-Vinohrady-Michle', 'iid' => 'pb_project_loc_vrsovice', ),
                     array( 'ilabel' => 'Strašnice',                'iid' => 'pb_project_loc_strasnice', ),

@@ -118,6 +118,19 @@ class PbVote_ImcIssueDetailMetabox {
              $table = new PbVote_BudgetTable( true, $value_table);
              $input = $table->render_table();
            break;
+         case 'attachment':
+             if (empty($meta_value)) {
+               $value_table = array();
+             } else {
+               $value_table =  $meta_value;
+             }
+             $table = new PbVote_AttachmentTable( $value_table, $meta_field['id'], true);
+             $input = $table->render_table();
+           break;
+           case 'checkboxgroup':
+             $field_render = new PbVote_RenderCheckboxGroup( $meta_field, $meta_value);
+             $input = $field_render->render_body();
+           break;
          default:
            $input = sprintf(
              '<input %s id="%s" name="%s" type="%s" value="%s">',
@@ -155,21 +168,34 @@ class PbVote_ImcIssueDetailMetabox {
 
         $old = get_post_meta($post_id, $meta_field['id'], true);
         $new = (!empty($_POST[$meta_field['id']])) ? $_POST[$meta_field['id']] : "";
-        if ( $meta_field['id'] == "pb_project_naklady") {
-          $new = json_decode(stripslashes( $_POST[$meta_field['id']] ));
+        switch ($meta_field['type']) {
+          case 'text':
+            $new = esc_attr(sanitize_text_field( $new));
+            break;
+          case 'textarea':
+            $new = esc_attr(sanitize_textarea_field( $new));
+            break;
+          case 'checkbox':
+            $new = (! empty( $new) ) ? esc_attr(sanitize_text_field( $new)) : '0';
+            break;
+          case 'checkboxgroup':
+          case 'budgettable':
+          case 'attachment':
+            if (!empty($new)) {
+              $new = json_decode(esc_attr(sanitize_text_field(stripslashes( $new ))));
+            } else {
+              $new = array();
+            }
+            break;
+
+          default:
+            $new = esc_attr(sanitize_text_field( $new));
+            break;
         }
         if ( $new && $new != $old ) {
-          switch ( $meta_field['type'] ) {
-            case 'email':
-            $_POST[ $meta_field['id'] ] = sanitize_email( $_POST[ $meta_field['id'] ] );
-            break;
-            case 'text':
-            $_POST[ $meta_field['id'] ] = sanitize_text_field( $_POST[ $meta_field['id'] ] );
-            break;
-          }
           update_post_meta( $post_id, $meta_field['id'], $new );
-        } elseif ( $meta_field['type'] === 'checkbox' ) {
-          update_post_meta( $post_id, $meta_field['id'], '0' );
+        // } elseif ( $meta_field['type'] === 'checkbox' ) {
+        //   update_post_meta( $post_id, $meta_field['id'], '0' );
         } elseif ('' == $new && $old) {
           delete_post_meta( $post_id, $meta_field['id'], $old );
         }
