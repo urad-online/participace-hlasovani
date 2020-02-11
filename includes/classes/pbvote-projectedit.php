@@ -427,7 +427,7 @@ class PbVote_ProjectEdit
                 $input['id'],
                 $input['id'],
                 $input['id'],
-                $pom_value,
+                $pom_value
             );
         }
     }

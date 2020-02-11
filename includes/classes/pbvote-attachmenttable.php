@@ -152,26 +152,26 @@ class PbVote_AttachmentTable
         $output =
           '<div class="attach-table-new-container">
               <div class="imc-row">
-                <div class="imc-grid-4 imc-columns">
+                <div style="display:inline-block;min-width:40%;">
                     <div class pbvote-attach-table-label><h4>'.$this->labels['input_title'].'</h4></div>
-                    <div><input autocomplete="off" placeholder="Zadejte název přílohy" type="text" id="'.$this->id_prefix.'Title" class="imc-InputStyle attach-input-add-mandatory" value=""></input></div>
+                    <div><input autocomplete="off" placeholder="Zadejte název přílohy" type="text" maxlength="80" style="min-width:350px;" id="'.$this->id_prefix.'Title" class="imc-InputStyle attach-input-add-mandatory" value=""></input></div>
                 </div>
-                <div class="imc-grid-4 imc-columns">
+                <div style="display:inline-block;">
                     <div class="pbvote-attach-table-label"><h4>'.$this->labels['input_file_name'].'</h4></div>
                     <div><input readonly="readonly" autocomplete="off"
                         placeholder="Vyberte soubor" type="text" id="'.$this->id_prefix.'FileName" class="imc-InputStyle attach-input-add-mandatory" value=""></input>
                     </div>
                 </div>
 
-                <div class="imc-grid-4 imc-columns">
+                <div style="display:inline-block;">
                         <input autocomplete="off" class="imc-ReportAddImgInputStyle pbvote-AddFileInputStyle attach-input-add-file attach-input-add-mandatory" id="'.$this->id_prefix.'File" type="file" name="'.$this->id_prefix.'File" onchange="pbProjectAttachTblAddFile(this)"></input>
                         <label for="'.$this->id_prefix.'File">
                             <i class="material-icons md-24 imc-AlignIconToButton">file_upload</i>Vyhledat
                         </label>
                 </div>
-              </div>
-              <div class="imc-row">
-                <button disabled type="button" title="Přidat přílohu lze pokud je zadaný název a vybraný soubror" class="imc-button u-pull-right attach-add-new"><i class="material-icons md-24 imc-AlignIconToButton">add_circle</i>Přidat přílohu</button>
+                <div style="display:inline-block;" class="u-pull-right">
+                  <button disabled type="button" title="Přidat přílohu lze pokud je zadaný název a vybraný soubror" class="imc-button pbvote-to-bottom attach-add-new"><i class="material-icons md-24 imc-AlignIconToButton">add_circle</i>Přidat přílohu</button>
+                </div>
               </div>
           </div>';
       } else {

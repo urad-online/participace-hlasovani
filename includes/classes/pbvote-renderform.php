@@ -127,7 +127,7 @@ class PbVote_RenderForm {
     {
         return array(
                 'reason', 'locality',
-                'parcel', 'cost','budget_increase',
+                'parcel', 'cost',
                 'attachment',
             );
     }
@@ -140,14 +140,13 @@ class PbVote_RenderForm {
                 // array('type' => 'field', 'data' => array( 'field' => 'category', 'columns' => 6)),
             )),
             array( 'type' => 'field', 'data' => array( 'field' => 'content', 'columns' => 0)),
+            array( 'type' => 'field', 'data' => array( 'field' => 'photo', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'reason', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'locality', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'postAddress', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'parcel', 'columns' => 0)),
-            array( 'type' => 'field', 'data' => array( 'field' => 'photo', 'columns' => 0)),
             // array( 'type' => 'field', 'data' => array( 'field' => 'map', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'cost', 'columns' => 0)),
-            array( 'type' => 'field', 'data' => array( 'field' => 'budget_increase', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'attachment', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'org_name', 'columns' => 0)),
             array( 'type' => 'row', 'data' => array(
@@ -263,8 +262,8 @@ class PbVote_RenderForm {
                 'AddBtnLabel'   => 'Vložit',
                 'DelBtnLabel'   => 'Smazat',
                 'help'          => 'Povolené typy příloh: gif, png, jpg, jpeg, pdf',
-                'show_mtbx'     => true,
-                'show_form'     => true,
+                'show_mtbx'     => false,
+                'show_form'     => false,
                 'js_rules'      => array(
                     'rules' => 'is_file_type[gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG,pdf,PDF]',
                     'depends' => 'pb_project_js_validate_required',
@@ -301,8 +300,8 @@ class PbVote_RenderForm {
                 // 'title'     => "budget_increase",
                 'mandatory' => true,
                 'columns'   => 6,
-                'show_mtbx'   => true,
-                'show_form'   => true,
+                'show_mtbx'   => false,
+                'show_form'   => false,
                 'js_rules'    => array(
                     'rules'   => 'required',
                     'depends' => 'pb_project_js_validate_required',

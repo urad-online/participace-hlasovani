@@ -268,15 +268,6 @@ class PbVote_ProjectInsert
         					return result;
         				}).setMessage('pb_project_js_validate_locality', 'Vyberte alespoň jednu lokalitu, které se návrh týká.');
 
-                jQuery(document).on("change", ".pbvote-CheckboxGroup-member", function(){
-                  var result = [];
-                  var el_to_store_value = jQuery(this).closest("div.pbvote-CheckboxGroup-container").find('input[type="hidden"]').attr('id');
-                  jQuery(this).closest("div.pbvote-CheckboxGroup-container").find(".pbvote-CheckboxGroup-member:checked").each(function(){
-                    result.push(jQuery(this).attr('id'));
-                  });
-                  jQuery("#"+el_to_store_value).val( JSON.stringify(result) );
-                });
-
               });
           })();
 

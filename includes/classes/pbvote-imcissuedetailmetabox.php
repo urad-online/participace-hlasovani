@@ -180,14 +180,21 @@ class PbVote_ImcIssueDetailMetabox {
             break;
           case 'checkboxgroup':
           case 'budgettable':
-          case 'attachment':
             if (!empty($new)) {
-              $new = json_decode(esc_attr(sanitize_text_field(stripslashes( $new ))));
+              $new = json_decode(sanitize_text_field(stripslashes( $new )));
             } else {
               $new = array();
             }
             break;
-
+          case 'attachment':
+              if (!empty($new)) {
+                $new = json_decode(sanitize_text_field(stripslashes( $new )));
+              } else {
+                $new = array();
+              }
+              $save_attach = new PbVote_SaveDataAttachment( $post_id, $new);
+              $new = $save_attach->update_attachments();
+              break;
           default:
             $new = esc_attr(sanitize_text_field( $new));
             break;
