@@ -265,19 +265,11 @@ if(pbvote_user_can_edit($given_issue_id, $user->ID)) { ?>
 							};
 							return result;
 						}).setMessage('pb_project_js_validate_locality', 'Vyberte alespoň jednu lokalitu, které se návrh týká.');
-						
+
 						re_save_hidden_locality();
         });
     })();
-		function re_save_hidden_locality()
-		{
-			var result = [];
-			var el_to_store_value = jQuery("div.pbvote-CheckboxGroup-container").find('input[type="hidden"]').attr('id');
-			jQuery("#"+el_to_store_value).closest("div.pbvote-CheckboxGroup-container").find(".pbvote-CheckboxGroup-member:checked").each(function(){
-				result.push(jQuery(this).attr('id'));
-			});
-			jQuery("#"+el_to_store_value).val( JSON.stringify(result) );
-		}
+		
     function imcInitMap() {
         "use strict";
 

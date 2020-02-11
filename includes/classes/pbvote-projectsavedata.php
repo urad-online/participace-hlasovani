@@ -45,9 +45,10 @@ class PbVote_ProjectSaveData {
       	$this->post_id = wp_insert_post( $this->post_data, true);
 
       	if ( $this->post_id && ( ! is_wp_error($this->post_id)) ) {
-        		// $this->insert_attachments( $_FILES );
-            $this->post_data['meta_input']['pb_project_attachment'] = $temp_attachment;
-            $this->update_attachments_new( $_FILES );
+
+            $save_attach = new PbVote_SaveDataAttachment( $this->post_id, $temp_attachment);
+            $this->post_data['meta_input']['pb_project_attachment'] = $save_attach->update_attachments();
+
             // list of attachments is updated after file insert
             update_post_meta($this->post_id, 'pb_project_attachment', $this->post_data['meta_input']['pb_project_attachment']);
             $this->add_link_to_voting( $voting_id );
@@ -116,9 +117,11 @@ class PbVote_ProjectSaveData {
               return $post_id;
       	}
 
-
         $this->get_metadata_from_request( $_POST, true);
-        $this->update_attachments_new( $_FILES );
+
+        $save_attach = new PbVote_SaveDataAttachment( $this->post_id, $this->post_data['meta_input']['pb_project_attachment']);
+        $this->post_data['meta_input']['pb_project_attachment'] = $save_attach->update_attachments();
+
       	$this->update_postmeta();
         $this->project_update_image();
 
@@ -192,161 +195,6 @@ class PbVote_ProjectSaveData {
         if ( $imageScenario === 2) {
             $this->project_insert_image();
         }
-    }
-
-    /*
-    * save all file attachment for new project
-    */
-    private function insert_attachments( $files)
-    {
-        if (! empty( $this->post_id)) {
-            $this->insert_attachment_1($files['pb_project_dokumentace1'],   'pb_project_dokumentace1');
-            $this->insert_attachment_1($files['pb_project_dokumentace2'],   'pb_project_dokumentace2');
-            $this->insert_attachment_1($files['pb_project_dokumentace3'],   'pb_project_dokumentace3');
-        }
-    }
-
-    private function insert_attachment_1 ($file, $attachment_type = '' )
-    {
-        if (( $file['error'] == '0') && (! empty($attachment_type)) &&
-                ( $this->check_file_type($file['name'],$attachment_type))) {
-            $attachment_id = pbvote_upload_img( $file, $this->post_id, $this->post_id . '-' . $attachment_type, null);
-            if ( $attachment_id) {
-              $url = wp_get_attachment_url( $attachment_id);
-              update_post_meta( $this->post_id, $attachment_type, $url);
-            }
-            return $attachment_id;
-        } elseif ($this->post_id) {
-            delete_post_meta( $this->post_id, $attachment_type );
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /*
-    * save all file attachment updated project
-    */
-    private function update_attachments( $files )
-    {
-        if (! $this->post_id) {
-            return false;
-        }
-
-        $list = array(
-            // 'pb_project_podporovatele',
-            // 'pb_project_mapa',
-            // 'pb_project_naklady',
-            'pb_project_dokumentace1',
-            'pb_project_dokumentace2',
-            'pb_project_dokumentace3',
-        );
-        foreach ($list as $key) {
-            $this->update_attachment_1($files[ $key ], $key, $_POST[ $key.'Name']);
-        }
-    }
-    private function update_attachments_new( $files )
-    {
-        if (! $this->post_id) {
-            return false;
-        }
-        $list_new = array();
-        foreach ($this->post_data['meta_input']['pb_project_attachment'] as $value) {
-            $item = array(
-              "id"    => $value,
-              "title" => esc_attr(sanitize_text_field( $_POST['attach_table_title_input_'.$value])),
-            );
-            if (! empty( $files['attach_table_file_input_'.$value])) {
-              $item['file'] = 'attach_table_file_input_'.$value ;
-            } else {
-              $item['file'] = '';
-            }
-            array_push( $list_new, $item );
-        }
-
-        $list_old = get_post_meta($this->post_id,'pb_project_attachment', true );
-        if (empty($list_old)) {
-            $list_old = array();
-        }
-
-        $list_final = array();
-        foreach ($list_new as $item ) {
-            $item_id = intval( $item['id']);
-            if( ! (array_search ( $item_id , $list_old) === false)) {
-                $this->update_attachment_title( $item);
-            } else {
-                if (! empty($item['file'])) {
-                    $item_id = $this->insert_attachment_1_new( $files[ $item['file'] ], $item);
-                }
-            }
-            array_push( $list_final, $item_id );
-        }
-        $this->post_data['meta_input']['pb_project_attachment'] = $list_final;
-    }
-
-
-    private function update_attachment_1( $file, $attachment_type, $meta_value )
-    {
-        if (( $file['error'] == '0') && (! empty($attachment_type))  &&
-                ( $this->check_file_type($file['name'],$attachment_type)) ) {
-            $attachment_id = imc_upload_img( $file, $this->post_id, $this->post_id . '-' . $attachment_type, null);
-            if ( $attachment_id) {
-                $url = wp_get_attachment_url( $attachment_id);
-                update_post_meta( $this->post_id, $attachment_type, $url);
-            }
-            return $attachment_id;
-        } elseif ( empty( $meta_value) ) {
-            delete_post_meta( $this->post_id, $attachment_type );
-            return true;
-        } else {
-            return false;
-        }
-    }
-    private function insert_attachment_1_new( $file, $meta_values )
-    {
-        if (( $file['error'] == '0') && (! empty($meta_values['title']))  &&
-                ( $this->check_file_type($file['name'],'pb_project_attachment')) ) {
-            $attachment_id = pbvote_upload_img( $file, $this->post_id, $meta_values['title'], null);
-            if ( $attachment_id) {
-              return $attachment_id;
-            } else {
-              return "";
-            }
-        }
-    }
-    private function update_attachment_title( $item)
-    {
-      $old_title = get_the_title( $item['id']);
-      if ($old_title != $item['title']) {
-          $post_data = array(
-            		'ID' => $item['id'],
-                'post_title' => esc_attr(strip_tags($item['title'])),
-          );
-        	$post_id = wp_update_post( $post_data, true );
-      }
-    }
-    /*
-    * check allowed file types
-    */
-    private function check_file_type( $file, $attach_type)
-    {
-        switch ($attach_type) {
-            case 'featured_image':
-            $allowed_file_type = PbVote_RenderForm::get_file_type_image();
-            break;
-
-            case 'pb_project_mapa':;
-            case 'pb_project_podporovatele':
-            case 'pb_project_attachment':
-            $allowed_file_type = PbVote_RenderForm::get_file_type_image().PbVote_RenderForm::get_file_type_scan();
-            break;
-
-            default:
-            $allowed_file_type = PbVote_RenderForm::get_file_type_image().PbVote_RenderForm::get_file_type_scan().PbVote_RenderForm::get_file_type_docs();
-            break;
-        }
-        $type = wp_check_filetype(basename($file)) ;
-        return  strpos( $allowed_file_type, $type['ext']);
     }
 
     /*

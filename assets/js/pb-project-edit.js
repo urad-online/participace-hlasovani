@@ -96,7 +96,17 @@
       jQuery(container).find('#pbVoteAttachTblInputFile').val("");
 
     }
-
+    function re_save_hidden_locality()
+    {
+      var result = [];
+      var el_to_store_value = jQuery("div.pbvote-CheckboxGroup-container").find('input[type="hidden"]').attr('id');
+      if (el_to_store_value) {
+        jQuery("#"+el_to_store_value).closest("div.pbvote-CheckboxGroup-container").find(".pbvote-CheckboxGroup-member:checked").each(function(){
+          result.push(jQuery(this).attr('id'));
+        });
+        jQuery("#"+el_to_store_value).val( JSON.stringify(result) );
+      }
+    }
 jQuery(document).ready(function(){
     jQuery(document).on("click", "a.attach-delete", function(){
       var delete_value = jQuery(this).closest("tr").find('#attach_table_row_id').val();
@@ -146,7 +156,7 @@ jQuery(document).ready(function(){
       });
       jQuery("#"+el_to_store_value).val( JSON.stringify(result) );
     });
-
+    re_save_hidden_locality();
 });
 
 jQuery( setSubmitBtnLabel );
