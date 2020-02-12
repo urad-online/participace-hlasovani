@@ -5,7 +5,7 @@ class PbVote_ArchiveDisplayFilterData
     public $taxo_category = "voting_category";
     public $taxo_period   = "voting-period";
     public $post_type     = PB_VOTING_POST_TYPE;
-    public $query_args, $paged, $user_params, $select_statuses;
+    public $query_args, $query_args1, $query_args2, $query_param, $paged, $user_params, $select_statuses;
     private $ids_in =  array();
 
     public function __construct( $params)
@@ -15,20 +15,31 @@ class PbVote_ArchiveDisplayFilterData
         $this->set_query_args_page_number();
 
         //Basic query calls depending the user
-        if ( is_user_logged_in() && current_user_can( 'administrator' ) ){ //not user
+        if ( is_user_logged_in()){ //not user
             // $custom_query_args = imcLoadIssuesForAdmins($paged,$pbvote_imported_ppage,$pbvote_imported_sstatus,$pbvote_imported_scategory);
-            $this->select_statuses = array('publish', 'pending', 'draft');
-            // $this->query_args = pbvLoadIssuesForGuests($voting_view_filters->get_filter_params(), $paged);
+            if ( ! current_user_can( 'administrator' ) ) {
+              $this->select_statuses = array('publish');
+              $this->select_statuses = array('publish', 'pending', 'draft');
+              $this->query_args2 = array(
+                'post_type' => $this->post_type,
+                'post_status' => array('pending', 'draft'),
+                'author' => get_current_user_id(),
+              );
+            } else {
+              $this->select_statuses = array('publish', 'pending', 'draft');
+            }
         } else {
             $this->select_statuses = array('publish');
             // $this->query_args = pbvLoadIssuesForGuests($voting_view_filters->get_filter_params(), $paged);
         }
 
-        $this->query_args = array(
-            'post_type' => $this->post_type,
-            'post_status' => $this->select_statuses,
+        $this->query_param = array(
             'paged' => $this->paged,
             'posts_per_page' => $this->user_params['ppage'],
+        );
+        $this->query_args1 = array(
+            'post_type' => $this->post_type,
+            'post_status' => $this->select_statuses,
         );
 
         $this->set_query_args_keyword();
@@ -194,7 +205,10 @@ class PbVote_ArchiveDisplayFilterData
 
     public function  get_query_data()
     {
-        $pom = new WP_Query( $this->query_args );
+        $final_query = array_merge($this->query_param, $this->query_args1, $this->query_args);
+        // $final_query['args'] = array_merge($this->query_args1, $this->query_args);
+        // $pom = new WP_Query( $this->query_args );
+        $pom = new WP_Query( $final_query );
         // $this->save_to_session( $pom);
         return $pom;
     }

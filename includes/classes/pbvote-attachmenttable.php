@@ -153,7 +153,7 @@ class PbVote_AttachmentTable
           '<div class="attach-table-new-container">
               <div class="imc-row">
                 <div style="display:inline-block;min-width:40%;">
-                    <div class pbvote-attach-table-label><h4>'.$this->labels['input_title'].'</h4></div>
+                    <div class="pbvote-attach-table-label"><h4>'.$this->labels['input_title'].'</h4></div>
                     <div><input autocomplete="off" placeholder="Zadejte název přílohy" type="text" maxlength="80" style="min-width:350px;" id="'.$this->id_prefix.'Title" class="imc-InputStyle attach-input-add-mandatory" value=""></input></div>
                 </div>
                 <div style="display:inline-block;">
