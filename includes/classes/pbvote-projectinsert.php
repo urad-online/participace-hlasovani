@@ -253,9 +253,10 @@ class PbVote_ProjectInsert
 
                   if( Array.isArray(pom)) {
                       if ( pom.length > 0) {
-                        total = Number( jQuery('#total_budget_sum').html());
-                        console.log(total);
-                        result = false;
+                        total = Math.round(calculate_total_sum()*1.1);
+                        if (total >=100000 && total <= 2000000) {
+    											result = true;
+    										}
                       }
                   };
         					return result;

@@ -256,7 +256,7 @@ function calculate_total_sum()
       sum += Number( item[value_to_total_sum_index]);
     })
   }
-  return sum;
+  return 1.1*sum;
 }
 function update_total_sum( sum)
 {
