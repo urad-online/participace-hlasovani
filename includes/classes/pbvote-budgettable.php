@@ -1,7 +1,7 @@
 <?php
 class PbVote_BudgetTable
 {
-    private $budget_item_type = array("Příprava", "Realizace", "Údržba");
+    private $budget_item_type = array("Příprava", "Realizace");
     private $integer_regexp = '/^[0-9,.]+$/';
     private $vat_values = array( 21, 5, 0 );
     private $table_def = array(
@@ -75,7 +75,8 @@ class PbVote_BudgetTable
     {
       $output =  '<div class="table-title row-total"><div class="imc-row">';
       $output .= '<div class="imc-grid-8 imc-columns">';
-      $output .=   '<h4><span class="keep-space">Celková částka :   </span><span id="total_budget_sum" name="total_budget_sum">'.number_format($this->total_sum,0).'</span></h4>';
+      $output .=   '<h4><span class="keep-space">Celková částka včetně 10% rezervy:   </span><span id="total_budget_sum" name="total_budget_sum">'.number_format($this->total_sum,0).'</span><span> Kč </span></h4>';
+
       $output .= '</div>';
       if ($this->allow_edit) {
         $output .= '<div class="imc-grid-4 imc-columns">';
