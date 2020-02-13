@@ -75,16 +75,11 @@ class PbVote_BudgetTable
     private function render_add_button()
     {
       $output =  '<div class="table-title row-total"><div class="imc-row">';
-<<<<<<< HEAD
       $output .= '<div style="display:inline-block;">';
       $output .= '<h4><span class="keep-space">Celková částka :   </span><span id="total_budget_sum" class="keep-space">'.number_format($this->total_sum,0).' </span>';
       $output .= '<span class="keep-space"> Kč + rezerva '.($this->total_buffer*100).'% = </span>';
       $output .= '<span class="keep-space" id="total_budget_sum_with_buffer">'.number_format($this->total_sum*(1+$this->total_buffer),0).'</span><span class="keep-space"> Kč</span></h4>';
-=======
-      $output .= '<div class="imc-grid-8 imc-columns">';
-      $output .=   '<h4><span class="keep-space">Celková částka včetně 10% rezervy:   </span><span id="total_budget_sum" name="total_budget_sum">'.number_format($this->total_sum,0).'</span><span> Kč </span></h4>';
-
->>>>>>> c37de1ae246545203c2d6c30c7dfc614199a3435
+      $output .=   '<h4>';
       $output .= '</div>';
       if ($this->allow_edit) {
         $output .= '<div style="display:inline-block;" class="u-pull-right">';

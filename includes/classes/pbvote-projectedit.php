@@ -112,7 +112,9 @@ class PbVote_ProjectEdit
                 $this->render_checkbox( $order, $field, $value, $help);
                 break;
             case 'checkboxgroup':
-                $this->render_checkboxgroup( $order, $field, $value, $help);
+                $field_render = new PbVote_RenderCheckboxGroup( $field, $value);
+                echo $field_render->render_field($order, $help);
+                // $this->render_checkboxgroup( $order, $field, $value, $help);
                 break;
             case 'textarea':
                 $this->render_textarea( $order, $field, $value, $help);
@@ -143,6 +145,11 @@ class PbVote_ProjectEdit
         } else {
             $mandatory = $this->render_mandatory( false);
         }
+        if ( !empty( $input['attribute']) && $input['attribute'] ) {
+            $attr = $input['attribute'] ;
+        } else {
+            $attr = "";
+        }
         if ( ! empty($input['rows'])) {
             $rows = $input['rows'];
         } else {
@@ -151,7 +158,7 @@ class PbVote_ProjectEdit
 
         // $output = '<div class="imc-row">
         $output = '<h3 class="u-pull-left imc-SectionTitleTextStyle">%s%s %s'.$this->render_tooltip( $help ).'</h3>
-            <textarea placeholder="%s" rows="%d"
+            <textarea placeholder="%s" %s rows="%d"
                  class="imc-InputStyle" name="%s"
                  id="%s">%s</textarea>
             <label id="%sLabel" class="imc-ReportFormErrorLabelStyle imc-TextColorPrimary"></label>';
@@ -164,6 +171,7 @@ class PbVote_ProjectEdit
                 $input['label'],
                 $mandatory,
                 ( empty( $input['placeholder'])) ? "" : $input['placeholder'],
+                $attr,
                 $rows,
                 $input['id'],
                 $input['id'],

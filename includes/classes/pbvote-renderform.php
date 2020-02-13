@@ -175,7 +175,7 @@ class PbVote_RenderForm {
                 'show_mtbx' => false,
                 'show_form' => true,
                 'js_rules'  => array(
-                    'rules' => 'required|min_length[5]|max_length[255]',),
+                    'rules' => 'required|min_length[5]|max_length[80]',),
             ),
             'category' => array(
                 'label'     => 'Kategorie',
@@ -192,8 +192,9 @@ class PbVote_RenderForm {
                 'id'        => 'postContent',
                 'type'      => 'textarea',
                 'mandatory' => true,
-                'placeholder' => 'Vyplňte popis svého návrhu, odstavce pro současný a zamýšlený stav',
+                'placeholder' => 'Vyplňte popis svého návrhu, odstavce pro současný a zamýšlený stav. Max 500 znaků',
                 'help'      => 'Odstavce pro současný a zamýšlený stav',
+                'attribute' => 'maxlength="500"',
                 'show_mtbx' => false,
                 'show_form' => true,
                 'js_rules'  => array(
