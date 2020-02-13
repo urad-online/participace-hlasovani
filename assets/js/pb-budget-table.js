@@ -125,7 +125,7 @@ function render_rows (){
         new_row += gen_action_buttons() + "</tr>";
         jQuery("table").append(new_row);
     });
-    jQuery("#total_budget_sum").html( Number(total_sum).toLocaleString());
+    update_total_sum( Number(total_sum));
     jQuery("#budget_data").val( JSON.stringify(budget_data) );
 }
 
@@ -209,14 +209,14 @@ function udate_data_in_list( values, row_index)
   } else {
     budget_data[row_index] = values;
   }
-  jQuery("#total_budget_sum").html( calculate_total_sum().toLocaleString());
+  update_total_sum( calculate_total_sum());
   jQuery("#pb_project_naklady").val( JSON.stringify(budget_data) );
 }
 
 function delete_data_from_list( row_index)
 {
   budget_data.splice( row_index, 1);
-  jQuery("#total_budget_sum").html( calculate_total_sum().toLocaleString());
+  update_total_sum( calculate_total_sum());
   jQuery("#pb_project_naklady").val( JSON.stringify(budget_data) );
 }
 
@@ -257,4 +257,11 @@ function calculate_total_sum()
     })
   }
   return sum;
+}
+function update_total_sum( sum)
+{
+  var sum_incl_buffer = Math.round(sum * 1.1);
+  jQuery("#total_budget_sum").html( sum.toLocaleString());
+  jQuery("#total_budget_sum_with_buffer").html( sum_incl_buffer.toLocaleString());
+
 }

@@ -288,7 +288,7 @@ class PbVote_RenderForm {
                 'show_mtbx' => true,
                 'show_form' => true,
                 'js_rules'  => array(
-                  'rules'   => 'required|!callback_pb_project_js_validate_array',
+                  'rules'   => 'required|!callback_pb_project_js_validate_budget',
                   'depends' => 'pb_project_js_validate_required',
                 ),
             ),

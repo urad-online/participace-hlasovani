@@ -246,16 +246,20 @@ class PbVote_ProjectInsert
     					 plati pro pole s pravidlem "depends" */
     					return jQuery('#pb_project_edit_completed').prop('checked');
     				});
-        				validator.registerCallback( 'pb_project_js_validate_array', function(value){
+        				validator.registerCallback( 'pb_project_js_validate_budget', function(value){
                   var result = false;
+                  var total = 0;
                   var pom = Array.from(JSON.parse( value ));
+
                   if( Array.isArray(pom)) {
                       if ( pom.length > 0) {
-                        result = true;
+                        total = Number( jQuery('#total_budget_sum').html());
+                        console.log(total);
+                        result = false;
                       }
                   };
         					return result;
-        				}).setMessage('pb_project_js_validate_array', 'Tabulka s předpokládanými náklady musí mít alespoň jednu položku.');;
+        				}).setMessage('pb_project_js_validate_budget', 'Celková částka předpokládaných nákladů musí být mezi 100tis až 2 mil Kč.');;
 
                 validator.registerCallback( 'pb_project_js_validate_locality', function(value){
                   var result = false;

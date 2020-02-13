@@ -14,6 +14,7 @@ class PbVote_BudgetTable
     );
     private $budget_data = array(array('Příprava', 'Vypracování projektu', '1', '15000', '21', '15000'), array('Realizace', 'Dozor na stavbě', '1', '5000', '21', '5000'));
     private $total_sum = 0;
+    private $total_buffer = 0.10;
 
     public function __construct( $allow_edit = true, $data )
     {
@@ -74,12 +75,15 @@ class PbVote_BudgetTable
     private function render_add_button()
     {
       $output =  '<div class="table-title row-total"><div class="imc-row">';
-      $output .= '<div class="imc-grid-8 imc-columns">';
-      $output .=   '<h4><span class="keep-space">Celková částka :   </span><span id="total_budget_sum" name="total_budget_sum">'.number_format($this->total_sum,0).'</span></h4>';
+      $output .= '<div style="display:inline-block;">';
+      $output .= '<h4><span class="keep-space">Celková částka :   </span><span id="total_budget_sum" class="keep-space">'.number_format($this->total_sum,0).' </span>';
+      $output .= '<span class="keep-space"> Kč + rezerva '.($this->total_buffer*100).'% = </span>';
+      $output .= '<span class="keep-space" id="total_budget_sum_with_buffer">'.number_format($this->total_sum*(1+$this->total_buffer),0).'</span><span class="keep-space"> Kč</span></h4>';
       $output .= '</div>';
       if ($this->allow_edit) {
-        $output .= '<div class="imc-grid-4 imc-columns">';
-        $output .= '<button type="button" class="imc-button u-pull-right add-new"><i class="material-icons md-24 imc-AlignIconToButton">add_circle</i>Přidat položku</button></div>';
+        $output .= '<div style="display:inline-block;" class="u-pull-right">';
+        $output .= '<button type="button" class="imc-button u-pull-right add-new"><i class="material-icons md-24 imc-AlignIconToButton">add_circle</i>Přidat položku</button>';
+        $output .= '</div>';
       }
       $output .= '</div></div>';
       return $output;
