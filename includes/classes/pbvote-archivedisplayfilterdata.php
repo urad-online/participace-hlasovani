@@ -55,7 +55,7 @@ class PbVote_ArchiveDisplayFilterData
             'paged' => $this->paged,
             'posts_per_page' => $this->user_params['ppage'],
         );
-
+        $this->query_args = array();
         $this->set_query_args_keyword();
         $this->set_query_args_category();
         $this->set_query_args_status();
@@ -227,7 +227,7 @@ class PbVote_ArchiveDisplayFilterData
         $this->query_ids();
         $final_query = array_merge(
             $this->query_param,
-            array('post__in' => $this->post_ids_in),
+            array('post__in' => $this->post_ids_in)
         );
         $pom = new WP_Query( $final_query );
         // $this->save_to_session( $pom);
@@ -268,8 +268,8 @@ class PbVote_ArchiveDisplayFilterData
       foreach ($this->query_arg_status as $query_status) {
         $sub_query = array_merge( array('fields' => 'ids',), $query_status, $this->query_args);
         $ids = get_posts($sub_query);
-        if ($ids && is_array($ids)) {
-          $id_list = array_merge( $id_list, $ids);
+        if (! empty($ids) ) {
+          $id_list = array_merge( $id_list, (array) $ids);
         }
       }
       $this->post_ids_in = $id_list;
