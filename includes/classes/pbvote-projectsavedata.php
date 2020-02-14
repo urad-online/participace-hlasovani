@@ -9,6 +9,8 @@ class PbVote_ProjectSaveData {
     */
     public function project_insert( $voting_id )
     {
+        $parent_voting_period = get_parent_taxo_slug($voting_id);
+
         if (! empty( $_POST['my_custom_taxonomy']) ) {
           $imccategory_id = esc_attr(strip_tags($_POST['my_custom_taxonomy']));
           $tax_input['imccategory'] = $imccategory_id;
@@ -16,10 +18,6 @@ class PbVote_ProjectSaveData {
           $all_categories_terms = get_terms( 'imccategory' , array( 'hide_empty' => 0 , 'orderby' => 'id', 'order' => 'ASC') );
           $imccategory_id = $all_categories_terms[0]->term_id;
           $tax_input['imccategory'] = $imccategory_id;
-        }
-        $voting_period_slug = get_parent_taxo_slug($voting_id);
-        if (!empty($voting_period_slug)) {
-          $tax_input['voting-period'] = $voting_period_slug;
         }
 
     	// Check options if the status of new issue is pending or publish
@@ -45,6 +43,10 @@ class PbVote_ProjectSaveData {
       	$this->post_id = wp_insert_post( $this->post_data, true);
 
       	if ( $this->post_id && ( ! is_wp_error($this->post_id)) ) {
+            // create link to parent "hlasovani"
+            if (!empty($parent_voting_period)) {
+              wp_set_object_terms($this->post_id, $parent_voting_period, 'voting-period');
+            }
 
             $save_attach = new PbVote_SaveDataAttachment( $this->post_id, $temp_attachment);
             $this->post_data['meta_input']['pb_project_attachment'] = $save_attach->update_attachments();
@@ -52,7 +54,6 @@ class PbVote_ProjectSaveData {
             // list of attachments is updated after file insert
             update_post_meta($this->post_id, 'pb_project_attachment', $this->post_data['meta_input']['pb_project_attachment']);
             $this->add_link_to_voting( $voting_id );
-
           	// Choose the imcstatus with smaller id
           	// zmenit order by imc_term_order
 
