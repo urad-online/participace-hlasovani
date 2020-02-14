@@ -1,53 +1,68 @@
 <?php
 class PbVote_ArchiveDisplayFilterData
 {
-    public $taxo_status   = "voting_status";
-    public $taxo_category = "voting_category";
-    public $taxo_period   = "voting-period";
-    public $post_type     = PB_VOTING_POST_TYPE;
-    public $query_args, $query_args1, $query_args2, $query_param, $paged, $user_params, $select_statuses;
-    private $ids_in =  array();
+    protected $taxo_status   = "voting_status";
+    protected $taxo_category = "voting_category";
+    protected $taxo_period   = "voting-period";
+    protected $post_type     = PB_VOTING_POST_TYPE;
+    protected $query_args, $query_param, $post_ids_in, $paged, $user_params, $select_statuses;
+    protected $ids_in =  array();
 
     public function __construct( $params)
     {
         global $wp_query;
         $this->user_params = $params;
         $this->set_query_args_page_number();
+        $this->query_arg_status = array();
 
         //Basic query calls depending the user
         if ( is_user_logged_in()){ //not user
             // $custom_query_args = imcLoadIssuesForAdmins($paged,$pbvote_imported_ppage,$pbvote_imported_sstatus,$pbvote_imported_scategory);
-            if ( ! current_user_can( 'administrator' ) ) {
-              $this->select_statuses = array('publish');
-              $this->select_statuses = array('publish', 'pending', 'draft');
-              $this->query_args2 = array(
+            if ( current_user_can( 'administrator' ) ) {
+              $this->query_arg_status[] = array(
+                'post_type' => $this->post_type,
+                'post_status' => array('publish', 'pending', 'draft'),
+                'paged' => 1,
+                'posts_per_page' => -1,
+              );
+            } else {
+              $this->query_arg_status[] = array(
+                'post_type' => $this->post_type,
+                'post_status' => array('publish'),
+                'paged' => 1,
+                'posts_per_page' => -1,
+              );
+              $this->query_arg_status[] = array(
                 'post_type' => $this->post_type,
                 'post_status' => array('pending', 'draft'),
                 'author' => get_current_user_id(),
+                'paged' => 1,
+                'posts_per_page' => -1,
               );
-            } else {
-              $this->select_statuses = array('publish', 'pending', 'draft');
             }
         } else {
-            $this->select_statuses = array('publish');
-            // $this->query_args = pbvLoadIssuesForGuests($voting_view_filters->get_filter_params(), $paged);
+          $this->query_arg_status[] = array(
+            'post_type' => $this->post_type,
+            'post_status' => array('publish'),
+            'paged' => 1,
+            'posts_per_page' => -1,
+          );
         }
 
         $this->query_param = array(
+            'post_type' => $this->post_type,
+            'post_status' => array('publish', 'pending', 'draft'),
             'paged' => $this->paged,
             'posts_per_page' => $this->user_params['ppage'],
-        );
-        $this->query_args1 = array(
-            'post_type' => $this->post_type,
-            'post_status' => $this->select_statuses,
         );
 
         $this->set_query_args_keyword();
         $this->set_query_args_category();
         $this->set_query_args_status();
-        $this->set_query_args_period();
         $this->set_query_args_order();
-        $this->set_query_args_voting();
+        $this->set_query_args_period_by_voting_ids();
+        // $this->set_query_args_voting();
+        $this->set_query_args_period();
         $this->set_query_args_custom();
     }
 
@@ -85,10 +100,14 @@ class PbVote_ArchiveDisplayFilterData
         }
     }
 
-    private function set_query_add_taxo( $taxonomy, $value, $field = "term_taxonomy_id")
+    protected function set_query_add_taxo( $taxonomy, $value, $field = "term_taxonomy_id")
     {
         if ((!empty( $value)) && ( $value !== 'all')) {
-            $taxo_values = explode(",", $value);
+            if ( is_array($value)) {
+              $taxo_values = $value;
+            } else {
+              $taxo_values = explode(",", $value);
+            }
             if ( empty( $this->query_args['tax_query'])) {
                 $this->query_args['tax_query'] = array(
                     'relation' => 'AND',
@@ -117,12 +136,12 @@ class PbVote_ArchiveDisplayFilterData
     {
         if(! empty( $this->user_params['sorder'] )) {
             if ( $this->user_params['sorder'] == '1') {
-                $this->query_args['orderby'] = 'date';
-                $this->query_args['order']= 'ASC';
+                $this->query_param['orderby'] = 'date';
+                $this->query_param['order']= 'ASC';
             }else{
-                $this->query_args['meta_key'] = 'imc_likes';
-                $this->query_args['orderby'] = 'meta_value_num';
-                $this->query_args['order']= 'DESC';
+                $this->query_param['meta_key'] = 'imc_likes';
+                $this->query_param['orderby'] = 'meta_value_num';
+                $this->query_param['order']= 'DESC';
             }
         }
 
@@ -205,9 +224,11 @@ class PbVote_ArchiveDisplayFilterData
 
     public function  get_query_data()
     {
-        $final_query = array_merge($this->query_param, $this->query_args1, $this->query_args);
-        // $final_query['args'] = array_merge($this->query_args1, $this->query_args);
-        // $pom = new WP_Query( $this->query_args );
+        $this->query_ids();
+        $final_query = array_merge(
+            $this->query_param,
+            array('post__in' => $this->post_ids_in),
+        );
         $pom = new WP_Query( $final_query );
         // $this->save_to_session( $pom);
         return $pom;
@@ -239,6 +260,19 @@ class PbVote_ArchiveDisplayFilterData
       } else if ( get_query_var( 'page' ) ) {
         $this->paged = get_query_var('page'); // On a "static" page.
       }
+    }
+
+    protected function query_ids()
+    {
+      $id_list = array();
+      foreach ($this->query_arg_status as $query_status) {
+        $sub_query = array_merge( array('fields' => 'ids',), $query_status, $this->query_args);
+        $ids = get_posts($sub_query);
+        if ($ids && is_array($ids)) {
+          $id_list = array_merge( $id_list, $ids);
+        }
+      }
+      $this->post_ids_in = $id_list;
     }
 }
 //

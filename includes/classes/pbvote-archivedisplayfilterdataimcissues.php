@@ -23,24 +23,23 @@ class PbVote_ArchiveDisplayFilterDataImcIssues extends PbVote_ArchiveDisplayFilt
           $this->query_args['post__in'] = $posts_in;
         }
     }
-
-    public function set_query_args_custom_1()
+    public function set_query_args_period_by_voting_ids()
     {
-        $this->user_params['voting_id'] = "1248,1212,1267";
-        $this->user_params['voting_id'] = "1248";
-        $imc_items = array();
-        if(! empty( $this->user_params['voting_id'] )) {
-            $voting_ids = explode(",",  $this->user_params['voting_id']);
+        $taxo_items = array();
+        if(! empty( $this->user_params['svoting'] )) {
+            $voting_ids = explode(",",  $this->user_params['svoting']);
             foreach ($voting_ids as $post_id) {
-                $items =  get_post_meta( $post_id, "_pods_items", true);
+                $items =  get_the_terms( $post_id, $this->taxo_period);
                 if (!empty($items)) {
-                    $imc_items = array_merge( $imc_items, (array) $items );
+                    $taxo_items = array_merge( $taxo_items, (array) $items[0]->term_id );
                 }
             }
         }
-        $posts_in = array_unique($imc_items);
-        if (count($posts_in) > 0) {
-            $this->query_args['post__in'] = $posts_in;
+
+        $taxo_in = array_unique($taxo_items);
+        if (count($taxo_in) > 0) {
+          $this->set_query_add_taxo( $this->taxo_period, $taxo_in);
         }
     }
+
 }
