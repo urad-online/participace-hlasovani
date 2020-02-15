@@ -108,3 +108,7 @@ function pb_vote_deactivate()
     file_put_contents(PB_VOTE_PATH.'/pb_vote_plugin_deactivate.log', $message);
 
 }
+function pbdel_metabox( $screen = null) {
+  remove_meta_box( 'imcstatusdiv', 'imc_issues', 'side' );
+}
+// add_action( 'add_meta_boxes', 'pbdel_metabox', 100);

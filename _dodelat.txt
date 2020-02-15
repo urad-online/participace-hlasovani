@@ -1,5 +1,0 @@
-Potreba udelat:
-1. Kontrola pripocteni 10% na rezervu - vratit checkbox
-2. 
-3. zkusit resit prilohy podobne jako tabulku s rozpoctem - prodt zaznam se souborem a popisem prilohy
-4.

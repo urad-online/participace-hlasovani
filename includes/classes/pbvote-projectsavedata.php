@@ -30,7 +30,8 @@ class PbVote_ProjectSaveData {
       		'post_title' => esc_attr(strip_tags($_POST['postTitle'])),
       		'post_content' => esc_attr(strip_tags($_POST['postContent'])),
       		'post_type'   => 'imc_issues',
-      		'post_status' => ($moderateOption == 2) ? 'publish' : 'pending',
+      		// 'post_status' => ($moderateOption == 2) ? 'publish' : 'pending',
+      		'post_status' => 'pending',
       		'post_name'   => sanitize_title( $_POST['postTitle']),
       		'tax_input'   => $tax_input,
       	);
