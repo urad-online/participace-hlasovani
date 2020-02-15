@@ -413,3 +413,26 @@ if ( ! function_exists('pbvote_paginate') ) {
 		echo '<nav class="imc-PaginationStyle">' . $cb_pagination  .'</nav>';
 	}
 }
+
+function pbvote_add_role_proposer()
+{
+	$role_prop = get_role('pbvote_proposer');
+	$role_subs = get_role('subscriber');
+	if (empty($role_subs->capabilities['edit_issue'])) {
+		$role_subs->add_cap('edit_issue');
+	}
+	if ( ! $role_prop) {
+		add_role( 'pbvote_proposer', 'Navrhovatel',
+				array(
+					'read' => true,
+					'level_0' => true,
+					'edit_imc_issues' => true,
+					'read_private_issues' =>true,
+					'edit_issue' => true,
+				)
+		);
+	}
+
+}
+
+add_action( 'init', 'pbvote_add_role_proposer');
