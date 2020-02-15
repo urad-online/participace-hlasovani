@@ -398,3 +398,9 @@ button.attach-add-new:disabled {
     position: relative;
     top: 30px;
   }
+.pbvote-SectionTitleRow {
+  font-weight: bold;
+}
+.pbvote-SectionTitleTextStyle{
+  color: blue;
+}

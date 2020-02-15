@@ -135,6 +135,7 @@ class PbVote_RenderForm {
     private function pb_get_custom_fields_layout()
     {
         return array(
+            array( 'type' => 'section', 'data' => array( 'label' => 'A. Základní informace k projektu', 'help' => '')),
             array( 'type' => 'row', 'data' => array(
                 array('type' => 'field', 'data' => array( 'field' => 'title', 'columns' => 6)),
                 // array('type' => 'field', 'data' => array( 'field' => 'category', 'columns' => 6)),
@@ -144,11 +145,15 @@ class PbVote_RenderForm {
             array( 'type' => 'field', 'data' => array( 'field' => 'reason', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'curr_state', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'future_state', 'columns' => 0)),
+            array( 'type' => 'section', 'data' => array( 'label' => 'B. Lokalizace projektu (povinné)', 'help' => '')),
             array( 'type' => 'field', 'data' => array( 'field' => 'locality', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'postAddress', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'parcel', 'columns' => 0)),
+            array( 'type' => 'section', 'data' => array( 'label' => 'C. Přílohy k projektu (nepovinné)', 'help' => '')),
             array( 'type' => 'field', 'data' => array( 'field' => 'attachment', 'columns' => 0)),
+            array( 'type' => 'section', 'data' => array( 'label' => 'D. Rozpočet projektu ', 'help' => '')),
             array( 'type' => 'field', 'data' => array( 'field' => 'cost', 'columns' => 0)),
+            array( 'type' => 'section', 'data' => array( 'label' => 'E. Navrhovatel (povinné)', 'help' => '')),
             array('type' => 'field', 'data' => array( 'field' => 'name', 'columns' => 0)),
             array( 'type' => 'row', 'data' => array(
                 array('type' => 'field', 'data' => array( 'field' => 'phone', 'columns' => 6)),
@@ -157,6 +162,7 @@ class PbVote_RenderForm {
             array( 'type' => 'field', 'data' => array( 'field' => 'org_name', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'address', 'columns' => 0)),
             // array( 'type' => 'field', 'data' => array( 'field' => 'signatures', 'columns' => 0)),
+            array( 'type' => 'section', 'data' => array( 'label' => 'F. Uložení a odeslání projektu', 'help' => '')),
             array( 'type' => 'field', 'data' => array( 'field' => 'age_conf', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'agreement', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'completed', 'columns' => 0)),

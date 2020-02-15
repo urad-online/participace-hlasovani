@@ -42,30 +42,42 @@ class PbVote_ProjectEdit
         echo $this->render_help_link('navody-uprava-navrhu');
         foreach ($this->fields_order as $field) {
             echo '<div class="imc-row">';
-            if ( $field['type'] === 'field' ) {
-                $this->render_field(
+            switch ($field['type']) {
+              case 'field':
+                  $this->render_field(
+                    $order_num,
+                    $this->fields_definition[ $field['data']['field'] ],
+                    $this->render_field_get_value( $this->fields_definition[ $field['data']['field'] ]['id'],
+                    $data ),
+                    $latlng,
+                    $field['data']['columns']
+                  );
+                  $order_num ++;
+                break;
+              case 'row':
+                  foreach ($field['data'] as $subfield) {
+                    if ( $subfield['type'] === 'field') {
+                      $this->render_field(
                         $order_num,
-                        $this->fields_definition[ $field['data']['field'] ],
-                        $this->render_field_get_value( $this->fields_definition[ $field['data']['field'] ]['id'],
+                        $this->fields_definition[ $subfield['data']['field'] ],
+                        $this->render_field_get_value( $this->fields_definition[$subfield['data']['field'] ]['id'],
                         $data ),
                         $latlng,
-                        $field['data']['columns']
-                );
-                $order_num ++;
-            } elseif ($field['type'] === 'row') {
-                foreach ($field['data'] as $subfield) {
-                    if ( $subfield['type'] === 'field') {
-                        $this->render_field(
-                            $order_num,
-                            $this->fields_definition[ $subfield['data']['field'] ],
-                            $this->render_field_get_value( $this->fields_definition[$subfield['data']['field'] ]['id'],
-                            $data ),
-                            $latlng,
-                            $subfield['data']['columns']
-                        );
-                        $order_num ++;
+                        $subfield['data']['columns']
+                      );
+                      $order_num ++;
                     }
-                }
+                  }
+                  break;
+              case 'section':
+                  $this->render_section_header(
+                      $field['data']['label'],
+                      $field['data']['help']
+                  );
+                  break;
+
+                default:
+                break;
             }
             echo '</div>';
         }
@@ -605,6 +617,14 @@ class PbVote_ProjectEdit
             return '';
         }
     }
+
+    protected function render_section_header( $label = '', $help = '')
+    {
+        if (! empty($label)) {
+          echo '<div class="u-pull-left pbvote-SectionTitleRow"><h3 class="u-pull-left pbvote-SectionTitleTextStyle">'.$label.$this->render_tooltip( $help ).'</h3></div>';
+        }
+    }
+
 }
 
  ?>
