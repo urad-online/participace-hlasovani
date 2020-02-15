@@ -250,7 +250,7 @@ if(pbvote_user_can_edit($given_issue_id, $user->ID)) { ?>
 							if( Array.isArray(pom)) {
 									if ( pom.length > 0) {
 										var total = Math.round(calculate_total_sum()*1.1);
-										if (total >=100000 && total <= 2000000) {
+										if (total >=300000 && total <= 2000000) {
 											result = true;
 										}
 									}
@@ -268,7 +268,11 @@ if(pbvote_user_can_edit($given_issue_id, $user->ID)) { ?>
 							};
 							return result;
 						}).setMessage('pb_project_js_validate_locality', 'Vyberte alespoň jednu lokalitu, které se návrh týká.');
-
+						validator.setMessage( 'required', 'Pole %s je povinné.');
+						validator.setMessage( 'min_length', 'Délka pole %s je minimálně %s znaků.');
+						validator.setMessage( 'max_length', 'Délka pole %s je maximálně %s znaků.');
+						validator.setMessage( 'valid_email', 'Pole %s neobsahuje platnou emailovou adresu.');
+						validator.setMessage( 'valid_phone', 'Pole %s neobsahuje platné telefonní číslo.');
 						re_save_hidden_locality();
         });
     })();

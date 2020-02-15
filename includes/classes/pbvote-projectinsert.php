@@ -272,7 +272,11 @@ class PbVote_ProjectInsert
                   };
         					return result;
         				}).setMessage('pb_project_js_validate_locality', 'Vyberte alespoň jednu lokalitu, které se návrh týká.');
-
+                validator.setMessage( 'required', 'Pole %s je povinné.');
+                validator.setMessage( 'min_length', 'Délka pole %s je minimálně %s znaků.');
+                validator.setMessage( 'max_length', 'Délka pole %s je maximálně %s znaků.');
+                validator.setMessage( 'valid_email', 'Pole %s neobsahuje platnou emailovou adresu.');
+                validator.setMessage( 'valid_phone', 'Pole %s neobsahuje platné telefonní číslo.');
               });
           })();
 

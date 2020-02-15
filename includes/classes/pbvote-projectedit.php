@@ -39,6 +39,7 @@ class PbVote_ProjectEdit
 
     private function render_form( $latlng, $data, $order_num = 1 )
     {
+        echo $this->render_help_link('navody-uprava-navrhu');
         foreach ($this->fields_order as $field) {
             echo '<div class="imc-row">';
             if ( $field['type'] === 'field' ) {
@@ -379,7 +380,7 @@ class PbVote_ProjectEdit
         $output = '<h3 class="imc-SectionTitleTextStyle" style="display:inline-block;"><label id="%sName" for="%s">%s%s'. $this->render_tooltip($help) .'</label>
             </h3><input type="checkbox"  %s %s name="%s" id="%s" class="imc-InputStyle" value="1"
             style="width:20px; height:20px; display:inline-block;margin-left:10px"/>
-            <label id="%sLabel" class="imc-ReportFormErrorLabelStyle imc-TextColorPrimary"></label>';
+            <label id="%sLabelx" class="imc-ReportFormErrorLabelStyle imc-TextColorPrimary"></label>';
 
         if ( empty( $input ) ) {
             return $output;
@@ -484,7 +485,7 @@ class PbVote_ProjectEdit
     {
         $output = '
             <div class="imc-row" id="imcImageSection">
-                <h3 class="u-pull-left imc-SectionTitleTextStyle">%s%s' . $this->render_mandatory(false) .'</h3>
+                <h3 class="u-pull-left imc-SectionTitleTextStyle">%s%s' . $this->render_mandatory(true) .'</h3>
                 <div class="u-cf">
                     <input autocomplete="off" class="imc-ReportAddImgInputStyle" id="imcReportAddImgInput" type="file" name="featured_image" />
                     <label for="imcReportAddImgInput">
@@ -586,6 +587,24 @@ class PbVote_ProjectEdit
         return $this->form_fields->get_form_fields_js_validation();
     }
 
+    protected function render_help_link($slug = '')
+    {
+        $url = '';
+        if (! empty($slug)) {
+          $page = get_page_by_path($slug);
+          if ($page) {
+            $url = get_permalink($page->ID);
+          }
+        }
+        if (! empty($url)) {
+          return '<div class="imc-row" ><div class="u-pull-right"><span class="pbvote-form-fill-help">Podrobný návod k vyplnění formuláře naleznete
+          <a id="pb_link_to_help" href="'.$url.'" target="_blank" data-toggle="tooltip" title="Přejít na stránku s návodem."
+          class="pbvote-form-fill-help-link">na této stránce</a>.</span>
+          </div></div>';
+        } else {
+            return '';
+        }
+    }
 }
 
  ?>

@@ -142,6 +142,8 @@ class PbVote_ProjectSaveData {
             'imc_lng'		=> esc_attr(sanitize_text_field($data['imcLngValue'])),
             'imc_address'	=> esc_attr(sanitize_text_field($data['postAddress'])),
             'pb_project_reason'              => esc_attr(sanitize_textarea_field($data['pb_project_reason'])),
+            'pb_project_curr_state'          => esc_attr(sanitize_textarea_field($data['pb_project_curr_state'])),
+            'pb_project_future_state'        => esc_attr(sanitize_textarea_field($data['pb_project_future_state'])),
             'pb_project_locality'            => json_decode(stripslashes($data['pb_project_locality'])),
             'pb_project_parcely'             => esc_attr(sanitize_textarea_field($data['pb_project_parcely'])),
             'pb_project_naklady'             => json_decode(stripslashes($data['pb_project_naklady'])),
