@@ -434,5 +434,27 @@ function pbvote_add_role_proposer()
 	}
 
 }
+function pb_admin_menu_proposer( $param = '')
+{
+	if(is_user_logged_in()) {
+		if (current_user_can('pbvote_proposer')) {
+			add_filter('show_admin_bar', '__return_false', 1000);
+		}
+	}
+}
+function pbvote_redirect_non_admin_users()
+{
+	if ( current_user_can( 'pbvote_proposer' ) && ('/wp-admin/admin-ajax.php' != $_SERVER['PHP_SELF']) ) {
+		wp_redirect( home_url() );
+		exit;
+	}
+}
 
 add_action( 'init', 'pbvote_add_role_proposer');
+add_action('init', 'pb_admin_menu_proposer',100);
+add_action( 'admin_init', 'pbvote_redirect_non_admin_users' );
+/**
+* Redirect non-admin users to home page
+*
+* This function is attached to the ‘admin_init’ action hook.
+*/
