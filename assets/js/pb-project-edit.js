@@ -1,10 +1,44 @@
     function pbProjectAddFile(e){
         jQuery("#"+e.id+"Name").val( e.files[0].name );
     }
-    function pbProjectAttachTblAddFile(e){
-        jQuery("#"+e.id+"Name").val( e.files[0].name );
-    }
+    function pbProjectAttachTblAddFile(e, limit){
+        if (! limit) { limit = 2000000};
+        var file_types = []
+        jQuery("#pbvote-error-message-size").attr("hidden","hidden");
+        jQuery("#pbvote-error-message-type").attr("hidden","hidden");
+        var no_error = true;
+        if (e.files[0].size > limit) {
+          jQuery("#pbvote-error-message-size").removeAttr("hidden");
+          no_error = false;
+        }
+        if ( ! pbProjectAttachTblCHeckFIleType(e.files[0].name)) {
+          jQuery("#pbvote-error-message-type").removeAttr("hidden");
+          no_error = false;
+        }
 
+        if (no_error) {
+          jQuery("#"+e.id+"Name").val( e.files[0].name );
+        }
+         else {
+           jQuery("#"+e.id+"Name").val();
+           jQuery("#"+e.id).val();
+        }
+    }
+    function pbProjectAttachTblCHeckFIleType(filename)
+    {
+      var parts = filename.toLowerCase().split('.');
+      var ext = parts[parts.length - 1];
+       switch (ext) {
+         case 'gif':
+         case 'png':
+         case 'jpg':
+         case 'jpeg':
+         case 'pdf':
+           //etc
+           return true;
+       }
+       return false;
+    }
     function imcDeleteAttachedFile( id ){
         document.getElementById(id).value = "";
 

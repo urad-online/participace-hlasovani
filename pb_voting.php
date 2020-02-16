@@ -50,9 +50,9 @@ function pb_vote_activation()
     require_once PB_VOTE_PATH_INC. '/pb_voting_create_tables.php';
     pb_voting_create_tables();
     require_once PB_VOTE_PATH_INC. '/pb_voting_create_pages.php';
-    pbvote_create_list_page();
-    pbvote_create_insert_page();
-    pbvote_create_edit_page();
+    // pbvote_create_list_page();
+    // pbvote_create_insert_page();
+    // pbvote_create_edit_page();
 
 
     $message = "Activated at: ". date('Y-m-d H:i:s');

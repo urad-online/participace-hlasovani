@@ -12,6 +12,7 @@ class PbVote_AttachmentTable
       'input_title'     => 'Název přílohy',
       'input_file_name' => 'Název souboru',
     );
+    private $file_size_limit = 2000000;
 
     public function __construct( $value_list = array(), $id = '', $allow_edit = true )
     {
@@ -148,6 +149,7 @@ class PbVote_AttachmentTable
 
     private function render_add_new()
     {
+
       // <div class="pbvote-attach-table-label"><h4>'.$this->labels['input_title'].'</h4></div>
       // <div class="pbvote-attach-table-label"><h4>'.$this->labels['input_file_name'].'</h4></div>
       if ($this->allow_edit) {
@@ -164,7 +166,7 @@ class PbVote_AttachmentTable
                 </div>
 
                 <div style="display:inline-block;">
-                        <input autocomplete="off" class="imc-ReportAddImgInputStyle pbvote-AddFileInputStyle attach-input-add-file attach-input-add-mandatory" id="'.$this->id_prefix.'File" type="file" name="'.$this->id_prefix.'File" onchange="pbProjectAttachTblAddFile(this)"></input>
+                        <input autocomplete="off" class="imc-ReportAddImgInputStyle pbvote-AddFileInputStyle attach-input-add-file attach-input-add-mandatory" id="'.$this->id_prefix.'File" type="file" name="'.$this->id_prefix.'File" onchange="pbProjectAttachTblAddFile(this,5000000)"></input>
                         <label for="'.$this->id_prefix.'File">
                             <i class="material-icons md-24 imc-AlignIconToButton">file_upload</i>Vyhledat soubor
                         </label>
@@ -173,17 +175,14 @@ class PbVote_AttachmentTable
                   <button disabled type="button" title="Přidat přílohu lze pokud je zadaný název a vybraný soubror" class="imc-button attach-add-new"><i class="material-icons md-24 imc-AlignIconToButton">add_circle</i>Přidat přílohu</button>
                 </div>
               </div>
+              <div class="imc-row"><span class="u-pull-left imc-ReportFormSubmitErrorsStyle">
+                <p id="pbvote-error-message-size"  hidden>Soubor musí být menší než '.( $this->file_size_limit/1000000).' MB.</p>
+                <p id="pbvote-error-message-type"  hidden>Jsou povolené tyto typy suborů - gif, png, jpg, jpeg, pdf.</p>
+              </span></div>
           </div>';
       } else {
         $output = "";
       }
       return $output;
-        $output =  '<div class="imc-row">';
-        $output .= '<div class="imc-grid-8 imc-columns">';
-        $output .= '<h4><span>Tady bude zadaní nové přílohy</span></h4>';
-        $output .= '</div>';
-        $output .= '<div class="imc-grid-4 imc-columns">';
-        $output .= '<button type="button" class="imc-button u-pull-right attach-add-new"><i class="material-icons md-24 imc-AlignIconToButton">add_circle</i>Přidat přílohu</button></div>';
-        $output .= '</div>';
     }
 }

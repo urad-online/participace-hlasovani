@@ -313,7 +313,7 @@ class PbVote_RenderForm {
                 'mandatory'     => false,
                 'material_icon' => 'file_upload',
                 'AddBtnLabel'   => 'Vyhledat',
-                'help'          => 'Povolené typy příloh: gif, png, jpg, jpeg, pdf',
+                'help'          => 'Povolené typy příloh: gif, png, jpg, jpeg, pdf. Max velikost 2 MB',
                 'show_mtbx'   => true,
                 'show_form'   => true,
                 'js_rules'    => array(
