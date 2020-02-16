@@ -203,7 +203,7 @@ class PbVote_RenderForm {
             		'id'          => 'issue_image',
             		'type'        => 'featured_image',
                 'mandatory'     => true,
-                'help'          => 'Nahrajte 1 soubor typu .jpg, .jpeg, .png max. velikosti 2 MB',
+                'help'          => 'Nahrajte 1 soubor typu .jpg, .jpeg, .png max. velikosti 5 MB',
                 'material_icon' => 'image',
                 'AddBtnLabel'   => 'Vložit foto',
                 'DelBtnLabel'   => 'Smazat foto',
@@ -264,7 +264,7 @@ class PbVote_RenderForm {
             'locality' => array(
                 'label' => 'Lokalita, které se návrh týká',
                 'id'    => 'pb_project_locality',
-                'help'  => 'Zaškrtněte všechny lokality, kterých se návrh týká',
+                'help'  => 'Zaškrtněte všechny lokality, kterých se projekt týká',
                 'type'  => 'checkboxgroup',
                 'show_mtbx'   => true,
                 'show_form'   => true,
@@ -279,7 +279,7 @@ class PbVote_RenderForm {
                 ),
             ),
             'postAddress' => array(
-                'label'     => 'Lokace místa v mapě',
+                'label'     => 'Lokalizace místa v mapě',
                 'id'        => 'postAddress',
                 'type'      => 'imcmap',
                 'help'      => 'Lokalitu můžete vyhledat buď zadáním adresy nebo umístěním špendlíku na místo lokality. Mapu si můžete zvětšit na celou obrazovku tlačítkem v pravém horním rohu mapy a přibližovat / oddalovat můžete kolečkem myši při současném stisku tlačítka CTRL.',
@@ -295,9 +295,9 @@ class PbVote_RenderForm {
                 'id'          => 'pb_project_parcely',
                 'type'        => 'textarea',
                 'mandatory'   => true,
-                'placeholder' => 'Vyplňte číslo parcely ve formátu NNNN/NNNN',
+                'placeholder' => 'Pro usnadnění kontroly zadejte každé číslo na samostatný řádek ve formátu číslo/podčíslo katastrální část.',
                 // 'title'       => "parcel",
-                'help'        => 'Pro usnadnění kontroly zadejte prosím, každé číslo na samostatný řádek',
+                'help'        => 'Pro usnadnění kontroly zadejte každé číslo na samostatný řádek ve formátu číslo/podčíslo katastrální část.',
                 'show_mtbx' => true,
                 'show_form' => true,
                 'js_rules'  => array(

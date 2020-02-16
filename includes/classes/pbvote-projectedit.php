@@ -469,7 +469,7 @@ class PbVote_ProjectEdit
         $output = '<input required name="postAddress" placeholder="%s" id="imcAddress" class="u-pull-left imc-InputStyle"/>';
         $output = '
             <div class="imc-row-no-margin">
-                <h3 class="imc-SectionTitleTextStyle">%s%s</h3>
+                <h3 class="imc-SectionTitleTextStyle">%s%s '. $this->render_tooltip($help) .'</h3>
                 <button class="imc-button u-pull-right" type="button" onclick="imcFindAddress(\'imcAddress\', true)">
                     <i class="material-icons md-24 imc-AlignIconToButton">search</i>%s</button>
                 <div style="padding-right: .5em;" class="imc-OverflowHidden">
@@ -498,7 +498,7 @@ class PbVote_ProjectEdit
     {
         $output = '
             <div class="imc-row" id="imcImageSection">
-                <h3 class="u-pull-left imc-SectionTitleTextStyle">%s%s' . $this->render_mandatory(true) .'</h3>
+                <h3 class="u-pull-left imc-SectionTitleTextStyle">%s%s' . $this->render_mandatory(true) . $this->render_tooltip($help) .'</h3>
                 <div class="u-cf">
                     <input autocomplete="off" class="imc-ReportAddImgInputStyle" id="imcReportAddImgInput" type="file" name="featured_image" />
                     <label for="imcReportAddImgInput">
