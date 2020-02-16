@@ -600,7 +600,7 @@ class PbVote_ProjectEdit
         return $this->form_fields->get_form_fields_js_validation();
     }
 
-    protected function render_help_link($slug = '')
+    protected function render_help_link($slug = '', $icon_size = '28')
     {
         $url = '';
         if (! empty($slug)) {
@@ -609,11 +609,11 @@ class PbVote_ProjectEdit
             $url = get_permalink($page->ID);
           }
         }
+
         if (! empty($url)) {
-          return '<div class="imc-row" ><div class="u-pull-right"><span class="pbvote-form-fill-help">Podrobný návod k vyplnění formuláře naleznete
-          <a id="pb_link_to_help" href="'.$url.'" target="_blank" data-toggle="tooltip" title="Přejít na stránku s návodem."
-          class="pbvote-form-fill-help-link">na této stránce</a>.</span>
-          </div></div>';
+          return '<div class="imc-row" ><div class="u-pull-right pbvote-helpLink"><a href="' . $url . '" class="imc-SingleHeaderLinkStyle">
+          <i class="material-icons md-'.trim($icon_size).' imc-SingleHeaderIconStyle pbvote-helpLinkIcon">help_outline</i>
+          <span class="imc-hidden-xs imc-hidden-sm imc-hidden-md pbvote-helpLinkText">' . __("Návod k vyplnění formuláře","pb-voting") .'</span></a></div></div>';
         } else {
             return '';
         }
