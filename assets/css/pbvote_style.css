@@ -402,10 +402,13 @@ button.attach-add-new:disabled {
   font-weight: bold;
 }
 .pbvote-SectionTitleTextStyle {
-  color: blue;
+    color: #058B9C;
+    font-size: 20px;
 }
+
 .pbvote-SubSectionTitleTextStyle {
-  color: #888888;
+    color: #058B9C;
+    font-size: 14px;
 }
 .imc-InputStyle.pbvote-resizeable{
   resize:vertical;
