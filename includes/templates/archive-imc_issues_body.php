@@ -97,7 +97,7 @@ function pb_items_archive_imc_issues_body($pb_issues_view_filters)
                 <div class="imc-row imc-DrawerContentsStyle">
 
 										<div class="imc-row">
-											<h3 class="imc-SectionTitleTextStyle"><?php echo __('Vyhledat', 'pb-voting'); ?></h3>
+											<h3 class="imc-SectionTitleTextStyle"><?php echo __('Klíčové slovo', 'pb-voting'); ?></h3>
 
 											<input name="searchKeyword" autocomplete="off" placeholder="<?php
 												echo __('Vyhledat klíčové slovo','pb-voting'); ?>" id="pbItemSearchKeywordInput" type="search" class="imc-InputStyle"/>

@@ -72,7 +72,8 @@ class PbVote_ProjectEdit
               case 'section':
                   $this->render_section_header(
                       $field['data']['label'],
-                      $field['data']['help']
+                      $field['data']['help'],
+                      $field['data']['class']
                   );
                   break;
 
@@ -172,7 +173,7 @@ class PbVote_ProjectEdit
         // $output = '<div class="imc-row">
         $output = '<h3 class="u-pull-left imc-SectionTitleTextStyle">%s%s %s'.$this->render_tooltip( $help ).'</h3>
             <textarea placeholder="%s" %s rows="%d"
-                 class="imc-InputStyle" name="%s"
+                 class="imc-InputStyle pbvote-resizeable"  name="%s"
                  id="%s">%s</textarea>
             <label id="%sLabel" class="imc-ReportFormErrorLabelStyle imc-TextColorPrimary"></label>';
             // </div>';
@@ -618,10 +619,10 @@ class PbVote_ProjectEdit
         }
     }
 
-    protected function render_section_header( $label = '', $help = '')
+    protected function render_section_header( $label = '', $help = '', $class = '')
     {
         if (! empty($label)) {
-          echo '<div class="u-pull-left pbvote-SectionTitleRow"><h3 class="u-pull-left pbvote-SectionTitleTextStyle">'.$label.$this->render_tooltip( $help ).'</h3></div>';
+          echo '<div class="u-pull-left pbvote-SectionTitleRow"><h3 class="u-pull-left '.$class.'">'.$label.$this->render_tooltip( $help ).'</h3></div>';
         }
     }
 

@@ -151,11 +151,16 @@ class PbVote_ArchiveDisplayFilterData
     {
       // not needed for hlasovani
     }
+    public function set_query_args_period_by_voting_ids()
+    {
+      // not needed for hlasovani
+    }
 
     public function set_query_args_custom()
     {
         // to be defined in extending class
     }
+
     public function get_id_list_by_taxo($taxonomy, $value, $field = "id" ) //todelete
     {
         if (( empty( $value)) || ( $value == 'all')) {
@@ -225,9 +230,13 @@ class PbVote_ArchiveDisplayFilterData
     public function  get_query_data()
     {
         $this->query_ids();
+        if (count($this->post_ids_in)==0) {
+          // otwerwise final query selects all posts
+          $this->post_ids_in = array(0);
+        }
         $final_query = array_merge(
-            $this->query_param,
-            array('post__in' => $this->post_ids_in)
+          $this->query_param,
+          array('post__in' => $this->post_ids_in)
         );
         $pom = new WP_Query( $final_query );
         // $this->save_to_session( $pom);
@@ -264,6 +273,7 @@ class PbVote_ArchiveDisplayFilterData
 
     protected function query_ids()
     {
+      // first id 0 to prevent selecting
       $id_list = array();
       foreach ($this->query_arg_status as $query_status) {
         $sub_query = array_merge( array('fields' => 'ids',), $query_status, $this->query_args);

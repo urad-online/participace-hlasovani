@@ -398,9 +398,16 @@ button.attach-add-new:disabled {
     position: relative;
     top: 30px;
   }
-.pbvote-SectionTitleRow {
+.pbvote-SectionTitleRow .pbvote-section {
   font-weight: bold;
 }
-.pbvote-SectionTitleTextStyle{
+.pbvote-SectionTitleTextStyle {
   color: blue;
+}
+.pbvote-SubSectionTitleTextStyle {
+  color: #888888;
+}
+.imc-InputStyle.pbvote-resizeable{
+  resize:vertical;
+  overflow:auto;
 }
