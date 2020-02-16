@@ -611,7 +611,7 @@ class PbVote_ProjectEdit
         }
 
         if (! empty($url)) {
-          return '<div class="imc-row" ><div class="u-pull-right pbvote-helpLink"><a href="' . $url . '" class="imc-SingleHeaderLinkStyle">
+          return '<div class="imc-row" ><div class=" pbvote-helpLink"><a href="' . $url . '" class="pbvote-SingleHeaderLinkStyle">
           <i class="material-icons md-'.trim($icon_size).' imc-SingleHeaderIconStyle pbvote-helpLinkIcon">help_outline</i>
           <span class="imc-hidden-xs imc-hidden-sm imc-hidden-md pbvote-helpLinkText">' . __("Návod k vyplnění formuláře","pb-voting") .'</span></a></div></div>';
         } else {
