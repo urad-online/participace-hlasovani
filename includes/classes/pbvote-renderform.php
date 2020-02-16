@@ -262,7 +262,7 @@ class PbVote_RenderForm {
                 'show_form' => true,
             ),
             'locality' => array(
-                'label' => 'Lokalita, které se návrh týká',
+                'label' => 'Katastrální části, kterých se projekt týká',
                 'id'    => 'pb_project_locality',
                 'help'  => 'Zaškrtněte všechny lokality, kterých se projekt týká',
                 'type'  => 'checkboxgroup',
