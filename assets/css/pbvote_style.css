@@ -406,7 +406,7 @@ button.attach-add-new:disabled {
     font-size: 20px;
 }
 
-.pbvote-SubSectionTitleTextStyle {
+h3.pbvote-SubSectionTitleTextStyle {
     color: #058B9C;
     font-size: 14px;
 }
