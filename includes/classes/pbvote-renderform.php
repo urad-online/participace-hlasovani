@@ -126,9 +126,9 @@ class PbVote_RenderForm {
     private function pb_get_custom_fields_single()
     {
         return array(
-                'reason', 'locality',
-                'parcel', 'cost',
-                'attachment',
+                'reason', 'curr_state', 'future_state',
+                'locality', 'parcel', 'attachment', 'cost',
+                'org_name', 'name', 'phone', 'email', 'address',
             );
     }
 
@@ -167,6 +167,7 @@ class PbVote_RenderForm {
             array( 'type' => 'section', 'data' => array( 'label' => 'F. Uložení a odeslání projektu', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
             array( 'type' => 'field', 'data' => array( 'field' => 'age_conf', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'agreement', 'columns' => 0)),
+            array( 'type' => 'field', 'data' => array( 'field' => 'private_note', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'completed', 'columns' => 0)),
         );
 
@@ -176,7 +177,7 @@ class PbVote_RenderForm {
     {
         $custom_fields = array(
             'title' => array(
-                'label'     => 'Název',
+                'label'     => 'Název navrhovaného projektu',
                 'id'        => 'postTitle',
                 'type'      => 'text',
                 'mandatory' => true,
@@ -202,7 +203,7 @@ class PbVote_RenderForm {
             		'id'          => 'issue_image',
             		'type'        => 'featured_image',
                 'mandatory'     => true,
-                'help'          => 'Nahrajte 1 soubor typu .jpg, .jpeg, .png max. velikosti 5 MB',
+                'help'          => 'Nahrajte 1 soubor typu .jpg, .jpeg, .png max. velikosti 2 MB',
                 'material_icon' => 'image',
                 'AddBtnLabel'   => 'Vložit foto',
                 'DelBtnLabel'   => 'Smazat foto',
@@ -213,7 +214,7 @@ class PbVote_RenderForm {
                     ),
             ),
             'content' => array(
-                'label'     => 'Popis',
+                'label'     => 'Popis návrhu',
                 'id'        => 'postContent',
                 'type'      => 'textarea',
                 'mandatory' => true,
@@ -278,7 +279,7 @@ class PbVote_RenderForm {
                 ),
             ),
             'postAddress' => array(
-                'label'     => 'Lokace místa',
+                'label'     => 'Lokace místa v mapě',
                 'id'        => 'postAddress',
                 'type'      => 'imcmap',
                 'help'      => 'Lokalitu můžete vyhledat buď zadáním adresy nebo umístěním špendlíku na místo lokality. Mapu si můžete zvětšit na celou obrazovku tlačítkem v pravém horním rohu mapy a přibližovat / oddalovat můžete kolečkem myši při současném stisku tlačítka CTRL.',
@@ -290,7 +291,7 @@ class PbVote_RenderForm {
                 ),
             ),
             'parcel' => array(
-                'label'       => 'Parcelní čísla pozemků, který se návrh týká',
+                'label'       => 'Parcelní čísla pozemků, kterých se návrh týká',
                 'id'          => 'pb_project_parcely',
                 'type'        => 'textarea',
                 'mandatory'   => true,
@@ -485,6 +486,17 @@ class PbVote_RenderForm {
                 'js_rules'    => array(
                     'rules'   => 'required',
                 ),
+            ),
+            'private_note' => array(
+                'label'       => 'Neveřejné poznámky',
+                'id'          => 'pb_project_private_note',
+                'type'        => 'textarea',
+                'mandatory'   => false,
+                'placeholder' => 'Neveřejné poznámky uveďte zde',
+                // 'title'       => "parcel",
+                'help'        => 'Tyto informace nebudou publikovány. Mohou sloužit k předání důležitých informací koordinátorce projektu Moje stopa, jako např. kontakty na zákonné zástupce nezletilých navrhovatelů projektu pro ověření souhlasu s podáním projektu',
+                'show_mtbx' => true,
+                'show_form' => true,
             ),
             'completed'     => array(
                 'label'     => 'Popis projektu je úplný a chci ho poslat k vyhodnocení',
