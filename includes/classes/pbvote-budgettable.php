@@ -5,12 +5,12 @@ class PbVote_BudgetTable
     private $integer_regexp = '/^[0-9,.]+$/';
     private $vat_values = array( 21, 5, 0 );
     private $table_def = array(
-      array('id' => "type", 'width' => '15%', 'label' => "Druh", 'input_type' => "select_type", 'class' => "text-left", 'attr' => ""),
-      array('id' => "description", 'width' => '45%', 'label' => "Popis", 'input_type' => "text", 'class' => "text-left", 'attr' => ""),
-      array('id' => "units", 'width' => '8%', 'label' => "Počet jednotek", 'input_type' => "text", 'class' => "integer calculate", 'attr' => ""),
-      array('id' => "unit_price", 'width' => '8%', 'label' => "Jednotková cena", 'input_type' => "text", 'class' => "integer calculate", 'attr' => ""),
+      array('id' => "type", 'width' => '10%', 'label' => "Druh", 'input_type' => "select_type", 'class' => "text-left", 'attr' => ""),
+      array('id' => "description", 'width' => '35%', 'label' => "Popis", 'input_type' => "text", 'class' => "text-left", 'attr' => ""),
+      array('id' => "units", 'width' => '10%', 'label' => "Počet jednotek", 'input_type' => "text", 'class' => "integer calculate", 'attr' => ""),
+      array('id' => "unit_price", 'width' => '15%', 'label' => "Jednotková cena", 'input_type' => "text", 'class' => "integer calculate", 'attr' => ""),
       // array('id' => "vat", 'width' => '8%', 'label' => "DPH", 'input_type' => "select_vat", 'class' => "percent", 'attr' => ""),
-      array('id' => "total_price", 'width' => '8%', 'label' => "Celková cena", 'input_type' => "text", 'class' => "integer result", 'attr' => " disabled "),
+      array('id' => "total_price", 'width' => '15%', 'label' => "Celková cena", 'input_type' => "text", 'class' => "integer result", 'attr' => " disabled "),
     );
     private $budget_data = array(array('Příprava', 'Vypracování projektu', '1', '15000', '21', '15000'), array('Realizace', 'Dozor na stavbě', '1', '5000', '21', '5000'));
     private $total_sum = 0;

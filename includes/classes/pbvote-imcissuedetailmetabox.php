@@ -147,7 +147,7 @@ class PbVote_ImcIssueDetailMetabox {
   }
 
   public function format_rows( $label, $input ) {
-    return '<tr><th>'.$label.'</th><td>'.$input.'</td></tr>';
+    return '<tr><th style="width:15%">'.$label.'</th><td>'.$input.'</td></tr>';
   }
 
   public function save_fields( $post_id )
