@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Participativní projekty - hlasování\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-13 21:39+0000\n"
-"PO-Revision-Date: 2020-02-13 01:19+0100\n"
+"PO-Revision-Date: 2020-02-16 15:00+0100\n"
 "Last-Translator: Mila St <stastny.mlslv@gmail.com>\n"
 "Language-Team: Čeština\n"
 "Language: cs_CZ\n"
@@ -66,7 +66,7 @@ msgstr "Přidat návrh"
 
 #: includes/classes/pbvote-imcissuedetailmetabox.php:30
 msgid "Informace k projektu"
-msgstr "Informace k projektu"
+msgstr "Informace k návrhu projektu"
 
 #: includes/classes/pbvote-imcissuedetailmetabox.php:41
 msgid "Detaily projektu"
@@ -106,7 +106,7 @@ msgstr "Smazat foto"
 
 #: includes/classes/pbvote-projectedit.php:431
 msgid "No photo attached"
-msgstr "Žádné foto"
+msgstr "Ilustrační obrázek nebyl doposud vybrán"
 
 #: includes/classes/pbvote-projectedit.php:432
 msgid ""
@@ -124,15 +124,15 @@ msgstr "Nemáte oprávnění k založení nové položky"
 #: includes/classes/pbvote-projectinsert.php:87
 #: includes/templates/edit-project_issues.php:192
 msgid "Please login!"
-msgstr "Přihlašte se prosím!"
+msgstr "Prosím, přihlaste se!"
 
 #: includes/classes/pbvote-projectinsert.php:109
 msgid "New project proposal was successfully saved"
-msgstr "Nový návrh projektu byl úspěšně uložen"
+msgstr "Návrh projektu byl úspěšně uložen"
 
 #: includes/classes/pbvote-projectinsert.php:111
 msgid "Back to list of issues"
-msgstr "Zpět na přehled projektů"
+msgstr "Zpět na přehled návrhů"
 
 #: includes/classes/pbvote-projectinsert.php:167
 msgid "Report a new issue"
@@ -239,7 +239,7 @@ msgstr "z"
 #: includes/templates/archive-imc_issues_body.php:299
 #: includes/templates/archive-pbvote_issues.php:318
 msgid "issues"
-msgstr "položky"
+msgstr "návrhy"
 
 #: includes/templates/archive-pbvote_issues.php:89
 #: includes/templates/archive-pbvote_issues.php:184
@@ -256,7 +256,7 @@ msgstr "Zpět na přehled"
 #: includes/templates/edit-project_issues.php:119
 #: includes/templates/single-imc_issues.php:70
 msgid "Edit issue"
-msgstr "Změnit záznam"
+msgstr "Upravit návrh"
 
 #: includes/templates/edit-project_issues.php:188
 msgid "You are not authorised to edit an issue"
@@ -266,7 +266,7 @@ msgstr "Nemáte oprávnění ke změně položky"
 #: includes/templates/pb-item-part-archive-list.php:142
 #: includes/templates/single-imc_issues.php:410
 msgid "My Issue"
-msgstr "Moje položky"
+msgstr "Moje návrhy"
 
 #: includes/templates/pb-item-part-archive-grid.php:24
 #: includes/templates/pb-item-part-archive-list.php:146
@@ -403,7 +403,7 @@ msgstr "Lokalita"
 
 #: includes/templates/single-imc_issues.php:413
 msgid "My issue"
-msgstr "Můj příspěvek"
+msgstr "Můj návrh"
 
 #: includes/templates/single-imc_issues.php:431
 msgid "Voted"
