@@ -174,8 +174,8 @@ if(pbvote_user_can_edit($given_issue_id, $user->ID)) { ?>
 
         <div class="imc-container">
 
-            <div class="imc-CardLayoutStyle imc-ContainerEmptyStyle">
-                <img src="<?php echo esc_url($plugin_path_url);?>/img/img_banner.jpg" class="u-full-width">
+            <div class="imc-CardLayoutStyle imc-ContainerEmptyStyle" style="text-align:center;">
+                <img src="<?php echo esc_url($plugin_path_url);?>/img/img_banner.jpg" class="">
 
                 <div class="imc-Separator"></div>
 

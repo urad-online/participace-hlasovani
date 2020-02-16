@@ -155,6 +155,7 @@ class PbVote_ProjectSaveData {
             'pb_project_navrhovatel_adresa'  => esc_attr(sanitize_text_field($data['pb_project_navrhovatel_adresa'])),
             'pb_project_prohlaseni_veku'     => (! empty($data['pb_project_prohlaseni_veku'])) ? esc_attr(sanitize_text_field($data['pb_project_prohlaseni_veku'])) : '0',
             'pb_project_podminky_souhlas'    => (! empty($data['pb_project_podminky_souhlas'])) ? esc_attr(sanitize_text_field($data['pb_project_podminky_souhlas'])) : '0',
+            'pb_project_private_note'        => esc_attr(sanitize_textarea_field($data['pb_project_private_note'])),
             'pb_project_attachment'          => json_decode(stripslashes($data['pb_project_attachment'])),
         );
 

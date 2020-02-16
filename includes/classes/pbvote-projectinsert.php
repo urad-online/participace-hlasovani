@@ -76,10 +76,10 @@ class PbVote_ProjectInsert
       ?>
       <div class="imc-Separator"></div>
       <div class="imc-container">
-          <div class="imc-CardLayoutStyle imc-ContainerEmptyStyle">
-              <img src="<?php echo esc_url($plugin_path_url);?>/img/img_banner.jpg" class="u-full-width">
+          <div class="imc-CardLayoutStyle imc-ContainerEmptyStyle" style="text-align:center;">
+              <img src="<?php echo esc_url($plugin_path_url);?>/img/img_banner.jpg" class="" >
               <div class="imc-Separator"></div>
-              <div class="imc-row imc-CenterContents imc-GiveWhitespaceStyle">
+              <div class="imc-row imc-CenterContents ">
                   <i class="imc-EmptyStateIconStyle material-icons md-huge">vpn_lock</i>
                   <div class="imc-Separator"></div>
                   <h3 class="imc-FontRoboto imc-Text-LG imc-TextColorSecondary imc-TextMedium imc-CenterContents"><?php echo __('You are not authorised to report an issue','pb-voting'); ?></h3>
@@ -100,10 +100,10 @@ class PbVote_ProjectInsert
       ?>
       <div class="imc-Separator"></div>
       <div class="imc-container">
-        <div class="imc-CardLayoutStyle imc-ContainerEmptyStyle">
-          <img src="<?php echo esc_url($plugin_path_url);?>/img/img_banner.jpg" class="u-full-width">
+        <div class="imc-CardLayoutStyle imc-ContainerEmptyStyle" style="text-align:center;">
+          <img src="<?php echo esc_url($plugin_path_url);?>/img/img_banner.jpg" class="">
           <div class="imc-Separator"></div>
-          <div class="imc-row imc-CenterContents imc-GiveWhitespaceStyle">
+          <div class="imc-row imc-CenterContents">
             <i class="imc-EmptyStateIconStyle material-icons md-huge">vpn_lock</i>
             <div class="imc-Separator"></div>
             <h3 class="imc-FontRoboto imc-Text-LG imc-TextColorSecondary imc-TextMedium imc-CenterContents"><?php echo __('New project proposal was successfully saved','pb-voting'); ?></h3>

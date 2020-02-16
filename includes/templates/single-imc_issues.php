@@ -99,7 +99,7 @@ get_header(); ?>
 																			$term_thumb = get_term_by('id', $current_category_id, 'imccategory');
 																			$cat_thumb_arr = wp_get_attachment_image_src( $term_thumb->term_image);
 																		}?>
-								                    <div class="imc-grid-2 imc-columns">
+								                    <div class="imc-grid-2 imc-columns" hidden>
 																			<?php if ( $cat_thumb_arr ) { ?>
 									                            <img src="<?php echo esc_url($cat_thumb_arr[0]); ?>" class="imc-SingleCategoryIcon">
 																			<?php }	else { ?>
@@ -183,13 +183,13 @@ get_header(); ?>
 																<?php
 																if (get_the_content()) { ?>
                                     <div class="imc-row">
-                                        <h3 class="imc-SectionTitleTextStyle"><?php echo __('Description','pb-voting'); ?></h3>
+                                        <h3 class="imc-SectionTitleTextStyle"><?php echo __('Popis projektu','pb-voting'); ?></h3>
                                         <div class="imc-SingleDescriptionStyle imc-TextColorSecondary imc-JustifyText"><?php the_content(); ?></div>
                                     </div>
 																<?php } ?>
                                 <div class="imc-row-no-margin">
 																		<?php $img_url = wp_get_attachment_url( get_post_thumbnail_id($issue_id) ); ?>
-                                    <h3 class="imc-SectionTitleTextStyle"><?php echo __('Photos','pb-voting'); ?></h3>
+                                    <h3 class="imc-SectionTitleTextStyle"><?php echo __('Ilustrační obrázek','pb-voting'); ?></h3>
 
 																		<?php if ($img_url) { ?>
                                         <a href="<?php echo esc_url($img_url); ?>" target="_blank"> <?php the_post_thumbnail('thumbnail'); ?> </a> <!--thumbnail medium large full-->
