@@ -170,7 +170,7 @@ class PbVote_AttachmentTable
                         </label>
                 </div>
                 <div style="display:inline-block;" class="u-pull-right">
-                  <button disabled type="button" title="Přidat přílohu lze pokud je zadaný název a vybraný soubror" class="imc-button pbvote-to-bottom attach-add-new"><i class="material-icons md-24 imc-AlignIconToButton">add_circle</i>Přidat přílohu</button>
+                  <button disabled type="button" title="Přidat přílohu lze pokud je zadaný název a vybraný soubror" class="imc-button attach-add-new"><i class="material-icons md-24 imc-AlignIconToButton">add_circle</i>Přidat přílohu</button>
                 </div>
               </div>
           </div>';

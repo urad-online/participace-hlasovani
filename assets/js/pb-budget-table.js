@@ -16,6 +16,7 @@ jQuery(document).ready(function(){
         var row = render_row_edit();
         jQuery("table.pbvote-budget-table").append(row);
     		jQuery("table.pbvote-budget-table tbody tr").eq(index + 1).find(".add, .edit").toggle();
+        jQuery("table.pbvote-budget-table tbody tr").eq(index + 1).find("input, select ").first().focus();
         // jQuery('[data-toggle="tooltip"]').tooltip();
         row_edit_index = -1;
     });
