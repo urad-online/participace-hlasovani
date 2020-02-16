@@ -256,7 +256,7 @@ if(pbvote_user_can_edit($given_issue_id, $user->ID)) { ?>
 									}
 							};
 							return result;
-						}).setMessage('pb_project_js_validate_budget', 'Celková částka předpokládaných nákladů včetně rezervy musí být mezi 100tis až 2mil Kč.');;
+						}).setMessage('pb_project_js_validate_budget', 'Celková částka předpokládaných nákladů včetně rezervy musí být mezi 300tis až 2mil Kč.');;
 
 						validator.registerCallback( 'pb_project_js_validate_locality', function(value){
 							var result = false;

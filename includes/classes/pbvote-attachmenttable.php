@@ -148,25 +148,25 @@ class PbVote_AttachmentTable
 
     private function render_add_new()
     {
+      // <div class="pbvote-attach-table-label"><h4>'.$this->labels['input_title'].'</h4></div>
+      // <div class="pbvote-attach-table-label"><h4>'.$this->labels['input_file_name'].'</h4></div>
       if ($this->allow_edit) {
         $output =
           '<div class="attach-table-new-container">
               <div class="imc-row">
-                <div style="display:inline-block;min-width:40%;">
-                    <div class="pbvote-attach-table-label"><h4>'.$this->labels['input_title'].'</h4></div>
-                    <div><input autocomplete="off" placeholder="Zadejte název přílohy" type="text" maxlength="80" style="min-width:350px;" id="'.$this->id_prefix.'Title" class="imc-InputStyle attach-input-add-mandatory" value=""></input></div>
+                <div style="display:inline-block;min-width:30%;">
+                    <div><input autocomplete="off" placeholder="Zadejte název přílohy" type="text" maxlength="30" style="min-width:350px;" id="'.$this->id_prefix.'Title" class="imc-InputStyle attach-input-add-mandatory" value=""></input></div>
                 </div>
                 <div style="display:inline-block;">
-                    <div class="pbvote-attach-table-label"><h4>'.$this->labels['input_file_name'].'</h4></div>
-                    <div><input readonly="readonly" autocomplete="off"
-                        placeholder="Vyberte soubor" type="text" id="'.$this->id_prefix.'FileName" class="imc-InputStyle attach-input-add-mandatory" value=""></input>
+                    <div><input disabled autocomplete="off"
+                        type="text" id="'.$this->id_prefix.'FileName" class="pbvote-DisabledInputStyle attach-input-add-mandatory" value=""></input>
                     </div>
                 </div>
 
                 <div style="display:inline-block;">
                         <input autocomplete="off" class="imc-ReportAddImgInputStyle pbvote-AddFileInputStyle attach-input-add-file attach-input-add-mandatory" id="'.$this->id_prefix.'File" type="file" name="'.$this->id_prefix.'File" onchange="pbProjectAttachTblAddFile(this)"></input>
                         <label for="'.$this->id_prefix.'File">
-                            <i class="material-icons md-24 imc-AlignIconToButton">file_upload</i>Vyhledat
+                            <i class="material-icons md-24 imc-AlignIconToButton">file_upload</i>Vyhledat soubor
                         </label>
                 </div>
                 <div style="display:inline-block;" class="u-pull-right">
