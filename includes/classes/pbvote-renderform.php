@@ -128,14 +128,14 @@ class PbVote_RenderForm {
         return array(
                 'reason', 'curr_state', 'future_state',
                 'locality', 'parcel', 'attachment', 'cost',
-                'org_name', 'name', 
+                'org_name', 'name',
             );
     }
 
     private function pb_get_custom_fields_layout()
     {
         return array(
-            array( 'type' => 'section', 'data' => array( 'label' => 'A. Základní informace k projektu', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
+            array( 'type' => 'section', 'data' => array( 'label' => 'A. Základní informace k návrhu', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
             array( 'type' => 'section', 'data' => array( 'label' => 'Povinné položky', 'help' => '', 'class' => 'pbvote-SubSectionTitleTextStyle',)),
             array( 'type' => 'row', 'data' => array(
                 array('type' => 'field', 'data' => array( 'field' => 'title', 'columns' => 12)),
@@ -147,13 +147,13 @@ class PbVote_RenderForm {
             array( 'type' => 'field', 'data' => array( 'field' => 'reason', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'curr_state', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'future_state', 'columns' => 0)),
-            array( 'type' => 'section', 'data' => array( 'label' => 'B. Lokalizace projektu (povinné)', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
+            array( 'type' => 'section', 'data' => array( 'label' => 'B. Lokalizace návrhu (povinné)', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
             array( 'type' => 'field', 'data' => array( 'field' => 'locality', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'postAddress', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'parcel', 'columns' => 0)),
-            array( 'type' => 'section', 'data' => array( 'label' => 'C. Přílohy k projektu (nepovinné)', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
+            array( 'type' => 'section', 'data' => array( 'label' => 'C. Přílohy k návrhu (nepovinné)', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
             array( 'type' => 'field', 'data' => array( 'field' => 'attachment', 'columns' => 0)),
-            array( 'type' => 'section', 'data' => array( 'label' => 'D. Rozpočet projektu ', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
+            array( 'type' => 'section', 'data' => array( 'label' => 'D. Rozpočet návrhu ', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
             array( 'type' => 'field', 'data' => array( 'field' => 'cost', 'columns' => 0)),
             array( 'type' => 'section', 'data' => array( 'label' => 'E. Navrhovatel (povinné)', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
             array('type' => 'field', 'data' => array( 'field' => 'name', 'columns' => 0)),
@@ -164,7 +164,7 @@ class PbVote_RenderForm {
             array( 'type' => 'field', 'data' => array( 'field' => 'org_name', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'address', 'columns' => 0)),
             // array( 'type' => 'field', 'data' => array( 'field' => 'signatures', 'columns' => 0)),
-            array( 'type' => 'section', 'data' => array( 'label' => 'F. Uložení a odeslání projektu', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
+            array( 'type' => 'section', 'data' => array( 'label' => 'F. Uložení a odeslání návrhu', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
             array( 'type' => 'field', 'data' => array( 'field' => 'age_conf', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'agreement', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'private_note', 'columns' => 0)),
@@ -177,11 +177,11 @@ class PbVote_RenderForm {
     {
         $custom_fields = array(
             'title' => array(
-                'label'     => 'Název navrhovaného projektu',
+                'label'     => 'Název navrhovaného návrhu',
                 'id'        => 'postTitle',
                 'type'      => 'text',
                 'mandatory' => true,
-                'placeholder' => 'Zadejte krátký název projektu',
+                'placeholder' => 'Zadejte krátký název návrhu',
                 'help'      => 'Název by měl být krátký a výstižný. Počet znaků je 5 až 60.',
                 'show_mtbx' => false,
                 'show_form' => true,
@@ -219,7 +219,7 @@ class PbVote_RenderForm {
                 'type'      => 'textarea',
                 'mandatory' => true,
                 'placeholder' => 'Vyplňte popis svého návrhu',
-                'help'      => 'Popis návrhu projektu bude zveřejněn jako úvodní text a bude sloužit k základní informaci při hlasování občanů. Proto jsou název projektu, ilustrační obrázek a tento text velmi důležité. Jejich dobrou volbou můžete získat svému projektu větší podporu. K dispozici máte maximálně 500 znaků, minimálně 20.',
+                'help'      => 'Popis návrhu bude zveřejněn jako úvodní text a bude sloužit k základní informaci při hlasování občanů. Proto jsou název návrhu, ilustrační obrázek a tento text velmi důležité. Jejich dobrou volbou můžete získat svému návrhu větší podporu. K dispozici máte maximálně 500 znaků, minimálně 20.',
                 'attribute' => 'min_length[20]|maxlength="500"',
                 'show_mtbx' => false,
                 'show_form' => true,
@@ -233,7 +233,7 @@ class PbVote_RenderForm {
                 'id'        => 'pb_project_reason',
                 'type'      => 'textarea',
                 'mandatory' => false,
-                'placeholder' => 'Pište zde',
+                'placeholder' => 'Popište důvod, proč návrh předkládáte, jaký problém by byl jeho realizací řešen',
                 'help'      => 'Popište důvod, proč návrh předkládáte, jaký problém by byl jeho realizací řešen',
                 // 'title'     => "Actions",
                 'show_mtbx' => true,
@@ -244,8 +244,8 @@ class PbVote_RenderForm {
                 'id'        => 'pb_project_curr_state',
                 'type'      => 'textarea',
                 'mandatory' => false,
-                // 'placeholder' => 'Vyplňte text',
-                'help'      => 'Popište současný stav týkající se tohoto projektu',
+                'placeholder' => 'Popište současný stav týkající se zamýšleného návrhu',
+                'help'      => 'Popište současný stav týkající se zamýšleného návrhu',
                 // 'title'     => "Actions",
                 'show_mtbx' => true,
                 'show_form' => true,
@@ -255,16 +255,16 @@ class PbVote_RenderForm {
                 'id'        => 'pb_project_future_state',
                 'type'      => 'textarea',
                 'mandatory' => false,
-                // 'placeholder' => 'Vyplňte text',
+                'placeholder' => 'Popište zamýšlený stav týkající se tohoto návrhu',
                 'help'      => 'Popište zamýšlený stav týkající se tohoto projektu',
                 // 'title'     => "Actions",
                 'show_mtbx' => true,
                 'show_form' => true,
             ),
             'locality' => array(
-                'label' => 'Katastrální části, kterých se projekt týká',
+                'label' => 'Katastrální části, kterých se návrh týká',
                 'id'    => 'pb_project_locality',
-                'help'  => 'Zaškrtněte všechny lokality, kterých se projekt týká',
+                'help'  => 'Zaškrtněte všechny katastrální části, kterých se návrh týká',
                 'type'  => 'checkboxgroup',
                 'show_mtbx'   => true,
                 'show_form'   => true,
@@ -321,12 +321,12 @@ class PbVote_RenderForm {
                 ),
             ),
             'cost' => array(
-              'label'     => 'Předpokládané náklady (povinný údaj)',
+              'label'     => 'Předpokládané náklady (povinné)',
               'id'        => 'pb_project_naklady',
               'type'      => 'budgettable',
               'title'     => "cost",
               'mandatory' => true,
-              'help'      => 'Zadejte předpokládané náklady v rozsahu 300 tis. - 2 mil. Kč včetně 10 procent rezervy. Částky jsou včetně daně. Počet jednotek a jednotková cena jsou celá čísla, uveďte všechny potřebné položky včetně např. bouracích a stavebních prací nebo finančních prostředků na studie a zpracovávání dokumentace.',
+              'help'      => 'Zadejte předpokládané náklady v rozsahu 350 tis. - 2 mil. Kč včetně 10 procent rezervy. Částky jsou včetně daně. Počet jednotek a jednotková cena jsou celá čísla, uveďte všechny potřebné položky včetně např. bouracích a stavebních prací nebo finančních prostředků na studie a zpracovávání dokumentace.',
               'show_mtbx' => true,
               'show_form' => true,
               'js_rules'  => array(
@@ -381,7 +381,7 @@ class PbVote_RenderForm {
             // ),
 
             'name' => array(
-              'label'     => 'Jméno a příjmení navrhovatele',
+              'label'     => 'Jména a příjmení navrhovatele',
               'id'        => 'pb_project_navrhovatel_jmeno',
               'type'      => 'text',
               'default'   => '',
@@ -448,7 +448,7 @@ class PbVote_RenderForm {
                 'id'        => 'pb_project_navrhovatel_adresa',
                 'type'      => 'text',
                 'mandatory' => true,
-                'placeholder' => '(název ulice, číslo popisné, část obce)',
+                'placeholder' => 'název ulice, číslo popisné, část obce',
                 // 'title'     => "address",
                 'help'      => 'Trvalé bydliště navrhovatele nebo oficiální sídlo společnosti musí být ve správním obvodě MČ Praha 10. Tento údaj nebude zveřejněn. Adresu uvádějte ve formátu název ulice, číslo orientační/popisné, PSČ, Praha 10.',
                 'show_mtbx'   => true,

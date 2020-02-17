@@ -254,13 +254,13 @@ class PbVote_ProjectInsert
                   if( Array.isArray(pom)) {
                       if ( pom.length > 0) {
                         total = Math.round(calculate_total_sum()*1.1);
-                        if (total >=300000 && total <= 2000000) {
+                        if (total >=350000 && total <= 2000000) {
     											result = true;
     										}
                       }
                   };
         					return result;
-        				}).setMessage('pb_project_js_validate_budget', 'Celková částka předpokládaných nákladů musí být mezi 300tis až 2 mil Kč.');;
+        				}).setMessage('pb_project_js_validate_budget', 'Celková částka předpokládaných nákladů musí být mezi 350tis až 2 mil Kč.');
 
                 validator.registerCallback( 'pb_project_js_validate_locality', function(value){
                   var result = false;
