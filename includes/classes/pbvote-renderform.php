@@ -128,7 +128,7 @@ class PbVote_RenderForm {
         return array(
                 'reason', 'curr_state', 'future_state',
                 'locality', 'parcel', 'attachment', 'cost',
-                'org_name', 'name', 'phone', 'email', 'address',
+                'org_name', 'name', 
             );
     }
 

@@ -13,6 +13,7 @@ $voting_ids = get_the_ID();
 global  $voting_ids;
 // $hlasovani_meta = get_post_meta( $voting_ids, '', false);
 get_header();
+do_shortcode('[INSERT_ELEMENTOR id="4470"]');
 ?>
 
     <div>

@@ -47,7 +47,8 @@ $plugin_path_url = imc_calculate_plugin_base_url();
 
 // $pb_project_single = new pbProjectSingle;
 
-get_header(); ?>
+get_header();
+do_shortcode('[INSERT_ELEMENTOR id="4470"]'); ?>
 
     <div class="imc-BGColorGray">
 
