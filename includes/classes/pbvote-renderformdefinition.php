@@ -1,8 +1,10 @@
 <?php
-class PbVote_RenderForm {
+class PbVote_RenderFormDefinition {
     public static $file_type_image =  "gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG";
     public static $file_type_scan  =  "pdf,PDF";
     public static $file_type_docs  =  "doc,DOC,xls,XLS,docX,DOCX,xlsx,XLSX";
+    private $attachment_size = 2; // megabytes
+    private $budget_limit = array('min' => 350000, 'max' => 2000000, 'help' => '350 tis. - 2 mil.'); // bytes
     private $fields;
     private $fields_layout;
     private $fields_single;
@@ -138,8 +140,8 @@ class PbVote_RenderForm {
             array( 'type' => 'section', 'data' => array( 'label' => 'A. Základní informace k návrhu', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
             array( 'type' => 'section', 'data' => array( 'label' => 'Povinné položky', 'help' => '', 'class' => 'pbvote-SubSectionTitleTextStyle',)),
             array( 'type' => 'row', 'data' => array(
-                array('type' => 'field', 'data' => array( 'field' => 'title', 'columns' => 12)),
-                // array('type' => 'field', 'data' => array( 'field' => 'category', 'columns' => 6)),
+                array('type' => 'field', 'data' => array( 'field' => 'title', 'columns' => 6)),
+                array('type' => 'field', 'data' => array( 'field' => 'category', 'columns' => 6)),
             )),
             array( 'type' => 'field', 'data' => array( 'field' => 'photo', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'content', 'columns' => 0)),
@@ -326,9 +328,10 @@ class PbVote_RenderForm {
               'type'      => 'budgettable',
               'title'     => "cost",
               'mandatory' => true,
-              'help'      => 'Zadejte předpokládané náklady v rozsahu 350 tis. - 2 mil. Kč včetně 10 procent rezervy. Částky jsou včetně daně. Počet jednotek a jednotková cena jsou celá čísla, uveďte všechny potřebné položky včetně např. bouracích a stavebních prací nebo finančních prostředků na studie a zpracovávání dokumentace.',
+              'help'      => 'Zadejte předpokládané náklady v rozsahu '.$this->budget_limit['help'].' Kč včetně 10 procent rezervy. Částky jsou včetně daně. Počet jednotek a jednotková cena jsou celá čísla, uveďte všechny potřebné položky včetně např. bouracích a stavebních prací nebo finančních prostředků na studie a zpracovávání dokumentace.',
               'show_mtbx' => true,
               'show_form' => true,
+              'limit'     => $this->budget_limit,
               'js_rules'  => array(
                 'rules'   => 'required|!callback_pb_project_js_validate_budget',
                 'depends' => 'pb_project_js_validate_required',

@@ -9,27 +9,25 @@
  */
 class PbVote_ProjectEdit
 {
-    private $file_type_image = "gif, png, jpg, jpeg";
-    private $file_type_scan  = "pdf" ;
-    private $file_type_docs  = "doc, xls, docx, xlsx";
     private $pb_submit_btn_text = array(
             'completed_off' => 'Uložit si pro budoucí editaci',
             'completed_on'  => 'Odeslat návrh ke schválení',
         );
+    private $help_page_slug = 'navody-uprava-navrhu';
     private $fields_definition  = array();
     private $fields_order  = array();
     private $form_fields;
 
     public function __construct()
     {
-        $this->form_fields = new PbVote_RenderForm();
+        $this->form_fields = new PbVote_RenderFormDefinition();
         $this->fields_definition = $this->form_fields->get_form_fields();
         $this->fields_order      = $this->form_fields->get_form_fields_layout();
     }
     /*
     * Renders the form part with additional fields
     */
-    public function template_project_edit( $latlng = array(), $data = null)
+    public function render_form_edit( $latlng = array(), $data = null)
     {
 
         ob_start();
@@ -111,7 +109,9 @@ class PbVote_ProjectEdit
         }
         switch ( $field['type'] ) {
             case 'budgettable':
-                $this->render_budget_table( $order, $field, $value, $help);
+                // $this->render_budget_table( $order, $field, $value, $help);
+                $field_render = new PbVote_RenderFieldBudgetTable( $field, $value);
+                echo $field_render->render_field($order);
                 break;
             case 'attachment':
                 $this->render_attachment_table( $order, $field, $value, $help);
@@ -123,28 +123,38 @@ class PbVote_ProjectEdit
                 $this->render_image( $order, $field, $value, $help);
                 break;
             case 'checkbox':
-                $this->render_checkbox( $order, $field, $value, $help);
+                // $this->render_checkbox( $order, $field, $value, $help);
+                $field_render = new PbVote_RenderFieldCheckbox( $field, $value);
+                echo $field_render->render_field($order);
                 break;
             case 'checkboxgroup':
-                $field_render = new PbVote_RenderCheckboxGroup( $field, $value);
+                $field_render = new PbVote_RenderFieldCheckboxGroup( $field, $value);
                 echo $field_render->render_field($order, $help);
                 // $this->render_checkboxgroup( $order, $field, $value, $help);
                 break;
             case 'textarea':
-                $this->render_textarea( $order, $field, $value, $help);
+                // $this->render_textarea( $order, $field, $value, $help);
+                $field_render = new PbVote_RenderFieldTextArea( $field, $value);
+                echo $field_render->render_field($order);
                 break;
             case 'email':
-                $this->render_text( $order, $field, $value, $help);
+                // $this->render_text( $order, $field, $value, $help);
+                $field_render = new PbVote_RenderFieldText( $field, $value);
+                echo $field_render->render_field($order);
                 break;
             case 'category':
-                $this->render_category( $order, $field, $value, $help);
+                // $this->render_category( $order, $field, $value, $help);
+                $field_render = new PbVote_RenderFieldCategory( $field, $value);
+                echo $field_render->render_field($order);
                 break;
             case 'imcmap':
                 $this->render_map( $order, $field, $value, $help);
                 $this->render_link_katastr( $latlng );
                 break;
             default:
-                $this->render_text( $order, $field, $value, $help);
+                $field_render = new PbVote_RenderFieldText( $field, $value);
+                echo $field_render->render_field($order);
+                // $this->render_text( $order, $field, $value, $help);
         }
 
         if ( ! empty($columns) ) {
@@ -226,36 +236,6 @@ class PbVote_ProjectEdit
                 $input['id']
             );
         }
-    }
-    private function render_budget_table( $order, $input = null, $value = '', $help = '' )
-    {
-        if ( !empty( $input['mandatory']) && $input['mandatory'] ) {
-            $mandatory = $this->render_mandatory( $input['mandatory']) ;
-        } else {
-            $mandatory = $this->render_mandatory( false);
-        }
-        $options = '';
-        if ( ! empty($input['options'])) {
-            $options = " ".$input['options'];
-        }
-
-        if (empty($value)) {
-          $value_table = array();
-        } else {
-          $value_table = unserialize( $value);
-        }
-
-        $table = new PbVote_BudgetTable( true, $value_table);
-        $output = '<h3 class="imc-SectionTitleTextStyle">%s%s %s'.$this->render_tooltip( $help ).'</h3>';
-
-        printf( $output,
-            $order,
-            $input['label'],
-            $mandatory
-        );
-
-        $output = $table->render_table();
-        echo $output;
     }
     private function render_attachment_table( $order, $input = null, $value = '', $help = '' )
     {
@@ -366,91 +346,6 @@ class PbVote_ProjectEdit
         } else {
             return '<a hidden id="'.$id.'Link" data-toggle="tooltip" title="Chybí příloha" class="u-pull-right
                 imc-SingleHeaderLinkStyle"><i class="material-icons md-36 imc-SingleHeaderIconStyle">file_download</i></a>';
-        }
-    }
-    private function render_checkbox( $order, $input, $value = '', $help = '')
-    {
-        $checked = '';
-        $required = '';
-        $mandatory = '';
-        if ( ! empty( $value) ){
-            if ( $value ) {
-                $checked = 'checked';
-            }
-        } else {
-            if (! empty($input['default']) && ( $input['default'] != 'no') && ( $input['default'] != '0') ) {
-                $checked = 'checked';
-            }
-        }
-        if ( ! empty( $input['mandatory'])) {
-            $mandatory = $this->render_mandatory( $input['mandatory']) ;
-            if ($input['mandatory']) {
-                $required = "required";
-                $required = "";
-            }
-        }
-
-        $output = '<h3 class="imc-SectionTitleTextStyle" style="display:inline-block;"><label id="%sName" for="%s">%s%s'. $this->render_tooltip($help) .'</label>
-            </h3><input type="checkbox"  %s %s name="%s" id="%s" class="imc-InputStyle" value="1"
-            style="width:20px; height:20px; display:inline-block;margin-left:10px"/>
-            <label id="%sLabelx" class="imc-ReportFormErrorLabelStyle imc-TextColorPrimary"></label>';
-
-        if ( empty( $input ) ) {
-            return $output;
-        } else {
-            printf( $output,
-                $input['id'],
-                $input['id'],
-                $order,
-                $input['label'],
-                $checked,
-                $required,
-                $input['id'],
-                $input['id'],
-                $input['id']
-            );
-        }
-    }
-    private function render_checkboxgroup( $order, $input, $value , $help = '')
-    {
-        $required = '';
-        $mandatory = '';
-        if (empty($value)) {
-          $values = array();
-        } else {
-          $values = unserialize( $value);
-        }
-
-        $output = '<h3 class="imc-SectionTitleTextStyle" style="display:inline-block;"><label id="%sName" for="%s">%s%s'. $this->render_tooltip($help) .'</label>
-            </h3><label id="%sLabel" class="imc-ReportFormErrorLabelStyle imc-TextColorPrimary"></label>';
-        if ( empty( $input ) ) {
-            return $output;
-        } else {
-            $pom_value = json_encode( empty($values) ? array() : $values , JSON_UNESCAPED_UNICODE);
-            $pom_value = str_replace( '"', '', $pom_value);
-            $output .= '<div class="pbvote-CheckboxGroup-container">';
-            $output .= '<input class="pbvote-project-checkboxgroup-input" type="hidden" id="%s" name="%s" value="%s">';
-            foreach( $input['items'] as $pb_item ) {
-                if ((! empty($values)) && in_array($pb_item['iid'], $values, true)) {
-                  $checked = 'checked="checked"';
-                } else {
-                  $checked = '';
-                }
-                $output .= '<div><input '.$checked.' class="pbvote-CheckboxGroupStyle imc-CheckboxStyle pbvote-CheckboxGroup-member" id="'.$pb_item['iid'].'" type="checkbox" name="'.$pb_item['iid'].'" value="'.$pb_item['iid'].'">';
-                $output .= '<label for="'.$pb_item['iid'].'">'.$pb_item['ilabel'].'</label>';
-                $output .= '</div>';
-            }
-            $output .= '</div>';
-            printf( $output,
-                $input['id'],
-                $input['id'],
-                $order,
-                $input['label'],
-                $input['id'],
-                $input['id'],
-                $input['id'],
-                $pom_value
-            );
         }
     }
 
@@ -603,11 +498,13 @@ class PbVote_ProjectEdit
     protected function render_help_link($slug = '', $icon_size = '28')
     {
         $url = '';
-        if (! empty($slug)) {
-          $page = get_page_by_path($slug);
-          if ($page) {
-            $url = get_permalink($page->ID);
-          }
+        if ( empty($slug)) {
+              $slug = $this->help_page_slug;
+        }
+
+        $page = get_page_by_path($slug);
+        if ($page) {
+          $url = get_permalink($page->ID);
         }
 
         if (! empty($url)) {

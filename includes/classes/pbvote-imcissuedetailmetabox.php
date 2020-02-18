@@ -11,7 +11,7 @@ class PbVote_ImcIssueDetailMetabox {
 
   private function set_meta_fields()
    {
-       $pom = new PbVote_RenderForm();
+       $pom = new PbVote_RenderFormDefinition();
        $this->meta_fields = $pom->get_form_fields_mtbx();
        unset( $pom);
    }
@@ -128,7 +128,7 @@ class PbVote_ImcIssueDetailMetabox {
              $input = $table->render_table();
            break;
            case 'checkboxgroup':
-             $field_render = new PbVote_RenderCheckboxGroup( $meta_field, $meta_value);
+             $field_render = new PbVote_RenderFieldCheckboxGroup( $meta_field, $meta_value);
              $input = $field_render->render_body();
            break;
          default:

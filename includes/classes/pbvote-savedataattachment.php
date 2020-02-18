@@ -81,17 +81,17 @@ class PbVote_SaveDataAttachment {
     {
         switch ($attach_type) {
             case 'featured_image':
-            $allowed_file_type = PbVote_RenderForm::get_file_type_image();
+            $allowed_file_type = PbVote_RenderFormDefinition::get_file_type_image();
             break;
 
             case 'pb_project_mapa':;
             case 'pb_project_podporovatele':
             case 'pb_project_attachment':
-            $allowed_file_type = PbVote_RenderForm::get_file_type_image().PbVote_RenderForm::get_file_type_scan();
+            $allowed_file_type = PbVote_RenderFormDefinition::get_file_type_image().PbVote_RenderFormDefinition::get_file_type_scan();
             break;
 
             default:
-            $allowed_file_type = PbVote_RenderForm::get_file_type_image().PbVote_RenderForm::get_file_type_scan().PbVote_RenderForm::get_file_type_docs();
+            $allowed_file_type = PbVote_RenderFormDefinition::get_file_type_image().PbVote_RenderFormDefinition::get_file_type_scan().PbVote_RenderFormDefinition::get_file_type_docs();
             break;
         }
         $type = wp_check_filetype(basename($file)) ;

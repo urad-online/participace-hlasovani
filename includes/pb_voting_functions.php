@@ -201,14 +201,18 @@ function create_select_with_grandchildren( $fieldName, $selected_term_id  ) {
 		$args = array('hide_empty' => false, 'hierarchical' => true, 'parent' => 0);
 		$terms = get_terms('imccategory', $args);
 
-		$html = '';
-		$html .= '<select name="' . $fieldName . '" id="'.$fieldName.'"class="' . $fieldName . ' "' . '>';
+		$select_selected_first = 'selected';
 
-		$html .= '<option value="" class="imc-CustomOptionDisabledStyle" disabled selected>'.__('Select a category','pb-voting').'</option>';
 
+		$output_items = '';
 		foreach ( $terms as $term ) {
-			$selected = ((!empty( $selected_term_id)) && ( $selected_term_id == $term->term_id )) ? "selected" : "";
-			$html .= '<option class="imc-CustomOptionParentStyle" '.$selected.' value="' . $term->term_id . '" >'.$term->name.'</option>';
+			if ((!empty( $selected_term_id)) && ( $selected_term_id == $term->term_id )) {
+				$selected = "selected";
+				$select_selected_first = "";
+			} else {
+				$selected = "";
+			}
+			$output_items .= '<option class="imc-CustomOptionParentStyle" '.$selected.' value="' . $term->term_id . '" >'.$term->name.'</option>';
 
 			$args = array(
 				'hide_empty'    => false,
@@ -218,16 +222,31 @@ function create_select_with_grandchildren( $fieldName, $selected_term_id  ) {
 			$childterms = get_terms('imccategory', $args);
 
 			foreach ( $childterms as $childterm ) {
-				$html .= '<option class="imc-CustomOptionChildStyle" value="' . $childterm->term_id . '">&nbsp; ' . $childterm->name . '</option>';
+				if ((!empty( $selected_term_id)) && ( $selected_term_id == $childterm->term_id )) {
+					$selected = "selected";
+					$select_selected_first = "";
+				} else {
+					$selected = "";
+				}
+				$output_items .= '<option class="imc-CustomOptionChildStyle" '.$selected.' value="' . $childterm->term_id . '">&nbsp; ' . $childterm->name . '</option>';
 
 				$args = array('hide_empty' => false, 'hierarchical'  => true, 'parent' => $childterm->term_id);
 				$granchildterms = get_terms('imccategory', $args);
 
 				foreach ( $granchildterms as $granchild ) {
-					$html .= '<option class="imc-CustomOptionGrandchildStyle" value="' . $granchild->term_id . '">&nbsp;&nbsp; ' . $granchild->name . '</option>';
+						if ((!empty( $selected_term_id)) && ( $selected_term_id == $granchild->term_id )) {
+							$selected = "selected";
+							$select_selected_first = "";
+						} else {
+							$selected = "";
+						}
+					$output_items .= '<option class="imc-CustomOptionGrandchildStyle" value="' . $granchild->term_id . '">&nbsp;&nbsp; ' . $granchild->name . '</option>';
 				}
 			}
 		}
+		$html  = '<select name="' . $fieldName . '" id="'.$fieldName.'"class="' . $fieldName . ' "' . '>';
+		$html .= '<option value="" class="imc-CustomOptionDisabledStyle" disabled '.$select_selected_first.'>'.__('Select a category','pb-voting').'</option>';
+		$html .= $output_items;
 		$html .=  "</select>";
 
 		return $html;

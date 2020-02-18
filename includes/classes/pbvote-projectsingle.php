@@ -7,7 +7,7 @@ class PbVote_ProjectSingle {
     private $field_list = array();
 
     public function __construct() {
-        $this->form_fields = new PbVote_RenderForm();
+        $this->form_fields = new PbVote_RenderFormDefinition();
         $this->fields_definition = $this->form_fields->get_form_fields();
         $this->field_list      = $this->form_fields->get_form_fields_layout_single();
     }

@@ -166,7 +166,7 @@ class PbVote_ProjectInsert
                     <div class="imc-CardLayoutStyle">
                         <h2 class="imc-PageTitleTextStyle imc-TextColorPrimary"><?php echo __('Report a new issue','pb-voting'); ?></h2>
                         <div class="imc-Separator"></div>
-                          <?php echo $this->project_single->template_project_edit( array(
+                          <?php echo $this->project_single->render_form_edit( array(
                               'lat' => $this->map_options['initial_lat'],
                               'lon' => $this->map_options['initial_lng'],
                             )) ;?>

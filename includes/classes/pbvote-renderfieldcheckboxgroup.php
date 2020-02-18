@@ -1,5 +1,5 @@
 <?php
-class PbVote_RenderCheckboxGroup
+class PbVote_RenderFieldCheckboxGroup
 {
 		protected $required = '';
 		protected $mandatory = '';
