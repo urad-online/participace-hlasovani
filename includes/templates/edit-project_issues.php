@@ -49,7 +49,7 @@ $map_options_initial_bound = $map_options["gmap_boundaries"];
 /*****************************************************************************/
 
 /* create instance of class for form rendering */
-$project_single = new PbVote_ProjectEdit;
+$project_single = new PbVote_RenderFormEdit;
 
 get_header();
 // checks if the current user has the ability to post anything

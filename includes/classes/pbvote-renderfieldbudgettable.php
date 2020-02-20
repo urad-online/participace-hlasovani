@@ -12,6 +12,7 @@ class PbVote_RenderFieldBudgetTable extends PbVote_RenderFieldText
       // array('id' => "vat", 'width' => '8%', 'label' => "DPH", 'input_type' => "select_vat", 'class' => "percent", 'attr' => ""),
       array('id' => "total_price", 'width' => '15%', 'label' => "Celková cena", 'input_type' => "text", 'class' => "integer result", 'attr' => " disabled "),
     );
+    private $action_col_width = '10%';
     protected $value = array();
     private $total_sum = 0;
     private $total_buffer = 0.10;
@@ -65,7 +66,7 @@ class PbVote_RenderFieldBudgetTable extends PbVote_RenderFieldText
         $output .= '<col style="width:' . $item['width'] . '">';
       }
       if ($this->allow_edit) {
-        $output .= '<col style="width:8%">';
+        $output .= '<col style="width:'.$this->action_col_width.'">';
       }
       $output .= '</colgroup><thead><tr>';
       foreach ($this->table_def as $item ) {

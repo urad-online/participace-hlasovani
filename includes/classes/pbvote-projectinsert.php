@@ -124,7 +124,7 @@ class PbVote_ProjectInsert
       }
 
       $this->set_map_options();
-      $this->project_single = new PbVote_ProjectEdit;
+      $this->project_single = new PbVote_RenderFormEdit;
 
       ob_start();
 
