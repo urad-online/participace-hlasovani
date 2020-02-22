@@ -22,6 +22,8 @@ if ( $project_new->is_submitted() ) {
 	if ( $result) {
 		wp_redirect($project_new->return_url);
 		exit;
+	} else {
+		echo $project_new->show_data_save_error();
 	}
 } else {
 	get_header();

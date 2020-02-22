@@ -9,6 +9,7 @@ class PbVote_ProjectSaveData {
     */
     public function project_insert( $voting_id )
     {
+      
         $parent_voting_period = get_parent_taxo_slug($voting_id);
 
         if (! empty( $_POST['my_custom_taxonomy']) ) {

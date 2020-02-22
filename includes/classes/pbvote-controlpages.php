@@ -5,8 +5,9 @@ class PbVote_ControlPages
     public $post_type     = PB_VOTING_POST_TYPE;
     public $allow_voting  = false;
     public $allow_edit    = false;
-    public $voting_id, $dit_page, $insert_page;
+    public $voting_id, $edit_page, $insert_page;
     private $project_template_suffix = "-project_issues.php";
+    private $voting_status;
 
     public function __construct( $post_id)
     {
@@ -14,30 +15,14 @@ class PbVote_ControlPages
 
         if (( !empty($voting)) && (count($voting) == 1) ) {
             $this->voting_id = $voting[0];
-            $this->get_status_meta();
+            $this->voting_status =  new PbVote_ControlStatusPermission( $this->voting_id);
+            $this->allow_edit    = $this->voting_status->can_add_new();
+            $this->allow_voting  = $this->voting_status->can_vote();
         } else {
             $this->voting_id = null;
         }
         $this->edit_page   = $this->control_page_link("edit");
         $this->insert_page = $this->control_page_link("insert");
-    }
-
-    private function get_status_meta()
-    {
-        $vote_status = wp_get_object_terms($this->voting_id, $this->taxo_status);
-        if (is_wp_error($vote_status)) {
-            return false;
-        }
-
-        if (! empty( $vote_status[0]->term_id)) {
-            $temp_term = get_term_meta( $vote_status[0]->term_id);
-            if ((!empty( $temp_term['allow_voting'][0]) ) && ($temp_term['allow_voting'][0] ) ) {
-                $this->allow_voting =  true;
-            }
-            if ((!empty( $temp_term['allow_adding_project'][0]) ) && ($temp_term['allow_adding_project'][0] ) ) {
-                $this->allow_edit =  true;
-            }
-        }
     }
 
     public function page_link_voting()

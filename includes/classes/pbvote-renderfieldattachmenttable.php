@@ -3,7 +3,8 @@ class PbVote_RenderFieldAttachmentTable extends PbVote_RenderFieldText
 {
     private $field_id = 'pb_project_attachment';
     private $id_prefix = 'pbVoteAttachTblInput';
-    private $attach_list , $attach_list_keys;
+    private $attach_list;
+    private $attach_list_keys = array();
     private $table_def = array(
       array('id' => "title", 'width' => '80%', 'label' => "Název", 'input_type' => "file", 'class' => "pbvote-attach-table-text text-left", ),
       array('id' => "actions", 'width' => '10%', 'label' => "Úpravy", 'input_type' => "buttons", 'class' => "text-left"),

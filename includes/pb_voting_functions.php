@@ -366,6 +366,8 @@ function pbvote_project_insert_shortcode( $atts, $content, $tag)
 			// 	exit;
 			// }
 			return $project_new->show_datasave_ok();
+		} else {
+			echo $project_new->show_data_save_error();
 		}
 	} else {
 		return $project_new->render_form() ;

@@ -7,10 +7,14 @@ class PbVote_ProjectInsert
     private $is_submitted =  false;
     private $taxo_status   = PB_VOTING_STATUS_TAXO;
     private $post_type     = PB_VOTING_POST_TYPE;
+    private $voting_status;
+    private $message_no_add_status;
+    private $save_error_message = "";
 
     public function __construct( $atts)
     {
         $this->read_atts($atts);
+        $this->message_no_add_status = __('Akce hlasování je ve fázi kdy není povoleno přidávat návrhy');
     }
 
     private function read_atts( $input )
@@ -36,6 +40,7 @@ class PbVote_ProjectInsert
       } else {
         $this->voting_id = $this->atts['voting_id'];
       }
+
       $this->set_return_url();
     }
 
@@ -69,7 +74,17 @@ class PbVote_ProjectInsert
     {
       return $this->is_submitted;
     }
-    private function show_user_cant_edit()
+
+    private function show_user_cant_edit_login()
+    {
+        return $this->show_permission_error( wp_login_url(), __('You are not authorised to report an issue','pb-voting'), __('Please login!','pb-voting'));
+    }
+    private function show_cant_edit_in_this_status( $message)
+    {
+        return $this->show_permission_error( $this->return_url, $message, __('Zpět na přehled','pb-voting'));
+    }
+
+    private function show_permission_error( $url = "#", $error_message = "", $link_label = "Zpět na přehled")
     {
       $plugin_path_url = pbvote_calculate_plugin_base_url();
       ob_start();
@@ -80,11 +95,11 @@ class PbVote_ProjectInsert
               <img src="<?php echo esc_url($plugin_path_url);?>/img/img_banner.jpg" class="" >
               <div class="imc-Separator"></div>
               <div class="imc-row imc-CenterContents ">
-                  <i class="imc-EmptyStateIconStyle material-icons md-huge">vpn_lock</i>
+                  <i class="imc-EmptyStateIconStyle material-icons md-48">vpn_lock</i>
                   <div class="imc-Separator"></div>
-                  <h3 class="imc-FontRoboto imc-Text-LG imc-TextColorSecondary imc-TextMedium imc-CenterContents"><?php echo __('You are not authorised to report an issue','pb-voting'); ?></h3>
+                  <h3 class="imc-FontRoboto imc-Text-LG imc-TextColorSecondary imc-TextMedium imc-CenterContents"><?php echo $error_message; ?></h3>
                   <div class="imc-Separator"></div>
-                  <a href="<?php echo esc_url(wp_login_url()); ?>" class="imc-Text-XL imc-TextMedium imc-LinkStyle"><?php echo __('Please login!','pb-voting'); ?></a>
+                  <a href="<?php echo esc_url($url); ?>" class="imc-Text-XL imc-TextMedium imc-LinkStyle"><?php echo $link_label ; ?></a>
                   <div class="imc-Separator"></div>
               </div>
           </div>
@@ -104,7 +119,7 @@ class PbVote_ProjectInsert
           <img src="<?php echo esc_url($plugin_path_url);?>/img/img_banner.jpg" class="">
           <div class="imc-Separator"></div>
           <div class="imc-row imc-CenterContents">
-            <i class="imc-EmptyStateIconStyle material-icons md-huge">vpn_lock</i>
+            <i class="imc-EmptyStateIconStyle material-icons md-48">vpn_lock</i>
             <div class="imc-Separator"></div>
             <h3 class="imc-FontRoboto imc-Text-LG imc-TextColorSecondary imc-TextMedium imc-CenterContents"><?php echo __('New project proposal was successfully saved','pb-voting'); ?></h3>
             <div class="imc-Separator"></div>
@@ -117,10 +132,16 @@ class PbVote_ProjectInsert
       return ob_get_clean();
 
     }
+
     public function render_form()
     {
       if (! $this->user_can_insert()) {
-        return $output = $this->show_user_cant_edit();
+        return $output = $this->show_user_cant_edit_login();
+      }
+
+      $this->voting_status = new PbVote_ControlStatusPermission( $this->voting_id);
+      if ( !$this->voting_status->can_add_new()) {
+        return $output = $this->show_cant_edit_in_this_status($this->message_no_add_status);
       }
 
       $this->set_map_options();
@@ -189,17 +210,30 @@ class PbVote_ProjectInsert
 
     public function save_data()
     {
-      $success = false;
-      if ( isset($_POST['post_nonce_field']) && wp_verify_nonce($_POST['post_nonce_field'], 'post_nonce')) {
-        $project_save = new PbVote_ProjectSaveData;
+        $success = false;
+        $this->voting_status = new PbVote_ControlStatusPermission( $this->voting_id);
+        if ( !$this->voting_status->can_add_new()) {
+            $this->save_error_message = $this->message_no_add_status;
+            return false;
+        }
 
-      	$post_id = $project_save->project_insert( $this->voting_id );
+        if ( isset($_POST['post_nonce_field']) && wp_verify_nonce($_POST['post_nonce_field'], 'post_nonce')) {
+            $project_save = new PbVote_ProjectSaveData;
 
-      	if( $post_id ) {
-          $success = true;
-      	}
-      }
+          	$post_id = $project_save->project_insert( $this->voting_id );
+
+          	if( $post_id ) {
+                $success = true;
+          	} else {
+                $this->save_error_message = __( 'Chyba při ukládání dat' , 'pb-voting');
+            }
+        }
       return $success;
+    }
+
+    public function show_data_save_error()
+    {
+        return $this->show_permission_error( $this->return_url, $this->save_error_message, __('Zpět na přehled','pb-voting'));
     }
 
     private function add_form_javascript()
@@ -388,6 +422,9 @@ class PbVote_ProjectInsert
       }
 
       return "";
+    }
+    protected function show_data_save_error9()
+    {
 
     }
 }
