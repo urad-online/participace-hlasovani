@@ -15,6 +15,19 @@ class PbVote_ProjectInsert
     {
         $this->read_atts($atts);
         $this->message_no_add_status = __('Akce hlasování je ve fázi kdy není povoleno přidávat návrhy');
+
+        if (! $this->is_submitted) {
+          $this->set_map_options();
+          $this->project_single = new PbVote_RenderFormEdit;
+
+          wp_localize_script('pb-formvalidator', 'formValidatorData', array(
+            'rules' => $this->project_single->render_fields_js_validation(),
+            'mapData' => $this->map_options,
+            'budgetTable' => $this->project_single->get_field_property( 'cost', 'limit'),
+            'fileSize'   => $this->project_single->get_field_property( 'attachment', 'max_size'),
+          ));
+        }
+
     }
 
     private function read_atts( $input )
@@ -144,13 +157,10 @@ class PbVote_ProjectInsert
         return $output = $this->show_cant_edit_in_this_status($this->message_no_add_status);
       }
 
-      $this->set_map_options();
-      $this->project_single = new PbVote_RenderFormEdit;
-
       ob_start();
 
       echo $this->print_form();
-      echo $this->add_form_javascript();
+      // echo $this->add_form_javascript();
 
       return ob_get_clean() ;
 
@@ -170,7 +180,7 @@ class PbVote_ProjectInsert
       $this->map_options['initial_lng'] 		= $map_options["gmap_initial_lng"];
       $this->map_options['initial_zoom'] 		= $map_options["gmap_initial_zoom"];
       $this->map_options['initial_mscroll'] = $map_options["gmap_mscroll"];
-      $this->map_options['initial_bound'] 	= $map_options["gmap_boundaries"];
+      $this->map_options['initial_bound'] 	= json_decode($map_options["gmap_boundaries"]);
     }
 
 

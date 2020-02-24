@@ -3,7 +3,7 @@ class PbVote_RenderFormDefinition {
     public static $file_type_image =  "gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG";
     public static $file_type_scan  =  "pdf,PDF";
     public static $file_type_docs  =  "doc,DOC,xls,XLS,docX,DOCX,xlsx,XLSX";
-    private $attachment_size = 2; // megabytes
+    private $file_max_size = 2000000;
     private $budget_limit = array('min' => 350000, 'max' => 2000000, 'help' => '350 tis. - 2 mil.'); // bytes
     private $fields;
     private $fields_layout;
@@ -103,7 +103,7 @@ class PbVote_RenderFormDefinition {
                 array_push( $output, $rule);
             }
         }
-        return json_encode( $output );
+        return $output ;
     }
 
     public function get_form_fields_layout_single()
@@ -151,7 +151,7 @@ class PbVote_RenderFormDefinition {
             array( 'type' => 'field', 'data' => array( 'field' => 'curr_state', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'future_state', 'columns' => 0)),
             array( 'type' => 'section', 'data' => array( 'label' => 'B. Lokalizace návrhu (povinné)', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
-            array( 'type' => 'field', 'data' => array( 'field' => 'locality', 'columns' => 0)),
+            // array( 'type' => 'field', 'data' => array( 'field' => 'locality', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'postAddress', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'parcel', 'columns' => 0)),
             array( 'type' => 'section', 'data' => array( 'label' => 'C. Přílohy k návrhu (nepovinné)', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
@@ -212,6 +212,7 @@ class PbVote_RenderFormDefinition {
                 'DelBtnLabel'   => 'Smazat foto',
                 'show_mtbx'     => false,
                 'show_form'     => true,
+                'max_size'      => $this->file_max_size,
                 'js_rules'      => array(
                     'rules' => 'is_file_type[gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG]',
                     ),
@@ -319,6 +320,7 @@ class PbVote_RenderFormDefinition {
                 'help'          => 'Povolené typy příloh: gif, png, jpg, jpeg, pdf. Max velikost 2 MB',
                 'show_mtbx'   => true,
                 'show_form'   => true,
+                'max_size'    => $this->file_max_size,
                 'js_rules'    => array(
                     'rules'   => 'is_file_type[gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG,pdf,PDF]',
                 ),

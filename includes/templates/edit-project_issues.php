@@ -213,7 +213,7 @@ if(pbvote_user_can_edit($given_issue_id, $user->ID)) { ?>
         jQuery( document ).ready(function() {
 
             var validator = new FormValidator('report_an_issue_form',<?PHP
-							echo $project_single->render_fields_js_validation();
+							echo json_encode($project_single->render_fields_js_validation());
 							?>, function(errors, events) {
 							jQuery('label.imc-ReportFormErrorLabelStyle').html("");
                 if (errors.length > 0) {

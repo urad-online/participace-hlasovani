@@ -47,6 +47,14 @@ function pb_voting_enqueue_extension()
 			        'completed_off' => 'Uložit si pro budoucí editaci',
 			        'completed_on'  => 'Odeslat návrh ke schválení',
             ));
+
+    wp_register_script('pb-formvalidator',   PB_VOTE_URL . '/assets/js/pb-formvalidator_ins.js', array('jquery'),'1.0', false);
+    wp_enqueue_script('pb-formvalidator');
+    wp_localize_script('pb-formvalidator', 'formValidatorData', array(
+      'rules' => array('id'=>"pomoc", "rules" => "required"),
+      'mapData' => array('lat' => 50, 'lng' => 20, 'zoom' => 12, 'scroll' => true),
+    ));
+
 }
 
 function pbvote_class_autoloader( $class_name ) {

@@ -207,6 +207,18 @@ class PbVote_RenderFormEdit
           echo '<div class="u-pull-left pbvote-SectionTitleRow"><h3 class="u-pull-left '.$class.'">'.$label.$this->render_tooltip( $help ).'</h3></div>';
         }
     }
+    public function get_field_property( $field = '', $property = '')
+    {
+        if ((!empty($field)) && (!empty($this->fields_definition[ $field ]))) {
+            if ((!empty($property)) && (!empty($this->fields_definition[ $field ][$property]))) {
+                return $this->fields_definition[ $field ][$property];
+            } else {
+                return $this->fields_definition[ $field ];
+            }
+        } else {
+           return "";
+        }
+    }
 
 }
 
