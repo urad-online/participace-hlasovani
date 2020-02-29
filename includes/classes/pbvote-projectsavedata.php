@@ -9,7 +9,7 @@ class PbVote_ProjectSaveData {
     */
     public function project_insert( $voting_id )
     {
-      
+
         $parent_voting_period = get_parent_taxo_slug($voting_id);
 
         if (! empty( $_POST['my_custom_taxonomy']) ) {
@@ -145,7 +145,7 @@ class PbVote_ProjectSaveData {
             'pb_project_reason'              => esc_attr(sanitize_textarea_field($data['pb_project_reason'])),
             'pb_project_curr_state'          => esc_attr(sanitize_textarea_field($data['pb_project_curr_state'])),
             'pb_project_future_state'        => esc_attr(sanitize_textarea_field($data['pb_project_future_state'])),
-            'pb_project_locality'            => json_decode(stripslashes($data['pb_project_locality'])),
+            // 'pb_project_locality'            => json_decode(stripslashes($data['pb_project_locality'])),
             'pb_project_parcely'             => esc_attr(sanitize_textarea_field($data['pb_project_parcely'])),
             'pb_project_naklady'             => json_decode(stripslashes($data['pb_project_naklady'])),
             'pb_project_naklady_navyseni'    => (! empty($data['pb_project_naklady_navyseni'])) ? esc_attr(sanitize_textarea_field($data['pb_project_naklady_navyseni'])) : '0',

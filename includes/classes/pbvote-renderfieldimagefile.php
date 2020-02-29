@@ -39,6 +39,7 @@ class PbVote_RenderFieldImageFile extends PbVote_RenderFieldText
 			$output .= '<span style="display: none;" id="imcPhotoAttachedLabel" class="imc-ReportGenericLabelStyle imc-TextColorSecondary">'.$this->sel_photo_label.'</span>';
 			$output .= '<span class="imc-ReportGenericLabelStyle imc-TextColorPrimary" id="imcPhotoAttachedFilename"></span></div>';
 			$output .= '<input title="orientation" type="hidden" id="imcPhotoOri" name="imcPhotoOri"/>';
+			$output .= '<input title="imgScenario" type="hidden" id="imcImgScenario" name="imcImgScenario" value="0"/>';
 			$output .= $img_src;
 
 			return $output;

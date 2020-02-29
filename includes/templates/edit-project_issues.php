@@ -1,4 +1,4 @@
-<?php
+pbVoteIssueSubmitBtn<?php
 /**
  * Template Name: Edit Issue Page
  *
@@ -43,15 +43,12 @@ if(isset($_POST['submitted']) && isset($_POST['post_nonce_field']) && wp_verify_
 $map_options = get_option('gmap_settings');
 $map_options_initial_lat = $map_options["gmap_initial_lat"];
 $map_options_initial_lng = $map_options["gmap_initial_lng"];
-$map_options_initial_zoom = $map_options["gmap_initial_zoom"];
-$map_options_initial_mscroll = $map_options["gmap_mscroll"];
-$map_options_initial_bound = $map_options["gmap_boundaries"];
 /*****************************************************************************/
 
 /* create instance of class for form rendering */
 $project_single = new PbVote_RenderFormEdit;
 
-get_header();
+
 // checks if the current user has the ability to post anything
 
 $issue_for_edit = get_post($given_issue_id);
@@ -60,6 +57,7 @@ $pb_project_meta = get_post_meta($safe_inserted_id);
 $pb_project_meta[ 'issue_image'][0] = wp_get_attachment_url( get_post_thumbnail_id($given_issue_id) );
 $pb_project_meta[ 'postTitle'][0] = get_the_title($given_issue_id);
 $pb_project_meta[ 'postContent'][0] = $issue_for_edit->post_content;
+$pb_project_meta[ 'postAddress'] = $pb_project_meta[ 'imc_address'];
 $imccategory_currentterm = get_the_terms($given_issue_id , 'imccategory' );
 if ($imccategory_currentterm) {
 	$pb_project_meta[ 'my_custom_taxonomy'][0] = $imccategory_currentterm[0]->term_id;
@@ -83,6 +81,20 @@ $issue_address 	= $pb_project_meta[ 'imc_address'][0];
 $issue_lat 		= $pb_project_meta[ 'imc_lat'][0];
 $issue_lng 		= $pb_project_meta[ 'imc_lng'][0];
 
+$form_map_options['lat']    = $pb_project_meta[ 'imc_lat'][0];;
+$form_map_options['lng']    = $pb_project_meta[ 'imc_lng'][0];
+$form_map_options['zoom']    = $map_options["gmap_initial_zoom"];
+$form_map_options['mscroll'] = $map_options["gmap_mscroll"];
+$form_map_options['bound']   = json_decode($map_options["gmap_boundaries"]);
+
+wp_localize_script('pb-formvalidator', 'formValidatorData', array(
+	'rules' 	=> $project_single->render_fields_js_validation(),
+	'mapData' => $form_map_options,
+	'budgetTable' => $project_single->get_field_property( 'cost', 'limit'),
+	'fileSize'    => $project_single->get_field_property( 'attachment', 'max_size'),
+));
+
+get_header();
 $plugin_path_url = pbvote_calculate_plugin_base_url();
 ?>
 <div class="imc-BGColorGray">
@@ -129,8 +141,8 @@ if(pbvote_user_can_edit($given_issue_id, $user->ID)) { ?>
 
 						<?php	echo $project_single->render_form_edit(
 										array(
-											'lat' => $pb_project_meta[ 'imc_lat'][0],
-											'lon' => $pb_project_meta[ 'imc_lng'][0],
+											'lat' => $form_map_options[ 'lat'],
+											'lon' => $form_map_options[ 'lng'],
 										),
 										$pb_project_meta
 										) ;
@@ -145,13 +157,9 @@ if(pbvote_user_can_edit($given_issue_id, $user->ID)) { ?>
                     <div class="imc-row">
 						<?php wp_nonce_field('post_nonce', 'post_nonce_field'); ?>
                         <input type="hidden" name="submitted" id="submitted" value="true" />
-                        <input id="imcEditIssueSubmitBtn" class="imc-button imc-button-primary imc-button-block pb-project-submit-btn"
+                        <input id="pbVoteIssueSubmitBtn" class="imc-button imc-button-primary imc-button-block pb-project-submit-btn"
 							type="submit" value="Odeslat" />
                     </div>
-
-                    <!-- Hidden inputs to pass to php -->
-                    <input title="imgScenario" type="hidden" id="imcImgScenario" name="imcImgScenario" value="0"/>
-
 
                 </form>
             </div> <!-- Form end -->
@@ -197,187 +205,6 @@ if(pbvote_user_can_edit($given_issue_id, $user->ID)) { ?>
         </div>
     </div>
 
-
-
 <?php } ?>
-
-<!-- Form validation rules -->
-<script>
-
-    "use strict";
-
-    (function() {
-        /*Google Maps API*/
-        google.maps.event.addDomListener(window, 'load', imcInitMap);
-
-        jQuery( document ).ready(function() {
-
-            var validator = new FormValidator('report_an_issue_form',<?PHP
-							echo json_encode($project_single->render_fields_js_validation());
-							?>, function(errors, events) {
-							jQuery('label.imc-ReportFormErrorLabelStyle').html("");
-                if (errors.length > 0) {
-                    var i, j;
-                    var errorLength;
-                    jQuery("#imcReportFormSubmitErrors").html("");
-                    jQuery('#postTitleLabel').html();
-
-                    for (i = 0, errorLength = errors.length; i < errorLength; i++) {
-                        if (errors[i].name === "featured_image") {
-														imcDeleteAttachedImage('imcReportAddImgInput');
-														jQuery("#imcReportFormSubmitErrors").html(errors[i].message);
-                        } else {
-														for(j=0; j < Math.min(1, errors[i].messages.length); j++) {
-															jQuery('#'+errors[i].id+'Label').html(errors[i].messages[j]);
-															jQuery("#imcReportFormSubmitErrors").append("<p>"+errors[i].message+"</p>");
-														}
-                        }
-                    }
-                } else {
-                    jQuery('#imcEditIssueSubmitBtn').attr('disabled', 'disabled');
-										jQuery('label.imc-ReportFormErrorLabelStyle').html();
-                }
-            });
-						validator.registerConditional( 'pb_project_js_validate_required', function(field){
-							/* povinna pole se validuji pouze pokud narhovatel zaskrtne odeslat k vyhodnoceni
-							 plati pro pole s pravidlem "depends" */
-							// console.log('validuju povinna pole');
-							return jQuery('#pb_project_edit_completed').prop('checked');
-						});
-						validator.registerCallback( 'pb_project_js_validate_budget', function(value){
-							var result = false;
-							var pom = Array.from(JSON.parse( value ));
-							if( Array.isArray(pom)) {
-									if ( pom.length > 0) {
-										var total = Math.round(calculate_total_sum()*1.1);
-										if (total >=350000 && total <= 2000000) {
-											result = true;
-										}
-									}
-							};
-							return result;
-						}).setMessage('pb_project_js_validate_budget', 'Celková částka předpokládaných nákladů včetně rezervy musí být mezi 350tis až 2mil Kč.');;
-
-						validator.registerCallback( 'pb_project_js_validate_locality', function(value){
-							var result = false;
-							var pom = Array.from(JSON.parse( value ));
-							if( Array.isArray(pom)) {
-									if ( pom.length > 0) {
-										result = true;
-									}
-							};
-							return result;
-						}).setMessage('pb_project_js_validate_locality', 'Vyberte alespoň jednu lokalitu, které se návrh týká.');
-						validator.setMessage( 'required', 'Pole %s je povinné.');
-						validator.setMessage( 'min_length', 'Délka pole %s je minimálně %s znaků.');
-						validator.setMessage( 'max_length', 'Délka pole %s je maximálně %s znaků.');
-						validator.setMessage( 'valid_email', 'Pole %s neobsahuje platnou emailovou adresu.');
-						validator.setMessage( 'valid_phone', 'Pole %s neobsahuje platné telefonní číslo.');
-						re_save_hidden_locality();
-        });
-    })();
-
-    function imcInitMap() {
-        "use strict";
-
-        var mapId = "imcReportIssueMapCanvas";
-
-        // Checking the current latlng of the issue
-        var lat = parseFloat('<?php echo floatval($issue_lat); ?>');
-        var lng = parseFloat('<?php echo floatval($issue_lng); ?>');
-
-        var allowScroll;
-        "<?php echo intval($map_options_initial_mscroll, 10); ?>" === '1' ? allowScroll = true : allowScroll = false;
-
-        var boundaries = <?php echo json_encode($map_options_initial_bound);?> ?
-			<?php echo json_encode($map_options_initial_bound);?>: null;
-
-        imcInitializeMap(lat, lng, mapId, 'imcAddress', true, 15, allowScroll, JSON.parse(boundaries));
-
-        imcFindAddress('imcAddress', false, lat, lng);
-
-    }
-
-    document.getElementById('imcReportAddImgInput').onchange = function (e) {
-
-        if (document.getElementById('imcPreviousImg')) {
-            jQuery('#imcPreviousImg').remove();
-        }
-
-        var file = jQuery("#imcReportAddImgInput")[0].files[0];
-
-        // Delete image if "Cancel"
-        if (document.getElementById("imcReportAttachedImageThumb")) {
-            imcDeleteAttachedImage("imcReportAttachedImageThumb");
-        }
-
-        // If image is too big
-        if(file && file.size < 2097152) { // 2 MB (this size is in bytes)
-
-            loadImage.parseMetaData(file, function(data) { //read image metadata to get orientation info
-
-                var orientation = 0;
-                if (data.exif) {
-                    orientation = data.exif.get('Orientation');
-                }
-                document.getElementById('imcPhotoOri').value = parseInt(orientation, 10);
-
-                var loadingImage =	loadImage (
-                    file,
-
-                    function (img) {
-
-                        if(img.type === "error") {
-                            console.log("Error loading image ");
-                            jQuery("#imcReportFormSubmitErrors").html("The Photo field must contain only gif, png, jpg files.").show();
-
-                            if (document.getElementById("imcReportAttachedImageThumb")) {
-                                imcDeleteAttachedImage("imcReportAttachedImageThumb");
-                            }
-
-
-                        } else {
-
-                            if (document.getElementById("imcReportAttachedImageThumb")) {
-                                imcDeleteAttachedImage("imcReportAttachedImageThumb");
-                            }
-
-                            img.setAttribute("id", "imcReportAttachedImageThumb");
-                            img.setAttribute("alt", "Attached photo");
-                            img.setAttribute("class", "imc-ReportAttachedImgStyle u-cf");
-
-                            document.getElementById('imcImageSection').appendChild(img);
-
-                            jQuery("#imcReportFormSubmitErrors").html("");
-
-                            jQuery("#imcNoPhotoAttachedLabel").hide();
-                            jQuery("#imcLargePhotoAttachedLabel").hide();
-                            jQuery("#imcPhotoAttachedFilename").html(" " + file.name);
-                            jQuery("#imcPhotoAttachedLabel").show();
-
-                            document.getElementById('imcImgScenario').value = "2";
-
-                        }
-                    },
-                    {
-                        maxHeight: 200,
-                        orientation: orientation,
-                        canvas: true
-                    }
-                );
-            });
-
-        } else {
-
-            e.preventDefault();
-            jQuery("#imcNoPhotoAttachedLabel").hide();
-            jQuery("#imcPhotoAttachedLabel").hide();
-            jQuery("#imcLargePhotoAttachedLabel").show();
-
-        }
-
-    };
-
-</script>
 
 <?php get_footer(); ?>

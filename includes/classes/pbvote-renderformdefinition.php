@@ -405,18 +405,18 @@ class PbVote_RenderFormDefinition {
             'phone' => array(
                 'label'     => 'Tel. číslo',
                 'id'        => 'pb_project_navrhovatel_telefon',
-                'type'      => 'tel',
+                'type'      => 'text',
                 // 'options'   => 'pattern="^(\+420)? ?[1-9][0-9]{2} ?[0-9]{3} ?[0-9]{3}$"',
                 'mandatory' => true,
-                'placeholder' => '(+420) 999 999 999',
+                'placeholder' => '+420 999 999 999',
                 // 'title' => "phone",
                 'columns' => 6,
-                'help'      => 'Telefonní číslo navrhovatele uvádějte včetně předvolby ve formátu ve formátu (+420) 999 999 999',
+                'help'      => 'Telefonní číslo navrhovatele uvádějte včetně předvolby ve formátu ve formátu +420 999 999 999',
                 'show_mtbx'   => true,
                 'show_form'   => true,
                 'js_rules'    => array(
-                    'rules'   => 'required|valid_phone',
-                    'depends' => 'pb_project_js_validate_required',
+                    'rules'   => 'required|!callback_pbVoteValidPhone',
+                    // 'depends' => 'pb_project_js_validate_required',
                 ),
             ),
             'email' => array(
@@ -431,7 +431,7 @@ class PbVote_RenderFormDefinition {
                 'show_mtbx'   => true,
                 'show_form'   => true,
                 'js_rules'    => array(
-                    'rules'   => 'valid_email|required',
+                    'rules'   => 'required|valid_email',
                     // 'depends' => 'pb_project_js_validate_required',
                 ),
             ),

@@ -22,10 +22,10 @@ class PbVote_RenderFieldAddressWithMap extends PbVote_RenderFieldText
 
 		public function render_body()
 		{
-				$output  = '<button class="imc-button u-pull-right" type="button" onclick="imcFindAddress(\'imcAddress\', true)">';
+				$output  = '<button class="imc-button u-pull-right" type="button" onclick="imcFindAddress(\''.$this->field['id'].'\', true)">';
 				$output .= '<i class="material-icons md-24 imc-AlignIconToButton">search</i>'.$this->butt_locate.'</button>';
 				$output .= '<div style="padding-right: .5em;" class="imc-OverflowHidden">';
-				$output .= '<input name="postAddress" placeholder="'.$this->address_placeholder.'" id="imcAddress" class="u-pull-left imc-InputStyle"/></div>';
+				$output .= '<input name="'.$this->field['id'].'" placeholder="'.$this->address_placeholder.'" id="'.$this->field['id'].'" class="u-pull-left imc-InputStyle" value="'.$this->value.'"/></div>';
 				$output .= '<input title="lat" type="hidden" id="imcLatValue" name="imcLatValue"/>';
 				$output .= '<input title="lng" type="hidden" id="imcLngValue" name="imcLngValue"/>';
 				$output .= '</div><div class="imc-row"><div id="imcReportIssueMapCanvas" class="u-full-width imc-ReportIssueMapCanvasStyle"></div></div>';

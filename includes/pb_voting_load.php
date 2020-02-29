@@ -48,7 +48,7 @@ function pb_voting_enqueue_extension()
 			        'completed_on'  => 'Odeslat návrh ke schválení',
             ));
 
-    wp_register_script('pb-formvalidator',   PB_VOTE_URL . '/assets/js/pb-formvalidator_ins.js', array('jquery'),'1.0', false);
+    wp_register_script('pb-formvalidator',   PB_VOTE_URL . '/assets/js/pb-formvalidator.js', array('jquery'),'1.0', false);
     wp_enqueue_script('pb-formvalidator');
     wp_localize_script('pb-formvalidator', 'formValidatorData', array(
       'rules' => array('id'=>"pomoc", "rules" => "required"),
