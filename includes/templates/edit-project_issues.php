@@ -91,7 +91,7 @@ wp_localize_script('pb-formvalidator', 'formValidatorData', array(
 	'rules' 	=> $project_single->render_fields_js_validation(),
 	'mapData' => $form_map_options,
 	'budgetTable' => $project_single->get_field_property( 'cost', 'limit'),
-	'fileSize'    => $project_single->get_field_property( 'attachment', 'max_size'),
+	'fileSize'    => $project_single->get_field_property( 'photo', 'max_size'),
 ));
 
 get_header();

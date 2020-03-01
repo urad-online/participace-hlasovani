@@ -24,7 +24,7 @@ class PbVote_ProjectInsert
             'rules' => $this->project_single->render_fields_js_validation(),
             'mapData' => $this->map_options,
             'budgetTable' => $this->project_single->get_field_property( 'cost', 'limit'),
-            'fileSize'   => $this->project_single->get_field_property( 'attachment', 'max_size'),
+            'fileSize'   => $this->project_single->get_field_property( 'photo', 'max_size'),
           ));
         }
 
@@ -273,9 +273,5 @@ class PbVote_ProjectInsert
       }
 
       return "";
-    }
-    protected function show_data_save_error9()
-    {
-
     }
 }
