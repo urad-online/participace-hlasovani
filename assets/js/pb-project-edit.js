@@ -190,6 +190,34 @@ jQuery(document).ready(function(){
       });
       jQuery("#"+el_to_store_value).val( JSON.stringify(result) );
     });
+
+    jQuery('.tab-carusel-element').keydown(function(e){
+      var el = jQuery(this);
+      var mySibling = jQuery(this).closest('.tab-carusel-container').find('.tab-carusel-element:not([disabled],[hidden])');
+      var myIndex = jQuery(mySibling).index(el);
+      var first = mySibling[0];
+      var last = mySibling.get(-1);
+      if (e.which === 9 || e.keyCode === 9){
+        if (e.shiftKey) {
+          e.preventDefault();
+          var prev = mySibling[myIndex - 1];
+          if(prev){
+            jQuery(prev).focus();
+          }else {
+            jQuery(last).focus();
+          }
+        } else {
+          e.preventDefault();
+          var next = mySibling[myIndex + 1];
+          if(next){
+            jQuery(next).focus();
+          }else {
+            jQuery(first).focus();
+          }
+        }
+      }
+    });
+
     re_save_hidden_locality();
 });
 
