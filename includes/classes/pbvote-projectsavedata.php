@@ -149,7 +149,7 @@ class PbVote_ProjectSaveData {
             'pb_project_parcely'             => esc_attr(sanitize_textarea_field($data['pb_project_parcely'])),
             'pb_project_naklady'             => json_decode(stripslashes($data['pb_project_naklady'])),
             'pb_project_naklady_navyseni'    => (! empty($data['pb_project_naklady_navyseni'])) ? esc_attr(sanitize_textarea_field($data['pb_project_naklady_navyseni'])) : '0',
-            'pb_project_navrhovatel_org'     => esc_attr(sanitize_text_field($data['pb_project_navrhovatel_org'])),
+            // 'pb_project_navrhovatel_org'     => esc_attr(sanitize_text_field($data['pb_project_navrhovatel_org'])),
             'pb_project_navrhovatel_jmeno'   => esc_attr(sanitize_text_field($data['pb_project_navrhovatel_jmeno'])),
             'pb_project_navrhovatel_telefon' => esc_attr(sanitize_text_field($data['pb_project_navrhovatel_telefon'])),
             'pb_project_navrhovatel_email'   => esc_attr(sanitize_email($data['pb_project_navrhovatel_email'])),

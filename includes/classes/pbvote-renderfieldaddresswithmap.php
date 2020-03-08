@@ -35,10 +35,11 @@ class PbVote_RenderFieldAddressWithMap extends PbVote_RenderFieldText
 		}
 		 public function render_link_katastr($latlng = array())
 		{
-				// if ( empty( $latlng ) ) {
-				// 		$latlng = $this->default_gps_coordinates;
-				// }
-				// $url = $katastr_url . "lat=" . $latlng['lat']."&lon=".$latlng['lon']."&".$katastr_layer."&ilat=".$latlng['lat']."&lon=".$latlng['lon'];
+
+				return '<div class="imc-row" ><span></span>
+				<a id="pb_link_to_katastr" href="#" data-toggle="tooltip" title="Přejít na stránku s katastrální mapou"
+				class=""><span>Najděte</span></a><span> všechna katastrální čísla týkajících se návrhu, kliknutím do mapy ověřte, zda jsou všechny dotčené pozemky ve správě HMP nebo MČ a návrh tak splňuje podmínky pravidel participativního rozpočtu. Seznam všech dotčených pozemků uveďte do pole níže (jedna položka na jeden řádek).</span>
+				</div>';
 
 				return '<div class="imc-row" ><span>Kliknutím na tento </span>
 						<a id="pb_link_to_katastr" href="#" data-toggle="tooltip" title="Přejít na stránku s katastrální mapou"
@@ -46,6 +47,7 @@ class PbVote_RenderFieldAddressWithMap extends PbVote_RenderFieldText
 						Ve vyskakovacím okně (musíte mít povoleno ve vašem prohlížeči) získáte informace k vybranému pozemku. Nalezněte všechna katastrální čísla týkajících se návrhu, kliknutím do mapy ověřte,
 						zda jsou všechny dotčené pozemky ve správě HMP nebo MČ a tedy splňujete podmínky pravidel participativního rozpočtu. Seznam všech dotčených pozemků uveďte do pole níže (jedna položka na jeden řádek).</span>
 						</div>';
+
 		}
 
 }
