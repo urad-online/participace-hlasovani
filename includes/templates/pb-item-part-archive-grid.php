@@ -46,7 +46,7 @@ function pb_item_archive_show_grid($post, $editpage, $parameter_pass, $user_id, 
                 $total_likes = intval (get_post_meta($post->ID, 'imc_likes', true), 10); ?>
                 <div class="imc-OverviewTileVotesStyle">
                     <div class="my-issue-votes">
-                        <i class="material-icons md-18">thumb_up</i> <?php echo esc_html($total_likes); ?>
+                        <i class="material-icons md-18">thumb_up</i> <?php echo esc_html($total_likes). render_rating_help_link_tile()?>
                     </div>
                 </div>
             <?php } ?>

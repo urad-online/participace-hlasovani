@@ -145,22 +145,35 @@ input[type="checkbox"].pbvote-collapse-section:not(checked) ~ label div i.materi
 .pb_tooltip .pb_tooltip_text {
     visibility: hidden;
     width: 300px;
+    /* max-width: 500px; */
     background-color: #555;
     color: #fff;
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
     position: absolute;
+    /* position: relative; */
     z-index: 1;
     bottom: 125%;
-    left: 50%;
-    margin-left: -60px;
+    left: 80%;
+    margin-left: -200px;
     opacity: 0;
     transition: opacity 0.3s;
 }
 .pb_tooltip:hover .pb_tooltip_text {
     visibility: visible;
     opacity: 1;
+}
+.pb_tooltip_text.pbvote-rating-help-move-left {
+    margin-left: -300px;
+}
+.pb_tooltip.pbvote-rating-helpLink {
+  position: relative;
+  margin-top: 2px;
+  margin-left: 5px;
+}
+.pb_tooltip.pbvote-rating-helpLink-negative a {
+    color: white;
 }
 .pbvote-OverviewTileCategoryIcon {
     height: 24px;

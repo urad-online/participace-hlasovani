@@ -17,9 +17,9 @@ class PbVote_ThumbRating
 		{
 				if (PB_RATING_ENABLED && ( $issue_status == $this->status_for_rating)) {
 						$output = '<i class="material-icons md-18 imc-TextColorSecondary imc-AlignIconToLabel">thumb_up</i>
-							<span class="imc-SingleInformationTextStyle imc-TextColorSecondary imc-FontRoboto imc-TextMedium
-							imc-Text-SM">'. esc_html( $this->get_likes_count($post_id)) . '</span>';
-
+							<span class="imc-TextColorSecondary imc-FontRoboto imc-TextMedium imc-Text-SM">'
+							. esc_html( $this->get_likes_count($post_id)) . '</span>';
+						$output .= render_rating_help_link();
 				} else {
 						$output = '';
 				}

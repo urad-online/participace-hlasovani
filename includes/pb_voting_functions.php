@@ -380,7 +380,6 @@ function pbvote_project_insert_shortcode( $atts, $content, $tag)
  *
  */
 
-
 if ( ! function_exists('pbvote_paginate') ) {
 	function pbvote_paginate($cb_qry = NULL, $my_paged , $page, $order, $view, $status, $category, $keyword, $svoting ) {
 
@@ -433,6 +432,37 @@ if ( ! function_exists('pbvote_paginate') ) {
 
 		echo '<nav class="imc-PaginationStyle">' . $cb_pagination  .'</nav>';
 	}
+}
+function render_rating_help_link($slug = '', $icon_size = '18', $class_link ="", $class_text = "")
+{
+		$url = '';
+		if ( !PB_RATING_ENABLED) {
+			return "";
+		}
+		if ( empty($slug)) {
+			$slug = PB_HELP_SLUG;
+		}
+
+		define( 'PB_HELP_SLUG_RATING_SECTION',  '#podportenavrh' );
+		$page = get_page_by_path($slug);
+		if ($page) {
+			$url = get_permalink($page->ID);
+		}
+
+		if (! empty($url)) {
+			if (! empty(PB_HELP_SLUG_RATING_SECTION)) {
+				$url .= '/'.PB_HELP_SLUG_RATING_SECTION;
+			}
+			return '<span class="pb_tooltip pbvote-rating-helpLink '.$class_link.'"><a href="' . $url . '" target="_blank">
+			<i class="material-icons md-'.trim($icon_size).'" >help_outline</i>
+			<span class="pb_tooltip_text '.$class_text.'" >' . __("Kliknutím na \"?\" přejdete na podrobný návod k hodnocení návrhů","pb-voting") .'</span></a></span>';
+		} else {
+				return '';
+		}
+}
+function render_rating_help_link_tile($slug = '', $icon_size = '18')
+{
+	return render_rating_help_link( $slug, $icon_size, 'pbvote-rating-helpLink-negative', 'pbvote-rating-help-move-left' );
 }
 
 function pbvote_add_role_proposer()

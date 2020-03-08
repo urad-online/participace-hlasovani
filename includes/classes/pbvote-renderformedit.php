@@ -13,7 +13,7 @@ class PbVote_RenderFormEdit
             'completed_off' => 'Uložit si pro budoucí editaci',
             'completed_on'  => 'Odeslat návrh ke schválení',
         );
-    private $help_page_slug = 'navody-uprava-navrhu';
+    private $help_page_slug = PB_HELP_SLUG;
     private $fields_definition  = array();
     private $fields_order  = array();
     private $form_fields;
