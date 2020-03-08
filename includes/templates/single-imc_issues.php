@@ -478,8 +478,7 @@ get_header(); ?>
                       </div>
 
                       <div class="imc-row imc-SingleTimelineItemStyle" style="border-left: 3px solid rgba(0,0,0,0.23);">
-                          <span class="imc-SingleTimelineItemDescStyle imc-TextColorPrimary"><?php //echo esc_html($timeline[0]->description); ?></span>
-                          <span class="imc-SingleTimelineItemDescStyle imc-TextColorPrimary"><?php echo $timeline[0]->description; ?></span>
+                          <span class="imc-SingleTimelineItemDescStyle imc-TextColorPrimary"><?php echo esc_html($timeline[0]->description); ?></span>
                           <span class="imc-SingleTimelineItemFooterTextStyle imc-TextColorPrimary"><?php echo esc_html(imc_calculate_relative_date($timeline[0]->dateTimestamp)), ' ', __('by','pb-voting'), ' ', esc_html($timeline[0]->name); ?></span>
                       </div>
 

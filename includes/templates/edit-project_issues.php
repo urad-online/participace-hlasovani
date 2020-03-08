@@ -1,4 +1,4 @@
-pbVoteIssueSubmitBtn<?php
+<?php
 /**
  * Template Name: Edit Issue Page
  *

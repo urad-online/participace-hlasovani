@@ -443,7 +443,6 @@ function render_rating_help_link($slug = '', $icon_size = '18', $class_link ="",
 			$slug = PB_HELP_SLUG;
 		}
 
-		define( 'PB_HELP_SLUG_RATING_SECTION',  '#podportenavrh' );
 		$page = get_page_by_path($slug);
 		if ($page) {
 			$url = get_permalink($page->ID);
@@ -453,9 +452,9 @@ function render_rating_help_link($slug = '', $icon_size = '18', $class_link ="",
 			if (! empty(PB_HELP_SLUG_RATING_SECTION)) {
 				$url .= '/'.PB_HELP_SLUG_RATING_SECTION;
 			}
+			// <i class="material-icons md-'.trim($icon_size).'" >help_outline</i>
 			return '<span class="pb_tooltip pbvote-rating-helpLink '.$class_link.'"><a href="' . $url . '" target="_blank">
-			<i class="material-icons md-'.trim($icon_size).'" >help_outline</i>
-			<span class="pb_tooltip_text '.$class_text.'" >' . __("Kliknutím na \"?\" přejdete na podrobný návod k hodnocení návrhů","pb-voting") .'</span></a></span>';
+			Podpořit návrh<span class="pb_tooltip_text '.$class_text.'" >' . __("Pro zařazení do závěrečného hlasování návrh potřebuje nejméně 15 hlasů. Přečtěte si návod k podpoře návrhů.","pb-voting") .'</span></a></span>';
 		} else {
 				return '';
 		}
