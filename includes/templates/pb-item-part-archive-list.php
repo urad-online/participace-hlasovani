@@ -107,11 +107,11 @@ global $comments_enabled;
 							?></span>
 						</div>
 					<?PHP } ?>
-					<?php if (PB_RATING_ENABLED) { ?>
-						<?php $total_likes = intval (get_post_meta($post->ID, 'imc_likes', true), 10); ?>
+					<?php if (PB_RATING_ENABLED) {
+							$total_likes = intval (get_post_meta($post->ID, 'imc_likes', true), 10); ?>
 	                    <div class="imc-DisplayInlineBlock">
 	                        <i class="material-icons md-18 imc-TextColorSecondary imc-AlignIconToLabel">thumb_up</i>
-	                        <span class="imc-OverviewListStepLabelStyle imc-TextColorSecondary"><?php echo esc_html($total_likes); ?></span>
+	                        <span class="imc-OverviewListStepLabelStyle imc-TextColorSecondary"><?php echo esc_html($total_likes).render_rating_help_link(); ?></span>
 	                    </div>
 					<?PHP } ?>
                 </div>
