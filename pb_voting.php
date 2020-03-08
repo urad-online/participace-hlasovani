@@ -18,7 +18,7 @@ define( 'PB_VOTE_URL',        plugins_url(basename(PB_VOTE_PATH)));
 define( 'PB_VOTE_PATH_TEMPL', PB_VOTE_PATH_INC.'/templates');
 define( 'PB_VOTING_POST_TYPE',      'hlasovani');
 define( 'PB_VOTING_STATUS_TAXO',    'voting_status');
-define( 'PB_RATING_ENABLED',    false );
+define( 'PB_RATING_ENABLED',    true );
 
 if (! defined('PBVOTE_DEBUG')) {
     define( 'PBVOTE_DEBUG',   false );
