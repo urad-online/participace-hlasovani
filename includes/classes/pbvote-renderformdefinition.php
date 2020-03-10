@@ -130,7 +130,7 @@ class PbVote_RenderFormDefinition {
     {
         return array(
                 'reason', 'curr_state', 'future_state',
-                'locality', 'parcel', 'attachment', 'cost',
+                'parcel', 'attachment', 'cost',
                 'org_name', 'name',
             );
     }
@@ -270,13 +270,13 @@ class PbVote_RenderFormDefinition {
                 'id'    => 'pb_project_locality',
                 'help'  => 'Zaškrtněte všechny katastrální části, kterých se návrh týká',
                 'type'  => 'checkboxgroup',
-                'show_mtbx'   => true,
+                'show_mtbx'   => false,
                 'show_form'   => true,
                 'items' => array(
-                    array( 'ilabel' => 'Vršovice-Vinohrady-Michle', 'iid' => 'pb_project_loc_vrsovice', ),
-                    array( 'ilabel' => 'Strašnice',                'iid' => 'pb_project_loc_strasnice', ),
-                    array( 'ilabel' => 'Malešice',                 'iid' => 'pb_project_loc_malesice', ),
-                    array( 'ilabel' => 'Zahradní Město-Záběhlice', 'iid' => 'pb_project_loc_zahr_mesto', ),
+                    array( 'ilabel' => 'Čakovice', 'iid' => 'pb_project_loc_vrsovice', ),
+                    array( 'ilabel' => 'Miškovice',                'iid' => 'pb_project_loc_strasnice', ),
+                    array( 'ilabel' => 'Třeboradice',                 'iid' => 'pb_project_loc_malesice', ),
+                    array( 'ilabel' => 'Čakovice-sídliště', 'iid' => 'pb_project_loc_zahr_mesto', ),
                 ),
                 'js_rules'  => array(
                   'rules'   => 'required|!callback_pb_project_js_validate_locality',
@@ -445,7 +445,7 @@ class PbVote_RenderFormDefinition {
               // 'title'     => "Proposer Name",
               'columns'   => 6,
               'help'      => 'Vyplňte pouze v případě, že návrh podáváte jménem společnosti se sídlem v MČ a výše uvedené kontakty jsou kontakty na zástupce této společnosti.',
-              'show_mtbx'   => true,
+              'show_mtbx'   => false,
               'show_form'   => true,
             ),
             'address' => array(
