@@ -18,7 +18,7 @@ class PbVote_ArchiveDisplayFilterData
         //Basic query calls depending the user
         if ( is_user_logged_in()){ //not user
             // $custom_query_args = imcLoadIssuesForAdmins($paged,$pbvote_imported_ppage,$pbvote_imported_sstatus,$pbvote_imported_scategory);
-            if ( current_user_can( 'administrator' ) ) {
+            if ( current_user_can( 'administrator' ) || current_user_can('dep_admin')) {
               $this->query_arg_status[] = array(
                 'post_type' => $this->post_type,
                 'post_status' => array('publish', 'pending', 'draft'),
