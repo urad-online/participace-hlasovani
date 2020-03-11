@@ -4,8 +4,8 @@ class PbVote_ArchiveDisplayOptions
     private $display_param, $filter_params_view = array();
     private $filtering_active =  false;
     public $result, $perma_structure, $parameter_pass;
-    private $ppage_values   = array( 6 => "6", 12 => "12", 24 => "24", -1 => "All" ); //all possible options and labels
-    private $sorder_values  = array( 1 => "Date",2 => "Name"); // order options and labels
+    private $ppage_values   = array( 6 => "6", 12 => "12", 24 => "24", -1 => "Vše" ); //all possible options and labels
+    private $sorder_values  = array( 1 => "Datum",2 => "Název"); // order options and labels
     private $view_values    = array( 1 => "view_stream", 2 => "apps"); // view options and icon names
     private $default_values = array(
         'ppage'  => 6,
