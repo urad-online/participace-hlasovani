@@ -4,9 +4,6 @@
  * @output assets/js/pb-voting.js
  */
 
-var cgbmSelectForm;
-var cgbmEditForm;
-
 jQuery(document).ready(function(){
     pbvotingDisableBtn();
     jQuery("#votingRegistrationCode").focus();

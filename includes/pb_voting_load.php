@@ -26,7 +26,8 @@ function pb_voting_register_actions_filters_after_init()
     pb_voting_enqueue_extension();
 
     add_shortcode( 'pb_vote_reg_widget', 'pb_vote_get_registration_widget');
-    add_shortcode( 'pbvote_project_insert', 'pbvote_project_insert_shortcode');
+    add_shortcode( 'pbvote_project_insert',  'pbvote_project_insert_shortcode');
+    add_shortcode( 'pbvote_projects_export', 'pbvote_project_export_page');
 }
 
 function pb_voting_enqueue_extension()

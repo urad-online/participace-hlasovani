@@ -52,3 +52,5 @@ The message can have these placeholders tha are replace by values:
 
 How to call shortcode for new project form examples
 [pbvote_project_insert voting_id="1379" voting_slug="hlasovani-2020" ]
+
+How to call shortcode for export page [pbvote_projects_export]

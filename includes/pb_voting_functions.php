@@ -487,21 +487,32 @@ function pbvote_add_role_proposer()
 function pb_admin_menu_proposer( $param = '')
 {
 	if(is_user_logged_in()) {
-		if (current_user_can('pbvote_proposer')) {
+		if ((current_user_can('pbvote_proposer')) || (current_user_can('dep_read'))) {
 			add_filter('show_admin_bar', '__return_false', 1000);
 		}
 	}
 }
 function pbvote_redirect_non_admin_users()
 {
-	if ( current_user_can( 'pbvote_proposer' ) && ('/wp-admin/admin-ajax.php' != $_SERVER['PHP_SELF']) ) {
+	if ( (current_user_can( 'pbvote_proposer' ) || current_user_can('dep_read')) && ('/wp-admin/admin-ajax.php' != $_SERVER['PHP_SELF']) ) {
 		wp_redirect( home_url() );
 		exit;
 	}
 }
 
+function pbvote_project_export_page()
+{
+	include_once( PB_VOTE_PATH_TEMPL . '/archive-pbvote_issues_export.php' );
+	ob_start();
+	if (current_user_can('administrator')) {
+			pb_items_archive_imc_issues_export();
+	}
+
+	return ob_get_clean();
+}
+
 add_action( 'init', 'pbvote_add_role_proposer');
-add_action('init', 'pb_admin_menu_proposer',100);
+add_action( 'init', 'pb_admin_menu_proposer',100);
 add_action( 'admin_init', 'pbvote_redirect_non_admin_users' );
 /**
 * Redirect non-admin users to home page

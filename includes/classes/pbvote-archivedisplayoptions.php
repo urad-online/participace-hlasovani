@@ -281,7 +281,12 @@ class PbVote_ArchiveDisplayOptions
       ?>
       <script>
           /*setOverviewLayout();*/
-      document.onload = imcInitOverviewMap(<?php echo json_encode($jsonIssuesArr) ?>, <?php echo json_encode( $this->get_plugin_base_url()) ?>);
+          <?php
+          if (!empty( $jsonIssuesArr)) {
+            ?>
+            document.onload = imcInitOverviewMap(<?php echo json_encode($jsonIssuesArr) ?>, <?php echo json_encode( $this->get_plugin_base_url()) ?>);
+
+          <?php } ?>
 
           jQuery( document ).ready(function() {
 
