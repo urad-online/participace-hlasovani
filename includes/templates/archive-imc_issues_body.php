@@ -56,7 +56,7 @@ function pb_items_archive_imc_issues_body($pb_issues_view_filters)
 
                 <li>
                     <label class="imc-NaviSelectStyle">
-                        <select id="pbvSelectOrderingComponent" title="Order by" onchange="pbvFireNavigation('pbvSelectOrderingComponent')">
+                        <select id="pbvSelectOrderingComponent" title="Třídit podle" onchange="pbvFireNavigation('pbvSelectOrderingComponent')">
                             <option class="imc-CustomOptionDisabledStyle" value="<?php echo esc_attr($pb_issues_view_filters->get_value('sorder')); ?>" selected disabled><?php echo __('Order: ', 'pb-voting'); ?>  <?php echo esc_html($pb_issues_view_filters->get_label('sorder', $pb_issues_view_filters->get_value('sorder'))); ?></option>
 
 														<?php echo $pb_issues_view_filters->generate_options_long_sorder($my_permalink)?>
