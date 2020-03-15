@@ -72,7 +72,6 @@ class PbVote_ImcIssueDetailMetabox {
   }
 
   public function field_generator( $post ) {
-    $output = '';
     foreach ( $this->meta_fields as $meta_field ) {
        $label = '<label for="' . $meta_field['id'] . '">' . $meta_field['label'] . '</label>';
        $meta_value = get_post_meta( $post->ID, $meta_field['id'], true );
@@ -127,9 +126,13 @@ class PbVote_ImcIssueDetailMetabox {
              $table = new PbVote_AttachmentTable( $value_table, $meta_field['id'], true);
              $input = $table->render_table();
            break;
-           case 'checkboxgroup':
+         case 'checkboxgroup':
              $field_render = new PbVote_RenderFieldCheckboxGroup( $meta_field, $meta_value);
              $input = $field_render->render_body();
+           break;
+         case 'href':
+             $input  = '<div class="" ><a id="'.$meta_field['id'].'" href="#" data-toggle="tooltip" ';
+             $input .= ' title="'.$meta_field['default']['title'].'"><span>'.$meta_field['default']['text_link'].'</span></a><span>'.$meta_field['default']['text'].'</span></div>';
            break;
          default:
            $input = sprintf(

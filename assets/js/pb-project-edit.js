@@ -48,11 +48,19 @@
     }
     if (jQuery('#pb_link_to_katastr').length) {
       document.getElementById("pb_link_to_katastr").onclick = function() {
-        var lt = document.getElementById('imcLatValue').value;
+        if (document.getElementById('imcLatValue')) {
+          var lat = document.getElementById('imcLatValue').value;
+          var lng = document.getElementById('imcLngValue').value;
+
+        } else {
+          var lat = document.getElementById('imc_lat').value;
+          var lng = document.getElementById('imc_lng').value;
+        }
         var url = "https://www.ikatastr.cz/ikatastr.htm#zoom=19&lat="+
-        document.getElementById('imcLatValue').value+"&lon="+
-        document.getElementById('imcLngValue').value+"&layers_3=000B00FFTFFT&ilat="+document.getElementById('imcLatValue').value+"&ilon="+
-        document.getElementById('imcLngValue').value;
+          lat+"&lon="+lng+"&layers_3=000B00FFTFFT&ilat="+lat+"&ilon="+lng;
+        // document.getElementById('imcLatValue').value+"&lon="+
+        // document.getElementById('imcLngValue').value+"&layers_3=000B00FFTFFT&ilat="+document.getElementById('imcLatValue').value+"&ilon="+
+        // document.getElementById('imcLngValue').value;
         var win = window.open( url, '_blank');
         win.focus();
         return false;

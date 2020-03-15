@@ -294,6 +294,19 @@ class PbVote_RenderFormDefinition {
                     'depends' => 'pb_project_js_validate_required',
                 ),
             ),
+            'link_katastr' => array(
+              'label'       => 'Katastrální mapa',
+              'id'          => 'pb_link_to_katastr',
+              'type'        => 'href',
+              'mandatory'   => false,
+              'default'     => array(
+                'title'     => 'Přejděte na stránku katastrální úřadu',
+                'text_link' => 'Najděte',
+                'text'      => ' všechna katastrální čísla týkajících se návrhu, kliknutím do mapy ověřte, zda jsou všechny dotčené pozemky ve správě HMP nebo MČ a návrh tak splňuje podmínky pravidel participativního rozpočtu. Seznam všech dotčených pozemků uveďte do pole níže (jedna položka na jeden řádek).',
+              ),
+              'show_mtbx' => true,
+              'show_form' => false,
+            ),
             'parcel' => array(
                 'label'       => 'Parcelní čísla pozemků, kterých se návrh týká',
                 'id'          => 'pb_project_parcely',
