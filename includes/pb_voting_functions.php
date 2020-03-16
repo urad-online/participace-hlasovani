@@ -502,13 +502,9 @@ function pbvote_redirect_non_admin_users()
 
 function pbvote_project_export_page()
 {
-	include_once( PB_VOTE_PATH_TEMPL . '/archive-pbvote_issues_export.php' );
-	ob_start();
-	if (current_user_can('administrator')) {
-			pb_items_archive_imc_issues_export();
-	}
-
-	return ob_get_clean();
+			ob_start();
+			include_once( PB_VOTE_PATH_TEMPL . '/archive-pbvote_issues_export.php' );
+			return ob_get_clean();
 }
 
 add_action( 'init', 'pbvote_add_role_proposer');

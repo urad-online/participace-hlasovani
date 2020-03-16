@@ -4,8 +4,14 @@
  * The template for displaying archive pages
  *
  */
-function pb_items_archive_imc_issues_export()
-{
+// function pb_items_archive_imc_issues_export()
+// {
+if ( ! current_user_can('administrator')) {
+    get_header();
+    echo '<div class="imc-SingleHeaderStyle imc-BGColorWhite"><div><h1>'.__('Pro zobrazení dat nemáte dostatečné oprávnění','pb-voting').'</h1></div></div>';
+    // get_footer();
+    exit;
+}
 
     include_once( PB_VOTE_PATH_TEMPL . '/pb-item-part-archive-export.php' );
 
@@ -33,7 +39,6 @@ function pb_items_archive_imc_issues_export()
     }
     get_header();
     ?>
-    <
         <div class="imc-SingleHeaderStyle imc-BGColorWhite">
 
             <nav class="imc-OverviewHeaderNavStyle">
@@ -250,5 +255,5 @@ function pb_items_archive_imc_issues_export()
         </div>
 
   <?PHP  $pb_issues_view_filters->add_script_to_page( "", $my_permalink ) ;
-  // get_footer(); 
-}
+  get_footer();
+// }

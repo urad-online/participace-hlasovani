@@ -51,11 +51,8 @@ function pb_vote_activation()
 
     require_once PB_VOTE_PATH_INC. '/pb_voting_create_tables.php';
     pb_voting_create_tables();
-    require_once PB_VOTE_PATH_INC. '/pb_voting_create_pages.php';
-    // pbvote_create_list_page();
-    // pbvote_create_insert_page();
-    // pbvote_create_edit_page();
-
+    // require_once PB_VOTE_PATH_INC. '/pb_voting_create_pages.php';
+    // pbvote_create_pages();
 
     $message = "Activated at: ". date('Y-m-d H:i:s');
     file_put_contents( PB_VOTE_PATH . '/pb_vote_plugin_activate.log', $message);
