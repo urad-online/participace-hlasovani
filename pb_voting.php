@@ -18,9 +18,8 @@ define( 'PB_VOTE_URL',        plugins_url(basename(PB_VOTE_PATH)));
 define( 'PB_VOTE_PATH_TEMPL', PB_VOTE_PATH_INC.'/templates');
 define( 'PB_VOTING_POST_TYPE',      'hlasovani');
 define( 'PB_VOTING_STATUS_TAXO',    'voting_status');
-define( 'PB_HELP_SLUG',  'otazky-a-odpovedi' );
-define( 'PB_HELP_SLUG_RATING_SECTION',  '#podportenavrh' );
-define( 'PB_RATING_ENABLED',    true );
+define( 'PB_OPTION_NAME',    'pbvoting' );
+
 
 if (! defined('PBVOTE_DEBUG')) {
     define( 'PBVOTE_DEBUG',   false );
@@ -30,6 +29,17 @@ define( 'PB_VOTE_TABLE_NAMES', array(
     'register' => 'pb_register',
     'votes'    => 'pb_votes',
 ));
+
+$options = get_option(PB_OPTION_NAME);
+if (! empty($options)) {
+  define( 'PB_HELP_SLUG',  $options['pb_help_slug'] );
+  define( 'PB_HELP_SLUG_RATING_SECTION', "#".$options['pb_help_rating_section_id']  );
+  define( 'PB_RATING_ENABLED', ($options['pb_enable_rating']) == "1" ? true : false);
+} else {
+  define( 'PB_HELP_SLUG',  "" );
+  define( 'PB_HELP_SLUG_RATING_SECTION', "#"  );
+  define( 'PB_RATING_ENABLED', false);
+}
 
 register_activation_hook( __FILE__, 'pb_vote_activation' );
 register_uninstall_hook( __FILE__, 'pb_vote_uninstall');
@@ -71,6 +81,7 @@ function pb_vote_on_init()
     };
 
 
+    $setting_menu = new PbVote_Setting;
     // $pb_vote = pb_voting_Select_Items_form::get_instance();
     // pb_voting_Service_Edit::get_instance();
     // $pb_vote = pb_voting_Item_Edit::get_instance();
@@ -86,7 +97,6 @@ function pb_vote_on_admnin_init( )
   if ( empty($metabox_pbvote) ) {
     $metabox_pbvote = new PbVote_ImcIssueDetailMetabox;
   }
-
 }
 
 function pb_vote_plugin_loaded()

@@ -112,11 +112,6 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
         // nedela nic ,je tu kvuli  prepsani motody ce tride PbVote_GetCode
     }
 
-    public function save_code( )
-    {
-        // nedela nic ,je tu kvuli  prepsani motody ce tride PbVote_GetCode
-    }
-
     public function get_new_code( )
     {
         if ( empty($this->voter_id)  ) {

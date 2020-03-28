@@ -454,7 +454,7 @@ function render_rating_help_link($slug = '', $icon_size = '18', $class_link ="",
 			}
 			// <i class="material-icons md-'.trim($icon_size).'" >help_outline</i>
 			return '<span class="pb_tooltip pbvote-rating-helpLink '.$class_link.'"><a href="' . $url . '" target="_blank">
-			Podpořit návrh<span class="pb_tooltip_text '.$class_text.'" >' . __("Pro zařazení do závěrečného hlasování potřebuje návrh podporu nejméně 15 osob. Přečtěte si návod k udělení podpory návrhu.","pb-voting") .'</span></a></span>';
+			Podpořit návrh<span class="pb_tooltip_text '.$class_text.'" >' . __("Pro zařazení do závěrečného hlasování potřebuje návrh podporu nejméně 15 osob. Přečtěte si návod k udělení podpory návrhu.",'pb-voting') .'</span></a></span>';
 		} else {
 				return '';
 		}

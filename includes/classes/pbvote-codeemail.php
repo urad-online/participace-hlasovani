@@ -1,7 +1,7 @@
 <?php
 class PbVote_CodeEmail
 {
-    private $result;
+    private $result, $delivery_status;
 
     public function __construct()
     {
@@ -22,6 +22,7 @@ class PbVote_CodeEmail
 
     public function send_new_code( $input )
     {
+        $this->delivery_status = "X";
         if (empty( $input['code'] ) ) {
             return false;
         }
@@ -37,9 +38,11 @@ class PbVote_CodeEmail
 
         if ( $email_send ) {
             $this->result =   "Registracni kod odeslan";
+            $this->delivery_status = "0";
             return true;
         } else {
             $this->result =  array( "result" => "error", "message" => "Chyba odeslani emailu",);
+            $this->delivery_status = "1";
             return false;
         }
     }
@@ -48,5 +51,8 @@ class PbVote_CodeEmail
     {
         return $this->result;
     }
-
+    public function delivery_status()
+    {
+        return $this->delivery_status;
+    }
 }

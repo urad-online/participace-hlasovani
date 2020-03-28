@@ -120,7 +120,10 @@ class PbVote_GetCode
 
     public function save_code()
     {
-
+        $status = $this->code_delivery->delivery_status();
+        if (empty($status)) {
+          $status = $this->initial_status;
+        }
         $sql_comm = $this->db->prepare( 'INSERT INTO '.$this->db->prefix . $this->table_name
             . ' (voting_id, voter_id, registration_code, issued_time, expiration_time, message_id, status)
             VALUES ( %d, %s, %s, %s, %s, %s, %s)',
@@ -130,7 +133,7 @@ class PbVote_GetCode
                 $this->issued_time,
                 $this->expiration_time,
                 $this->output,
-                $this->initial_status
+                $status
                 );
 
         $result = $this->db->query( $sql_comm );

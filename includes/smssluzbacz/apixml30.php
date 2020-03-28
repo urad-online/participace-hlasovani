@@ -1,27 +1,17 @@
 <?php
 
 define("BLOCK_SIZE",8192);
-define("API_URL","https://smsgateapi.sluzba.cz/apixml30/");
+define("API_URL","https://smsgateapi.sms-sluzba.cz/apixml30/");
 define("API_SENDER","sender");
 define("API_RECEIVER","receiver");
 define("API_CONFIRMER","confirm");
 define("WITH_DR_REQUEST",20);
 define("WITHOUT_DR_REQUEST",0);
-define("DEFAULT_DR_REQUEST",WITHOUT_DR_REQUEST);
+define("DEFAULT_DR_REQUEST",WITH_DR_REQUEST);
 define("API_INFO","info/credit");
 
 class ApiXml30{
  	private $login, $password, $smsgateapi_url, $params, $encoding;
-
-    /*
-     * to be deleted , replaced by __construct
-    */
-	public function old_ApiXml30($login, $password, $encoding="UTF-8") {
-		$this->login = $login;
-	    $this->password = $password;
-	    $this->encoding = $encoding;
-	    $this->params = Array();
-	}
 
 	public function __construct($login, $password, $encoding="UTF-8") {
 		$this->login = $login;
@@ -77,7 +67,7 @@ class ApiXml30{
 		return $contents;
 	}
 
-	private function get_url($type) { return API_URL.$type."?login=".$this->login."&password=".$this->password; }
+	public function get_url($type) { return API_URL.$type."?login=".$this->login."&password=".$this->password; }
 
 	public function smsgate_get_account_info()
     {
@@ -86,7 +76,8 @@ class ApiXml30{
     	  'header' => 'Content-type: text/xml'
 	    ));
         $handle = fopen($this->get_url(API_INFO),'r',false, stream_context_create($params) );
-        $result = new SimpleXMLElement( htmlspecialchars_decode( $this->send_request($handle) ));
+        $result1 = $this->send_request($handle) ;
+        $result = new SimpleXMLElement( htmlspecialchars_decode( $result1 ));
 		return $result;
     }
 
