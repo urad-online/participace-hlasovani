@@ -280,6 +280,7 @@ function get_parent_url_by_taxo( $issue_id = 0, $taxo = "voting-period")
 
 		$pom = get_posts( $query_args );
 		if ( (is_array($pom)) && (count($pom) > 0)) {
+			$listpage = esc_url( get_permalink($pom[0]->ID));
 			return esc_url( get_permalink($pom[0]->ID));
 		}
 
@@ -453,8 +454,8 @@ function render_rating_help_link($slug = '', $icon_size = '18', $class_link ="",
 				$url .= '/'.PB_HELP_SLUG_RATING_SECTION;
 			}
 			// <i class="material-icons md-'.trim($icon_size).'" >help_outline</i>
-			return '<span class="pb_tooltip pbvote-rating-helpLink '.$class_link.'"><a href="' . $url . '" target="_blank">
-			Podpořit návrh<span class="pb_tooltip_text '.$class_text.'" >' . __("Pro zařazení do závěrečného hlasování potřebuje návrh podporu nejméně 15 osob. Přečtěte si návod k udělení podpory návrhu.",'pb-voting') .'</span></a></span>';
+			return '<span class="pb_tooltip pbvote-rating-helpLink '.$class_link.'"><a href="' . $url . '" target="_blank">'.
+			__('Jak podpořit návrh?',"pb-voting").'<span class="pb_tooltip_text '.$class_text.'" >' . __("Pro zařazení do závěrečného hlasování potřebuje návrh podporu nejméně 15 osob. Přečtěte si návod k udělení podpory návrhu.",'pb-voting') .'</span></a></span>';
 		} else {
 				return '';
 		}

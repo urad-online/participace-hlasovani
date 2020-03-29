@@ -19,11 +19,14 @@ class PbVote_ThumbRating
 						$output = '<i class="material-icons md-18 imc-TextColorSecondary imc-AlignIconToLabel">thumb_up</i>
 							<span class="imc-TextColorSecondary imc-FontRoboto imc-TextMedium imc-Text-SM">'
 							. esc_html( $this->get_likes_count($post_id)) . '</span>';
-						$output .= render_rating_help_link();
 				} else {
 						$output = '';
 				}
 				return $output;
+		}
+		public function show_rating_help_link()
+		{
+			return render_rating_help_link();
 		}
 		public function get_likes_count( $post_id )
 		{

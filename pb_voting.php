@@ -36,9 +36,9 @@ if (! empty($options)) {
   define( 'PB_HELP_SLUG_RATING_SECTION', "#".$options['pb_help_rating_section_id']  );
   define( 'PB_RATING_ENABLED', ($options['pb_enable_rating']) == "1" ? true : false);
 } else {
-  define( 'PB_HELP_SLUG',  "" );
-  define( 'PB_HELP_SLUG_RATING_SECTION', "#"  );
-  define( 'PB_RATING_ENABLED', false);
+  define( 'PB_HELP_SLUG',  "otazky-a-odpovedi" );
+  define( 'PB_HELP_SLUG_RATING_SECTION', "#podportenavrh"  );
+  define( 'PB_RATING_ENABLED', true);
 }
 
 register_activation_hook( __FILE__, 'pb_vote_activation' );

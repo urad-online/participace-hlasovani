@@ -110,8 +110,10 @@ global $comments_enabled;
 					<?php if (PB_RATING_ENABLED) {
 							$total_likes = intval (get_post_meta($post->ID, 'imc_likes', true), 10); ?>
 	                    <div class="imc-DisplayInlineBlock">
+												<a href="<?php echo esc_url(get_permalink());?>" class="">
 	                        <i class="material-icons md-18 imc-TextColorSecondary imc-AlignIconToLabel">thumb_up</i>
-	                        <span class="imc-OverviewListStepLabelStyle imc-TextColorSecondary"><?php echo esc_html($total_likes).render_rating_help_link(); ?></span>
+	                        <span class="imc-OverviewListStepLabelStyle imc-TextColorSecondary"><?php echo esc_html($total_likes); ?></span>
+												</a>
 	                    </div>
 					<?PHP } ?>
                 </div>

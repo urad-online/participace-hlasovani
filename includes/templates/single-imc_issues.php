@@ -3,6 +3,7 @@
  * The template for displaying all single issues and attachments
  *
  */
+get_header();
 global $comments_enabled ;
 wp_enqueue_script('imc-gmap');
 
@@ -49,7 +50,7 @@ $plugin_path_url = imc_calculate_plugin_base_url();
 
 // $pb_project_single = new pbProjectSingle;
 
-get_header(); ?>
+?>
 
     <div class="imc-BGColorGray">
 
@@ -63,7 +64,7 @@ get_header(); ?>
 
         <div class="imc-SingleHeaderStyle imc-BGColorWhite">
 
-            <a href="<?php echo esc_url( $listpage ) ; ?>" class="u-pull-left imc-SingleHeaderLinkStyle ">
+            <a href="<?php echo $listpage ; ?>" class="u-pull-left imc-SingleHeaderLinkStyle ">
                 <i class="material-icons md-36 imc-SingleHeaderIconStyle">keyboard_arrow_left</i>
                 <span><?php echo __('Return to overview','pb-voting');  ?></span>
             </a>
@@ -395,53 +396,55 @@ get_header(); ?>
 								// Check if user can vote
 								$voterslist = get_post_meta($issue_id, "imc_allvoters", false);
 
-								if ( is_user_logged_in() && (PB_RATING_ENABLED)) { ?>
+								if ( PB_RATING_ENABLED ) {
+										if ( is_user_logged_in() ) { ?>
+                        <form action="" id="increaseBtn" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="submitted" id="submitted" value="true"/>
+														<?php
+														wp_nonce_field('post_nonce', 'post_nonce_field');
 
-                                    <form action="" id="increaseBtn" method="POST" enctype="multipart/form-data">
-                                        <input type="hidden" name="submitted" id="submitted" value="true"/>
+														if ($user_id === intval(get_the_author_meta('ID'), 10) ) { ?>
+				                        <div class="imc-CardLayoutStyle imc-CenterContents">
+				                            <img alt="My Issue icon" class="imc-VerticalAlignMiddle"
+				                                 title="<?php echo __('My Issue', 'pb-voting'); ?>"
+				                                 src="<?php echo esc_url($plugin_path_url);?>/img/ic_my_issue_grid.png')); ?>">
+				                            <span
+				                                    class="imc-Text-MD imc-TextMedium imc-TextColorSecondary imc-FontRoboto"><?php echo __('My issue', 'pb-voting'); ?></span>
+				                        </div>
+														<?php } else {
+																$hasVoted = false;
+																if ($voterslist) {
+																	foreach ($voterslist as $voter) {
+																		if (intval($voter, 10) === intval($user_id, 10)) {
+																			$hasVoted = true;
+																		}
+																	}
+																}
+																if ($hasVoted) { ?>
+					                          <button type="submit"
+					                                  class="imc-button imc-button-primary-disabled imc-button-block"
+					                                  disabled>
+					                              <i class="material-icons md-18 imc-VerticalAlignMiddle">thumb_up</i>
+					                              <span
+					                                      class="imc-Text-MD imc-TextRegular imc-FontRoboto">&nbsp; <?php echo __('Voted', 'pb-voting'); ?></span>
+					                          </button>
+																<?php } else { ?>
+						                        <button type="submit"
+						                                class="u-full-width imc-button imc-button-primary imc-button-block">
+						                            <i class="material-icons md-18 imc-VerticalAlignMiddle">thumb_up</i>
+						                            <span class="imc-Text-MD imc-TextRegular imc-FontRoboto">&nbsp; <?php echo __('Vote', 'pb-voting'); ?></span>
+						                        </button>
+																<?php }
+														} ?>
 
-										<?php
-										wp_nonce_field('post_nonce', 'post_nonce_field');
-
-										if ($user_id === intval(get_the_author_meta('ID'), 10) ) { ?>
-                        <div class="imc-CardLayoutStyle imc-CenterContents">
-                            <img alt="My Issue icon" class="imc-VerticalAlignMiddle"
-                                 title="<?php echo __('My Issue', 'pb-voting'); ?>"
-                                 src="<?php echo esc_url($plugin_path_url);?>/img/ic_my_issue_grid.png')); ?>">
-                            <span
-                                    class="imc-Text-MD imc-TextMedium imc-TextColorSecondary imc-FontRoboto"><?php echo __('My issue', 'pb-voting'); ?></span>
-                        </div>
-
-										<?php } else {
-											$hasVoted = false;
-											if ($voterslist) {
-												foreach ($voterslist as $voter) {
-													if (intval($voter, 10) === intval($user_id, 10)) {
-														$hasVoted = true;
-													}
-												}
-											}
-											if ($hasVoted) { ?>
-                          <button type="submit"
-                                  class="imc-button imc-button-primary-disabled imc-button-block"
-                                  disabled>
-                              <i class="material-icons md-18 imc-VerticalAlignMiddle">thumb_up</i>
-                              <span
-                                      class="imc-Text-MD imc-TextRegular imc-FontRoboto">&nbsp; <?php echo __('Voted', 'pb-voting'); ?></span>
-                          </button>
-
-											<?php } else { ?>
-	                        <button type="submit"
-	                                class="u-full-width imc-button imc-button-primary imc-button-block">
-	                            <i class="material-icons md-18 imc-VerticalAlignMiddle">thumb_up</i>
-	                            <span
-	                                    class="imc-Text-MD imc-TextRegular imc-FontRoboto">&nbsp; <?php echo __('Vote', 'pb-voting'); ?></span>
-	                        </button>
-											<?php }
-										} ?>
-
-                    </form>
-								<?php } ?>
+		                    </form>
+										<?php } else { ?>
+												<div class="imc-CardLayoutStyle imc-CenterContents">
+													 <i class="material-icons md-18 imc-AlignIconToLabel">thumb_up</i>
+													 <?PHP echo render_rating_help_link("", "24", ""); ?>
+											 </div>
+										<?PHP }
+								}?>
 
                 <!-- Start Issue Timeline -->
 		                <div class="imc-CardLayoutStyle">
@@ -523,7 +526,7 @@ get_header(); ?>
 
 		<?php endwhile; ?>
         <!--End the loop.-->
-    </div><!-- .site-main -->
+			</div><!-- .site-main -->
 
     <!-- Scripts -->
     <script>
