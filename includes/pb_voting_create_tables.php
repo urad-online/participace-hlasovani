@@ -62,6 +62,31 @@ function pb_voting_create_tables( )
 
         $result = dbDelta( $command );
     }
+
+    $table_name_reg_log = $wpdb->prefix . PB_VOTE_TABLE_NAMES['register_log'];
+    if($wpdb->get_var("SHOW TABLES LIKE '$table_name_reg_log'") != $table_name_reg_log) {
+         //table not in database. Create new table
+        $charset_collate = $wpdb->get_charset_collate();
+
+        $command = "CREATE TABLE IF NOT EXISTS $table_name_reg_log (
+          	`id` INT(11) NOT NULL AUTO_INCREMENT,
+          	`reference_id` VARCHAR(30) NULL DEFAULT NULL,
+          	`new_status` CHAR(50) NOT NULL,
+          	`log_timestamp` DATETIME NOT NULL DEFAULT current_timestamp(),
+          	`step` VARCHAR(50) NOT NULL,
+          	`description` VARCHAR(200) NULL DEFAULT NULL,
+          	`register_id` INT(11) NOT NULL,
+          	PRIMARY KEY (`id`),
+          	INDEX `FK_wp_pb_register_log_wp_pb_register` (`register_id`),
+          	INDEX `IDX_ID_TIMESTAMPT` (`reference_id`, `log_timestamp`),
+          	CONSTRAINT `FK_wp_pb_register_log_wp_pb_register`
+              FOREIGN KEY (`register_id`)
+              REFERENCES `wp_pb_register` (`id`)
+              ON UPDATE NO ACTION ON DELETE NO ACTION)
+        $charset_collate;";
+
+        $result = dbDelta( $command );
+        }
 }
 
 function pb_voting_drop_tables( )
@@ -69,6 +94,10 @@ function pb_voting_drop_tables( )
     global $wpdb, $pb_vote_table_name;
 
     $table_name = $wpdb->prefix . PB_VOTE_TABLE_NAMES['register'];
+    $command = "DROP TABLE IF EXISTS $table_name;";
+    $result = $wpdb->query($command);
+
+    $table_name = $wpdb->prefix . PB_VOTE_TABLE_NAMES['register_log'];
     $command = "DROP TABLE IF EXISTS $table_name;";
     $result = $wpdb->query($command);
 

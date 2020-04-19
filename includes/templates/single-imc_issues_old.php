@@ -10,11 +10,36 @@ wp_enqueue_script('imc-gmap');
 $issue_id = $post->ID;
 $project_single = new PbVote_ProjectSingle();
 $control_pages = new PbVote_ControlPages( $issue_id);
-$issue_rating = new PbVote_ThumbRating(  $issue_id);
+$issue_rating = new PbVote_ThumbRating();
 
 if(isset($_POST['submitted']) && isset($_POST['post_nonce_field']) && wp_verify_nonce($_POST['post_nonce_field'], 'post_nonce')) {
 	$issue_rating->update_likes_count( $issue_id);
 }
+
+// 	$old_likes = intval(get_post_meta($issue_id, "imc_likes", true), 10);
+// 	$new_likes = $old_likes + 1;
+//
+// 	$current_user = get_current_user_id();
+// 	add_post_meta($issue_id, "imc_allvoters", $current_user, false);
+//
+// 	global $wpdb;
+// 	$imc_votes_table_name = $wpdb->prefix . 'imc_votes';
+// 	$wpdb->insert(
+// 		$imc_votes_table_name,
+// 		array(
+// 			'issueid' => $issue_id,
+// 			'created' => gmdate("Y-m-d H:i:s",time()),
+// 			'created_by' => $current_user,
+// 		)
+// 	);
+//
+// 	$update = update_post_meta($issue_id, "imc_likes", $new_likes, $old_likes);
+//
+// 	if ($update) {
+// 		// wp_redirect(get_permalink($issue_id));
+// 		// exit;
+// 	}
+// }
 
 $editpage = $control_pages->get_url_edit();
 $listpage = get_parent_url_by_taxo($issue_id);
@@ -104,7 +129,7 @@ $plugin_path_url = imc_calculate_plugin_base_url();
                                     <span class="imc-SingleInformationTextStyle imc-TextColorSecondary imc-FontRoboto imc-TextMedium imc-Text-SM">
 																			<?php the_author(); ?>
 																		</span>
-																		<?php echo $issue_rating->show_rating_number( $issue_status) ?>
+																		<?php echo $issue_rating->show_rating_number( $issue_id, $issue_status) ?>
                                 </div>
 
 																<?php if ($issue_status == 'publish') { ?>
@@ -374,7 +399,53 @@ $plugin_path_url = imc_calculate_plugin_base_url();
 								$voterslist = get_post_meta($issue_id, "imc_allvoters", false);
 
 								if ( PB_RATING_ENABLED ) {
-										echo $issue_rating->render_likes();
+										if ( is_user_logged_in() ) { ?>
+                        <form action="" id="increaseBtn" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="submitted" id="submitted" value="true"/>
+														<?php
+														wp_nonce_field('post_nonce', 'post_nonce_field');
+
+														if ($user_id === intval(get_the_author_meta('ID'), 10) ) { ?>
+				                        <div class="imc-CardLayoutStyle imc-CenterContents">
+				                            <img alt="My Issue icon" class="imc-VerticalAlignMiddle"
+				                                 title="<?php echo __('My Issue', 'pb-voting'); ?>"
+				                                 src="<?php echo esc_url($plugin_path_url);?>/img/ic_my_issue_grid.png')); ?>">
+				                            <span
+				                                    class="imc-Text-MD imc-TextMedium imc-TextColorSecondary imc-FontRoboto"><?php echo __('My issue', 'pb-voting'); ?></span>
+				                        </div>
+														<?php } else {
+																$hasVoted = false;
+																if ($voterslist) {
+																	foreach ($voterslist as $voter) {
+																		if (intval($voter, 10) === intval($user_id, 10)) {
+																			$hasVoted = true;
+																		}
+																	}
+																}
+																if ($hasVoted) { ?>
+					                          <button type="submit"
+					                                  class="imc-button imc-button-primary-disabled imc-button-block"
+					                                  disabled>
+					                              <i class="material-icons md-18 imc-VerticalAlignMiddle">thumb_up</i>
+					                              <span
+					                                      class="imc-Text-MD imc-TextRegular imc-FontRoboto">&nbsp; <?php echo __('Voted', 'pb-voting'); ?></span>
+					                          </button>
+																<?php } else { ?>
+						                        <button type="submit"
+						                                class="u-full-width imc-button imc-button-primary imc-button-block">
+						                            <i class="material-icons md-18 imc-VerticalAlignMiddle">thumb_up</i>
+						                            <span class="imc-Text-MD imc-TextRegular imc-FontRoboto">&nbsp; <?php echo __('Vote', 'pb-voting'); ?></span>
+						                        </button>
+																<?php }
+														} ?>
+
+		                    </form>
+										<?php } else { ?>
+												<div class="imc-CardLayoutStyle imc-CenterContents">
+													 <i class="material-icons md-18 imc-AlignIconToLabel">thumb_up</i>
+													 <?PHP echo render_rating_help_link("", "24", ""); ?>
+											 </div>
+										<?PHP }
 								}?>
 
                 <!-- Start Issue Timeline -->

@@ -26,8 +26,9 @@ if (! defined('PBVOTE_DEBUG')) {
 }
 
 define( 'PB_VOTE_TABLE_NAMES', array(
-    'register' => 'pb_register',
-    'votes'    => 'pb_votes',
+    'register'     => 'pb_register',
+    'register_log' => 'pb_register_log',
+    'votes'        => 'pb_votes',
 ));
 
 $options = get_option(PB_OPTION_NAME);

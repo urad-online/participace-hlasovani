@@ -2,10 +2,10 @@
 class PbVote_GetCode
 {
     public $code = "", $code_spelling ;
-    public $code_id, $code_length, $expiration_hrs;
-    public $voting_id, $voter_id, $survey_id, $pbvoting_meta;
+    public $code_length, $expiration_hrs;
+    public $voting_id, $voter_id, $survey_id, $pbvoting_meta, $register_id;
     public $issued_time, $expiration_time;
-    public $output;
+    public $result_msg;
     public $survey_url = "";
     public $code_delivery = null;
     private $status_taxo = PB_VOTING_STATUS_TAXO;
@@ -99,10 +99,9 @@ class PbVote_GetCode
                 if ($this->check_new_voter() ) {
 
                     if ( $this->code = $this->get_new_code() ) {
+                        $this->save_code();
                         $this->string_spelling();
-                        if ( $sms_result = $this->send_new_code() ) {
-                            $this->save_code();
-                        } else {
+                        if ( ! $sms_result = $this->send_new_code() ) {
                             $this->clear_new_code();
                         }
                     }
@@ -110,7 +109,7 @@ class PbVote_GetCode
             }
         }
 
-        return  $this->output ;
+        return  $this->result_msg ;
     }
 
     public function get_new_code()
@@ -120,10 +119,6 @@ class PbVote_GetCode
 
     public function save_code()
     {
-        $status = $this->code_delivery->delivery_status();
-        if (empty($status)) {
-          $status = $this->initial_status;
-        }
         $sql_comm = $this->db->prepare( 'INSERT INTO '.$this->db->prefix . $this->table_name
             . ' (voting_id, voter_id, registration_code, issued_time, expiration_time, message_id, status)
             VALUES ( %d, %s, %s, %s, %s, %s, %s)',
@@ -132,17 +127,43 @@ class PbVote_GetCode
                 $this->code,
                 $this->issued_time,
                 $this->expiration_time,
-                $this->output,
-                $status
+                $this->result_msg,
+                $this->initial_status
                 );
 
-        $result = $this->db->query( $sql_comm );
-        if ($result) {
-            $this->output = array( "result" => "ok", "code" => $this->code, 'expiration_time' => $this->expiration_time, );
+        $this->register_id = $this->db->query( $sql_comm );
+        if ($this->register_id) {
+            $this->result_msg = array( "result" => "ok", "code" => $this->code, 'expiration_time' => $this->expiration_time, );
         } else {
             $this->set_error( 'Chyba při ukládání kódu');
         }
         // return $output;
+    }
+    public function add_register_log( $reg_id, $ref_id = "", $status = "", $step = "", $desc = "", $time = "")
+    {
+        if (! $reg_id) {
+            return false;
+        }
+        if (empty($time)) {
+            $time = date( 'Y-m-d H:i:s', current_time( 'timestamp', 0 ));
+        }
+        $sql_comm = $this->db->prepare( 'INSERT INTO '.$this->db->prefix . "pb_register_log"
+            . ' (reference_id, new_status, log_timestamp, step, description, register_id)
+            VALUES ( %s, %s, %s, %s, %s, %d)',
+                $ref_id ,
+                $status ,
+                $time,
+                $step,
+                $desc,
+                $reg_id
+                );
+
+        $result = $this->db->query( $sql_comm );
+        if ($result) {
+            $this->result_msg = array( "result" => "ok", "code" => $this->code, 'expiration_time' => $this->expiration_time, );
+        } else {
+            $this->set_error( 'Chyba při ukládání kódu');
+        }
     }
 
     public function clear_new_code()
@@ -152,7 +173,7 @@ class PbVote_GetCode
     private function check_new_voter()
     {
         if (! $this->check_voter_id()) {
-            $this->output = array( "result" => "error", "message" => 'Chyba kontroly registračního ID  - špatný formát',);
+            $this->result_msg = array( "result" => "error", "message" => 'Chyba kontroly registračního ID  - špatný formát',);
             return false;
         }
 
@@ -259,8 +280,9 @@ class PbVote_GetCode
         );
 
         $result =  $this->code_delivery->send_new_code( $msg_data );
-        $this->output = $this->code_delivery->get_error_description();
+        $this->result_msg = $this->code_delivery->get_error_description();
 
+        $this->add_register_log( $reg_id, $ref_id = "", $status = "", $step = "", $desc = "", $time = "");
         if ( $result ) {
             return true;
         } else {
@@ -327,7 +349,7 @@ class PbVote_GetCode
 
     public function set_error( $message )
     {
-        $this->output = array(
+        $this->result_msg = array(
             'result' => 'error',
             'message' => $message,
         );

@@ -8,17 +8,18 @@ class PbVote_ThumbRating
 		private $user_already_voted = false;
 		private $status_for_rating  = 'publish';
 
-		public function __construct( )
+		public function __construct( $post_id)
 		{
 				$this->current_user = intval(get_current_user_id(), 10);
+				$this->post_id = $post_id;
 		}
 
-		public function show_rating_number( $post_id = 0, $issue_status = 'publish')
+		public function show_rating_number( $issue_status = 'publish')
 		{
 				if (PB_RATING_ENABLED && ( $issue_status == $this->status_for_rating)) {
 						$output = '<i class="material-icons md-18 imc-TextColorSecondary imc-AlignIconToLabel">thumb_up</i>
 							<span class="imc-TextColorSecondary imc-FontRoboto imc-TextMedium imc-Text-SM">'
-							. esc_html( $this->get_likes_count($post_id)) . '</span>';
+							. esc_html( $this->get_likes_count($this->post_id)) . '</span>';
 				} else {
 						$output = '';
 				}
@@ -35,10 +36,10 @@ class PbVote_ThumbRating
 		public function update_likes_count( $post_id)
 		{
 				if (isset($_POST['post_nonce_field']) && wp_verify_nonce($_POST['post_nonce_field'], 'post_nonce')) {
-						$old_likes = $this->get_likes_count( $post_id );
+						$old_likes = $this->get_likes_count( $this->post_id );
 						$new_likes = $old_likes + 1;
 
-						add_post_meta($post_id, $this->likers_metakey, $this->current_user, false);
+						add_post_meta($this->post_id, $this->likers_metakey, $this->current_user, false);
 
 						global $wpdb;
 						$votes_table_name = $wpdb->prefix . $this->likes_table;
@@ -51,17 +52,17 @@ class PbVote_ThumbRating
 							)
 						);
 
-						$update = update_post_meta($post_id, $this->likes_count_metakey, $new_likes, $old_likes);
+						$update = update_post_meta($this->post_id, $this->likes_count_metakey, $new_likes, $old_likes);
 						if ($update) {
-								wp_redirect(get_permalink($post_id));
+								// wp_redirect(get_permalink($post_id));
 						}
 				}
 
 		}
 		private function set_user_has_voted()
 		{
-				$voterslist = get_post_meta($post_id, $this->likers_metakey, false);
-				if (in_array($this->current_user, $voterslist, true)) {
+				$voterslist = get_post_meta($this->post_id, $this->likers_metakey, false);
+				if (in_array((string) $this->current_user, $voterslist, true)) {
 						$this->user_already_voted = true;
 				}
 		}
@@ -74,10 +75,11 @@ class PbVote_ThumbRating
 				$output = '';
 
 				if ( is_user_logged_in() ) {
-						$output = '<form action="" id="increaseBtn" method="POST" enctype="multipart/form-data">
+						$output .= '<form action="" id="increaseBtn" method="POST" enctype="multipart/form-data">
 						<input type="hidden" name="submitted" id="submitted" value="true"/>';
 						$output .= wp_nonce_field('post_nonce', 'post_nonce_field');
-						if ($this->current_user === $this->author_id) {
+						$author_id = intval(get_the_author_meta('ID'), 10) ;
+						if ($this->current_user === $author_id) {
 								$output .= '<div class="imc-CardLayoutStyle imc-CenterContents">';
 								$output .= '<img alt="My Issue icon" class="imc-VerticalAlignMiddle" title="' . __('My Issue', 'pb-voting') .'" ';
 								$output .= 'src="'. esc_url( PB_VOTE_URL . '/img/ic_my_issue_grid.png'). '">'.
@@ -96,6 +98,9 @@ class PbVote_ThumbRating
 								}
 						}
 						$output .= '</form>';
+				} else {
+					  $output .= '<div class="imc-CardLayoutStyle imc-CenterContents"><i class="material-icons md-18 imc-AlignIconToLabel">thumb_up</i>';
+						$output .= render_rating_help_link("", "24", "") . '</div>';
 				}
 				return $output;
 		}

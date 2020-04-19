@@ -431,3 +431,30 @@ h3.pbvote-SubSectionTitleTextStyle {
 a.pbvote-rating-link {
   color: white;
 }
+.pbvote-delivery-log-thead, .pbvote-delivery-log-form-header {
+  text-align: left;
+  padding: 5px;
+}
+.pbvote-delivery-log-form-row, .pbvote-delivery-log-form-cell{
+  padding: 5px;
+}
+table.pbvote-delivery-log-table {
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+table.pbvote-delivery-log-table tr th {
+    border-bottom: 2px solid #888888;
+    padding: 3px 3px 3px 5px;
+}
+table.pbvote-delivery-log-table tr td {
+    padding-top: 3px ;
+}
+thead.pbvote-delivery-log-thead{
+  border-bottom: 1px;
+}
+li.nav-tab{
+  margin-bottom: -1px;
+}
+ul.nav.nav-tab-wrapper{
+  margin-top : 10px;
+}

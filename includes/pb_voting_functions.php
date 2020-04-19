@@ -516,3 +516,22 @@ add_action( 'admin_init', 'pbvote_redirect_non_admin_users' );
 *
 * This function is attached to the ‘admin_init’ action hook.
 */
+function write_log()
+{
+		$code =  bin2hex(random_bytes( 10 ));
+		$issue       = current_time( 'timestamp', 0 );
+		$expiration  = $issue + 60*60*8;
+
+		$issued_time      = date( 'Y-m-d H:i:s', $issue);
+		$expiration_time  = date( 'Y-m-d H:i:s', $expiration);
+		$msg = "Novy kod: ".$code;
+		$db_log = new PbVote_SaveCodeDeliveryStatus( 45, '420602342275');
+		$pom  = $db_log->save_code( $code, $issued_time, $expiration_time, $msg);
+		$result  = $db_log->get_result_msg();
+		$sent    = $issue + 60;
+		$pom1    = $db_log->add_register_log( "poslat kod", date( 'Y-m-d H:i:s', $sent), "odeslano", $desc = "zprava odeslani", '420602342275-20200403211845');
+		$result1 = $db_log->get_result_msg();
+		$sent    = $sent + 60;
+		$pom2    = $db_log->add_register_log( "dorucit kod", date( 'Y-m-d H:i:s', $sent), "doruceno", $desc = "zprava odeslani", '420602342275-20200403211845');
+		$result2 = $db_log->get_result_msg();
+}

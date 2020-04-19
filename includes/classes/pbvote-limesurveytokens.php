@@ -5,6 +5,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
     private $base_url, $login, $password, $rpc_client_file, $reminder;
     private $attributes = array("attribute_1","validfrom","validuntil", "language", "sent", "remindedsent", "remindercount","completed", "email");
     private $recip_language = "cs";
+    private $code_id;
 
     public function set_pbvoting_meta()
     {
@@ -39,6 +40,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
             return false;
         }
 
+        parent::init_token_storage();
         return true;
     }
 
