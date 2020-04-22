@@ -82,7 +82,7 @@ class PbVote_ThumbRating
 						if ($this->current_user === $author_id) {
 								$output .= '<div class="imc-CardLayoutStyle imc-CenterContents">';
 								$output .= '<img alt="My Issue icon" class="imc-VerticalAlignMiddle" title="' . __('My Issue', 'pb-voting') .'" ';
-								$output .= 'src="'. esc_url( PB_VOTE_URL . '/img/ic_my_issue_grid.png'). '">'.
+								$output .= 'src="'. esc_url( PB_VOTE_URL . '/img/ic_my_issue_grid.png'). '">';
 								$output .= '<span class="imc-Text-MD imc-TextMedium imc-TextColorSecondary imc-FontRoboto">';
 								$output .=  __('My issue', 'pb-voting') .'</span></div>';
 						} else {
