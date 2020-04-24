@@ -19,7 +19,8 @@ function pb_item_archive_show_export($post) {
 		$current_category_name = $imccategory_currentterm[0]->name;
 	} ?>
 
-    <div class="uvod imc-ListLayoutStyle imc-OverviewListStyle" id="issue-<?php echo esc_html($issue_id);?>">
+	<div>
+		<div class="uvod imc-ListLayoutStyle imc-OverviewListStyle" id="issue-<?php echo esc_html($issue_id);?>">
         <div class="imc-row-no-margin">
             <div class="imc-grid-10 imc-columns">
                 <div class="imc-ListItemMainInfoStyle">
@@ -88,5 +89,5 @@ function pb_item_archive_show_export($post) {
 				echo $project_single->template_part_pb_project( $project_meta );
 				?>
 		</div> <!--End Card-->
-
+</div>
 <?php } ?>

@@ -72,6 +72,7 @@ class PbVote_ImcIssueDetailMetabox {
   }
 
   public function field_generator( $post ) {
+    $output = "";
     foreach ( $this->meta_fields as $meta_field ) {
        $label = '<label for="' . $meta_field['id'] . '">' . $meta_field['label'] . '</label>';
        $meta_value = get_post_meta( $post->ID, $meta_field['id'], true );
@@ -114,8 +115,10 @@ class PbVote_ImcIssueDetailMetabox {
              } else {
                $value_table =  $meta_value;
              }
-             $table = new PbVote_BudgetTable( true, $value_table);
-             $input = $table->render_table();
+             // $table = new PbVote_BudgetTable( true, $value_table);
+             // $input = $table->render_table();
+             $table = new PbVote_RenderFieldBudgetTable( $meta_field, serialize($value_table),  true);
+             $input = $table->render_body();
            break;
          case 'attachment':
              if (empty($meta_value)) {
@@ -123,8 +126,8 @@ class PbVote_ImcIssueDetailMetabox {
              } else {
                $value_table =  $meta_value;
              }
-             $table = new PbVote_AttachmentTable( $value_table, $meta_field['id'], true);
-             $input = $table->render_table();
+             $table = new PbVote_RenderFieldAttachmentTable( $meta_field, serialize($value_table),  true);
+             $input = $table->render_body();
            break;
          case 'checkboxgroup':
              $field_render = new PbVote_RenderFieldCheckboxGroup( $meta_field, $meta_value);

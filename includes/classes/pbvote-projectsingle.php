@@ -126,8 +126,8 @@ class PbVote_ProjectSingle {
             $order,
             $label);
 
-        $table = new PbVote_BudgetTable( false, unserialize( $value));
-        echo $table->render_table();
+        $table = new PbVote_RenderFieldBudgetTable( array(), $value,  false);
+        echo $table->render_body();
         echo '</div>';
     }
     private function render_field_attache_table( $order = '', $label = '', $options, $value = '')
@@ -138,8 +138,8 @@ class PbVote_ProjectSingle {
             $order,
             $label);
 
-        $table = new PbVote_AttachmentTable( unserialize( $value), $options['id'], false);
-        echo $table->render_table();
+        $table = new PbVote_RenderFieldAttachmentTable( $options, $value,  false);
+        echo $table->render_body();
         echo '</div>';
     }
 

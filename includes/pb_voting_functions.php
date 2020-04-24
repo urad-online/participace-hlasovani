@@ -535,3 +535,15 @@ function write_log()
 		$pom2    = $db_log->add_register_log( "dorucit kod", date( 'Y-m-d H:i:s', $sent), "doruceno", $desc = "zprava odeslani", '420602342275-20200403211845');
 		$result2 = $db_log->get_result_msg();
 }
+function zkontrolovat_excerpt($excerpt)
+{
+	if ( has_excerpt() ) {
+		$excerpt = sprintf( '%1$s <a href="%2$s">%3$s</a>',
+			$excerpt,
+			get_permalink(),
+      'Read more'
+		);
+	}
+
+	return $excerpt;
+}

@@ -48,7 +48,7 @@ class PbVote_RenderFieldBudgetTable extends PbVote_RenderFieldText
     }
     public function render_body( )
     {
-      $output =  '<div class="container"><div class="table-wrapper">';
+      $output =  '<div class=""><div class="table-wrapper">';
       $output .= '<input type="hidden" id="pb_project_naklady" name="pb_project_naklady" value="'. json_encode( ($this->allow_edit) ? $this->value : array(), JSON_UNESCAPED_UNICODE) .'">';
       // $output .= '<div class="table-title"><div class="imc-row"><div class="imc-grid-8 imc-columns"><h2>Rozpočet návrhu</h2></div></div></div>';
       $output .= '<table class="pbvote-budget-table table-bordered" style="width:100%">';

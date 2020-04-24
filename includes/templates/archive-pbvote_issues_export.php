@@ -12,6 +12,8 @@ if ( ! current_user_can('administrator')) {
     // get_footer();
     exit;
 }
+// add_filter( 'wp_trim_excerpt', 'zkontrolovat_excerpt', 20);
+
 
     include_once( PB_VOTE_PATH_TEMPL . '/pb-item-part-archive-export.php' );
 

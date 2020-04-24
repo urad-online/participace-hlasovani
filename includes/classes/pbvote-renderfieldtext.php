@@ -11,11 +11,11 @@ class PbVote_RenderFieldText
 				$this->set_value( $value);
 				$this->set_mandatory();
 				$this->set_attributes();
+				$this->do_action();
 		}
 
 		public function render_field( $order )
 		{
-			$this->do_action();
 			if (empty($this->field)) {
 				return '<h3>'.$order.'Nedefinováno</h3>';
 			}

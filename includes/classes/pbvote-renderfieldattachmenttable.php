@@ -58,7 +58,7 @@ class PbVote_RenderFieldAttachmentTable extends PbVote_RenderFieldText
 
       $pom_value = json_encode( $this->attach_list_keys , JSON_UNESCAPED_UNICODE);
       $keys_list = str_replace( '"', '', $pom_value);
-      $output =  '<div class="container attachment-container"><div class="table-wrapper">';
+      $output =  '<div class="attachment-container"><div class="table-wrapper">';
       $output .= '<input type="hidden" id="'.$this->field_id.'" name="'.$this->field_id.'" value="'. $keys_list .'">';
       $output .= '<table class="pbvote-attach-table table-bordered" style="width:100%">';
       $output .= $this->render_col_header();
