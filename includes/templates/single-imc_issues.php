@@ -127,7 +127,7 @@ $plugin_path_url = imc_calculate_plugin_base_url();
 																							foreach ( $all_steps as $step ) {
 																								$color = get_option('tax_imcstatus_color_' . $step->term_id);
 																								$step_order_id = get_term_meta( $step->term_id, 'imc_term_order');
-																								if ($step_order_id[0] <= $current_order_step_id[0] ) { ?>
+																								if ($step_order_id[0] == $current_order_step_id[0] ) { ?>
 			                                              <style>
 			                                                  .imc-progress-indicator > li .bubble:before, .imc-progress-indicator > li.imc-stepId-<?php echo esc_attr($step->term_id); ?> .bubble:after{
 			                                                      background-color: #<?php echo esc_attr($color);?>;
