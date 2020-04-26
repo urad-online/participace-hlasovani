@@ -68,13 +68,8 @@ class PbVote_CodeSms
             $this->result =   array( "result" => "error", "message" => "Chyba: ".$sms_send->id ." , ".$sms_send->message,);
             return false;
         } elseif (! empty( $sms_send->message->id)) {
-            if (check_delivery_result($sms_send->message)) {
-              $this->result = $sms_send->message->id;
-              $this->confirm_message($sms_send->message->id);
-              return $sms_send->message->id;
-            } else {
-              return false;
-            }
+            $this->result = (string) $sms_send->message->id;
+            return $this->result ;
         } else {
             $this->result =  array( "result" => "error", "message" => $this->xml_error,);
             return false;
@@ -99,19 +94,20 @@ class PbVote_CodeSms
     * Check delivery status of one message for known id
     * @msg - object with the response to posted SMS returned by smsgateapi.sms-sluzba.cz
     */
-    public function check_delivery_result($msg)
+    public function check_delivery_result($msg_id = "")
     {
-        if (empty( $msg->id)) {
+        if (empty( $msg_id)) {
           $this->result =  array( "result" => "error", "message" => $this->xml_error,);
           return false;
         }
-        $req = array("act"=>"get_delivery_report","id"=>$msg->id );
+        $req = array("act"=>"get_delivery_report","id"=>$msg_id );
 
         $status = $this->sms_api->get_incoming_messages( $req );
         $result = $this->decode_response( $status)[0];
         if ( isset($result['status'])) {
             $this->delivery_status = $result['status'];
             if ($result['status'] === '0') {
+                $this->confirm_message($msg_id);
                 return true;
             } else {
                 $this->result =  array( "result" => "error", "message" => "Zpráva nebyla doručena. Stav : " .$result['status'] . " - " . $result['description'],);

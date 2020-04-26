@@ -8,6 +8,7 @@ class PbVote_GetCode
     public $result_msg;
     public $survey_url = "";
     public $code_delivery = null;
+    public $db_log = null;
     private $status_taxo = PB_VOTING_STATUS_TAXO;
     private $message_placeholders = array(
             array ( 'placeholder' => '{#token}',
@@ -36,6 +37,7 @@ class PbVote_GetCode
 
     public function init_token_storage()
     {
+        $this->db_log = new PbVote_SaveCodeDeliveryStatus( $this->voting_id, $this->voter_id);
         $this->table_name = 'pb_register' ;
         $this->initial_status = 'new';
 
@@ -119,50 +121,11 @@ class PbVote_GetCode
 
     public function save_code()
     {
-        $sql_comm = $this->db->prepare( 'INSERT INTO '.$this->db->prefix . $this->table_name
-            . ' (voting_id, voter_id, registration_code, issued_time, expiration_time, message_id, status)
-            VALUES ( %d, %s, %s, %s, %s, %s, %s)',
-                intval( $this->voting_id ),
-                $this->voter_id ,
-                $this->code,
-                $this->issued_time,
-                $this->expiration_time,
-                $this->result_msg,
-                $this->initial_status
-                );
-
-        $this->register_id = $this->db->query( $sql_comm );
-        if ($this->register_id) {
-            $this->result_msg = array( "result" => "ok", "code" => $this->code, 'expiration_time' => $this->expiration_time, );
-        } else {
-            $this->set_error( 'Chyba při ukládání kódu');
-        }
-        // return $output;
-    }
-    public function add_register_log( $reg_id, $ref_id = "", $status = "", $step = "", $desc = "", $time = "")
-    {
-        if (! $reg_id) {
-            return false;
-        }
-        if (empty($time)) {
-            $time = date( 'Y-m-d H:i:s', current_time( 'timestamp', 0 ));
-        }
-        $sql_comm = $this->db->prepare( 'INSERT INTO '.$this->db->prefix . "pb_register_log"
-            . ' (reference_id, new_status, log_timestamp, step, description, register_id)
-            VALUES ( %s, %s, %s, %s, %s, %d)',
-                $ref_id ,
-                $status ,
-                $time,
-                $step,
-                $desc,
-                $reg_id
-                );
-
-        $result = $this->db->query( $sql_comm );
+        $result = $this->db_log->save_code( $this->code, $this->issued_time, $this->expiration_time, $this->result_msg);
         if ($result) {
-            $this->result_msg = array( "result" => "ok", "code" => $this->code, 'expiration_time' => $this->expiration_time, );
+          $this->result_msg = $this->db_log->get_result_msg();
         } else {
-            $this->set_error( 'Chyba při ukládání kódu');
+          $this->set_error( 'Chyba při ukládání kódu');
         }
     }
 
@@ -282,10 +245,21 @@ class PbVote_GetCode
         $result =  $this->code_delivery->send_new_code( $msg_data );
         $this->result_msg = $this->code_delivery->get_error_description();
 
-        $this->add_register_log( $reg_id, $ref_id = "", $status = "", $step = "", $desc = "", $time = "");
-        if ( $result ) {
-            return true;
+        if ($result) {
+            $this->db_log->add_register_log( "poslat kod", "", "odeslano", $result, $result);
+            $delivered = $this->code_delivery->check_delivery_result( $result);
+            if ($delivered) {
+
+                $this->db_log->add_register_log( "dorucit kod", "", "doruceno", "", $result );
+                return true;
+            } else {
+                $this->db_log->add_register_log( "dorucit kod", "", "nedoruceno", $this->code_delivery->get_error_description()["message"], "");
+                $this->result_msg = $this->code_delivery->get_error_description();
+                return false;
+            }
+          // code...
         } else {
+            $this->db_log->add_register_log( "poslat kod", "", "neodeslano", $this->result_msg, "");
             return false;
         }
     }

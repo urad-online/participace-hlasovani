@@ -37,7 +37,7 @@ class PbVote_CodeEmail
         $email_send = wp_mail( $input['voter_id'], $this->email_subject, $email_text, $this->email_header );
 
         if ( $email_send ) {
-            $this->result =   "Registracni kod odeslan";
+            $this->result =   array("Registracni kod odeslan",);
             $this->delivery_status = "0";
             return true;
         } else {
@@ -54,5 +54,10 @@ class PbVote_CodeEmail
     public function delivery_status()
     {
         return $this->delivery_status;
+    }
+
+    public function check_delivery_result( $msg_id = "")
+    {
+        return true;
     }
 }
