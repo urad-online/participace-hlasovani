@@ -20,6 +20,8 @@ class PbVote_GetCode
             array ( 'placeholder' => '{#code_spell}',
                     'value' => 'code_spelling'),
                 );
+   private $nr_of_delivery_check = 10;
+   private $delivery_check_sleep = 3000000;
 
     public function __construct( $input )
     {
@@ -103,7 +105,9 @@ class PbVote_GetCode
                     if ( $this->code = $this->get_new_code() ) {
                         $this->save_code();
                         $this->string_spelling();
-                        if ( ! $sms_result = $this->send_new_code() ) {
+                        $this->clear_new_code = false;
+                        $sms_result = $this->send_new_code();
+                        if ( (! $sms_result) && ($this->clear_new_code) ) {
                             $this->clear_new_code();
                         }
                     }
@@ -241,24 +245,39 @@ class PbVote_GetCode
             'expiration_time' => $this->expiration_time,
             'message'         => $this->message_replace_placeholders(),
         );
+        $this->clear_new_code = false;
 
         $result =  $this->code_delivery->send_new_code( $msg_data );
         $this->result_msg = $this->code_delivery->get_error_description();
 
         if ($result) {
             $this->db_log->add_register_log( "poslat kod", "", "odeslano", $result, $result);
-            $delivered = $this->code_delivery->check_delivery_result( $result);
-            if ($delivered) {
 
-                $this->db_log->add_register_log( "dorucit kod", "", "doruceno", "", $result );
+            // this code can't be used because SMS gate return uknown message. Probably message os created with a delay
+            $delivered = false;
+            $test_cycle = 1;
+            for ($i=0; $i < $this->nr_of_delivery_check; $i++) {
+                usleep( $this->delivery_check_sleep);
+                $delivered = $this->code_delivery->check_delivery_result( $result);
+                if ($delivered) {
+                  break;
+                }
+
+                $test_cycle += 1;
+            }
+
+            if ($delivered) {
+                $this->db_log->add_register_log( "dorucit kod", "", "doruceno", "Počet cyklů: ".$test_cycle, $result );
                 return true;
             } else {
-                $this->db_log->add_register_log( "dorucit kod", "", "nedoruceno", $this->code_delivery->get_error_description()["message"], "");
+                $this->db_log->add_register_log( "dorucit kod", "", "nedoruceno", $this->code_delivery->get_error_description()["message"] . " Počet cyklů: ".$test_cycle, $result);
                 $this->result_msg = $this->code_delivery->get_error_description();
+                $this->clear_new_code = false;
                 return false;
             }
           // code...
         } else {
+            $this->clear_new_code = true;
             $this->db_log->add_register_log( "poslat kod", "", "neodeslano", $this->result_msg, "");
             return false;
         }
