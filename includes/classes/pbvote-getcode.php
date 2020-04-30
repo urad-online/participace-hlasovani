@@ -68,7 +68,7 @@ class PbVote_GetCode
         if (!empty( $this->pbvoting_meta['message_text'][0])) {
             $this->message_text = $this->pbvoting_meta['message_text'][0];
         } else {
-            $this->message_text = "Aktivační kód: {#token} platný do {#expiration_time}";
+            $this->message_text = "Přístupový kód: {#token} platný do {#expiration_time}";
         }
 
     }
@@ -129,7 +129,7 @@ class PbVote_GetCode
         if ($result) {
           $this->result_msg = $this->db_log->get_result_msg();
         } else {
-          $this->set_error( 'Chyba při ukládání kódu');
+          $this->set_error( 'Při ukládání přístupového kódu vznikla chyba. Prosím opakujte nebo nahlaste.');
         }
     }
 
@@ -140,7 +140,7 @@ class PbVote_GetCode
     private function check_new_voter()
     {
         if (! $this->check_voter_id()) {
-            $this->result_msg = array( "result" => "error", "message" => 'Chyba kontroly registračního ID  - špatný formát',);
+            $this->result_msg = array( "result" => "error", "message" => 'Telefonní číslo není uvedeno ve správném formátu. Prosím opakujte.',);
             return false;
         }
 
@@ -192,11 +192,11 @@ class PbVote_GetCode
         *   closed
         */
         if ($db_row->status === 'closed') {
-            $this->set_error( 'ID '.$this->voter_id.' již hlasovalo' );
+            $this->set_error( 'Hlasování z tohoto telefonního čísla již proběhlo. Děkujeme.' );
             return false;
         }
         if ( strtotime( $db_row->expiration_time) > strtotime( $this->issued_time) ) {
-            $this->set_error( 'ID '.$this->voter_id.' je již registrováno s platností do '.$db_row->expiration_time );
+            $this->set_error( 'Na toto telefonní číslo byl přístupový kód s platností do '.$db_row->expiration_time.' již odeslán. Nový kód můžete získat po uplynutí této lhůty.' );
             return false;
         } else {
             if ($db_row->status === 'new') {
@@ -296,7 +296,7 @@ class PbVote_GetCode
     {
         $vote_status = wp_get_object_terms($this->voting_id, $this->status_taxo);
         if (is_wp_error($vote_status)) {
-            $this->set_error( 'Chyba při hledání stavu průzkumu' );
+            $this->set_error( 'Nepodařil se zjistit stav hlasování. Prosím opakujte nebo nahlaste.' );
             return false;
         }
 
@@ -306,7 +306,7 @@ class PbVote_GetCode
                 return true;
             }
         }
-        $this->set_error( 'Průzkum je ve stavu který nepovoluje hlasování' );
+        $this->set_error( 'Generování přístupových kódů pro toto hlasování není povoleno.' );
 
         return false;
     }
