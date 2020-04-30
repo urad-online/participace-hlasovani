@@ -32,7 +32,7 @@ function voting_callAjaxGetCode()
 
     jQuery("#votingRegistrationCodeError").html("");
     jQuery("#votingRegistrationCodeError").css("display", "none");
-    jQuery("#votingRegistrationCodeSuccess").html("Registrační údaj je odesílán....");
+    jQuery("#votingRegistrationCodeSuccess").html("Odesílám žádost o zaslání SMS...");
     jQuery("#votingRegistrationCodeSuccess").css("display", "block");
     jQuery("body").css("cursor", "progress");
     jQuery.post(ajax_object.ajax_url, postRequest, function(response) {
@@ -51,7 +51,7 @@ function voting_callAjaxGetCode()
         } else {
             jQuery("#votingRegistrationCodeError").html("OK");
             jQuery("#votingRegistrationCodeError").css("display", "none");
-            jQuery("#votingRegistrationCodeSuccess").html("Registrační kód byl odeslán.");
+            jQuery("#votingRegistrationCodeSuccess").html("SMS s přístupovým kódem byla odeslána. Zadejte přístupový kód");
             jQuery("#votingRegistrationCodeSuccess").css("display", "block");
             votingSwitchToTokenEntry();
         }
