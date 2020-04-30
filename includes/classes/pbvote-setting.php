@@ -167,8 +167,9 @@ class PbVote_Setting {
       }
       protected function get_log_query_params()
       {
-          $this->log_query_args['voting_id']   = ((! empty($_POST['log_voting_id'])) && ( !$_POST['log_voting_id'] === "all")) ? $_POST['log_voting_id'] : "" ;
+          $this->log_query_args['voting_id']   = ((! empty($_POST['log_voting_id'])) && ( !($_POST['log_voting_id'] === "all"))) ? $_POST['log_voting_id'] : "" ;
           $this->log_query_args['pb_log_type'] = (! empty($_POST['pb_log_type'])) ? $_POST['pb_log_type'] : "all" ;
+          $this->log_query_args['status_notdelivered'] = (! empty($_POST['status_notdelivered'])) ? $_POST['status_notdelivered'] : "0" ;
           $this->log_query_args['date_from']   = (! empty($_POST['date_from'])) ? $_POST['date_from'] : "" ;
           $this->log_query_args['date_to']     = (! empty($_POST['date_to']))   ? $_POST['date_to']   : "" ;
           $this->log_query_args['voter_id']    = (! empty($_POST['voter_id']))  ? $_POST['voter_id']  : "" ;
@@ -178,11 +179,13 @@ class PbVote_Setting {
         $db = new PbVote_GetDeliveryLog();
 
         return $db->get_data_status_change( array(
-          "voting_id" => $this->log_query_args['voting_id'],
-          "voter_id"  => $this->log_query_args['voter_id'],
-          "time_from" => $this->log_query_args['date_from'],
-          "time_to"   => $this->log_query_args['date_to'],
-        ));
+            "voting_id" => $this->log_query_args['voting_id'],
+            "voter_id"  => $this->log_query_args['voter_id'],
+            "time_from" => $this->log_query_args['date_from'],
+            "time_to"   => $this->log_query_args['date_to'],
+          ),
+          (bool) $this->log_query_args['status_notdelivered'],
+        );
         return array();
       }
       protected function get_logs_all()
@@ -194,7 +197,9 @@ class PbVote_Setting {
               "voter_id"  => $this->log_query_args['voter_id'],
               "time_from" => $this->log_query_args['date_from'],
               "time_to"   => $this->log_query_args['date_to'],
-            ));
+            ),
+            (bool) $this->log_query_args['status_notdelivered'],
+          );
 
       }
 
@@ -210,6 +215,15 @@ class PbVote_Setting {
                   </th>
                   <td class="pbvote-delivery-log-form-cell">
                     <?PHP echo $this->dropdown_period( "log_voting_id", $this->log_query_args['voting_id']);?>
+                  </td>
+                </tr>
+                <tr class="pbvote-delivery-log-form-row">
+                  <th scope="row" class="pbvote-delivery-log-form-header">
+                    <?php echo __("Stav doručení", $this::DOMAIN);?>
+                  </th>
+                  <td class="pbvote-delivery-log-form-cell">
+                    <input type="radio" id="status_notdelivered" name="status_notdelivered" value="0" <?PHP echo ($this->log_query_args['status_notdelivered'] === "0" ) ? "checked" : "";?>><?php _e('Všechny',$this::DOMAIN); ?></input>
+                    <input type="radio" id="status_notdelivered" name="status_notdelivered" value="1" <?PHP echo ($this->log_query_args['status_notdelivered'] === "1") ? "checked" : "";?>><?php _e('Nedoručeno', $this::DOMAIN); ?></input>
                   </td>
                 </tr>
                 <tr class="pbvote-delivery-log-form-row">
@@ -291,6 +305,7 @@ class PbVote_Setting {
             }
             $output .= '</tbody></table>';
         }
+        $output .= '<div>'. __("Výpis omezen na max 100 záznamů", "pb-voting").'</div>';
         $output .= '</div></div>';
         return $output;
       }
