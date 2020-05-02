@@ -22,6 +22,7 @@ class PbVote_GetCode
                 );
    private $nr_of_delivery_check = 10;
    private $delivery_check_sleep = 3000000;
+   private $texts = array();
 
     public function __construct( $input )
     {
@@ -35,6 +36,13 @@ class PbVote_GetCode
         if ( class_exists($class_name) ) {
             $this->code_delivery = new $class_name();
         }
+        $this->texts['msg_text'] = __( "Přístupový kód: {#token} platný do {#expiration_time}", 'pb-voting');
+        $this->texts['error_save']   = __( "Při ukládání přístupového kódu vznikla chyba. Prosím opakujte nebo nahlaste.", 'pb-voting');
+        $this->texts['error_format'] = __( "Telefonní číslo není uvedeno ve správném formátu. Prosím opakujte.", 'pb-voting');
+        $this->texts['error_voted']  = __( "Hlasování z tohoto telefonního čísla již proběhlo. Děkujeme.", 'pb-voting');
+        $this->texts['wait_for_exp'] = __( "Na toto telefonní číslo byl přístupový kód s platností do %s již odeslán. Nový kód můžete získat po uplynutí této lhůty.", 'pb-voting');
+        $this->texts['error_nostatus'] = __( "Nepodařil se zjistit stav hlasování. Prosím opakujte nebo nahlaste.", 'pb-voting');
+        $this->texts['voting_blocked'] = __( "Generování přístupových kódů pro toto hlasování není povoleno.", 'pb-voting');
     }
 
     public function init_token_storage()
@@ -68,7 +76,7 @@ class PbVote_GetCode
         if (!empty( $this->pbvoting_meta['message_text'][0])) {
             $this->message_text = $this->pbvoting_meta['message_text'][0];
         } else {
-            $this->message_text = "Přístupový kód: {#token} platný do {#expiration_time}";
+            $this->message_text = $this->texts['msg_text'];
         }
 
     }
@@ -129,7 +137,7 @@ class PbVote_GetCode
         if ($result) {
           $this->result_msg = $this->db_log->get_result_msg();
         } else {
-          $this->set_error( 'Při ukládání přístupového kódu vznikla chyba. Prosím opakujte nebo nahlaste.');
+          $this->set_error( $this->texts['error_save'] );
         }
     }
 
@@ -140,7 +148,7 @@ class PbVote_GetCode
     private function check_new_voter()
     {
         if (! $this->check_voter_id()) {
-            $this->result_msg = array( "result" => "error", "message" => 'Telefonní číslo není uvedeno ve správném formátu. Prosím opakujte.',);
+            $this->result_msg = array( "result" => "error", "message" => $this->texts['error_format'],);
             return false;
         }
 
@@ -192,11 +200,11 @@ class PbVote_GetCode
         *   closed
         */
         if ($db_row->status === 'closed') {
-            $this->set_error( 'Hlasování z tohoto telefonního čísla již proběhlo. Děkujeme.' );
+            $this->set_error( $this->texts['error_voted'] );
             return false;
         }
         if ( strtotime( $db_row->expiration_time) > strtotime( $this->issued_time) ) {
-            $this->set_error( 'Na toto telefonní číslo byl přístupový kód s platností do '.$db_row->expiration_time.' již odeslán. Nový kód můžete získat po uplynutí této lhůty.' );
+            $this->set_error( sprintf( $this->texts['wait_for_exp'], $db_row->expiration_time ));
             return false;
         } else {
             if ($db_row->status === 'new') {
@@ -296,7 +304,7 @@ class PbVote_GetCode
     {
         $vote_status = wp_get_object_terms($this->voting_id, $this->status_taxo);
         if (is_wp_error($vote_status)) {
-            $this->set_error( 'Nepodařil se zjistit stav hlasování. Prosím opakujte nebo nahlaste.' );
+            $this->set_error( $this->texts['error_nostatus'] );
             return false;
         }
 
@@ -306,7 +314,7 @@ class PbVote_GetCode
                 return true;
             }
         }
-        $this->set_error( 'Generování přístupových kódů pro toto hlasování není povoleno.' );
+        $this->set_error( $this->texts['voting_blocked'] );
 
         return false;
     }

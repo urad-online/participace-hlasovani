@@ -13,7 +13,10 @@ class PbVote_SaveCodeDeliveryStatus
       $this->voting_id = $voting_id;
       $this->voter_id  = $voter_id;
     }
-
+    private $texts =  array(
+      "error_save_code"   => "Chyba při ukládání kódu",
+      "error_save_status" => "Chyba při ukládání stavu odesílání kódu",
+    );
     public function save_code( $code, $issued_time, $expiration_time, $msg)
     {
         $sql_comm = $this->db->prepare( 'INSERT INTO '.$this->db->prefix . self::REGISTER_TBL_NAME
@@ -35,7 +38,7 @@ class PbVote_SaveCodeDeliveryStatus
             $this->add_register_log( "generate code" , $issued_time, self::INITIAL_STATUS, $msg, "" );
             return true;
         } else {
-            $this->result_msg = array( 'result' => 'error', 'message' => 'Chyba při ukládání kódu',);
+            $this->result_msg = array( 'result' => 'error', 'message' => $this->texts["error_save_code"],);
             $this->register_id = null;
             return false;
         }
@@ -62,7 +65,7 @@ class PbVote_SaveCodeDeliveryStatus
 
         $result = $this->db->query( $sql_comm );
         if (!$result) {
-            $this->result_msg = array( 'result' => 'error', 'message' => 'Chyba při ukládání stavu odesílání kódu',);
+            $this->result_msg = array( 'result' => 'error', 'message' => $this->texts["error_save_status"],);
             return false;
         } else {
             $this->set_voter_status( $this->register_id, $status);

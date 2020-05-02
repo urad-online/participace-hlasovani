@@ -115,8 +115,6 @@ class PbVote_ImcIssueDetailMetabox {
              } else {
                $value_table =  $meta_value;
              }
-             // $table = new PbVote_BudgetTable( true, $value_table);
-             // $input = $table->render_table();
              $table = new PbVote_RenderFieldBudgetTable( $meta_field, serialize($value_table),  true);
              $input = $table->render_body();
            break;
@@ -222,10 +220,11 @@ class PbVote_ImcIssueDetailMetabox {
 
   private function pb_render_file_link_metabox($url, $id)
   {
-      $display = 'Zobrazit';
+      $display = __('Zobrazit', "pb-voting");
+      $title   = __('Zobrazit přílohu', "pb-voting");
 
       if (! empty($url)) {
-          return '<a id="'.$id.'Link" href="'.$url.'" target="_blank" data-toggle="tooltip" title="Zobrazit přílohu" class="u-pull-right
+          return '<a id="'.$id.'Link" href="'.$url.'" target="_blank" data-toggle="tooltip" title="'.$title.'" class="u-pull-right
           imc-SingleHeaderLinkStyle" style="width:15%%">'.$display.'</a>';
           // <i class="material-icons md-36 imc-SingleHeaderIconStyle">open_in_browser</i></a>';
       } else {

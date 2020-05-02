@@ -10,11 +10,12 @@ class PbVote_ProjectInsert
     private $voting_status;
     private $message_no_add_status;
     private $save_error_message = "";
+    private $texts = array();
 
     public function __construct( $atts)
     {
         $this->read_atts($atts);
-        $this->message_no_add_status = __('Akce hlasování je ve fázi kdy není povoleno přidávat návrhy');
+        $this->message_no_add_status = __('Akce hlasování je ve fázi kdy není povoleno přidávat návrhy', "pb-voting");
 
         if (! $this->is_submitted) {
           $this->set_map_options();
@@ -27,6 +28,13 @@ class PbVote_ProjectInsert
             'fileSize'   => $this->project_single->get_field_property( 'photo', 'max_size'),
           ));
         }
+        $this->texts['error_authorization'] = __( 'You are not authorised to report an issue','pb-voting');
+        $this->texts['label_login']         = __( 'Please login!','pb-voting');
+        $this->texts['label_back_to_list']  = __( 'Zpět na přehled','pb-voting');
+        $this->texts['label_save_success']  = __( 'New project proposal was successfully saved','pb-voting');
+        $this->texts['label_add_new_issue'] = __( 'Report a new issue','pb-voting');
+        $this->texts['label_send']          = __( 'Odeslat','pb-voting');
+        $this->texts['error_data_save']     = __( 'Chyba při ukládání dat','pb-voting');
 
     }
 
@@ -90,11 +98,11 @@ class PbVote_ProjectInsert
 
     private function show_user_cant_edit_login()
     {
-        return $this->show_permission_error( wp_login_url(), __('You are not authorised to report an issue','pb-voting'), __('Please login!','pb-voting'));
+        return $this->show_permission_error( wp_login_url(), $this->texts['error_authorization'] , $this->texts['label_login'] );
     }
     private function show_cant_edit_in_this_status( $message)
     {
-        return $this->show_permission_error( $this->return_url, $message, __('Zpět na přehled','pb-voting'));
+        return $this->show_permission_error( $this->return_url, $message, $this->texts['label_back_to_list'] );
     }
 
     private function show_permission_error( $url = "#", $error_message = "", $link_label = "Zpět na přehled")
@@ -134,9 +142,9 @@ class PbVote_ProjectInsert
           <div class="imc-row imc-CenterContents">
             <i class="imc-EmptyStateIconStyle material-icons md-48">vpn_lock</i>
             <div class="imc-Separator"></div>
-            <h3 class="imc-FontRoboto imc-Text-LG imc-TextColorSecondary imc-TextMedium imc-CenterContents"><?php echo __('New project proposal was successfully saved','pb-voting'); ?></h3>
+            <h3 class="imc-FontRoboto imc-Text-LG imc-TextColorSecondary imc-TextMedium imc-CenterContents"><?php echo $this->texts['label_save_success']; ?></h3>
             <div class="imc-Separator"></div>
-            <a href="<?php echo esc_url($this->return_url); ?>" class="imc-Text-XL imc-TextMedium imc-LinkStyle"><?php echo __('Back to list of issues','pb-voting'); ?></a>
+            <a href="<?php echo esc_url($this->return_url); ?>" class="imc-Text-XL imc-TextMedium imc-LinkStyle"><?php echo $this->texts['label_back_to_list']; ?></a>
             <div class="imc-Separator"></div>
           </div>
         </div>
@@ -194,7 +202,7 @@ class PbVote_ProjectInsert
             <div id="insert_form_wrapper">
                 <form name="report_an_issue_form" action="" id="primaryPostForm" method="POST" enctype="multipart/form-data">
                     <div class="imc-CardLayoutStyle">
-                        <h2 class="imc-PageTitleTextStyle imc-TextColorPrimary"><?php echo __('Report a new issue','pb-voting'); ?></h2>
+                        <h2 class="imc-PageTitleTextStyle imc-TextColorPrimary"><?php echo $this->texts['label_add_new_issue']; ?></h2>
                         <div class="imc-Separator"></div>
                           <?php echo $this->project_single->render_form_edit( array(
                               'lat' => $this->map_options['lat'],
@@ -208,7 +216,7 @@ class PbVote_ProjectInsert
                     <div class="imc-row">
                       <?php wp_nonce_field('post_nonce', 'post_nonce_field'); ?>
                       <input type="hidden" name="submitted" id="submitted" value="true" />
-                      <input id="pbVoteIssueSubmitBtn" class="imc-button imc-button-primary imc-button-block pb-project-submit-btn" type="submit" value="Odeslat" />
+                      <input id="pbVoteIssueSubmitBtn" class="imc-button imc-button-primary imc-button-block pb-project-submit-btn" type="submit" value="<?php echo $this->texts['label_send']; ?>" />
                     </div>
                 </form>
             </div> <!-- Form end -->
@@ -234,7 +242,7 @@ class PbVote_ProjectInsert
           	if( $post_id ) {
                 $success = true;
           	} else {
-                $this->save_error_message = __( 'Chyba při ukládání dat' , 'pb-voting');
+                $this->save_error_message = $this->texts['error_data_save'];
             }
         }
       return $success;
@@ -242,7 +250,7 @@ class PbVote_ProjectInsert
 
     public function show_data_save_error()
     {
-        return $this->show_permission_error( $this->return_url, $this->save_error_message, __('Zpět na přehled','pb-voting'));
+        return $this->show_permission_error( $this->return_url, $this->save_error_message, $this->texts['label_back_to_list']);
     }
 
     private function find_active_event()

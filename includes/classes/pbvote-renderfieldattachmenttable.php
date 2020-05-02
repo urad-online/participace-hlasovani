@@ -9,10 +9,15 @@ class PbVote_RenderFieldAttachmentTable extends PbVote_RenderFieldText
       array('id' => "title", 'width' => '80%', 'label' => "Název", 'input_type' => "file", 'class' => "pbvote-attach-table-text text-left", ),
       array('id' => "actions", 'width' => '10%', 'label' => "Úpravy", 'input_type' => "buttons", 'class' => "text-left"),
     );
-    private $labels = array(
-      'input_title'     => 'Název přílohy',
-      'input_file_name' => 'Název souboru',
-    );
+    private $texts =  array(
+      "label_show_att"  => "Zobrazit přílohu",
+			"label_del_att"   => "Odstranit přílohu",
+			"label_title_att" => "Zadejte název přílohy",
+			"label_add_cond"  => "Přidat přílohu lze pokud je zadaný název a vybraný soubror",
+			"label_add_att"   => "Přidat přílohu",
+			"error_file_size" => "Soubor musí být menší než %d MB.",
+			"info_file_type"  => "Jsou povolené tyto typy souborů - gif, png, jpg, jpeg, pdf.",
+		);
     private $file_size_limit = 2000000;
 
     public function __construct( $field, $value,  $allow_edit = true )
@@ -144,9 +149,9 @@ class PbVote_RenderFieldAttachmentTable extends PbVote_RenderFieldText
     {
         $output  = '<td>';
         if ($this->allow_edit) {
-          $output .= '<a class="attach-delete attach-action-icon" title="Odstranit přílohu" data-toggle="tooltip"><i class="material-icons">delete_forever</i></a>';
+          $output .= '<a class="attach-delete attach-action-icon" title="'.$this->texts["label_del_att"].'" data-toggle="tooltip"><i class="material-icons">delete_forever</i></a>';
         }
-        $output .= '<a class="attach-show attach-action-icon" id="attach_table_link_'.$id.'" href="'.$value['link'].'" target="_blank" title="Zobrazit přílohu" data-toggle="tooltip"><i class="material-icons ">open_in_browser</i></a>';
+        $output .= '<a class="attach-show attach-action-icon" id="attach_table_link_'.$id.'" href="'.$value['link'].'" target="_blank" title="'.$this->texts["label_show_att"].'" data-toggle="tooltip"><i class="material-icons ">open_in_browser</i></a>';
         $output .= '</td>';
         return $output;
     }
@@ -161,15 +166,12 @@ class PbVote_RenderFieldAttachmentTable extends PbVote_RenderFieldText
 
     private function render_add_new()
     {
-
-      // <div class="pbvote-attach-table-label"><h4>'.$this->labels['input_title'].'</h4></div>
-      // <div class="pbvote-attach-table-label"><h4>'.$this->labels['input_file_name'].'</h4></div>
       if ($this->allow_edit) {
         $output =
           '<div class="attach-table-new-container">
               <div class="imc-row">
                 <div style="display:inline-block;min-width:30%;">
-                    <div><input autocomplete="off" placeholder="Zadejte název přílohy" type="text" maxlength="30" style="min-width:350px;" id="'.$this->id_prefix.'Title" class="imc-InputStyle attach-input-add-mandatory" value=""></input></div>
+                    <div><input autocomplete="off" placeholder="'.$this->texts["label_title_att"].'" type="text" maxlength="30" style="min-width:350px;" id="'.$this->id_prefix.'Title" class="imc-InputStyle attach-input-add-mandatory" value=""></input></div>
                 </div>
                 <div style="display:inline-block;">
                     <div><input disabled autocomplete="off"
@@ -184,12 +186,12 @@ class PbVote_RenderFieldAttachmentTable extends PbVote_RenderFieldText
                         </label>
                 </div>
                 <div style="display:inline-block;" class="u-pull-right">
-                  <button disabled type="button" title="Přidat přílohu lze pokud je zadaný název a vybraný soubror" class="imc-button attach-add-new"><i class="material-icons md-24 imc-AlignIconToButton">add_circle</i>Přidat přílohu</button>
+                  <button disabled type="button" title="'.$this->texts["label_add_cond"].'" class="imc-button attach-add-new"><i class="material-icons md-24 imc-AlignIconToButton">add_circle</i>'.$this->texts["label_add_att"].'</button>
                 </div>
               </div>
               <div class="imc-row"><span class="u-pull-left imc-ReportFormSubmitErrorsStyle">
-                <p id="pbvote-error-message-size"  hidden>Soubor musí být menší než '.( $this->file_size_limit/1000000).' MB.</p>
-                <p id="pbvote-error-message-type"  hidden>Jsou povolené tyto typy suborů - gif, png, jpg, jpeg, pdf.</p>
+                <p id="pbvote-error-message-size"  hidden>'.sprintf( $this->texts["error_file_size"], $this->file_size_limit/1000000).'</p>
+                <p id="pbvote-error-message-type"  hidden>'.$this->texts["info_file_type"].'</p>
               </span></div>
           </div>';
       } else {

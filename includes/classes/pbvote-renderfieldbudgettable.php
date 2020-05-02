@@ -16,6 +16,12 @@ class PbVote_RenderFieldBudgetTable extends PbVote_RenderFieldText
     protected $value = array();
     private $total_sum = 0;
     private $total_buffer = 0.10;
+    private $texts =  array(
+      "label_header_action" => 'Úpravy',
+      "label_total_part1"   => "Celková částka :   ",
+      "label_total_part2"   => "Kč + rezerva",
+      "label_add_item"      => "Přidat položku",
+    );
 
     public function __construct( $field, $value,  $allow_edit = true )
     {
@@ -73,7 +79,7 @@ class PbVote_RenderFieldBudgetTable extends PbVote_RenderFieldText
         $output .= '<th>' . $item['label'] . '</th>';
       }
       if ($this->allow_edit) {
-        $output .= '<th>' . __('Úpravy', 'pb-voting') . '</th>';
+        $output .= '<th>' . $this->texts["label_header_action"] . '</th>';
       }
       $output .= '</tr></thead>';
       return $output;
@@ -83,14 +89,14 @@ class PbVote_RenderFieldBudgetTable extends PbVote_RenderFieldText
     {
       $output =  '<div class="table-title row-total"><div class="imc-row">';
       $output .= '<div style="display:inline-block;">';
-      $output .= '<h4><span class="keep-space">Celková částka :   </span><span id="total_budget_sum" class="keep-space">'.number_format($this->total_sum,0).' </span>';
-      $output .= '<span class="keep-space"> Kč + rezerva '.($this->total_buffer*100).'% = </span>';
+      $output .= '<h4><span class="keep-space">' . $this->texts["label_total_part1"] . '</span><span id="total_budget_sum" class="keep-space">'.number_format($this->total_sum,0).' </span>';
+      $output .= '<span class="keep-space"> ' . $this->texts["label_total_part2"] . ' '.($this->total_buffer*100).'% = </span>';
       $output .= '<span class="keep-space" id="total_budget_sum_with_buffer">'.number_format($this->total_sum*(1+$this->total_buffer),0).'</span><span class="keep-space"> Kč</span></h4>';
       $output .=   '<h4>';
       $output .= '</div>';
       if ($this->allow_edit) {
         $output .= '<div style="display:inline-block;" class="u-pull-right">';
-        $output .= '<button type="button" class="imc-button u-pull-right add-new"><i class="material-icons md-24 imc-AlignIconToButton">add_circle</i>Přidat položku</button>';
+        $output .= '<button type="button" class="imc-button u-pull-right add-new"><i class="material-icons md-24 imc-AlignIconToButton">add_circle</i>' . $this->texts["label_add_item"] . '</button>';
         $output .= '</div>';
       }
       $output .= '</div></div>';

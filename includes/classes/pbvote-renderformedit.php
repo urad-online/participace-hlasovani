@@ -17,6 +17,9 @@ class PbVote_RenderFormEdit
     private $fields_definition  = array();
     private $fields_order  = array();
     private $form_fields;
+    private $texts = array(
+      "link_to_help_label" => "Návod k vyplnění formuláře",
+    );
 
     public function __construct()
     {
@@ -37,7 +40,7 @@ class PbVote_RenderFormEdit
 
     private function render_form( $latlng, $data, $order_num = 1 )
     {
-        echo $this->render_help_link('navody-uprava-navrhu');
+        echo $this->render_help_link();
         foreach ($this->fields_order as $field) {
             echo '<div class="imc-row">';
             switch ($field['type']) {
@@ -195,7 +198,7 @@ class PbVote_RenderFormEdit
         if (! empty($url)) {
           return '<div class="imc-row" ><div class=" pbvote-helpLink"><a href="' . $url . '" class="pbvote-SingleHeaderLinkStyle" target="_blank">
           <i class="material-icons md-'.trim($icon_size).' imc-SingleHeaderIconStyle pbvote-helpLinkIcon">help_outline</i>
-          <span class="imc-hidden-xs imc-hidden-sm imc-hidden-md pbvote-helpLinkText">' . __("Návod k vyplnění formuláře","pb-voting") .'</span></a></div></div>';
+          <span class="imc-hidden-xs imc-hidden-sm imc-hidden-md pbvote-helpLinkText">' . $this->texts["link_to_help_label"] .'</span></a></div></div>';
         } else {
             return '';
         }

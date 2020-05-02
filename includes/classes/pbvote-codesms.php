@@ -4,7 +4,8 @@ class PbVote_CodeSms
     private $login, $password;
     private $sms_api;
     private $result, $delivery_status;
-    private $default_error, $xml_error;
+    private $texts = array();
+    private $country_kod = "+420";
 
     public function __construct()
     {
@@ -12,8 +13,12 @@ class PbVote_CodeSms
         $this->password = SMSGATE_PASSWD;
         require_once PB_VOTE_PATH_INC .'/smssluzbacz/apixml30.php';
         $this->sms_api  = new ApiXml30( $this->login, $this->password );
-        $this->default_error = __( 'Chyba připojení na server SMS služba.', 'pb-voting');
-        $this->xml_error     = __( 'Chyba parsovaní XML zprávy', 'pb-voting');
+        $this->texts['default_error'] = __( 'Chyba připojení na server SMS služba.', 'pb-voting');
+        $this->texts['error_xml']     = __( 'Chyba parsovaní XML zprávy', 'pb-voting');
+        $this->texts['error']            = __( 'Chyba: ', 'pb-voting');
+        $this->texts['error_empty']      = __( 'Prázdný token', 'pb-voting');
+        $this->texts['err_notdelivered'] = __( "Zpráva nebyla doručena. Stav : ", 'pb-voting');
+        $this->texts['sms_text']         = __( "Aktivační kód: %s platný do %s.", 'pb-voting');
     }
 
     public function check_voter_id( $id )
@@ -23,7 +28,7 @@ class PbVote_CodeSms
         if ( preg_match($phone_regexp, $id) ) {
             $id = str_replace( ' ', '', $id);
             if (strlen( $id ) === 9 ) {
-                $id = '+420'.$id;
+                $id = $this->country_kod.$id;
             }
 
             return $id;
@@ -47,31 +52,31 @@ class PbVote_CodeSms
     {
         $this->delivery_status = "X";
         if (empty( $input['code'] ) ) {
-            $this->result =  array( "result" => "error", "message" => "Prazdny token",);
+            $this->result =  array( "result" => "error", "message" => $this->texts['error_empty'],);
             return false;
         }
         if (! empty($input['message'])) {
             $sms_text = $input['message'];
         } else {
-            $sms_text = "Aktivacni kod: ".$input['code']." platny do ". $input['expiration_time'];
+            $sms_text = sprintf( $this->texts['sms_text'], $input['code'], $input['expiration_time']);;
         }
 
         try {
             $sms_send = $this->sms_api->send_message( $input['voter_id'], $sms_text, null, 0);
         } catch (Exception $e) {
-            $this->result = $this->default_error ;
+            $this->result = $this->texts['default_error'] ;
             return false;
         }
         $sms_send = new SimpleXMLElement( htmlspecialchars_decode( $sms_send) );
 
         if (! empty( $sms_send->id) ) {
-            $this->result =   array( "result" => "error", "message" => "Chyba: ".$sms_send->id ." , ".$sms_send->message,);
+            $this->result =   array( "result" => "error", "message" => $this->texts['error']. $sms_send->id ." , ".$sms_send->message,);
             return false;
         } elseif (! empty( $sms_send->message->id)) {
             $this->result = (string) $sms_send->message->id;
             return $this->result ;
         } else {
-            $this->result =  array( "result" => "error", "message" => $this->xml_error,);
+            $this->result =  array( "result" => "error", "message" => $this->texts['error_xml'],);
             return false;
         }
     }
@@ -97,7 +102,7 @@ class PbVote_CodeSms
     public function check_delivery_result($msg_id = "")
     {
         if (empty( $msg_id)) {
-          $this->result =  array( "result" => "error", "message" => $this->xml_error,);
+          $this->result =  array( "result" => "error", "message" => $this->texts['error_xml'],);
           return false;
         }
         $req = array("act"=>"get_delivery_report","id"=>$msg_id );
@@ -110,7 +115,7 @@ class PbVote_CodeSms
                 $this->confirm_message($msg_id);
                 return true;
             } else {
-                $this->result =  array( "result" => "error", "message" => "Zpráva nebyla doručena. Stav : " .$result['status'] . " - " . $result['description'],);
+                $this->result =  array( "result" => "error", "message" => $this->texts['err_notdelivered'] .$result['status'] . " - " . $result['description'],);
                 return false;
             }
         }
@@ -128,7 +133,7 @@ class PbVote_CodeSms
         try {
             $res = $this->sms_api->get_incoming_messages($req);
         } catch (Exception $e) {
-            $this->result = $this->default_error ;
+            $this->result = $this->texts['default_error'] ;
             return false;
         }
 
@@ -145,7 +150,7 @@ class PbVote_CodeSms
       try {
         $res = $this->sms_api->confirm_message($what);
       } catch (Exception $e) {
-        $this->result = $this->default_error ;
+        $this->result = $this->texts['default_error'] ;
         return false;
       }
       return true;

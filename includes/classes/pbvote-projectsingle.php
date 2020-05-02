@@ -66,16 +66,19 @@ class PbVote_ProjectSingle {
 
     private function render_field_file( $order = '', $label = '', $value = '')
     {
+        $link_label = __("Zobrazit přílohu","pb-voting");
         $output = '<div class="imc-row">
             <h3 class="imc-SectionTitleTextStyle">%s%s</h3>
-            <div><p>Zobrazit přílohu<a href="%s" target="_blank" data-toggle="tooltip"
-            title="Zobrazit přílohu" >
+            <div><p>%s<a href="%s" target="_blank" data-toggle="tooltip"
+            title="%s" >
             <i class="material-icons md-28 imc-SingleHeaderIconStyle" >file_download</i></a></p>
             </div></div>';
         printf( $output ,
             $order,
             $label,
-            $value);
+            $link_label,
+            $value,
+            $link_label);
     }
 
     private function render_field_text( $order = '', $label = '', $value = '')

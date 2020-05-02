@@ -4,6 +4,12 @@ class PbVote_RenderFieldAttachmentFile extends PbVote_RenderFieldText
 		private $butt_add_label, $butt_del_label, $no_photo_label;
 		private $max_size_label, $sel_photo_label ;
 		private $attrib	 = ' readonly="readonly" ';
+		private $texts =  array(
+			"label_select"    => "Vyberte soubor",
+			"label_show_att"  => "Zobrazit přílohu",
+			"label_miss_att" => "Chybí příloha",
+
+		);
 
 		protected function set_value( $value = '')
 		{
@@ -28,7 +34,7 @@ class PbVote_RenderFieldAttachmentFile extends PbVote_RenderFieldText
 		public function render_body()
 		{
 			$output  = '<div class="imc-row"><div class="imc-grid-5 imc-columns"><input '.$this->attrib.' autocomplete="off" ';
-			$output .= 'placeholder="Vyberte soubor" type="text" name="'.$this->field['id'].'Name" id="'.$this->field['id'].'Name" class="imc-InputStyle" ';
+			$output .= 'placeholder="'.$this->texts["label_select"].'" type="text" name="'.$this->field['id'].'Name" id="'.$this->field['id'].'Name" class="imc-InputStyle" ';
 			$output .= 'value="'.$this->filename.'"/>';
 			$output .= '<label id="'.$this->field['id'].'NameLabel" class="imc-ReportFormErrorLabelStyle imc-TextColorPrimary"></label></div>';
 			$output .= '<div class="imc-grid-6 imc-columns"><div class="u-cf">';
@@ -45,11 +51,11 @@ class PbVote_RenderFieldAttachmentFile extends PbVote_RenderFieldText
 		private function render_file_link()
 		{
 				if (! empty($this->value)) {
-						return '<a id="'.$this->field['id'].'Link" href="'.$this->value.'" target="_blank" data-toggle="tooltip" title="Zobrazit přílohu" class="u-pull-right
+						return '<a id="'.$this->field['id'].'Link" href="'.$this->value.'" target="_blank" data-toggle="tooltip" title="'.$this->texts["label_show_att"].'" class="u-pull-right
 								imc-SingleHeaderLinkStyle"><i class="material-icons md-36 imc-SingleHeaderIconStyle">file_download</i></a>';
 												// <i class="material-icons md-36 imc-SingleHeaderIconStyle">open_in_browser</i></a>';
 				} else {
-						return '<a hidden id="'.$this->field['id'].'Link" data-toggle="tooltip" title="Chybí příloha" class="u-pull-right
+						return '<a hidden id="'.$this->field['id'].'Link" data-toggle="tooltip" title="'.$this->texts["label_miss_att"].'" class="u-pull-right
 								imc-SingleHeaderLinkStyle"><i class="material-icons md-36 imc-SingleHeaderIconStyle">file_download</i></a>';
 				}
 		}

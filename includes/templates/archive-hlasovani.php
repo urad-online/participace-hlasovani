@@ -119,57 +119,57 @@ if ( is_front_page() || is_home() ) {
 
                         <div id="pbvCatCheckboxes" class="imc-row">
 
-							<?php $all_pbvcategory = get_all_pbvote_taxo( $voting_category_taxo , true);
+														<?php $all_pbvcategory = get_all_pbvote_taxo( $voting_category_taxo , true);
 
-							$count = count($all_pbvcategory);
-							$numItemsPerRow = ceil($count / 2);
-							$index  = 0;
+														$count = count($all_pbvcategory);
+														$numItemsPerRow = ceil($count / 2);
+														$index  = 0;
 
-							echo '<div class="imc-grid-6 imc-columns">';
-							foreach( $all_pbvcategory as $pbvcategory ) {
-								if ($index > 0 and $index % $numItemsPerRow == 0) {
-									echo '</div><div class="imc-grid-6 imc-columns">';
-								} ?>
+														echo '<div class="imc-grid-6 imc-columns">';
+														foreach( $all_pbvcategory as $pbvcategory ) {
+															if ($index > 0 and $index % $numItemsPerRow == 0) {
+																echo '</div><div class="imc-grid-6 imc-columns">';
+															} ?>
 
                                 <div class="imc-row">
 
                                     <input checked class="imc-CheckboxStyle" id="pbv-cat-checkbox-<?php echo esc_html($pbvcategory->term_id); ?>" type="checkbox" name="<?php echo esc_attr($pbvcategory->name); ?>" value="<?php echo esc_attr($pbvcategory->term_id); ?>">
                                     <label for="pbv-cat-checkbox-<?php echo esc_html($pbvcategory->term_id); ?>"><?php echo esc_html($pbvcategory->name); ?></label>
 
-									<?php $args = array(
-										'hide_empty'    => false,
-										'hierarchical'  => true,
-										'parent'        => $pbvcategory->term_id
-									);
-									$childterms = get_terms( $voting_category_taxo, $args);
+																		<?php $args = array(
+																			'hide_empty'    => false,
+																			'hierarchical'  => true,
+																			'parent'        => $pbvcategory->term_id
+																		);
+																		$childterms = get_terms( $voting_category_taxo, $args);
 
-									if (!empty($childterms)) { ?>
+																		if (!empty($childterms)) { ?>
 
                                         <div id="pbvCatChildCheckboxes">
 
-											<?php foreach ( $childterms as $childterm ) { ?>
+																						<?php foreach ( $childterms as $childterm ) { ?>
 
                                                 <input checked="checked" class="imc-CheckboxStyle imc-CheckboxChildStyle" id="pbv-cat-checkbox-<?php echo esc_html($childterm->term_id); ?>" type="checkbox" name="<?php echo esc_attr($childterm->name); ?>" value="<?php echo esc_attr($childterm->term_id); ?>">
                                                 <label for="pbv-cat-checkbox-<?php echo esc_html($childterm->term_id); ?>"><?php echo esc_html($childterm->name); ?></label>
 
-												<?php $args = array('hide_empty' => false, 'hierarchical'  => true, 'parent' => $childterm->term_id);
-												$grandchildterms = get_terms( $voting_category_taxo, $args);
+																								<?php $args = array('hide_empty' => false, 'hierarchical'  => true, 'parent' => $childterm->term_id);
+																								$grandchildterms = get_terms( $voting_category_taxo, $args);
 
-												if (!empty($childterms)) { ?>
+																								if (!empty($childterms)) { ?>
 
-                                                    <div id="pbvCatGrandChildCheckboxes">
+                                                  <div id="pbvCatGrandChildCheckboxes">
 
-														<?php foreach ($grandchildterms as $grandchild ) { ?>
-                                                            <input checked="checked" class="imc-CheckboxStyle imc-CheckboxGrandChildStyle"
-																id="pbv-cat-checkbox-<?php echo esc_html($grandchild->term_id); ?>" type="checkbox"
-																name="<?php echo esc_attr($grandchild->name); ?>" value="<?php echo esc_attr($grandchild->term_id); ?>">
-                                                            <label for="pbv-cat-checkbox-<?php echo esc_html($grandchild->term_id); ?>"><?php echo esc_html($grandchild->name); ?></label>
-														<?php } ?>
-                                                    </div>
-												<?php } ?>
-											<?php } ?>
+																											<?php foreach ($grandchildterms as $grandchild ) { ?>
+													                                                            <input checked="checked" class="imc-CheckboxStyle imc-CheckboxGrandChildStyle"
+																													id="pbv-cat-checkbox-<?php echo esc_html($grandchild->term_id); ?>" type="checkbox"
+																													name="<?php echo esc_attr($grandchild->name); ?>" value="<?php echo esc_attr($grandchild->term_id); ?>">
+													                                                            <label for="pbv-cat-checkbox-<?php echo esc_html($grandchild->term_id); ?>"><?php echo esc_html($grandchild->name); ?></label>
+																											<?php } ?>
+                                                  </div>
+																								<?php } ?>
+																							<?php } ?>
                                         </div>
-									<?php }?>
+																			<?php }?>
                                 </div>
 								<?php $index++;
 							}

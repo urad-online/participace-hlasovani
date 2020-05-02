@@ -5,8 +5,11 @@ class PbVote_CodeEmail
 
     public function __construct()
     {
-        $this->email_subject = 'Registracni kod pro hlasovani o projektech';
-        $this->email_header  = 'Zaslani registracniho kodu';
+        $this->email_subject = __('Registrační kód pro hlasovaní o projektech', "pb-voting");
+        $this->email_header  = __('Zaslání registračního kódu', "pb-voting");
+        $this->email_text  = __("Aktivační kód: %s platný do %s.", "pb-voting");
+        $this->email_sent  = __('Registrační kód odeslán', "pb-voting");
+        $this->send_error  = __('Chyba odeslání emailu', "pb-voting");
     }
 
     public function check_voter_id( $id )
@@ -30,18 +33,18 @@ class PbVote_CodeEmail
         if (! empty($input['message'])) {
             $email_text = $input['message'];
         } else {
-            $email_text = "Aktivacni kod: ".$input['code']." platny do ". $input['expiration_time'];
+            $email_text = sprintf( $this->email_text, $input['code'],$input['expiration_time']);
         }
 
 
         $email_send = wp_mail( $input['voter_id'], $this->email_subject, $email_text, $this->email_header );
 
         if ( $email_send ) {
-            $this->result =   array("Registracni kod odeslan",);
+            $this->result =   array($this->email_sent,);
             $this->delivery_status = "0";
             return true;
         } else {
-            $this->result =  array( "result" => "error", "message" => "Chyba odeslani emailu",);
+            $this->result =  array( "result" => "error", "message" => $this->send_error,);
             $this->delivery_status = "1";
             return false;
         }

@@ -6,6 +6,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
     private $attributes = array("attribute_1","validfrom","validuntil", "language", "sent", "remindedsent", "remindercount","completed", "email");
     private $recip_language = "cs";
     private $code_id;
+    private $texts =  array();
 
     public function set_pbvoting_meta()
     {
@@ -18,7 +19,10 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
         // $this->survey_url  = $this->base_url . '/index.php/admin/survey/sa/view/surveyid/' . $this->survey_id;
         $this->survey_url  = $this->base_url . '/' . $this->survey_id;
         $this->limeapi_url = $this->base_url . '/admin/remotecontrol';
-
+        $this->texts['error_connect']    = __( "Chyba připojení na server s průzkumy.", "pb-voting");
+        $this->texts['error_max_tokens'] = __( "Pro toto telefonní číslo byly již zaslány %d kód(y), další nelze odeslat.", "pb-voting");
+        $this->texts['error_connect2']   = __( "Při vytváření přístupového kódu nastal problém s připojením na server. Prosíme opakujte nebo nahlaste.", "pb-voting");
+        $this->texts['error_delete']     = __( "Chyba při mazání přístupového kódu. Prosíme opakujte nebo nahlaste.", "pb-voting");
     }
 
     public function init_token_storage( )
@@ -36,7 +40,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
         try {
             $this->sessionKey = $this->rcp_client->get_session_key( $this->login, $this->password );
         } catch (Exception $e) {
-            $this->set_error( 'Chyba připojení na server s průzkumy.');
+            $this->set_error( $this->texts['error_connect'] );
             return false;
         }
 
@@ -69,7 +73,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
             $last_rec = array( "index" => -1, "expiration_time" => 0);
         } catch (Exception $e) {
             $list = array();
-            $this->set_error( 'Chyba připojení na server s průzkumy.');
+            $this->set_error( $this->texts['error_connect'] );
             return false;
         }
 
@@ -121,7 +125,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
         }
 
         if ( $this->index >= ( $this->max_number_of_tokens - 1) ) {
-            $this->set_error( 'Pro toto telefonní číslo byly již zaslány '.$this->max_number_of_tokens.' kód(y), další nelze odeslat.' );
+            $this->set_error(  sprintf( $this->texts['error_max_tokens'], $this->max_number_of_tokens ));
             return false;
         }
         $new_particip = array(array(
@@ -140,7 +144,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
         try {
             $new_row = $this->rcp_client->add_participants( $this->sessionKey, $this->survey_id, $new_particip, true );
         } catch (Exception $e) {
-            $new_row = array( 'status' => 'Při vytváření přístupového kódu nastal problém s připojením na server. Prosíme opakujte nebo nahlaste.');
+            $new_row = array( 'status' => $this->texts['error_connect2']);
         }
 
         // print_r($new_row, null );
@@ -175,7 +179,7 @@ class PbVote_LimeSurveyTokens extends PbVote_GetCode
             }
 
             if ( count( $deleted_ids) == 0 ) {
-                $this->set_error( 'Chyba při mazání přístupového kódu. Prosíme opakujte nebo nahlaste.' );
+                $this->set_error( $this->texts['error_delete'] );
                 $result = false;
             }
         }
