@@ -35,7 +35,7 @@ class PbVote_SaveCodeDeliveryStatus
         if ($result) {
             $this->register_id = $this->db->insert_id;
             $this->result_msg = array( "result" => "ok", "code" => $code, 'expiration_time' => $expiration_time, );
-            $this->add_register_log( "generate code" , $issued_time, self::INITIAL_STATUS, $msg, "" );
+            $this->add_register_log( "generate code" , "", self::INITIAL_STATUS, $msg, "" );
             return true;
         } else {
             $this->result_msg = array( 'result' => 'error', 'message' => $this->texts["error_save_code"],);
