@@ -3,8 +3,10 @@
  * @requires jQuery
  * @output assets/js/pb-voting.js
  */
+var waitingForResponse = false;
 
 jQuery(document).ready(function(){
+    waitingForResponse = false;
     pbvotingDisableBtn();
     jQuery("#votingRegistrationCode").focus();
 });
@@ -35,6 +37,7 @@ function voting_callAjaxGetCode()
     jQuery("#votingRegistrationCodeSuccess").html("Odesílám žádost o zaslání SMS...");
     jQuery("#votingRegistrationCodeSuccess").css("display", "block");
     jQuery("body").css("cursor", "progress");
+    waitingForResponse = true;
     jQuery.post(ajax_object.ajax_url, postRequest, function(response) {
 
         if ( response.indexOf("``") == 0 ) {
@@ -43,6 +46,7 @@ function voting_callAjaxGetCode()
         var resp = JSON.parse(response);
 
         jQuery("body").css("cursor", "default");
+        waitingForResponse = false;
         if (resp.result == 'error') {
             jQuery("#votingRegistrationCodeError").html(resp.message);
             jQuery("#votingRegistrationCodeError").css("display", "block");
@@ -69,7 +73,9 @@ function getVotingCode()
 }
 function pbvotingEnableBtn()
 {
-    jQuery('#votingGenerateCodeBtn').prop('disabled', false);
+    if (! waitingForResponse) {
+      jQuery('#votingGenerateCodeBtn').prop('disabled', false);
+    }
 }
 function pbvotingDisableBtn()
 {
