@@ -91,6 +91,7 @@ function add_pbvote_template( $templates )
         '/insert-project_issues.php' => "Přidat nový projekt",
         '/archive-pbvote_issues.php' => "Přehled všech projektů",
         '/archive-pbvote_issues_export.php' => "Export návrhů",
+        '/pbvote-homepage.php' => "Hlasování - homepage",
        ));
     return $templates;
 }
