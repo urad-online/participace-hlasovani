@@ -4,7 +4,7 @@ Plugin Name: Participativní projekty - hlasování
 Plugin URI: https://urad.online
 Description: Registrace, správa a hlasování o návrzích participativního rozpočtu. Integrace s Limesurvey a https://sms.sluzba.cz
 Author: Miloslav Stastny
-Version: 1.1.10
+Version: 1.1.11
 Author URI: https://urad.online
 Text Domain: pb-voting
 Domain Path: /languages
