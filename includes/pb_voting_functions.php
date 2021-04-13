@@ -413,7 +413,7 @@ if ( ! function_exists('pbvote_paginate') ) {
 		}
 		$cb_pagination = paginate_links(array(
 			'base' => preg_replace('/\?.*/', '', $link) . '%_%',
-			'format' => '?page=%#%',
+			'format' => '?pg=%#%',
 			'current' => max(1, $cb_paged2),
 			'total' => $cb_total,
 			'mid_size' => 2,

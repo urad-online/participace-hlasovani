@@ -160,8 +160,8 @@ class PbVote_ImcIssueDetailMetabox {
   public function save_fields( $post_id )
   {
     global $wp_filter;
-    $nazevsouboru = PB_VOTE_PATH."/filter_list.txt";
-    file_put_contents($nazevsouboru, json_encode( $wp_filter['save_post'],  JSON_OBJECT_AS_ARRAY ));
+    // $nazevsouboru = PB_VOTE_PATH."/filter_list.txt";
+    // file_put_contents($nazevsouboru, json_encode( $wp_filter['save_post'],  JSON_OBJECT_AS_ARRAY ));
     if ( ! isset( $_POST['informacekprojektu_nonce'] ) ) {
       return $post_id;
     }

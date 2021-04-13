@@ -116,15 +116,6 @@
     function set_attach_table_new_row_index(el)
     {
       return "new" + gen_id();
-      var table = jQuery(el).closest(".attachment-container").find("table.pbvote-attach-table");
-      var last_id = jQuery(table).find("tbody tr:last-child").find('#attach_table_row_id').val().replace("new", "");
-      var last_id_num = parseInt( last_id, 10);
-      var new_id_num = 1;
-      if (Number.isInteger(last_id_num)) {
-        new_id_num = last_id_num + 1;
-      }
-      var new_id = "new" + new_id_num;
-      return new_id;
     }
     function attach_table_cloneFile( fileToClone, new_id )
     {
@@ -232,7 +223,7 @@ jQuery(document).ready(function(){
 
     re_save_hidden_locality();
 });
-function gen_id(){
+function gen_id( length = 10 ){
     var dt = new Date().getTime();
     var id = 'xxxxxxxxxx'.replace(/[xy]/g, function(c) {
         var r = (dt + Math.random()*16)%16 | 0;

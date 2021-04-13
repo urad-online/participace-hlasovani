@@ -269,6 +269,8 @@ class PbVote_ArchiveDisplayOptions
         $value = get_query_var('paged'); // On a paged page.
       } else if ( get_query_var( 'page' ) ) {
         $value = get_query_var('page'); // On a "static" page.
+      } else if ( !empty($_GET['pg'])) {
+        $value = $_GET['pg'];
       } else {
         $value = 0;
       }

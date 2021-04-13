@@ -15,8 +15,8 @@ jQuery( document ).ready(function() {
 
 function defineFormListenersOnLoad()
 {
-    google.maps.event.addDomListener(window, 'load', imcInitMap);
-
+    google.maps.event.addDomListener(window, 'load', pbInitMap);
+    pbInitMap();
     var validator = new FormValidator(
       'report_an_issue_form',
       formValidatorData.rules,
@@ -154,8 +154,8 @@ function defineFormListenersOnLoad()
 
 }
 
-function imcInitMap() {
-    "use strict";
+function pbInitMap() {
+    // "use strict";
     var mapId = "imcReportIssueMapCanvas";
     // Checking the saved latlng on settings
     var lat = parseFloat(mapData.lat); // rozdil - 3 radku jso jinak
@@ -168,6 +168,12 @@ function imcInitMap() {
     var allowScroll = mapData.mscroll;
     var boundaries = mapData.bound;
 
-    imcInitializeMap(lat, lng, mapId, 'postAddress', true, zoom, allowScroll, boundaries);
-    imcFindAddress('postAddress', false, lat, lng);
+      imcInitializeMap(lat, lng, mapId, 'postAddress', true, zoom, allowScroll, boundaries);
+      imcFindAddress('postAddress', false, lat, lng);
+    // sleep(500).then(() => {
+    // });
+}
+
+function sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
 }
