@@ -4,9 +4,10 @@ class PbVote_SaveDataAttachment {
     private $ids     = array();
     private $prefix_new = "new";
 
-    public function __construct( $post_id = 0, $attachment_list)
+    public function __construct( $post_id = 0, $attachment_list, $meta_name = "pb_project_attachment")
     {
         $this->post_id = $post_id;
+        $this->meta_name = $meta_name;
         if (is_array( $attachment_list)) {
           $this->ids = $attachment_list;
         }
@@ -31,7 +32,7 @@ class PbVote_SaveDataAttachment {
             array_push( $list_new, $item );
         }
 
-        $list_old = get_post_meta($this->post_id,'pb_project_attachment', true );
+        $list_old = get_post_meta($this->post_id, $this->meta_name, true );
         if (empty($list_old)) {
             $list_old = array();
         }
@@ -54,7 +55,7 @@ class PbVote_SaveDataAttachment {
     private function insert_attachment_1_new( $file, $meta_values )
     {
         if (( $file['error'] == '0') && (! empty($meta_values['title']))  &&
-                ( $this->check_file_type($file['name'],'pb_project_attachment')) ) {
+                ( $this->check_file_type($file['name'], $this->meta_name)) ) {
             $attachment_id = pbvote_upload_img( $file, $this->post_id, $meta_values['title'], null);
             if ( $attachment_id) {
               return $attachment_id;

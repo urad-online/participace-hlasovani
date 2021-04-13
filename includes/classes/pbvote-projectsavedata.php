@@ -122,8 +122,10 @@ class PbVote_ProjectSaveData {
 
         $this->get_metadata_from_request( $_POST, true);
 
-        $save_attach = new PbVote_SaveDataAttachment( $this->post_id, $this->post_data['meta_input']['pb_project_attachment']);
+        $save_attach = new PbVote_SaveDataAttachment( $this->post_id, $this->post_data['meta_input']['pb_project_attachment'], 'pb_project_attachment' );
         $this->post_data['meta_input']['pb_project_attachment'] = $save_attach->update_attachments();
+        $save_attach_sec = new PbVote_SaveDataAttachment( $this->post_id, $this->post_data['meta_input']['pb_project_attachment_sec'], 'pb_project_attachment_sec');
+        $this->post_data['meta_input']['pb_project_attachment_sec'] = $save_attach_sec->update_attachments();
 
       	$this->update_postmeta();
         $this->project_update_image();
@@ -158,6 +160,7 @@ class PbVote_ProjectSaveData {
             'pb_project_podminky_souhlas'    => (! empty($data['pb_project_podminky_souhlas'])) ? esc_attr(sanitize_text_field($data['pb_project_podminky_souhlas'])) : '0',
             'pb_project_private_note'        => esc_attr(sanitize_textarea_field($data['pb_project_private_note'])),
             'pb_project_attachment'          => json_decode(stripslashes($data['pb_project_attachment'])),
+            'pb_project_attachment_sec'      => json_decode(stripslashes($data['pb_project_attachment_sec'])),
         );
 
         if ( ! $update ) {

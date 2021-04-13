@@ -20,6 +20,9 @@ class PbVote_ImcIssueDetailMetabox {
      add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
      add_action( 'admin_footer', array( $this, 'media_fields' ) );
      add_action( 'save_post', array( $this, 'save_fields' ),20 );
+     if (has_filter( 'save_post', 'imcplus_statbox_content_save')) {
+       // remove_filter( 'save_post', 'imcplus_statbox_content_save', 10);
+     }
      $this->set_meta_fields();
   }
 
@@ -156,6 +159,9 @@ class PbVote_ImcIssueDetailMetabox {
 
   public function save_fields( $post_id )
   {
+    global $wp_filter;
+    $nazevsouboru = PB_VOTE_PATH."/filter_list.txt";
+    file_put_contents($nazevsouboru, json_encode( $wp_filter['save_post'],  JSON_OBJECT_AS_ARRAY ));
     if ( ! isset( $_POST['informacekprojektu_nonce'] ) ) {
       return $post_id;
     }

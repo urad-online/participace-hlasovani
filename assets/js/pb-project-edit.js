@@ -90,15 +90,18 @@
       return no_error;
     };
 
-    function add_data_to_attachment_list( id)
+    function add_data_to_attachment_list( inputsContainer, id)
     {
-      var list_values = Array.from(JSON.parse(jQuery("#pb_project_attachment").val()));
+      var listElement = jQuery(inputsContainer).closest(".attachment-container").find("input.pbvote-attach-table-hidden-list");
+
+      var list_values = Array.from(JSON.parse(jQuery(listElement).val()));
       list_values.push( id);
-      jQuery("#pb_project_attachment").val( JSON.stringify(list_values) );
+      jQuery(listElement).val( JSON.stringify(list_values) );
     }
-    function delete_data_from_attachment_list( id)
+    function delete_data_from_attachment_list( inputsContainer, id)
     {
-      var list_values = Array.from(JSON.parse(jQuery("#pb_project_attachment").val()));
+      var listElement = jQuery(inputsContainer).closest(".attachment-container").find("input.pbvote-attach-table-hidden-list");
+      var list_values = Array.from(JSON.parse(jQuery(listElement).val()));
       var index = -1;
       for (var i = 0; i < list_values.length; i++) {
         if (list_values[i] == id ) {
@@ -108,10 +111,11 @@
       if (index > -1) {
         list_values.splice( index, 1);
       }
-      jQuery("#pb_project_attachment").val( JSON.stringify(list_values) );
+      jQuery(listElement).val( JSON.stringify(list_values) );
     }
     function set_attach_table_new_row_index(el)
     {
+      return "new" + gen_id();
       var table = jQuery(el).closest(".attachment-container").find("table.pbvote-attach-table");
       var last_id = jQuery(table).find("tbody tr:last-child").find('#attach_table_row_id').val().replace("new", "");
       var last_id_num = parseInt( last_id, 10);
@@ -125,7 +129,7 @@
     function attach_table_cloneFile( fileToClone, new_id )
     {
       var clonedFile = fileToClone.clone();
-      jQuery(clonedFile).removeClass('attach-input-add-mandatory attach-input-add-file');
+      jQuery(clonedFile).removeClass('attach-input-add-mandatory attach-input-add-file pbVoteAttachTblInputFile');
       jQuery(clonedFile).addClass('pbvote-attach-table-file');
       jQuery(clonedFile).attr("id",  "attach_table_file_input_"+new_id);
       jQuery(clonedFile).attr("name","attach_table_file_input_"+new_id);
@@ -133,9 +137,9 @@
     }
     function clean_attach_table_inputs( container)
     {
-      jQuery(container).find('#pbVoteAttachTblInputTitle').val("");
-      jQuery(container).find('#pbVoteAttachTblInputFileName').val("");
-      jQuery(container).find('#pbVoteAttachTblInputFile').val("");
+      jQuery(container).find('input.pbVoteAttachTblInputTitle').val("");
+      jQuery(container).find('input.pbVoteAttachTblInputFileName').val("");
+      jQuery(container).find('input.pbVoteAttachTblInputFile').val("");
 
     }
     function re_save_hidden_locality()
@@ -152,7 +156,7 @@
 jQuery(document).ready(function(){
     jQuery(document).on("click", "a.attach-delete", function(){
       var delete_value = jQuery(this).closest("tr").find('#attach_table_row_id').val();
-      delete_data_from_attachment_list(delete_value);
+      delete_data_from_attachment_list(this, delete_value);
       jQuery(this).closest("tr").remove();
     });
 
@@ -162,11 +166,11 @@ jQuery(document).ready(function(){
         var table = jQuery(this).closest(".attachment-container").find("table.pbvote-attach-table");
         var inputsContainer = jQuery(this).closest(".attach-table-new-container");
         var clonedRow = jQuery(table).find("tbody tr:first-child").clone();
-        var clonedFile = attach_table_cloneFile(jQuery(inputsContainer).find("#pbVoteAttachTblInputFile"), new_id);
+        var clonedFile = attach_table_cloneFile(jQuery(inputsContainer).find("input.pbVoteAttachTblInputFile"), new_id);
 
 
         clonedRow.find("#attach_table_row_id").val(new_id);
-        clonedRow.find("#attach_table_title_input_new00").val(jQuery(inputsContainer).find("#pbVoteAttachTblInputTitle").val());
+        clonedRow.find("#attach_table_title_input_new00").val(jQuery(inputsContainer).find("input.pbVoteAttachTblInputTitle").val());
 
         clonedRow.find("#attach_table_title_input_new00").attr("name", "attach_table_title_input_"+new_id);
         clonedRow.find("#attach_table_title_input_new00").attr("id", "attach_table_title_input_"+new_id);
@@ -174,7 +178,7 @@ jQuery(document).ready(function(){
         clonedRow.find("#attach_table_link_new00").hide();
         clonedRow.removeAttr('hidden');
         jQuery(table).append(clonedRow);
-        add_data_to_attachment_list(new_id);
+        add_data_to_attachment_list(inputsContainer, new_id);
         clean_attach_table_inputs( inputsContainer);
       };
     });
@@ -228,5 +232,13 @@ jQuery(document).ready(function(){
 
     re_save_hidden_locality();
 });
-
+function gen_id(){
+    var dt = new Date().getTime();
+    var id = 'xxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (dt + Math.random()*16)%16 | 0;
+        dt = Math.floor(dt/16);
+        return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+    });
+    return id;
+}
 jQuery( setSubmitBtnLabel );

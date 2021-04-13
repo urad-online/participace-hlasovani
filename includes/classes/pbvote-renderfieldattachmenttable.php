@@ -31,6 +31,7 @@ class PbVote_RenderFieldAttachmentTable extends PbVote_RenderFieldText
 
         if (! empty($this->field['id'])) {
             $this->field_id = $this->field['id'];
+            $this->id_prefix = "pbVoteAttachTblInput".$this->field['id'];
         }
 
         if ( ! wp_style_is('material-icons') ) {
@@ -64,7 +65,7 @@ class PbVote_RenderFieldAttachmentTable extends PbVote_RenderFieldText
       $pom_value = json_encode( $this->attach_list_keys , JSON_UNESCAPED_UNICODE);
       $keys_list = str_replace( '"', '', $pom_value);
       $output =  '<div class="attachment-container"><div class="table-wrapper">';
-      $output .= '<input type="hidden" id="'.$this->field_id.'" name="'.$this->field_id.'" value="'. $keys_list .'">';
+      $output .= '<input type="hidden" class="pbvote-attach-table-hidden-list" id="'.$this->field_id.'" name="'.$this->field_id.'" value="'. $keys_list .'">';
       $output .= '<table class="pbvote-attach-table table-bordered" style="width:100%">';
       $output .= $this->render_col_header();
       $output .= $this->render_table_body();
@@ -171,16 +172,16 @@ class PbVote_RenderFieldAttachmentTable extends PbVote_RenderFieldText
           '<div class="attach-table-new-container">
               <div class="imc-row">
                 <div style="display:inline-block;min-width:30%;">
-                    <div><input autocomplete="off" placeholder="'.$this->texts["label_title_att"].'" type="text" maxlength="30" style="min-width:350px;" id="'.$this->id_prefix.'Title" class="imc-InputStyle attach-input-add-mandatory" value=""></input></div>
+                    <div><input autocomplete="off" placeholder="'.$this->texts["label_title_att"].'" type="text" maxlength="30" style="min-width:350px;" id="'.$this->id_prefix.'Title" class="imc-InputStyle attach-input-add-mandatory pbVoteAttachTblInputTitle" value=""></input></div>
                 </div>
                 <div style="display:inline-block;">
                     <div><input disabled autocomplete="off"
-                        type="text" id="'.$this->id_prefix.'FileName" class="pbvote-DisabledInputStyle attach-input-add-mandatory" value=""></input>
+                        type="text" id="'.$this->id_prefix.'FileName" class="pbvote-DisabledInputStyle attach-input-add-mandatory pbVoteAttachTblInputFileName" value=""></input>
                     </div>
                 </div>
 
                 <div style="display:inline-block;">
-                        <input autocomplete="off" class="imc-ReportAddImgInputStyle pbvote-AddFileInputStyle attach-input-add-file attach-input-add-mandatory" id="'.$this->id_prefix.'File" type="file" name="'.$this->id_prefix.'File" onchange="pbProjectAttachTblAddFile(this,'.$this->file_size_limit.')"></input>
+                        <input autocomplete="off" class="imc-ReportAddImgInputStyle pbvote-AddFileInputStyle attach-input-add-file attach-input-add-mandatory pbVoteAttachTblInputFile" id="'.$this->id_prefix.'File" type="file" name="'.$this->id_prefix.'File" onchange="pbProjectAttachTblAddFile(this,'.$this->file_size_limit.')"></input>
                         <label for="'.$this->id_prefix.'File">
                             <i class="material-icons md-24 imc-AlignIconToButton">file_upload</i>Vyhledat soubor
                         </label>
