@@ -2,7 +2,7 @@
         jQuery("#"+e.id+"Name").val( e.files[0].name );
     }
     function pbProjectAttachTblAddFile(e, limit){
-        if (! limit) { limit = 2000000};
+        if (! limit) { limit = 5000000};
         var file_types = []
         jQuery("#pbvote-error-message-size").attr("hidden","hidden");
         jQuery("#pbvote-error-message-type").attr("hidden","hidden");
