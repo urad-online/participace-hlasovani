@@ -49,7 +49,7 @@ class PbVote_ImcIssueDetailMetabox {
    ?><script>
      jQuery(document).ready(function($){
        if ( typeof window.wp.media !== 'undefined' ) {
-         var _custom_media = true,
+         var _custom_media = true;
          var _orig_send_attachment = window.wp.media.editor.send.attachment;
          $('.informacekprojektu-media').click(function(e) {
            var send_attachment_bkp = window.wp.media.editor.send.attachment;
