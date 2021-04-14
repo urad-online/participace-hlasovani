@@ -40,7 +40,6 @@ class PbVote_ProjectSaveData {
         $this->get_metadata_from_request( $_POST, false);
 
         // List of attachment is wrong. All metadata are saved within insert
-        $temp_attachment = $this->post_data['meta_input']['pb_project_attachment'];
         $this->post_data['meta_input']['pb_project_attachment'] = array();
       	$this->post_id = wp_insert_post( $this->post_data, true);
 
@@ -50,8 +49,10 @@ class PbVote_ProjectSaveData {
               wp_set_object_terms($this->post_id, $parent_voting_period, 'voting-period');
             }
 
-            $save_attach = new PbVote_SaveDataAttachment( $this->post_id, $temp_attachment);
+            $save_attach = new PbVote_SaveDataAttachment( $this->post_id, $this->post_data['meta_input']['pb_project_attachment'], 'pb_project_attachment' );
             $this->post_data['meta_input']['pb_project_attachment'] = $save_attach->update_attachments();
+            $save_attach_sec = new PbVote_SaveDataAttachment( $this->post_id, $this->post_data['meta_input']['pb_project_attachment_sec'], 'pb_project_attachment_sec');
+            $this->post_data['meta_input']['pb_project_attachment_sec'] = $save_attach_sec->update_attachments();
 
             // list of attachments is updated after file insert
             update_post_meta($this->post_id, 'pb_project_attachment', $this->post_data['meta_input']['pb_project_attachment']);
