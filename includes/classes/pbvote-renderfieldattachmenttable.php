@@ -18,7 +18,7 @@ class PbVote_RenderFieldAttachmentTable extends PbVote_RenderFieldText
 			"error_file_size" => "Soubor musí být menší než %d MB.",
 			"info_file_type"  => "Jsou povolené tyto typy souborů - gif, png, jpg, jpeg, pdf.",
 		);
-    private $file_size_limit = 2000000;
+    private $file_size_limit = 5000000;
 
     public function __construct( $field, $value,  $allow_edit = true )
     {
