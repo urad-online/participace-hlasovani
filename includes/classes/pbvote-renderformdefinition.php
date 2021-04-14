@@ -3,8 +3,8 @@ class PbVote_RenderFormDefinition {
     public static $file_type_image =  "gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG";
     public static $file_type_scan  =  "pdf,PDF";
     public static $file_type_docs  =  "doc,DOC,xls,XLS,docX,DOCX,xlsx,XLSX";
-    private $file_max_size = 2000000;
-    private $budget_limit = array('min' => 30000, 'max' => 100000, 'help' => '30 tis. - 100 tis.'); // bytes
+    private $file_max_size = 3000000;
+    private $budget_limit = array('min' => 1, 'max' => 100000, 'help' => 'maximálně 100 tis.'); // bytes
     private $fields;
     private $fields_layout;
     private $fields_single;
@@ -309,13 +309,13 @@ class PbVote_RenderFormDefinition {
               'show_form' => false,
             ),
             'parcel' => array(
-                'label'       => 'Parcelní čísla pozemků, kterých se návrh týká',
+                'label'       => 'Umístění návrhu nebo parcelní čísla pozemků, kterých se návrh týká (povinné)',
                 'id'          => 'pb_project_parcely',
                 'type'        => 'textarea',
                 'mandatory'   => true,
-                'placeholder' => 'Pro usnadnění kontroly zadejte každé číslo na samostatný řádek ve formátu číslo/podčíslo katastrální část.',
+                'placeholder' => 'Pro usnadnění kontroly zadejte každé číslo parcely na samostatný řádek ve formátu číslo/podčíslo katastrální část nebo slovně popište lokalitu.',
                 // 'title'       => "parcel",
-                'help'        => 'Pro usnadnění kontroly zadejte každé číslo na samostatný řádek ve formátu číslo/podčíslo katastrální část.',
+                'help'        => 'Pro usnadnění kontroly zadejte každé číslo parcely na samostatný řádek ve formátu číslo/podčíslo katastrální část nebo slovně popište lokalitu.',
                 'show_mtbx' => true,
                 'show_form' => true,
                 'js_rules'  => array(
@@ -494,11 +494,11 @@ class PbVote_RenderFormDefinition {
                 ),
             ),
             'age_conf' => array(
-                'label'     => 'Prohlašuji, že jsem starší 18 let',
+                'label'     => 'Prohlašuji, že jsem starší 15 let',
                 'id'        => 'pb_project_prohlaseni_veku',
                 'default'   => 'no',
                 'type'      => 'checkbox',
-                'help'      => 'Podávání návrhů je umožněno pouze občanům starším 18 let.',
+                'help'      => 'Podávání návrhů je umožněno pouze občanům starším 15 let.',
                 'mandatory' => true,
                 // 'title'     => "age_conf",
                 'show_mtbx'   => true,
