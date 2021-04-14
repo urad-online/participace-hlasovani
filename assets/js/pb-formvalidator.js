@@ -1,5 +1,5 @@
     /*Google Maps API*/
-var maxFileSize = 200000;
+var maxFileSize = 5000000;
 var defaultLatLng = {lat: 50.087, lng: 14.421};
 // var rules       = formValidatorData.rules;
 var rules       = [];
