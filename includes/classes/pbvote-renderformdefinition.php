@@ -3,7 +3,7 @@ class PbVote_RenderFormDefinition {
     public static $file_type_image =  "gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG";
     public static $file_type_scan  =  "pdf,PDF";
     public static $file_type_docs  =  "doc,DOC,xls,XLS,docX,DOCX,xlsx,XLSX";
-    private $file_max_size = 3000000;
+    private $file_max_size = 3000000; 
     private $budget_limit = array('min' => 1, 'max' => 100000, 'help' => 'maximálně 100 tis.'); // bytes
     private $fields;
     private $fields_layout;

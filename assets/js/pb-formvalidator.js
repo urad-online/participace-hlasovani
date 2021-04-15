@@ -4,8 +4,7 @@ var defaultLatLng = {lat: 50.087, lng: 14.421};
 // var rules       = formValidatorData.rules;
 var rules       = [];
 var budgetLimits = [];
-var mapData      = formValidatorData.mapData;
-var maxFileSize  = parseInt(formValidatorData.fileSize,10);
+var mapData = [];
 
 jQuery( document ).ready(function() {
   if ( jQuery("#primaryPostForm").length > 0) {
@@ -15,8 +14,21 @@ jQuery( document ).ready(function() {
 
 function defineFormListenersOnLoad()
 {
+  /*used when formValidatorData is not passed by script localization
+  * JSON.parse creates array
+  */
+    if (typeof formValidatorData.mapData == "undefined") {
+      var pom = JSON.parse(formValidatorData[0]);
+      formValidatorData = null;
+      formValidatorData = pom;
+      pom = null;
+    }
+    mapData      = formValidatorData.mapData;
+    maxFileSize  = parseInt(formValidatorData.fileSize,10);
+
     google.maps.event.addDomListener(window, 'load', pbInitMap);
     pbInitMap();
+
     var validator = new FormValidator(
       'report_an_issue_form',
       formValidatorData.rules,

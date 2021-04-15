@@ -16,7 +16,7 @@ if (isset($_GET['votingid'])) {
 	$voting_id = $_GET['votingid'];
 }
 
-$project_new = new PbVote_ProjectInsert( $atts);
+$project_new = new PbVote_ProjectInsert( $atts, false);
 if ( $project_new->is_submitted() ) {
 	$result = $project_new->save_data() ;
 	if ( $result) {

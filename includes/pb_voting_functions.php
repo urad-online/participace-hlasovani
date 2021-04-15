@@ -358,7 +358,7 @@ function add_link_to_voting( $parent_id, $post_id )
 
 function pbvote_project_insert_shortcode( $atts, $content, $tag)
 {
-	$project_new = new PbVote_ProjectInsert( $atts);
+	$project_new = new PbVote_ProjectInsert( $atts, true);
 	if ( $project_new->is_submitted() ) {
 		$result = $project_new->save_data() ;
 		if ( $result) {

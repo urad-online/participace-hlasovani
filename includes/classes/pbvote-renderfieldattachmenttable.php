@@ -33,6 +33,10 @@ class PbVote_RenderFieldAttachmentTable extends PbVote_RenderFieldText
             $this->field_id = $this->field['id'];
             $this->id_prefix = "pbVoteAttachTblInput".$this->field['id'];
         }
+        if (! empty($this->field['max_size'])) {
+            $this->file_size_limit = $this->field['max_size'];
+        }
+
 
         if ( ! wp_style_is('material-icons') ) {
             wp_register_style('material-icons', PB_VOTE_URL . '/assets/css/pb-styles-material-icons.css', array(),'1.0', "all");
@@ -107,7 +111,7 @@ class PbVote_RenderFieldAttachmentTable extends PbVote_RenderFieldText
                           $output .= $this->render_attach_table_col_buttons( $key, $item, $this->table_def[$i]);
                           break;
                       default:
-                          $output .= $this->render_attach_table_col_dafault( $key, $item);
+                          $output .= $this->render_attach_table_col_default( $key, $item);
                   }
               }
               $output .= '</tr>';
@@ -131,7 +135,7 @@ class PbVote_RenderFieldAttachmentTable extends PbVote_RenderFieldText
             $output .= $this->render_attach_table_col_buttons( $key, $item, $this->table_def[$i]);
             break;
             default:
-            $output .= $this->render_attach_table_col_dafault( $key, $item);
+            $output .= $this->render_attach_table_col_default( $key, $item);
           }
         }
         $output .= '</tr>';
@@ -157,7 +161,7 @@ class PbVote_RenderFieldAttachmentTable extends PbVote_RenderFieldText
         return $output;
     }
 
-    private function render_attach_table_col_dafault( $id, $value)
+    private function render_attach_table_col_default( $id, $value)
     {
         $output = '<td><input id="attach_table_title_input_'.$id.'" type="text" class="form-control" value="'.$value['title'].'" disabled></td>';
         return $output;
@@ -191,8 +195,8 @@ class PbVote_RenderFieldAttachmentTable extends PbVote_RenderFieldText
                 </div>
               </div>
               <div class="imc-row"><span class="u-pull-left imc-ReportFormSubmitErrorsStyle">
-                <p id="pbvote-error-message-size"  hidden>'.sprintf( $this->texts["error_file_size"], $this->file_size_limit/1000000).'</p>
-                <p id="pbvote-error-message-type"  hidden>'.$this->texts["info_file_type"].'</p>
+                <p id="'.$this->id_prefix.'message-size" class="pbvote-error-message-size" hidden>'.sprintf( $this->texts["error_file_size"], $this->file_size_limit/1000000).'</p>
+                <p id="'.$this->id_prefix.'message-type" class="pbvote-error-message-type" hidden>'.$this->texts["info_file_type"].'</p>
               </span></div>
           </div>';
       } else {

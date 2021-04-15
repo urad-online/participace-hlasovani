@@ -3,16 +3,21 @@
     }
     function pbProjectAttachTblAddFile(e, limit){
         if (! limit) { limit = 5000000};
-        var file_types = []
-        jQuery("#pbvote-error-message-size").attr("hidden","hidden");
-        jQuery("#pbvote-error-message-type").attr("hidden","hidden");
+        var file_types = [];
+        var parentContainer = jQuery(e).closest('.attach-table-new-container');
+        var msgErrorSize = jQuery(parentContainer).find('p.pbvote-error-message-size');
+        var msgErrorType = jQuery(parentContainer).find('p.pbvote-error-message-type');
+
+        jQuery(msgErrorSize).attr("hidden","hidden");
+        jQuery(msgErrorType).attr("hidden","hidden");
+
         var no_error = true;
         if (e.files[0].size > limit) {
-          jQuery("#pbvote-error-message-size").removeAttr("hidden");
+          jQuery(msgErrorSize).removeAttr("hidden");
           no_error = false;
         }
         if ( ! pbProjectAttachTblCHeckFIleType(e.files[0].name)) {
-          jQuery("#pbvote-error-message-type").removeAttr("hidden");
+          jQuery(msgErrorType).removeAttr("hidden");
           no_error = false;
         }
 

@@ -12,22 +12,26 @@ class PbVote_ProjectInsert
     private $save_error_message = "";
     private $texts = array();
 
-    public function __construct( $atts)
+    public function __construct( $atts, $is_shortcode = false)
     {
         $this->read_atts($atts);
+        $this->is_shortcode = $is_shortcode;
         $this->message_no_add_status = __('Akce hlasování je ve fázi kdy není povoleno přidávat návrhy', "pb-voting");
 
         if (! $this->is_submitted) {
           $this->set_map_options();
           $this->project_single = new PbVote_RenderFormEdit;
 
-          wp_localize_script('pb-formvalidator', 'formValidatorData', array(
+          $this->formValidatorData = array(
             'rules' => $this->project_single->render_fields_js_validation(),
             'mapData' => $this->map_options,
             'budgetTable' => $this->project_single->get_field_property( 'cost', 'limit'),
             'fileSize'   => $this->project_single->get_field_property( 'photo', 'max_size'),
-          ));
+          );
+          // this script localization works only when calls is called from poge via template
+          wp_localize_script('pb-formvalidator', 'formValidatorData', $this->formValidatorData);
         }
+
         $this->texts['error_authorization'] = __( 'You are not authorised to report an issue','pb-voting');
         $this->texts['label_login']         = __( 'Please login!','pb-voting');
         $this->texts['label_back_to_list']  = __( 'Zpět na přehled','pb-voting');
@@ -166,6 +170,14 @@ class PbVote_ProjectInsert
       }
 
       ob_start();
+      /*
+      * this part creates var formValidatorData directly because
+      * when the form is generated via shortcode the script localization doesn't work
+      */
+      if ($this->is_shortcode) {
+        $dataValidator = json_encode($this->formValidatorData, JSON_UNESCAPED_UNICODE+JSON_UNESCAPED_SLASHES);
+        echo '<script> var formValidatorData = ['.json_encode($dataValidator).'];</script>';
+      }
 
       echo $this->print_form();
 
