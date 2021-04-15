@@ -74,7 +74,7 @@ function defineFormListenersOnLoad()
           }
         };
         return result;
-      }).setMessage('pb_project_js_validate_budget', 'Celková částka předpokládaných nákladů včetně rezervy musí být mezi ' + budgetLimits.help +' Kč.');
+      }).setMessage('pb_project_js_validate_budget', 'Celková částka předpokládaných nákladů včetně rezervy musí být ' + formValidatorData.budgetTable.help +' Kč.');
 
       validator.registerCallback( 'pb_project_js_validate_locality', function(value){
         var result = false;
