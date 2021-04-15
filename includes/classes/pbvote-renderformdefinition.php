@@ -141,8 +141,8 @@ class PbVote_RenderFormDefinition {
             array( 'type' => 'section', 'data' => array( 'label' => 'A. Základní informace k návrhu', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
             array( 'type' => 'section', 'data' => array( 'label' => 'Povinné položky', 'help' => '', 'class' => 'pbvote-SubSectionTitleTextStyle',)),
             array( 'type' => 'row', 'data' => array(
-                array('type' => 'field', 'data' => array( 'field' => 'title', 'columns' => 12)),
-                array('type' => 'field', 'data' => array( 'field' => 'category', 'columns' => 6)),
+                array('type' => 'field', 'data' => array( 'field' => 'title', 'columns' => 8)),
+                array('type' => 'field', 'data' => array( 'field' => 'category', 'columns' => 4)),
             )),
             array( 'type' => 'field', 'data' => array( 'field' => 'photo', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'content', 'columns' => 0)),

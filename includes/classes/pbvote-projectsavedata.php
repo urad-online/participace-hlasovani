@@ -40,7 +40,10 @@ class PbVote_ProjectSaveData {
         $this->get_metadata_from_request( $_POST, false);
 
         // List of attachment is wrong. All metadata are saved within insert
+        $attach_temp     = $this->post_data['meta_input']['pb_project_attachment'];
+        $attach_temp_sec = $this->post_data['meta_input']['pb_project_attachment_sec'];
         $this->post_data['meta_input']['pb_project_attachment'] = array();
+        $this->post_data['meta_input']['pb_project_attachment_sec'] = array();
       	$this->post_id = wp_insert_post( $this->post_data, true);
 
       	if ( $this->post_id && ( ! is_wp_error($this->post_id)) ) {
@@ -49,13 +52,14 @@ class PbVote_ProjectSaveData {
               wp_set_object_terms($this->post_id, $parent_voting_period, 'voting-period');
             }
 
-            $save_attach = new PbVote_SaveDataAttachment( $this->post_id, $this->post_data['meta_input']['pb_project_attachment'], 'pb_project_attachment' );
+            $save_attach = new PbVote_SaveDataAttachment( $this->post_id, $attach_temp, 'pb_project_attachment' );
             $this->post_data['meta_input']['pb_project_attachment'] = $save_attach->update_attachments();
-            $save_attach_sec = new PbVote_SaveDataAttachment( $this->post_id, $this->post_data['meta_input']['pb_project_attachment_sec'], 'pb_project_attachment_sec');
+            $save_attach_sec = new PbVote_SaveDataAttachment( $this->post_id, $attach_temp_sec, 'pb_project_attachment_sec');
             $this->post_data['meta_input']['pb_project_attachment_sec'] = $save_attach_sec->update_attachments();
 
             // list of attachments is updated after file insert
             update_post_meta($this->post_id, 'pb_project_attachment', $this->post_data['meta_input']['pb_project_attachment']);
+            update_post_meta($this->post_id, 'pb_project_attachment_sec', $this->post_data['meta_input']['pb_project_attachment_sec']);
             $this->add_link_to_voting( $voting_id );
           	// Choose the imcstatus with smaller id
           	// zmenit order by imc_term_order
