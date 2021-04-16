@@ -485,7 +485,7 @@ class PbVote_RenderFormDefinition {
                 'mandatory' => true,
                 'placeholder' => 'název ulice, číslo popisné, část obce',
                 // 'title'     => "address",
-                'help'      => 'Trvalé bydliště navrhovatele musí být ve správním obvodě městské části Praha 15.',
+                'help'      => 'Trvalé bydliště navrhovatele musí být v Městské části Praha 15.',
                 'show_mtbx'   => true,
                 'show_form'   => true,
                 'js_rules'    => array(
