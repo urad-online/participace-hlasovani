@@ -344,7 +344,7 @@ class PbVote_RenderFormDefinition {
                 'id'            => 'pb_project_attachment_sec',
                 'type'          => 'attachment',
                 'title'         => "attachment_sec",
-                'mandatory'     => false,
+                'mandatory'     => true,
                 'material_icon' => 'file_upload',
                 'AddBtnLabel'   => 'Vyhledat',
                 'help'          => 'Povolené typy příloh: gif, png, jpg, jpeg, pdf. Max velikost 2 MB',
