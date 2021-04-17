@@ -303,7 +303,7 @@ class PbVote_RenderFormDefinition {
               'default'     => array(
                 'title'     => 'Přejděte na stránku katastrální úřadu',
                 'text_link' => 'Najděte',
-                'text'      => ' všechna katastrální čísla týkajících se návrhu, kliknutím do mapy ověřte, zda jsou všechny dotčené pozemky ve správě HMP nebo MČ a návrh tak splňuje podmínky pravidel participativního rozpočtu. Seznam všech dotčených pozemků uveďte do pole níže (jedna položka na jeden řádek).',
+                'text'      => ' všechna katastrální čísla týkajících se návrhu, kliknutím do mapy ověřte, zda jsou všechny dotčené pozemky ve správě MČ a návrh tak splňuje podmínky pravidel participativního rozpočtu. Seznam všech dotčených pozemků uveďte do pole níže (jedna položka na jeden řádek).',
               ),
               'show_mtbx' => true,
               'show_form' => false,
@@ -425,7 +425,7 @@ class PbVote_RenderFormDefinition {
               'placeholder' => 'Vyplňte jméno',
               // 'title'     => "Proposer Name",
               'columns'   => 6,
-              'help'      => 'Navrhovatelem je občan městské části s trvalým bydlištěm ve správním obvodě MČ Praha-Čakovice.',
+              'help'      => 'Navrhovatelem je občan městské části s trvalým bydlištěm MČ Praha 15.',
               'show_mtbx'   => true,
               'show_form'   => true,
               'js_rules'    => array(
@@ -486,7 +486,7 @@ class PbVote_RenderFormDefinition {
                 'mandatory' => true,
                 'placeholder' => 'název ulice, číslo popisné, část obce',
                 // 'title'     => "address",
-                'help'      => 'Trvalé bydliště navrhovatele musí být ve správním obvodě městské části Praha Čakovice.',
+                'help'      => 'Trvalé bydliště navrhovatele musí být v Městské části Praha 15.',
                 'show_mtbx'   => true,
                 'show_form'   => true,
                 'js_rules'    => array(
@@ -516,7 +516,7 @@ class PbVote_RenderFormDefinition {
                 'type'      => 'checkbox',
                 // 'title'     => "Agreement",
                 'mandatory' => true,
-                'help'      => 'Bez souhlasu s pravidly projektu Počítáme s vámi! a s podmínkami použití, zpracování a ochraně osobních údajů nebude možné návrh projektu uložit ani odeslat ke kontrole.',
+                'help'      => 'Bez souhlasu s pravidly projektu Občane, zapoj se! a s podmínkami použití, zpracování a ochraně osobních údajů nebude možné návrh projektu uložit ani odeslat ke kontrole.',
                 'show_mtbx'   => true,
                 'show_form'   => true,
                 'js_rules'    => array(
@@ -530,7 +530,7 @@ class PbVote_RenderFormDefinition {
                 'mandatory'   => false,
                 'placeholder' => 'Neveřejné poznámky uveďte zde',
                 // 'title'       => "parcel",
-                'help'        => 'Tyto informace nebudou publikovány. Mohou sloužit k předání důležitých informací koordinátorům projektu Počítáme s vámi!',
+                'help'        => 'Tyto informace nebudou publikovány. Mohou sloužit k předání důležitých informací koordinátorům projektu Občane, zapoj se!',
                 'show_mtbx' => true,
                 'show_form' => true,
             ),

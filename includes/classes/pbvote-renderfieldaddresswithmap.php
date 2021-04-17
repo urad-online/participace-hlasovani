@@ -38,14 +38,14 @@ class PbVote_RenderFieldAddressWithMap extends PbVote_RenderFieldText
 
 				return '<div class="imc-row" ><span></span>
 				<a id="pb_link_to_katastr" href="#" data-toggle="tooltip" title="Přejít na stránku s katastrální mapou"
-				class=""><span>Najděte</span></a><span> všechna katastrální čísla týkajících se návrhu, kliknutím do mapy ověřte, zda jsou všechny dotčené pozemky ve správě HMP nebo MČ a návrh tak splňuje podmínky pravidel participativního rozpočtu. Seznam všech dotčených pozemků uveďte do pole níže (jedna položka na jeden řádek).</span>
+				class=""><span>Najděte</span></a><span> všechna katastrální čísla týkajících se návrhu, kliknutím do mapy ověřte, zda jsou všechny dotčené pozemky ve správě MČ a návrh tak splňuje podmínky pravidel participativního rozpočtu. Seznam všech dotčených pozemků uveďte do pole níže (jedna položka na jeden řádek).</span>
 				</div>';
 
 				return '<div class="imc-row" ><span>Kliknutím na tento </span>
 						<a id="pb_link_to_katastr" href="#" data-toggle="tooltip" title="Přejít na stránku s katastrální mapou"
 								class=""><span>odkaz</span></a><span> zobrazíte katastrální mapu na vámi označeném místě.
 						Ve vyskakovacím okně (musíte mít povoleno ve vašem prohlížeči) získáte informace k vybranému pozemku. Nalezněte všechna katastrální čísla týkajících se návrhu, kliknutím do mapy ověřte,
-						zda jsou všechny dotčené pozemky ve správě HMP nebo MČ a tedy splňujete podmínky pravidel participativního rozpočtu. Seznam všech dotčených pozemků uveďte do pole níže (jedna položka na jeden řádek).</span>
+						zda jsou všechny dotčené pozemky ve správě MČ a tedy splňujete podmínky pravidel participativního rozpočtu. Seznam všech dotčených pozemků uveďte do pole níže (jedna položka na jeden řádek).</span>
 						</div>';
 
 		}
