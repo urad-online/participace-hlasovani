@@ -3,7 +3,7 @@ class PbVote_RenderFormDefinition {
     public static $file_type_image =  "gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG";
     public static $file_type_scan  =  "pdf,PDF";
     public static $file_type_docs  =  "doc,DOC,xls,XLS,docX,DOCX,xlsx,XLSX";
-    private $file_max_size = 3000000; 
+    private $file_max_size = 3000000;
     private $budget_limit = array('min' => 1, 'max' => 100000, 'help' => 'maximálně 100 tis.'); // bytes
     private $fields;
     private $fields_layout;
@@ -344,7 +344,7 @@ class PbVote_RenderFormDefinition {
                 'id'            => 'pb_project_attachment_sec',
                 'type'          => 'attachment',
                 'title'         => "attachment_sec",
-                'mandatory'     => false,
+                'mandatory'     => true,
                 'material_icon' => 'file_upload',
                 'AddBtnLabel'   => 'Vyhledat',
                 'help'          => 'Povolené typy příloh: gif, png, jpg, jpeg, pdf. Max velikost 2 MB',
@@ -352,7 +352,8 @@ class PbVote_RenderFormDefinition {
                 'show_form'   => true,
                 'max_size'    => $this->file_max_size,
                 'js_rules'    => array(
-                    'rules'   => 'is_file_type[gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG,pdf,PDF]',
+                    'rules'   => 'is_file_type[gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG,pdf,PDF]|!callback_pb_project_js_validate_attachment_mandatory',
+                    'depends' => 'pb_project_js_validate_required',
                 ),
             ),
             'cost' => array(

@@ -97,6 +97,19 @@ function defineFormListenersOnLoad()
         return result;
       }).setMessage('pbVoteValidPhone', 'Pole %s neobsahuje platné telefonní číslo.');
 
+      validator.registerCallback( 'pb_project_js_validate_attachment_mandatory', function(value){
+        var result = false;
+        console.log(this);
+        var pom = Array.from(JSON.parse( value ));
+
+        if( Array.isArray(pom)) {
+          if ( pom.length > 0) {
+              result = true;
+          }
+        }
+        return result;
+      }).setMessage('pb_project_js_validate_attachment_mandatory', 'Příloha č.2 je povinná. Vložte alespoň jeden soubor.');
+
 
       validator.setMessage( 'required', 'Pole %s je povinné.');
       validator.setMessage( 'min_length', 'Délka pole %s je minimálně %s znaků.');

@@ -218,6 +218,7 @@ class PbVote_ImcIssueDetailMetabox {
         }
 
     }
+    // error_log(print_r( 'Metabox save_fields', true ));
   }
   public function get_fields()
   {
