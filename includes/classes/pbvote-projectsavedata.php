@@ -3,7 +3,12 @@ class PbVote_ProjectSaveData {
     private $post_id         = null;
     private $post_data       = null;
     private $status_taxo     = 'imcstatus';
+    private $fields          = array();
 
+    public function __construct( )
+    {
+        $this->fields = PbVote_RenderFormDefinition::get_form_fields_static();
+    }
     /*
     * Create new project
     */
@@ -36,14 +41,18 @@ class PbVote_ProjectSaveData {
       		'post_name'   => sanitize_title( $_POST['postTitle']),
       		'tax_input'   => $tax_input,
       	);
-
-        $this->get_metadata_from_request( $_POST, false);
+        $this->post_data['meta_input'] = array();
+        $this->save_attachments = array();
+        $this->get_metadata_from_request_dynamic( false);
+        // $pom_meta =   $this->post_data['meta_input'];
+        // $this->get_metadata_from_request( $_POST, false);
+        // $pom_meta1 =  $this->post_data['meta_input'];
 
         // List of attachment is wrong. All metadata are saved within insert
-        $attach_temp     = $this->post_data['meta_input']['pb_project_attachment'];
-        $attach_temp_sec = $this->post_data['meta_input']['pb_project_attachment_sec'];
-        $this->post_data['meta_input']['pb_project_attachment'] = array();
-        $this->post_data['meta_input']['pb_project_attachment_sec'] = array();
+        // $attach_temp     = $this->post_data['meta_input']['pb_project_attachment'];
+        // $attach_temp_sec = $this->post_data['meta_input']['pb_project_attachment_sec'];
+        // $this->post_data['meta_input']['pb_project_attachment'] = array();
+        // $this->post_data['meta_input']['pb_project_attachment_sec'] = array();
       	$this->post_id = wp_insert_post( $this->post_data, true);
 
       	if ( $this->post_id && ( ! is_wp_error($this->post_id)) ) {
@@ -52,14 +61,15 @@ class PbVote_ProjectSaveData {
               wp_set_object_terms($this->post_id, $parent_voting_period, 'voting-period');
             }
 
-            $save_attach = new PbVote_SaveDataAttachment( $this->post_id, $attach_temp, 'pb_project_attachment' );
-            $this->post_data['meta_input']['pb_project_attachment'] = $save_attach->update_attachments();
-            $save_attach_sec = new PbVote_SaveDataAttachment( $this->post_id, $attach_temp_sec, 'pb_project_attachment_sec');
-            $this->post_data['meta_input']['pb_project_attachment_sec'] = $save_attach_sec->update_attachments();
-
-            // list of attachments is updated after file insert
-            update_post_meta($this->post_id, 'pb_project_attachment', $this->post_data['meta_input']['pb_project_attachment']);
-            update_post_meta($this->post_id, 'pb_project_attachment_sec', $this->post_data['meta_input']['pb_project_attachment_sec']);
+            $this->save_all_attachments();
+            // $save_attach = new PbVote_SaveDataAttachment( $this->post_id, $attach_temp, 'pb_project_attachment' );
+            // $this->post_data['meta_input']['pb_project_attachment'] = $save_attach->update_attachments();
+            // $save_attach_sec = new PbVote_SaveDataAttachment( $this->post_id, $attach_temp_sec, 'pb_project_attachment_sec');
+            // $this->post_data['meta_input']['pb_project_attachment_sec'] = $save_attach_sec->update_attachments();
+            //
+            // // list of attachments is updated after file insert
+            // update_post_meta($this->post_id, 'pb_project_attachment', $this->post_data['meta_input']['pb_project_attachment']);
+            // update_post_meta($this->post_id, 'pb_project_attachment_sec', $this->post_data['meta_input']['pb_project_attachment_sec']);
             $this->add_link_to_voting( $voting_id );
           	// Choose the imcstatus with smaller id
           	// zmenit order by imc_term_order
@@ -125,13 +135,17 @@ class PbVote_ProjectSaveData {
               return $post_id;
       	}
 
-        $this->get_metadata_from_request( $_POST, true);
+        $this->post_data['meta_input'] = array();
+        $this->save_attachments = array();
+        $this->get_metadata_from_request_dynamic( true);
 
-        $save_attach = new PbVote_SaveDataAttachment( $this->post_id, $this->post_data['meta_input']['pb_project_attachment'], 'pb_project_attachment' );
-        $this->post_data['meta_input']['pb_project_attachment'] = $save_attach->update_attachments();
-        $save_attach_sec = new PbVote_SaveDataAttachment( $this->post_id, $this->post_data['meta_input']['pb_project_attachment_sec'], 'pb_project_attachment_sec');
-        $this->post_data['meta_input']['pb_project_attachment_sec'] = $save_attach_sec->update_attachments();
+        // $this->get_metadata_from_request( $_POST, true);
 
+        // $save_attach = new PbVote_SaveDataAttachment( $this->post_id, $this->post_data['meta_input']['pb_project_attachment'], 'pb_project_attachment' );
+        // $this->post_data['meta_input']['pb_project_attachment'] = $save_attach->update_attachments();
+        // $save_attach_sec = new PbVote_SaveDataAttachment( $this->post_id, $this->post_data['meta_input']['pb_project_attachment_sec'], 'pb_project_attachment_sec');
+        // $this->post_data['meta_input']['pb_project_attachment_sec'] = $save_attach_sec->update_attachments();
+        $this->save_all_attachments();
       	$this->update_postmeta();
         $this->project_update_image();
 
@@ -143,6 +157,45 @@ class PbVote_ProjectSaveData {
     /*
     * read post_metadata from $_POST
     */
+    public function get_metadata_from_request_dynamic( $update = false )
+    {
+      foreach ($this->fields as $field_name => $field) {
+        if (isset($field['save_meta_fc']) && (! empty($field['save_meta_fc']))) {
+          $save_class = $field['save_meta_fc'];
+          if (class_exists($save_class)) {
+              $save_field =  new $save_class( $field);
+              if ($field['type'] == "attachment") {
+                array_push( $this->save_attachments, array( "id" => $field["id"], "value" => $save_field->get_value()));
+                if (! $update) {
+                  // for inserting new post set meta_value to empty array
+                  // for update value saved only to $this->save_attachment variable
+                  $this->post_data['meta_input'][$field['id']] = array();
+                // } else {
+                //   $save_field->set_meta_value($this->post_data['meta_input']);
+                }
+              } else {
+                $save_field->set_meta_value($this->post_data['meta_input']);
+              }
+              unset ($save_field);
+          };
+
+        }
+      }
+      if ( ! $update ) {
+          $this->post_data['meta_input']['imc_likes'] = '0';
+          $this->post_data['meta_input']['modality'] = '0';
+      }
+    }
+
+    private function save_all_attachments( $is_update = false)
+    {
+      foreach ($this->save_attachments as $key => $item) {
+        $save_attach = new PbVote_SaveDataAttachment( $this->post_id, $item['value'], $item['id'] );
+        $this->post_data['meta_input'][$item['id']] = $save_attach->update_attachments();
+        update_post_meta($this->post_id, $item['id'], $this->post_data['meta_input'][$item['id']]);
+      }
+    }
+
     public function get_metadata_from_request( $data, $update = false )
     {
         $this->post_data['meta_input'] = array(
