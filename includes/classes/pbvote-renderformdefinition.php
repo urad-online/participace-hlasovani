@@ -155,7 +155,7 @@ class PbVote_RenderFormDefinition {
             array( 'type' => 'field', 'data' => array( 'field' => 'curr_state', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'future_state', 'columns' => 0)),
             array( 'type' => 'section', 'data' => array( 'label' => 'B. Lokalizace návrhu (povinné)', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
-            // array( 'type' => 'field', 'data' => array( 'field' => 'locality', 'columns' => 0)),
+            array( 'type' => 'field', 'data' => array( 'field' => 'locality', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'postAddress', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'parcel', 'columns' => 0)),
             array( 'type' => 'section', 'data' => array( 'label' => 'C. Přílohy k návrhu (nepovinné)', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
