@@ -223,11 +223,6 @@ class PbVote_RenderFormEdit
         }
     }
 
-    public function get_fields()
-    {
-      return $this->fields_definition;
-    }
-
 }
 
  ?>
