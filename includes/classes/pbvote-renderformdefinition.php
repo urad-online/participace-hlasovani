@@ -56,6 +56,10 @@ class PbVote_RenderFormDefinition {
         return $this->fields;
     }
 
+    public static function get_form_fields_static()
+    {
+      return self::pb_get_custom_fields();
+    }
     public function get_form_fields_mtbx()
     {
         $output = array();
@@ -151,7 +155,7 @@ class PbVote_RenderFormDefinition {
             array( 'type' => 'field', 'data' => array( 'field' => 'curr_state', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'future_state', 'columns' => 0)),
             array( 'type' => 'section', 'data' => array( 'label' => 'B. Lokalizace návrhu (povinné)', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
-            // array( 'type' => 'field', 'data' => array( 'field' => 'locality', 'columns' => 0)),
+            array( 'type' => 'field', 'data' => array( 'field' => 'locality', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'postAddress', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'parcel', 'columns' => 0)),
             array( 'type' => 'section', 'data' => array( 'label' => 'C. Přílohy k návrhu (nepovinné)', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
@@ -212,10 +216,11 @@ class PbVote_RenderFormDefinition {
                 'DelBtnLabel'   => 'Smazat foto',
                 'show_mtbx'     => false,
                 'show_form'     => true,
-                'max_size'      => $this->file_max_size,
+                'max_size'      => self::$file_max_size,
                 'js_rules'      => array(
                     'rules' => 'is_file_type[gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG]',
                     ),
+                'save_value'   => 'PbVote_SaveMetaImage',
             ),
             'content' => array(
                 'label'     => 'Popis návrhu',
@@ -242,6 +247,7 @@ class PbVote_RenderFormDefinition {
                 // 'title'     => "Actions",
                 'show_mtbx' => true,
                 'show_form' => true,
+                'save_meta_fc' => 'PbVote_SaveMetaTextarea',
             ),
             'curr_state' => array(
                 'label'     => 'Současný stav',
@@ -253,6 +259,7 @@ class PbVote_RenderFormDefinition {
                 // 'title'     => "Actions",
                 'show_mtbx' => true,
                 'show_form' => true,
+                'save_meta_fc' => 'PbVote_SaveMetaTextarea',
             ),
             'future_state' => array(
                 'label'     => 'Zamýšlený stav',
@@ -264,6 +271,7 @@ class PbVote_RenderFormDefinition {
                 // 'title'     => "Actions",
                 'show_mtbx' => true,
                 'show_form' => true,
+                'save_meta_fc' => 'PbVote_SaveMetaTextarea',
             ),
             'locality' => array(
                 'label' => 'Katastrální části, kterých se návrh týká',
@@ -281,6 +289,7 @@ class PbVote_RenderFormDefinition {
                 'js_rules'  => array(
                   'rules'   => 'required|!callback_pb_project_js_validate_locality',
                 ),
+                'save_meta_fc' => 'PbVote_SaveMetaArray',
             ),
             'postAddress' => array(
                 'label'     => 'Lokalizace místa v mapě',
@@ -293,6 +302,7 @@ class PbVote_RenderFormDefinition {
                     'rules' => 'required',
                     'depends' => 'pb_project_js_validate_required',
                 ),
+                'save_meta_fc' => 'PbVote_SaveMetaPostAddress',
             ),
             'link_katastr' => array(
               'label'       => 'Katastrální mapa',
@@ -321,6 +331,7 @@ class PbVote_RenderFormDefinition {
                   'rules' => 'required',
                   'depends' => 'pb_project_js_validate_required',
                 ),
+                'save_meta_fc' => 'PbVote_SaveMetaTextarea',
             ),
             'attachment' => array(
                 'label'         => 'Přílohy návrhu',
@@ -333,10 +344,29 @@ class PbVote_RenderFormDefinition {
                 'help'          => 'Povolené typy příloh: gif, png, jpg, jpeg, pdf. Max velikost 5 MB',
                 'show_mtbx'   => true,
                 'show_form'   => true,
-                'max_size'    => $this->file_max_size,
+                'max_size'    => self::$file_max_size,
                 'js_rules'    => array(
                     'rules'   => 'is_file_type[gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG,pdf,PDF]',
                 ),
+                'save_meta_fc' => 'PbVote_SaveMetaArray',
+            ),
+            'attachment_sec' => array(
+                'label'         => 'Příloha č. 2 – podpisový arch / archy (neveřejné)',
+                'id'            => 'pb_project_attachment_sec',
+                'type'          => 'attachment',
+                'title'         => "attachment_sec",
+                'mandatory'     => true,
+                'material_icon' => 'file_upload',
+                'AddBtnLabel'   => 'Vyhledat',
+                'help'          => 'Povolené typy příloh: gif, png, jpg, jpeg, pdf. Max velikost 2 MB',
+                'show_mtbx'   => true,
+                'show_form'   => true,
+                'max_size'    => self::$file_max_size,
+                'js_rules'    => array(
+                    'rules'   => 'is_file_type[gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG,pdf,PDF]|!callback_pb_project_js_validate_attachment_mandatory',
+                    'depends' => 'pb_project_js_validate_required',
+                ),
+                'save_meta_fc' => 'PbVote_SaveMetaArray',
             ),
             'cost' => array(
               'label'     => 'Předpokládané náklady (povinné)',
@@ -344,14 +374,15 @@ class PbVote_RenderFormDefinition {
               'type'      => 'budgettable',
               'title'     => "cost",
               'mandatory' => true,
-              'help'      => 'Zadejte předpokládané náklady v rozsahu '.$this->budget_limit['help'].' Kč včetně 10 procent rezervy. Částky jsou včetně daně. Počet jednotek a jednotková cena jsou celá čísla, uveďte všechny potřebné položky včetně např. bouracích a stavebních prací nebo finančních prostředků na studie a zpracovávání dokumentace.',
+              'help'      => 'Zadejte předpokládané náklady v rozsahu '.self::$budget_limit['help'].' Kč včetně 10 procent rezervy. Částky jsou včetně daně. Počet jednotek a jednotková cena jsou celá čísla, uveďte všechny potřebné položky včetně např. bouracích a stavebních prací nebo finančních prostředků na studie a zpracovávání dokumentace.',
               'show_mtbx' => true,
               'show_form' => true,
-              'limit'     => $this->budget_limit,
+              'limit'     => self::$budget_limit,
               'js_rules'  => array(
                 'rules'   => 'required|!callback_pb_project_js_validate_budget',
                 'depends' => 'pb_project_js_validate_required',
               ),
+              'save_meta_fc' => 'PbVote_SaveMetaArray',
             ),
             // 'map' => array(
             //     'label'     => 'Mapa (situační nákres) místa, kde se má návrh realizovat (povinná příloha)',
@@ -414,6 +445,7 @@ class PbVote_RenderFormDefinition {
                 'rules'   => 'required',
                 'depends' => 'pb_project_js_validate_required',
               ),
+              'save_meta_fc' => 'PbVote_SaveMetaText',
             ),
             'phone' => array(
                 'label'     => 'Tel. číslo',
@@ -431,6 +463,7 @@ class PbVote_RenderFormDefinition {
                     'rules'   => 'required|!callback_pbVoteValidPhone',
                     'depends' => 'pb_project_js_validate_required',
                 ),
+                'save_meta_fc' => 'PbVote_SaveMetaText',
             ),
             'email' => array(
                 'label'     => 'E-mail',
@@ -447,6 +480,7 @@ class PbVote_RenderFormDefinition {
                     'rules'   => 'required|valid_email',
                     // 'depends' => 'pb_project_js_validate_required',
                 ),
+                'save_meta_fc' => 'PbVote_SaveMetaEmail',
             ),
             'org_name' => array(
               'label'     => 'Název společnosti ',
@@ -460,6 +494,7 @@ class PbVote_RenderFormDefinition {
               'help'      => 'Vyplňte pouze v případě, že návrh podáváte jménem společnosti se sídlem v MČ a výše uvedené kontakty jsou kontakty na zástupce této společnosti.',
               'show_mtbx'   => false,
               'show_form'   => true,
+              'save_meta_fc' => 'PbVote_SaveMetaText',
             ),
             'address' => array(
                 'label'     => 'Adresa trvalého bydliště',
@@ -475,6 +510,7 @@ class PbVote_RenderFormDefinition {
                     'rules'   => 'required',
                     'depends' => 'pb_project_js_validate_required',
                 ),
+                'save_meta_fc' => 'PbVote_SaveMetaText',
             ),
             'age_conf' => array(
                 'label'     => 'Prohlašuji, že jsem starší 18 let',
@@ -490,6 +526,7 @@ class PbVote_RenderFormDefinition {
                     'rules'   => 'required',
                     'depends' => 'pb_project_js_validate_required',
                 ),
+                'save_meta_fc' => 'PbVote_SaveMetaCheckbox',
             ),
             'agreement'     => array(
                 'label'     => 'Souhlasím s <a href="'. site_url("podminky-pouziti-a-ochrana-osobnich-udaju/") . '" target="_blank" title="Přejít na stránku s podmínkami">podmínkami použití a zpracování osobních údajů</a>',
@@ -504,6 +541,7 @@ class PbVote_RenderFormDefinition {
                 'js_rules'    => array(
                     'rules'   => 'required',
                 ),
+                'save_meta_fc' => 'PbVote_SaveMetaCheckbox',
             ),
             'private_note' => array(
                 'label'       => 'Neveřejné poznámky',
@@ -515,6 +553,7 @@ class PbVote_RenderFormDefinition {
                 'help'        => 'Tyto informace nebudou publikovány. Mohou sloužit k předání důležitých informací koordinátorům projektu Počítáme s vámi!',
                 'show_mtbx' => true,
                 'show_form' => true,
+                'save_meta_fc' => 'PbVote_SaveMetaTextarea',
             ),
             'completed'     => array(
                 'label'     => 'Popis projektu je úplný a chci ho poslat k vyhodnocení',
