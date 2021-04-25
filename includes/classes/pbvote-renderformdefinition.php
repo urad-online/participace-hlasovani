@@ -3,8 +3,8 @@ class PbVote_RenderFormDefinition {
     public static $file_type_image =  "gif,GIF,png,PNG,jpg,JPG,jpeg,JPEG";
     public static $file_type_scan  =  "pdf,PDF";
     public static $file_type_docs  =  "doc,DOC,xls,XLS,docX,DOCX,xlsx,XLSX";
-    private static $file_max_size = 1000000;
-    private static $budget_limit = array('min' => 1, 'max' => 100000, 'help' => 'maximálně 100 tis.'); // bytes
+    private $file_max_size = 5000000;
+    private $budget_limt = array('min' => 30000, 'max' => 100000, 'help' => '30 tis. - 100 tis.'); // bytes
     private $fields;
     private $fields_layout;
     private $fields_single;
@@ -145,8 +145,8 @@ class PbVote_RenderFormDefinition {
             array( 'type' => 'section', 'data' => array( 'label' => 'A. Základní informace k návrhu', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
             array( 'type' => 'section', 'data' => array( 'label' => 'Povinné položky', 'help' => '', 'class' => 'pbvote-SubSectionTitleTextStyle',)),
             array( 'type' => 'row', 'data' => array(
-                array('type' => 'field', 'data' => array( 'field' => 'title', 'columns' => 8)),
-                array('type' => 'field', 'data' => array( 'field' => 'category', 'columns' => 4)),
+                array('type' => 'field', 'data' => array( 'field' => 'title', 'columns' => 6)),
+                array('type' => 'field', 'data' => array( 'field' => 'category', 'columns' => 6)),
             )),
             array( 'type' => 'field', 'data' => array( 'field' => 'photo', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'content', 'columns' => 0)),
@@ -171,7 +171,6 @@ class PbVote_RenderFormDefinition {
             // array( 'type' => 'field', 'data' => array( 'field' => 'org_name', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'address', 'columns' => 0)),
             // array( 'type' => 'field', 'data' => array( 'field' => 'signatures', 'columns' => 0)),
-            array( 'type' => 'field', 'data' => array( 'field' => 'attachment_sec', 'columns' => 0)),
             array( 'type' => 'section', 'data' => array( 'label' => 'F. Uložení a odeslání návrhu', 'help' => '', 'class' => 'pbvote-SectionTitleTextStyle',)),
             array( 'type' => 'field', 'data' => array( 'field' => 'age_conf', 'columns' => 0)),
             array( 'type' => 'field', 'data' => array( 'field' => 'agreement', 'columns' => 0)),
@@ -243,8 +242,8 @@ class PbVote_RenderFormDefinition {
                 'id'        => 'pb_project_reason',
                 'type'      => 'textarea',
                 'mandatory' => false,
-                'placeholder' => 'Popište důvod, proč návrh předkládáte, jaký problém by byl jeho realizací řešen',
-                'help'      => 'Popište důvod, proč návrh předkládáte, jaký problém by byl jeho realizací řešen',
+                'placeholder' => 'Popište důvod, proč návrh předkládáte, jaký problém bude jeho realizací řešen.',
+                'help'      => 'Popište důvod, proč návrh předkládáte, jaký problém bude jeho realizací řešen.',
                 // 'title'     => "Actions",
                 'show_mtbx' => true,
                 'show_form' => true,
@@ -255,8 +254,8 @@ class PbVote_RenderFormDefinition {
                 'id'        => 'pb_project_curr_state',
                 'type'      => 'textarea',
                 'mandatory' => false,
-                'placeholder' => 'Popište současný stav týkající se zamýšleného návrhu',
-                'help'      => 'Popište současný stav týkající se zamýšleného návrhu',
+                'placeholder' => 'Popište současný stav týkající se vašeho návrhu.',
+                'help'      => 'Popište současný stav týkající se vašeho návrhu.',
                 // 'title'     => "Actions",
                 'show_mtbx' => true,
                 'show_form' => true,
@@ -267,8 +266,8 @@ class PbVote_RenderFormDefinition {
                 'id'        => 'pb_project_future_state',
                 'type'      => 'textarea',
                 'mandatory' => false,
-                'placeholder' => 'Popište zamýšlený stav týkající se tohoto návrhu',
-                'help'      => 'Popište zamýšlený stav týkající se tohoto projektu',
+                'placeholder' => 'Popište zamýšlený stav týkající se vašeho návrhu.',
+                'help'      => 'Popište zamýšlený stav týkající se vašeho návrhu.',
                 // 'title'     => "Actions",
                 'show_mtbx' => true,
                 'show_form' => true,
@@ -277,7 +276,7 @@ class PbVote_RenderFormDefinition {
             'locality' => array(
                 'label' => 'Katastrální části, kterých se návrh týká',
                 'id'    => 'pb_project_locality',
-                'help'  => 'Zaškrtněte všechny katastrální části, kterých se návrh týká',
+                'help'  => 'Zaškrtněte všechny katastrální části, kterých se návrh týká.',
                 'type'  => 'checkboxgroup',
                 'show_mtbx'   => false,
                 'show_form'   => true,
@@ -313,19 +312,19 @@ class PbVote_RenderFormDefinition {
               'default'     => array(
                 'title'     => 'Přejděte na stránku katastrální úřadu',
                 'text_link' => 'Najděte',
-                'text'      => ' všechna katastrální čísla týkajících se návrhu, kliknutím do mapy ověřte, zda jsou všechny dotčené pozemky ve správě MČ a návrh tak splňuje podmínky pravidel participativního rozpočtu. Seznam všech dotčených pozemků uveďte do pole níže (jedna položka na jeden řádek).',
+                'text'      => ' všechna katastrální čísla týkajících se návrhu, kliknutím do mapy ověřte, zda jsou všechny dotčené pozemky ve správě městské části a návrh tak splňuje podmínky pravidel participativního rozpočtu. Seznam všech dotčených pozemků uveďte do pole níže (jedna položka na jeden řádek).',
               ),
               'show_mtbx' => true,
               'show_form' => false,
             ),
             'parcel' => array(
-                'label'       => 'Umístění návrhu nebo parcelní čísla pozemků, kterých se návrh týká (povinné)',
+                'label'       => 'Parcelní čísla pozemků, kterých se návrh týká',
                 'id'          => 'pb_project_parcely',
                 'type'        => 'textarea',
                 'mandatory'   => true,
-                'placeholder' => 'Pro usnadnění kontroly zadejte každé číslo parcely na samostatný řádek ve formátu číslo/podčíslo katastrální část nebo slovně popište lokalitu.',
+                'placeholder' => 'Pro usnadnění kontroly zadejte každé číslo na samostatný řádek ve formátu číslo/podčíslo katastrální část.',
                 // 'title'       => "parcel",
-                'help'        => 'Pro usnadnění kontroly zadejte každé číslo parcely na samostatný řádek ve formátu číslo/podčíslo katastrální část nebo slovně popište lokalitu.',
+                'help'        => 'Pro usnadnění kontroly zadejte každé číslo na samostatný řádek ve formátu číslo/podčíslo katastrální část.',
                 'show_mtbx' => true,
                 'show_form' => true,
                 'js_rules'  => array(
@@ -342,7 +341,7 @@ class PbVote_RenderFormDefinition {
                 'mandatory'     => false,
                 'material_icon' => 'file_upload',
                 'AddBtnLabel'   => 'Vyhledat',
-                'help'          => 'Povolené typy příloh: gif, png, jpg, jpeg, pdf. Max velikost 2 MB',
+                'help'          => 'Povolené typy příloh: gif, png, jpg, jpeg, pdf. Max velikost 5 MB',
                 'show_mtbx'   => true,
                 'show_form'   => true,
                 'max_size'    => self::$file_max_size,
@@ -439,7 +438,7 @@ class PbVote_RenderFormDefinition {
               'placeholder' => 'Vyplňte jméno',
               // 'title'     => "Proposer Name",
               'columns'   => 6,
-              'help'      => 'Navrhovatelem je občan městské části s trvalým bydlištěm MČ Praha 15.',
+              'help'      => 'Navrhovatelem je občan městské části s trvalým bydlištěm ve správním obvodě MČ Praha-Čakovice.',
               'show_mtbx'   => true,
               'show_form'   => true,
               'js_rules'    => array(
@@ -504,7 +503,7 @@ class PbVote_RenderFormDefinition {
                 'mandatory' => true,
                 'placeholder' => 'název ulice, číslo popisné, část obce',
                 // 'title'     => "address",
-                'help'      => 'Trvalé bydliště navrhovatele musí být v Městské části Praha 15.',
+                'help'      => 'Trvalé bydliště navrhovatele musí být ve správním obvodě městské části Praha Čakovice.',
                 'show_mtbx'   => true,
                 'show_form'   => true,
                 'js_rules'    => array(
@@ -514,11 +513,11 @@ class PbVote_RenderFormDefinition {
                 'save_meta_fc' => 'PbVote_SaveMetaText',
             ),
             'age_conf' => array(
-                'label'     => 'Prohlašuji, že jsem starší 15 let',
+                'label'     => 'Prohlašuji, že jsem starší 18 let',
                 'id'        => 'pb_project_prohlaseni_veku',
                 'default'   => 'no',
                 'type'      => 'checkbox',
-                'help'      => 'Podávání návrhů je umožněno pouze občanům starším 15 let.',
+                'help'      => 'Podávání návrhů je umožněno pouze občanům starším 18 let.',
                 'mandatory' => true,
                 // 'title'     => "age_conf",
                 'show_mtbx'   => true,
@@ -536,7 +535,7 @@ class PbVote_RenderFormDefinition {
                 'type'      => 'checkbox',
                 // 'title'     => "Agreement",
                 'mandatory' => true,
-                'help'      => 'Bez souhlasu s pravidly projektu Občane, zapoj se! a s podmínkami použití, zpracování a ochraně osobních údajů nebude možné návrh projektu uložit ani odeslat ke kontrole.',
+                'help'      => 'Bez souhlasu s pravidly projektu Počítáme s vámi! a s podmínkami použití, zpracování a ochraně osobních údajů nebude možné návrh projektu uložit ani odeslat ke kontrole.',
                 'show_mtbx'   => true,
                 'show_form'   => true,
                 'js_rules'    => array(
@@ -551,7 +550,7 @@ class PbVote_RenderFormDefinition {
                 'mandatory'   => false,
                 'placeholder' => 'Neveřejné poznámky uveďte zde',
                 // 'title'       => "parcel",
-                'help'        => 'Tyto informace nebudou publikovány. Mohou sloužit k předání důležitých informací koordinátorům projektu Občane, zapoj se!',
+                'help'        => 'Tyto informace nebudou publikovány. Mohou sloužit k předání důležitých informací koordinátorům projektu Počítáme s vámi!',
                 'show_mtbx' => true,
                 'show_form' => true,
                 'save_meta_fc' => 'PbVote_SaveMetaTextarea',
