@@ -33,7 +33,7 @@ function pb_voting_register_actions_filters_after_init()
 function pb_voting_enqueue_extension()
 {
     wp_register_style('pbvote-style', PB_VOTE_URL . '/assets/css/pbvote_style.css', array(),'1.2', "all");
-    wp_register_script('pb-voting',   PB_VOTE_URL . '/assets/js/pb-voting.js', array('jquery'),'1.2', false);
+    wp_register_script('pb-voting',   PB_VOTE_URL . '/assets/js/pb-voting.js', array('jquery'),'1.2.1', false);
     wp_register_script('google-recaptcha', 'https://www.google.com/recaptcha/api.js?hl=cs', array('jquery'),'1.1', false);
     wp_register_script('pb-project-edit',   PB_VOTE_URL . '/assets/js/pb-project-edit.js', array('jquery'),'1.2', true);
 
