@@ -34,7 +34,7 @@ function voting_callAjaxGetCode()
 
     jQuery("#votingRegistrationCodeError").html("");
     jQuery("#votingRegistrationCodeError").css("display", "none");
-    jQuery("#votingRegistrationCodeSuccess").html("Odesílám žádost o zaslání SMS...");
+    jQuery("#votingRegistrationCodeSuccess").html("Čekáme na potvrzení o doručení odeslané SMS vaším operátorem (max. 1 min.)");
     jQuery("#votingRegistrationCodeSuccess").css("display", "block");
     jQuery("body").css("cursor", "progress");
     waitingForResponse = true;

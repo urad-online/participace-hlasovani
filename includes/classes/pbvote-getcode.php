@@ -20,7 +20,7 @@ class PbVote_GetCode
             array ( 'placeholder' => '{#code_spell}',
                     'value' => 'code_spelling'),
                 );
-   private $nr_of_delivery_check = 10;
+   private $nr_of_delivery_check = 20;
    private $delivery_check_sleep = 3000000;
    private $texts = array();
 
