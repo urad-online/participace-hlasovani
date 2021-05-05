@@ -115,7 +115,7 @@ class PbVote_CodeSms
                 $this->confirm_message($msg_id);
                 return true;
             } else {
-                $this->result =  array( "result" => "error", "message" => $this->texts['err_notdelivered'] .$result['status'] . " - " . $result['description'],);
+                 $this->result =  array( "result" => "error", "message" => "Omlouváme se, ale doposud jsme neobdrželi informaci, zda byla SMS doručena. Máte zapnutý telefon? Je číslo správné? Pokud jste již přístupový kód dostali, pokračujte tlačítkem 'Kód již mám'. Stále nemáte? Je možné, že dorazí později. Pokud nepřijde, opakujte později nebo nás kontaktujte a nahlaste nám tento stav : " .$result['status'] . " - " . $result['description'],);
                 return false;
             }
         }
