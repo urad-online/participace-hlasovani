@@ -4,7 +4,7 @@ $voting_url = $this->pbvoting_meta["voting_url"][0];
 $survey_id  = $this->pbvoting_meta["survey_id"][0];
 // $voting_url = get_post_meta( $post_id, "voting_url", true);
 // $survey_id  = get_post_meta( $post_id, "survey_id", true);
-$regist_code_help = ( $this->msg_type == "sms") ? "číslo mobilního telefonu ve formátu (+420) 123456789" : "emailovou adresu" ;
+$regist_code_help = ( $this->msg_type == "sms") ? "číslo mobilního telefonu ve formátu 123456789" : "emailovou adresu" ;
 $reg_widget_labels = array(
     'title'       => $this->get_meta_value( 'regform_title', __('Registrace k hlasování', 'pb-voting')),
     'input_id'    => $this->get_meta_value( 'regform_voter_id', __('Registrační údaj','pb-voting')),
