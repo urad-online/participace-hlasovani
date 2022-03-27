@@ -4,7 +4,7 @@ class PbVote_RenderFormDefinition {
     public static $file_type_scan  =  "pdf,PDF";
     public static $file_type_docs  =  "doc,DOC,xls,XLS,docX,DOCX,xlsx,XLSX";
     private $file_max_size = 5000000;
-    private $budget_limit = array('min' => 30000, 'max' => 100000, 'help' => '30 tis. - 100 tis.'); // bytes
+    private $budget_limit = array('min' => 30000, 'max' => 150000, 'help' => '30 tis. - 150 tis.'); // bytes
     private $fields;
     private $fields_layout;
     private $fields_single;
